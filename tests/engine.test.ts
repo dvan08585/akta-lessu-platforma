@@ -119,3 +119,18 @@ describe("mikro-akta", () => {
     expect(dayIndex(new Date("2027-01-02T00:00:00Z")) - dayIndex(new Date("2027-01-01T00:00:00Z"))).toBe(1);
   });
 });
+
+import { detectPitch, PitchSmoother } from "../src/engine/pitch";
+describe("wysokość dźwięku bez błędu oktawy", () => {
+  const sr = 44100;
+  const tone = (hz: number, n = 4096) => Float32Array.from({ length: n }, (_, i) => 0.5 * Math.sin((2 * Math.PI * hz * i) / sr));
+  it.each([64, 128, 136, 196, 261.6, 440])("czysty ton %s Hz daje właściwą oktawę", (hz) => {
+    const got = detectPitch(tone(hz), sr)!;
+    expect(Math.abs(got - hz) / hz).toBeLessThan(0.02);
+  });
+  it("mediana tłumi pojedynczy przeskok", () => {
+    const s = new PitchSmoother(5);
+    [136, 136, 68, 136, 136].forEach((v) => s.push(v));
+    expect(s.push(136)).toBe(136);
+  });
+});

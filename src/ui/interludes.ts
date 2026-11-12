@@ -2,7 +2,7 @@ import { h, go, toast } from "./dom";
 import { topbar } from "./views";
 import type { App } from "../app";
 import { save } from "../engine/state";
-import { detectPitch, closeness } from "../engine/pitch";
+import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 
 export interface Interlude {
   id: string; type: "amor" | "talk" | "plate"; after: number; title: string;
@@ -101,10 +101,11 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     micBtn.addEventListener("click", async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const ac = new AudioContext(); const src = ac.createMediaStreamSource(stream); const an = ac.createAnalyser(); an.fftSize = 2048; src.connect(an);
+        const ac = new AudioContext(); const src = ac.createMediaStreamSource(stream); const an = ac.createAnalyser(); an.fftSize = 4096; src.connect(an);
         const buf = new Float32Array(an.fftSize);
+        const smooth = new PitchSmoother(7);
         micBtn.disabled = true; micBtn.textContent = "Mikrofon słucha";
-        setInterval(() => { an.getFloatTimeDomainData(buf); const p = detectPitch(buf, ac.sampleRate); if (p) hz = p; }, 80);
+        setInterval(() => { an.getFloatTimeDomainData(buf); const p = smooth.push(detectPitch(buf, ac.sampleRate)); if (p) hz = p; }, 60);
       } catch { toast("Bez mikrofonu. Użyj suwaka."); }
     });
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
