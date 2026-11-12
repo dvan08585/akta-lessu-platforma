@@ -15,7 +15,7 @@
 <body>
 <a-scene embedded arjs="sourceType: webcam; detectionMode: mono; debugUIEnabled: false;" vr-mode-ui="enabled: false" renderer="logarithmicDepthBuffer: true;">
   <a-assets><img id="mapa" src="./przekroj.png" crossorigin="anonymous" /></a-assets>
-  <a-marker type="pattern" url="./znacznik.patt" id="marker">
+  <a-marker type="pattern" url="./znacznik.patt" id="marker" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3" minConfidence="0.6">
     <!-- Przekrój unosi się nad stroną: siedem wzgórz i jedna zapalona brama -->
     <!-- Przekrój stoi PIONOWO nad stroną jak kartka wyjęta z ziemi; brama z adresu unosi się i pulsuje -->
     <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" rotation="0 0 0" material="shader: flat; transparent: true; opacity: 0.96" animation="property: position; from: 0 0.1 0; to: 0 0.6 0; dur: 900; easing: easeOutCubic"></a-plane>
