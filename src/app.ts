@@ -13,6 +13,7 @@ import case05 from "./content/cases/05-collegium.json";
 import case06 from "./content/cases/06-zmigrod.json";
 import case07 from "./content/cases/07-swietopawlowskie.json";
 import { caseAvailable } from "./engine/cases";
+import interludesJson from "./content/interludia.json";
 import { silentHills } from "./engine/pair";
 
 export interface Config extends TimeConfig { title: string; share: { url: string; hashtag: string }; footer: string; newsletterUrl: string; bookUrl: string }
@@ -24,6 +25,7 @@ export class App {
   chapters: Chapter[] = chaptersJson as Chapter[];
   cases: CaseData[] = [case01, case02, case03, case04, case05, case06, case07] as CaseData[];
   rewards: Record<string, Reward> = rewardsJson as Record<string, Reward>;
+  interludes: unknown[] = interludesJson as unknown[];
   state: SaveState = load();
   now = () => new Date();
   /** Wzgórza, na których zawieszka TEGO gracza milczy (mapa 5/7). Ustalane z ziarna przy starcie. */

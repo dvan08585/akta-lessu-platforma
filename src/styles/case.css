@@ -50,3 +50,13 @@ select { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px 
 .shake { animation: shake 0.4s; }
 @keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 .verdict-text { margin: 0.5rem 0 1rem; min-height: 1.2em; }
+
+.amor-text p { font-size: 1.15rem; line-height: 1.6; opacity: 0; animation: fade 1.2s ease both; }
+.talk-log { margin: 1rem 0; }
+.talk-log .you { color: var(--ink-dim); font-style: italic; margin-bottom: 0.3em; }
+.talk-log .them { margin-bottom: 1.2em; }
+.talk-qs { display: grid; gap: 0.4rem; margin-bottom: 1rem; }
+.talk-qs button { text-align: left; }
+.plate { width: 100%; max-width: 420px; height: auto; display: block; margin: 1rem auto; border-radius: 50%; border: 1px solid var(--line); }
+.doc { background-image: radial-gradient(ellipse at 20% 10%, rgba(120,90,40,0.12), transparent 50%), radial-gradient(ellipse at 90% 90%, rgba(60,40,20,0.18), transparent 45%), repeating-linear-gradient(0deg, rgba(0,0,0,0.012) 0 2px, transparent 2px 4px); }
+.doc::after { content: ""; position: absolute; right: 14px; top: 12px; width: 34px; height: 34px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%237a1f1f' opacity='0.85'/%3E%3Cpolygon points='32,10 50,19 54,38 42,52 22,52 10,38 14,19' fill='none' stroke='%23f1ebdd' stroke-width='2.2'/%3E%3C/svg%3E") no-repeat center / contain; opacity: 0.9; pointer-events: none; }

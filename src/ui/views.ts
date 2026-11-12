@@ -1,5 +1,6 @@
 import { h, go, toast } from "./dom";
 import { renderMap, statusLabel } from "./map";
+import { interludesFor } from "./interludes";
 import type { App } from "../app";
 import type { CaseData, Doc } from "../engine/types";
 import { evaluate, heatLabel, recordAttempt, passedCount } from "../engine/cases";
@@ -62,6 +63,16 @@ export function viewMap(app: App): HTMLElement {
       h("span", { class: "s" }, statusLabel(st))));
   }
   sec.append(h("h3", {}, app.state.sawFooter ? "Rejestr statusów — Fundacja Sandomierska Memoria" : "Rejestr statusów"), list);
+  const inter = interludesFor(app);
+  if (inter.length) {
+    const il = h("div", { class: "gates-list" });
+    for (const i of inter) {
+      const done = app.state.interludesDone.includes(i.id);
+      il.append(h("div", { class: "gate-row", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) },
+        h("span", { class: "n" }, i.type === "amor" ? "♦" : i.type === "talk" ? "„”" : "◎"), h("span", { class: "t" }, i.title, h("small", {}, i.type === "amor" ? "pies" : i.type === "talk" ? "rozmowa, jedno kłamstwo" : "mikrofon albo suwak")), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
+    }
+    sec.append(h("h3", {}, "Między sprawami"), il);
+  }
   return sec;
 }
 

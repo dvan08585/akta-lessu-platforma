@@ -65,4 +65,6 @@ export interface SaveState {
   readings: Record<string, string>;
   /** Czy gracz zostawił siódmą pozycję pustą (finał). */
   leftSeventhEmpty: boolean;
+  /** Przerywniki między sprawami, które gracz już przeszedł. */
+  interludesDone: string[];
 }

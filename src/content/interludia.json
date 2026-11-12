@@ -1,0 +1,71 @@
+[
+  {
+    "id": "amor-1", "type": "amor", "after": 1, "title": "Amor: trzy obroty",
+    "lines": [
+      "Koc na tylnym siedzeniu pachnie jabłkami i nią. Trzy obroty. Nigdy dwa. Nigdy cztery. Potem się kładzie.",
+      "Miasto pod kołami warkocze inaczej niż Warszawa. Kamień. Mokry. Pod kamieniem coś, co nie jest kamieniem.",
+      "Nos przy szparze okna. Jabłka, które leżą za długo. Rzeka. I to trzecie, od dołu, którego ona jeszcze nie czuje."
+    ]
+  },
+  {
+    "id": "wanda", "type": "talk", "after": 1, "title": "Rozmowa: pani Wanda",
+    "intro": "Hotel Pod Ciżemką, recepcja, wieczór. Pani Wanda otworzyła drzwi, zanim zapukałeś, bo stała za nimi i czekała. Masz pięć pytań. Jedna z jej odpowiedzi jest kłamstwem. Które?",
+    "person": "Pani Wanda",
+    "questions": [
+      { "q": "Kto mieszkał w pokoju numer siedem przede mną?", "a": "Profesor. Dwa tygodnie. Płacił gotówką, z góry, jak ludzie, którzy nie chcą, żeby ktoś widział wyciąg. Śniadania nie jadał. Schodził do piwnicy po słoiki kompotu, mówił, że pani Helena robiła najlepszy w mieście. A pani Helena nie żyje od dwudziestu lat, więc skąd on ten kompot brał, to ja nie wiem." },
+      { "q": "Co jest pod hotelem?", "a": "Piwnice. Kupieckie, szesnastowieczne, trzy poziomy, w przewodniku jest. Niżej nic. Ja tam schodzę z praniem dwa razy w tygodniu i nic tam nie ma oprócz wilgoci i pana Krzysia z kluczami." },
+      { "q": "Zna pani Fundację Sandomierska Memoria?", "a": "Pan Stańczyk? Elegancki. Pije młode wino jak starsze, powoli. Rezerwuje salę na degustacje, płaci na czas, daje napiwki, których nie trzeba. Nie lubię go. Nie wiem dlaczego. Pies pani też go nie lubi, widziałam przez okno." },
+      { "q": "Dlaczego pies nie chce wejść do piwnicy?", "a": "Bo psy mają rozum. Ja też nie chcę, a wchodzę, bo pranie samo nie zejdzie. Ale pani pies to nie jest pierwszy. Profesor miał kota, kot też nie schodził. Siedział na schodach i patrzył w dół jak na telewizor." },
+      { "q": "Słyszy pani czasem coś w nocy?", "a": "W nocy? Nie. Nigdy. W tym hotelu jest cicho jak w kościele. Śpię jak dziecko, szklanki w kredensie nie dzwonią, a jak dzwonią, to od tirów na obwodnicy. Proszę nie wierzyć w to, co mówią w mieście." }
+    ],
+    "lie": 4,
+    "reveal": "Szklanki w kredensie. Powiedziała, że nie dzwonią, i powiedziała, od czego dzwonią, w jednym zdaniu. Pani Wanda słyszy. Od lat. Dlatego otwiera drzwi, zanim ktoś zapuka: nie śpi.",
+    "wrong": "Pani Wanda patrzy na ciebie dłużej, niż trzeba. „To była prawda, proszę pana.”"
+  },
+  {
+    "id": "amor-2", "type": "amor", "after": 2, "title": "Amor: Rynek",
+    "lines": [
+      "Food trucki. Olej, który był kiedyś rybą. Kawa z papieru. Kable pod łapami, każdy brzęczy inaczej.",
+      "Pod kostką coś niskiego. Nie dźwięk. Ciśnienie. Jak przed burzą, tylko od dołu.",
+      "Siada przy jej nodze. Ucho prawe w dół. Ona tego nie słyszy. Jeszcze. Czeka, aż usłyszy."
+    ]
+  },
+  {
+    "id": "plyta", "type": "plate", "after": 2, "title": "Płyta Chladniego",
+    "intro": "Klasztor św. Jakuba, cela Anzelma. Na stole metalowa płyta, na niej piasek. Anzelm nie tłumaczy. Pokazuje. „Sandomierz stoi na rezonatorze. Znajdź ton.” Nuć do telefonu, aż piasek ułoży się w siedem ramion. Jeśli nie masz mikrofonu, użyj suwaka.",
+    "targetHz": 196, "tolerance": 6,
+    "reveal": "Siedem ramion. G, ton główny dzwonu Piotra. Anzelm kiwa głową. „Pięćset milionów lat kwarcu pod lessem. Ludzie budują nad tym katedry i nazywają to wiarą. To fizyka.” A potem, ciszej: „Ton dolny też jest. Tego nie zanucisz. Tego się nie nuci. To się nosi.”"
+  },
+  {
+    "id": "amor-3", "type": "amor", "after": 3, "title": "Amor: katedra",
+    "lines": [
+      "Kadzidło. Wosk. Kamień zimny, oprócz jednego miejsca przy ścianie z obrazami, gdzie kamień jest ciepły jak brzuch śpiącego.",
+      "Ona stoi przed obrazem i nie szuka. Amor widzi, jak jej oczy szukają same.",
+      "Kładzie się na ciepłym kamieniu. Kościelny mówi, że nie wolno. Amor nie zna tego słowa."
+    ]
+  },
+  {
+    "id": "amor-4", "type": "amor", "after": 4, "title": "Amor: człowiek ze spinkami",
+    "lines": [
+      "Trzydzieści metrów. Wiatr od niego. Wino, wełna, coś metalicznego na mankietach i pod tym czwarty zapach, którego Amor nie zna z żadnego człowieka.",
+      "Warczy. Nie planował. Warknięcie wyszło z miejsca, z którego wychodzą rzeczy, o które się nie pyta.",
+      "Człowiek ze spinkami uśmiecha się. Do psa. Amor warczy drugi raz."
+    ]
+  },
+  {
+    "id": "amor-5", "type": "amor", "after": 5, "title": "Amor: schody",
+    "lines": [
+      "Metalowe drzwi obok lapidarium. Schody w dół. Chodził tędy pierwszy przez cztery tygodnie.",
+      "Dziś stoi. Łapy na bruku, cztery, równo. Uszy do tyłu. Nie strach. Strach ma inny zapach.",
+      "Ona kuca. Ręka za uchem, tam, gdzie sierść najgęstsza. „Zostań.” Zostaje. Patrzy w schody, po których znika."
+    ]
+  },
+  {
+    "id": "amor-6", "type": "amor", "after": 6, "title": "Amor: śnieg",
+    "lines": [
+      "Pierwszy śnieg. Mokry, topnieje na lessie. Dzieci na sankach krzyczą tak, że nie trzeba słuchać, słychać i tak.",
+      "Skarpa. Pod skarpą coś, co oddycha wolniej niż wczoraj. Wolniej. Wolniej.",
+      "Drapie. Łapami, mokrymi, w białą ścianę. Dziecko woła: piesek, chodź. Nie idzie."
+    ]
+  }
+]
