@@ -29,10 +29,14 @@ export function recordAttempt(s: SaveState, c: CaseData, v: Verdict): SaveState 
 /** Bramy „przebyte": rozpoznane albo otwarte na siłę (niestabilne). Obie liczą się do postępu, ale niestabilna ma swoją cenę w finale. */
 export function passedCount(s: SaveState): number { return s.solvedCases.length + s.unstableGates.length; }
 
-export function caseAvailable(s: SaveState, c: CaseData, chapterUnlocked: (n: number) => boolean): boolean {
+/** Postęp zawsze; potem: kod z książki (rozdział) LUB data publikacji. Brak obu wymagań = otwarta. */
+export function caseAvailable(s: SaveState, c: CaseData, chapterUnlocked: (n: number) => boolean, released: (key: string) => boolean = () => false): boolean {
   if (c.requires.solvedCases !== undefined && passedCount(s) < c.requires.solvedCases) return false;
-  if (c.requires.chapter === undefined) return true;
-  return chapterUnlocked(c.requires.chapter);
+  if (c.requires.chapter === undefined && c.requires.release === undefined) return true;
+  if (c.requires.release !== undefined && released(c.requires.release)) return true;
+  if (c.requires.chapter !== undefined && s.unlockedChapters.includes(c.requires.chapter)) return true;
+  if (c.requires.chapter !== undefined && c.requires.release === undefined) return chapterUnlocked(c.requires.chapter);
+  return false;
 }
 
 export { halfKey, looksLikeHalfKey } from "./pair";

@@ -6,7 +6,9 @@
   "subtitle": "Wzgórze Zamkowe · żywioł: zimno · akty, faktury, gala",
   "epigraph": "Przeczytaj stopkę. Każdą stopkę. Od pierwszej sprawy.",
   "requires": {
-    "solvedCases": 3
+    "solvedCases": 3,
+    "chapter": 13,
+    "release": "4"
   },
   "docs": [
     {

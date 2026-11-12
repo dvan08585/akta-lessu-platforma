@@ -5,7 +5,7 @@ import type { CaseData, Doc } from "../engine/types";
 import { evaluate, heatLabel, recordAttempt, passedCount } from "../engine/cases";
 import { halfKey, looksLikeHalfKey, verifyCheck, readingToken, parseReading } from "../engine/pair";
 import { shareCard, shareText } from "../engine/share";
-import { codeMatches, unlockDate, placeFromUrl } from "../engine/unlock";
+import { codeMatches, unlockDate, placeFromUrl, releaseDate } from "../engine/unlock";
 import { exportCode, importCode, save, reset } from "../engine/state";
 
 export function pendant(heat: 0 | 1 | 2 | 3 | 4, label?: string): HTMLElement {
@@ -86,9 +86,12 @@ export function viewGate(app: App, n: number): HTMLElement {
     return sec;
   }
   if (st === "locked") {
+    const rel = c.requires.release ? releaseDate(app.cfg, c.requires.release) : null;
     const need = c.requires.solvedCases !== undefined && passedCount(app.state) < c.requires.solvedCases
       ? `Ta sprawa otwiera się po ${c.requires.solvedCases} przebytych bramach. Masz ${passedCount(app.state)}.`
-      : `Ta sprawa wymaga rozdziału ${c.requires.chapter}.`;
+      : rel && rel.getTime() > Date.now()
+        ? `Te akta przyjdą ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}. Wcześniej otwiera je tylko kod z rozdziału ${c.requires.chapter}.`
+        : `Ta sprawa wymaga rozdziału ${c.requires.chapter}.`;
     sec.append(h("h2", {}, c.title), h("p", { class: "muted" }, need),
       h("button", { onclick: () => go("#/akta") }, "Wpisz kod z książki"), " ", h("button", { onclick: () => go("#/mapa") }, "Mapa"));
     return sec;
@@ -169,9 +172,21 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       MONTHS.forEach((m, i) => sel.append(h("option", { value: String(i + 1) }, m)));
       if (saved[qi] >= 1) sel.value = String(saved[qi]);
       const line = h("p", { class: "month-line" });
-      const showLine = () => { const m = Number(sel.value); if (m >= 1 && q.monthLines?.[m - 1]) { line.replaceChildren(h("span", {}, q.monthLines[m - 1] + " "), h("em", {}, q.monthClosing ?? "")); app.state.month = m; save(app.state); } else line.replaceChildren(); };
+      const shareBtn = h("button", { class: "ghost", style: "display:none" }, "Udostępnij swój miesiąc");
+      const showLine = () => {
+        const m = Number(sel.value);
+        if (m >= 1 && q.monthLines?.[m - 1]) {
+          line.replaceChildren(h("span", {}, q.monthLines[m - 1] + " "), h("em", {}, q.monthClosing ?? ""));
+          app.state.month = m; save(app.state); shareBtn.style.display = "";
+        } else { line.replaceChildren(); shareBtn.style.display = "none"; }
+      };
+      shareBtn.addEventListener("click", async () => {
+        const m = Number(sel.value);
+        const text = `Martyrologium, Sandomierz. Mój miesiąc: ${MONTHS[m - 1]}.\n„${q.monthLines![m - 1]} ${q.monthClosing ?? ""}”\n${app.cfg.share.hashtag} ${app.cfg.share.url}#/brama/2`;
+        const r = await shareText(text); toast(r === "shared" ? "Udostępniono." : r === "copied" ? "Skopiowano do schowka." : "Nie udało się.");
+      });
       sel.addEventListener("change", showLine); showLine();
-      block.append(sel, line);
+      block.append(sel, line, shareBtn);
     } else {
       const options = q.kind === "reject" ? docs.map((d) => `${d.title}: ${d.source.length > 90 ? d.source.slice(0, 88) + "…" : d.source}`) : q.options;
       const opts = h("div", { class: "opts", role: "radiogroup", "aria-label": q.text });

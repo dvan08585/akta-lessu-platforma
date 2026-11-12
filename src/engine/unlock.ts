@@ -20,7 +20,11 @@ export async function codeMatches(input: string, hash: string): Promise<boolean>
   return h === hash;
 }
 
-export interface TimeConfig { premiereDate: string; timeline: { chapterOffsets: Record<string, number> } }
+export interface TimeConfig { premiereDate: string; timeline: { chapterOffsets: Record<string, number> }; releases?: Record<string, string> }
+
+/** Data publikacji sprawy z kalendarza (klucz czasu). */
+export function releaseDate(cfg: TimeConfig, key: string): Date | null { const v = cfg.releases?.[key]; return v ? new Date(v) : null; }
+export function isReleased(cfg: TimeConfig, key: string, now = new Date()): boolean { const d = releaseDate(cfg, key); return d !== null && now.getTime() >= d.getTime(); }
 
 /** Odblokowanie czasowe: rozdział n otwiera się o dacie premiery + offset (dni). Brak wpisu = nie otwiera się czasem. */
 export function unlockDate(cfg: TimeConfig, chapter: number): Date | null {

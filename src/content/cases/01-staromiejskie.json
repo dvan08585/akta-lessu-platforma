@@ -57,6 +57,18 @@
         "GOŁĘBIE GRODOWE (do posłania): było 12, jest 11. Jeden biały ubył w noc, gdy wdowa wyszła. Z grodu go nie posyłano. Rano wrócił do gołębnika od strony południowej. Kasztelan Berbeć kazał to zapisać.",
         "KORYTARZE POD STARYM WZGÓRZEM: zasypano wejść siedem, do głębokości, na jaką sięgały belki. Kasztelan Berbeć zeznał, że ziemia pracowała od spodu, nim zasypano pierwsze."
       ]
+    },
+    {
+      "id": "jakub-na-miejscu",
+      "title": "Dokument V",
+      "source": "Tylko na miejscu: dziedziniec klasztoru przy kościele św. Jakuba. Zeskanowany kod.",
+      "style": "hand",
+      "requiresPlace": "jakub",
+      "paragraphs": [
+        "Stoisz nad warstwą II. Pod trawnikiem, 80 centymetrów, 330 szkieletów, policzonych w 1959.",
+        "Ceglany portal kościoła ma bruzdy. Przewodnicy mówią: rycerze ostrzyli miecze przed bitwą. Dotknij jednej.",
+        "Skarpa północna, za murem: tam był sondaż S-3. Tam zasyp kończy się na 6,1 metra. Tam nikt nie zszedł niżej."
+      ]
     }
   ],
   "questions": [

@@ -6,7 +6,9 @@
   "subtitle": "Wzgórze Miejskie · żywioł: dźwięk · 1354 / 1677 / październik",
   "epigraph": "Dzwon nie odmierza czasu. Dzwon mierzy.",
   "requires": {
-    "solvedCases": 1
+    "solvedCases": 1,
+    "chapter": 2,
+    "release": "2"
   },
   "docs": [
     {
@@ -54,6 +56,18 @@
       "audio": "audio/dzwon-piotr.mp3",
       "paragraphs": [
         "Posłuchaj. Potem posłuchaj drugi raz z dłonią na telefonie."
+      ]
+    },
+    {
+      "id": "katedra-na-miejscu",
+      "title": "Dokument V",
+      "source": "Tylko na miejscu: pod wieżą katedry, w południe. Zeskanowany kod.",
+      "style": "hand",
+      "requiresPlace": "katedra",
+      "paragraphs": [
+        "Stoisz pod wieżą. Jeśli jest południe, poczekaj na pierwsze uderzenie i połóż dłoń na murze.",
+        "Mur odpowiada później niż dzwon. O ułamek. To, co czujesz w dłoni po tym, jak dzwon ucichł, nie jest dzwonem.",
+        "Pod tobą, 470 metrów korytarzy trasy turystycznej. Pod trasą: to, do czego kapituła stroiła ton dolny."
       ]
     }
   ],

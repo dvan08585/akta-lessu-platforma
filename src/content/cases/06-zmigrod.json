@@ -7,7 +7,9 @@
   "epigraph": "Zawieszka na tym wzgórzu milczy. To nie znaczy, że nic tu nie ma.",
   "type": "decision",
   "requires": {
-    "solvedCases": 5
+    "solvedCases": 5,
+    "chapter": 12,
+    "release": "6"
   },
   "docs": [
     {

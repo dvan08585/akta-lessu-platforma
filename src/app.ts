@@ -1,5 +1,5 @@
 import type { CaseData, Chapter, GateStatus, MapData, SaveState } from "./engine/types";
-import { isChapterUnlocked, nextLockedChapter, placeFromUrl, type TimeConfig } from "./engine/unlock";
+import { isChapterUnlocked, nextLockedChapter, placeFromUrl, isReleased, type TimeConfig } from "./engine/unlock";
 import { load, save, touchStreak } from "./engine/state";
 import mapJson from "./content/map.json";
 import chaptersJson from "./content/chapters.json";
@@ -48,7 +48,7 @@ export class App {
     if (this.state.unstableGates.includes(n)) return "unstable";
     if (c && this.state.solvedCases.includes(c.n)) return "solved";
     if (this.isSilentFor(n)) return "silent";
-    if (c && caseAvailable(this.state, c, (k) => this.isUnlocked(k))) return "open";
+    if (c && caseAvailable(this.state, c, (k) => this.isUnlocked(k), (k) => isReleased(this.cfg, k, this.now()))) return "open";
     if (!c && g?.silent) return "silent";
     return "locked";
   }

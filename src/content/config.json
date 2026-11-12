@@ -21,5 +21,13 @@
   },
   "footer": "Program edukacyjny „Sandomierz Pod Spodem”. Partner: Fundacja Sandomierska Memoria. Kopia dla biegłego.",
   "newsletterUrl": "",
-  "bookUrl": ""
+  "bookUrl": "",
+  "releases": {
+    "note": "Daty publikacji spraw (klucz czasu). Kod z książki do rozdziału z pola requires.chapter omija kalendarz. Sprawa 7: dzień premiery.",
+    "2": "2026-11-26T18:00:00+01:00",
+    "3": "2026-12-10T18:00:00+01:00",
+    "4": "2027-01-07T18:00:00+01:00",
+    "5": "2027-01-21T18:00:00+01:00",
+    "6": "2027-02-04T18:00:00+01:00"
+  }
 }

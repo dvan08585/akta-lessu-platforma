@@ -6,7 +6,9 @@
   "subtitle": "Wzgórze Katedralne · żywioł: woda · katedra, krypty, Wisła",
   "epigraph": "Podobno jeśli przyjdziesz w dniu urodzin i znajdziesz swój miesiąc, odczytasz z niego rodzaj własnej śmierci.",
   "requires": {
-    "solvedCases": 2
+    "solvedCases": 2,
+    "chapter": 7,
+    "release": "3"
   },
   "docs": [
     {
@@ -53,6 +55,18 @@
         "Wody gruntowe w Sandomierzu o tej porze roku: 9–10°C.",
         "Zawieszka: ciepło przesuwa się w dół. Nie na zewnątrz, nie w górę.",
         "Nie szukałam swojego miesiąca. Oczy same."
+      ]
+    },
+    {
+      "id": "martyrologium-na-miejscu",
+      "title": "Dokument V",
+      "source": "Tylko na miejscu: nawa katedry, przy obrazie XI. Zeskanowany kod.",
+      "style": "hand",
+      "requiresPlace": "katedra",
+      "paragraphs": [
+        "Znajdź obraz z listopadem. Stań przed nim. Nie szukaj swojego miesiąca.",
+        "Posadzka. Zdejmij rękawiczkę, jeśli jest zima. Dotknij. Potem przejdź na drugą stronę nawy, do grzejników, i dotknij tam.",
+        "Zapisz, która strona jest cieplejsza. Konserwator tego nie zapisał."
       ]
     }
   ],

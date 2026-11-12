@@ -6,7 +6,9 @@
   "subtitle": "Collegium · żywioł: ciemność · pięć stron z notatnika profesora",
   "epigraph": "Mniej wiesz, więcej rozumiesz. Jedna z tych stron kłamie. Dopóki jej nie odrzucisz, nic się nie zgadza.",
   "requires": {
-    "solvedCases": 4
+    "solvedCases": 4,
+    "chapter": 17,
+    "release": "5"
   },
   "docs": [
     {
