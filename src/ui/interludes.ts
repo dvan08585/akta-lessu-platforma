@@ -84,17 +84,17 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     sec.append(h("div", { class: "card" }, audio, h("p", { class: "faint" }, "Słuchawki na obu uszach. Głośnik telefonu tego nie odda: nie dlatego, że jest słaby, tylko dlatego, że to powstaje dopiero między uszami.")));
     // Bez słuchawek: zobaczysz. Dwie fale (200 i 218 Hz) i ich suma, zwolnione 400 razy, żeby dudnienie 18 Hz było widoczne jako powolny oddech amplitudy. Bez migania.
     const wave = h("canvas", { class: "wave", width: "600", height: "180", "aria-label": "Dwie fale i dudnienie" }) as HTMLCanvasElement;
-    sec.append(wave, h("p", { class: "faint" }, "Góra: lewe ucho, 110 Hz. Środek: prawe, 128 Hz. Dół: 18 Hz różnicy, to, co powstaje między nimi. Bez słuchawek zobaczysz, nie usłyszysz."));
+    sec.append(wave, h("p", { class: "faint" }, "Góra: lewe ucho, 250 Hz. Środek: prawe, 268 Hz. Dół: 18 Hz różnicy, to, co powstaje między nimi. Bez słuchawek zobaczysz, nie usłyszysz."));
     const wctx = wave.getContext("2d")!;
     const drawWave = (now: number) => {
       const t = now / 400000; // zwolnienie
       wctx.fillStyle = "#171511"; wctx.fillRect(0, 0, 600, 180);
-      const rows: [number, number, string][] = [[110, 30, "#a39a86"], [128, 90, "#a39a86"], [0, 150, "#c9a86a"]];
+      const rows: [number, number, string][] = [[250, 30, "#a39a86"], [268, 90, "#a39a86"], [0, 150, "#c9a86a"]];
       for (const [f, y, col] of rows) {
         wctx.beginPath(); wctx.strokeStyle = col; wctx.lineWidth = 1.5;
         for (let x = 0; x <= 600; x += 2) {
           const tt = t + x / 6000;
-          const v = f ? Math.sin(2 * Math.PI * f * tt) : (Math.sin(2 * Math.PI * 110 * tt) + Math.sin(2 * Math.PI * 128 * tt)) / 2;
+          const v = f ? Math.sin(2 * Math.PI * f * tt) : (Math.sin(2 * Math.PI * 250 * tt) + Math.sin(2 * Math.PI * 268 * tt)) / 2;
           const yy = y + v * 22; x === 0 ? wctx.moveTo(x, yy) : wctx.lineTo(x, yy);
         }
         wctx.stroke();

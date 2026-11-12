@@ -1342,10 +1342,10 @@ Zieliński obraca filiżankę. „To była prawda. Ja nie kłamię, proszę pana
 Ton dolny
 
 <!-- interludia[12].intro -->
-Anzelm odkłada smyczek. „Tego się nie nuci. To się nosi.” Załóż słuchawki. Obie. Lewe ucho dostanie 110 Hz, prawe 128 Hz: 18 Hz różnicy, tyle, ile ma dron pod Rynkiem. Posłuchaj minutę i nic nie rób. Potem wyjmij jedną słuchawkę i posłuchaj jeszcze raz. Bez słuchawek zobaczysz to, czego nie usłyszysz: dwie fale i to, co z nich powstaje.
+Anzelm odkłada smyczek. „Tego się nie nuci. To się nosi.” Załóż słuchawki, obie. Lewe ucho dostanie 250 Hz, prawe trochę więcej. Przez pierwsze dwadzieścia sekund różnica to cztery herce: usłyszysz powolne falowanie, cztery razy na sekundę. Potem osiem. Potem osiemnaście, tyle, ile ma dron pod Rynkiem: falowanie zmienia się w drżenie, prawie niesłyszalne. W trakcie wyjmij jedną słuchawkę. Falowanie zniknie, bo nie ma go gdzie złożyć. Jeśli nie znika, w ustawieniach telefonu wyłącz „audio mono”.
 
 <!-- interludia[12].reveal -->
-Lewe ucho dostaje 110 Hz. Prawe 128. Osiemnaście hercy różnicy nie istnieje w żadnym z nich. Powstaje dopiero w tobie, między uszami, tam, gdzie mózg składa dwa dźwięki w jeden. Wyjmij jedną słuchawkę: tętnienie znika, bo nie ma go gdzie złożyć. Głośnik tego nie odda. Ciało tak. Aneta nie słyszała drona uszami.
+Cztery na sekundę słychać wyraźnie. Osiem jeszcze. Osiemnaście to już tylko drżenie na granicy, i właśnie tam mieszka dron pod Sandomierzem: nie w dźwięku, w drżeniu. Żadne z uszu nie słyszy różnicy. Powstaje dopiero w tobie, między nimi. Wyjmij jedną słuchawkę i jej nie ma. Aneta nie słyszała drona uszami. Słyszała go tym, czym ty go teraz słyszysz.
 
 <!-- interludia[13].title -->
 Zimno
