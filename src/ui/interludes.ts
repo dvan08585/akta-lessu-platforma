@@ -16,7 +16,7 @@ export interface Interlude {
 
 export function interludesFor(app: App): Interlude[] {
   const passed = app.state.solvedCases.length + app.state.unstableGates.length;
-  return (app.interludes as Interlude[]).filter((i) => i.after <= passed);
+  return (app.interludes as Interlude[]).filter((i) => i.after <= passed).sort((a, b) => a.after - b.after);
 }
 
 export function viewInterlude(app: App, id: string): HTMLElement {
