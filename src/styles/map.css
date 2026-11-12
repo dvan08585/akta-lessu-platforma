@@ -35,3 +35,5 @@
 .gate-row .s { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); }
 .gate-row[data-status="solved"] .s { color: var(--sand); }
 .gate-row[data-status="locked"] { opacity: 0.55; }
+.snow .map-wrap .hill { fill: #2e2b25; stroke: rgba(232,224,207,0.35); }
+.snow .map-wrap svg { background: linear-gradient(to bottom, rgba(232,224,207,0.04), transparent 40%); }

@@ -1,6 +1,9 @@
 [
   {
-    "id": "amor-1", "type": "amor", "after": 1, "title": "Amor: trzy obroty",
+    "id": "amor-1",
+    "type": "amor",
+    "after": 1,
+    "title": "Amor: trzy obroty",
     "lines": [
       "Koc na tylnym siedzeniu pachnie jabłkami i nią. Trzy obroty. Nigdy dwa. Nigdy cztery. Potem się kładzie.",
       "Miasto pod kołami warkocze inaczej niż Warszawa. Kamień. Mokry. Pod kamieniem coś, co nie jest kamieniem.",
@@ -8,22 +11,43 @@
     ]
   },
   {
-    "id": "wanda", "type": "talk", "after": 1, "title": "Rozmowa: pani Wanda",
+    "id": "wanda",
+    "type": "talk",
+    "after": 1,
+    "title": "Rozmowa: pani Wanda",
     "intro": "Hotel Pod Ciżemką, recepcja, wieczór. Pani Wanda otworzyła drzwi, zanim zapukałeś, bo stała za nimi i czekała. Masz pięć pytań. Jedna z jej odpowiedzi jest kłamstwem. Które?",
     "person": "Pani Wanda",
     "questions": [
-      { "q": "Kto mieszkał w pokoju numer siedem przede mną?", "a": "Profesor. Dwa tygodnie. Płacił gotówką, z góry, jak ludzie, którzy nie chcą, żeby ktoś widział wyciąg. Śniadania nie jadał. Schodził do piwnicy po słoiki kompotu, mówił, że pani Helena robiła najlepszy w mieście. A pani Helena nie żyje od dwudziestu lat, więc skąd on ten kompot brał, to ja nie wiem." },
-      { "q": "Co jest pod hotelem?", "a": "Piwnice. Kupieckie, szesnastowieczne, trzy poziomy, w przewodniku jest. Niżej nic. Ja tam schodzę z praniem dwa razy w tygodniu i nic tam nie ma oprócz wilgoci i pana Krzysia z kluczami." },
-      { "q": "Zna pani Fundację Sandomierska Memoria?", "a": "Pan Stańczyk? Elegancki. Pije młode wino jak starsze, powoli. Rezerwuje salę na degustacje, płaci na czas, daje napiwki, których nie trzeba. Nie lubię go. Nie wiem dlaczego. Pies pani też go nie lubi, widziałam przez okno." },
-      { "q": "Dlaczego pies nie chce wejść do piwnicy?", "a": "Bo psy mają rozum. Ja też nie chcę, a wchodzę, bo pranie samo nie zejdzie. Ale pani pies to nie jest pierwszy. Profesor miał kota, kot też nie schodził. Siedział na schodach i patrzył w dół jak na telewizor." },
-      { "q": "Słyszy pani czasem coś w nocy?", "a": "W nocy? Nie. Nigdy. W tym hotelu jest cicho jak w kościele. Śpię jak dziecko, szklanki w kredensie nie dzwonią, a jak dzwonią, to od tirów na obwodnicy. Proszę nie wierzyć w to, co mówią w mieście." }
+      {
+        "q": "Kto mieszkał w pokoju numer siedem przede mną?",
+        "a": "Profesor. Dwa tygodnie. Płacił gotówką, z góry, jak ludzie, którzy nie chcą, żeby ktoś widział wyciąg. Śniadania nie jadał. Schodził do piwnicy po słoiki kompotu, mówił, że pani Helena robiła najlepszy w mieście. A pani Helena nie żyje od dwudziestu lat, więc skąd on ten kompot brał, to ja nie wiem."
+      },
+      {
+        "q": "Co jest pod hotelem?",
+        "a": "Piwnice. Kupieckie, szesnastowieczne, trzy poziomy, w przewodniku jest. Niżej nic. Ja tam schodzę z praniem dwa razy w tygodniu i nic tam nie ma oprócz wilgoci i pana Krzysia z kluczami."
+      },
+      {
+        "q": "Zna pani Fundację Sandomierska Memoria?",
+        "a": "Pan Stańczyk? Elegancki. Pije młode wino jak starsze, powoli. Rezerwuje salę na degustacje, płaci na czas, daje napiwki, których nie trzeba. Nie lubię go. Nie wiem dlaczego. Pies pani też go nie lubi, widziałam przez okno."
+      },
+      {
+        "q": "Dlaczego pies nie chce wejść do piwnicy?",
+        "a": "Bo psy mają rozum. Ja też nie chcę, a wchodzę, bo pranie samo nie zejdzie. Ale pani pies to nie jest pierwszy. Profesor miał kota, kot też nie schodził. Siedział na schodach i patrzył w dół jak na telewizor."
+      },
+      {
+        "q": "Słyszy pani czasem coś w nocy?",
+        "a": "W nocy? Nie. Nigdy. W tym hotelu jest cicho jak w kościele. Śpię jak dziecko, szklanki w kredensie nie dzwonią, a jak dzwonią, to od tirów na obwodnicy. Proszę nie wierzyć w to, co mówią w mieście."
+      }
     ],
     "lie": 4,
     "reveal": "Szklanki w kredensie. Powiedziała, że nie dzwonią, i powiedziała, od czego dzwonią, w jednym zdaniu. Pani Wanda słyszy. Od lat. Dlatego otwiera drzwi, zanim ktoś zapuka: nie śpi.",
     "wrong": "Pani Wanda patrzy na ciebie dłużej, niż trzeba. „To była prawda, proszę pana.”"
   },
   {
-    "id": "amor-2", "type": "amor", "after": 2, "title": "Amor: Rynek",
+    "id": "amor-2",
+    "type": "amor",
+    "after": 2,
+    "title": "Amor: Rynek",
     "lines": [
       "Food trucki. Olej, który był kiedyś rybą. Kawa z papieru. Kable pod łapami, każdy brzęczy inaczej.",
       "Pod kostką coś niskiego. Nie dźwięk. Ciśnienie. Jak przed burzą, tylko od dołu.",
@@ -31,13 +55,53 @@
     ]
   },
   {
-    "id": "plyta", "type": "plate", "after": 2, "title": "Płyta Chladniego",
+    "id": "lutowicz",
+    "type": "talk",
+    "after": 2,
+    "title": "Rozmowa: Łutowicz",
+    "intro": "Pracownia jubilerska na Opatowskiej. Lupa na czole, lampa nisko. Łutowicz nie podaje ręki: ma ją zajętą. Kciuk pociera opuszkę palca, raz za razem, jakby sprawdzał powierzchnię, której nie ma. Pięć pytań. Jedna odpowiedź jest kłamstwem.",
+    "person": "Łutowicz",
+    "questions": [
+      {
+        "q": "Oprawia pan krzemień pasiasty?",
+        "a": "Oprawiam wszystko, co ludzie przynoszą. Krzemień rzadko, bo pęka wzdłuż pasów, jak się go wierci. Trzeba go trzymać w skórze albo w srebrze bez wiercenia, na zacisk. Mój ojciec tak robił. Jego ojciec też. To nie jest wiedza z książek, to jest wiedza z kciuka."
+      },
+      {
+        "q": "Znał pan profesora W.?",
+        "a": "Nie. Nigdy go tu nie było. Słyszałem, że umarł, wszyscy słyszeli, małe miasto. Ale u mnie nie bywał. Ja handluję obrączkami, nie geologią."
+      },
+      {
+        "q": "Skąd te blizny na dłoniach?",
+        "a": "Od pilnika. Od kwasu. Od srebra, które pryska, jak się je leje za szybko. Pięćdziesiąt lat przy stole. Pan patrzy na blizny, a ja patrzę na pana paznokcie: mówią, że pan też pracuje rękami, tylko w ziemi, nie w metalu."
+      },
+      {
+        "q": "Co jest w pana piwnicy?",
+        "a": "Regały. Pudła. Kurz. Stare katalogi, formy odlewnicze, słoiki po czymś, czego moja żona nie chce wyrzucić. Jak każda piwnica na Opatowskiej. Jak piwnica pani Heleny trzy domy dalej, zanim ją sprzedano."
+      },
+      {
+        "q": "Dlaczego pan ciągle pociera kciukiem o palec?",
+        "a": "Nie zauważyłem. Nawyk. Pan ma swoje, ja mam swoje. Mój ojciec też tak robił, więc może to jest dziedziczne, jak nos. Niech pan nie pyta, co sprawdzam. Sam nie wiem."
+      }
+    ],
+    "lie": 1,
+    "reveal": "Profesor dzwonił do niego trzy razy w ostatnim tygodniu życia. Jest to w rejestrze połączeń, o którym Łutowicz nie wie, że istnieje. Kłamie, bo profesor zostawił u niego coś pod ladą i kazał to komuś oddać. Jeszcze nie wie komu.",
+    "wrong": "Łutowicz podnosi lupę na czoło. „To akurat prawda. Zapytaj o coś innego.”"
+  },
+  {
+    "id": "plyta",
+    "type": "plate",
+    "after": 2,
+    "title": "Płyta Chladniego",
     "intro": "Klasztor św. Jakuba, cela Anzelma. Na stole metalowa płyta, na niej piasek. Anzelm nie tłumaczy. Pokazuje. „Sandomierz stoi na rezonatorze. Znajdź ton.” Nuć do telefonu, aż piasek ułoży się w siedem ramion. Jeśli nie masz mikrofonu, użyj suwaka.",
-    "targetHz": 196, "tolerance": 6,
+    "targetHz": 196,
+    "tolerance": 6,
     "reveal": "Siedem ramion. G, ton główny dzwonu Piotra. Anzelm kiwa głową. „Pięćset milionów lat kwarcu pod lessem. Ludzie budują nad tym katedry i nazywają to wiarą. To fizyka.” A potem, ciszej: „Ton dolny też jest. Tego nie zanucisz. Tego się nie nuci. To się nosi.”"
   },
   {
-    "id": "amor-3", "type": "amor", "after": 3, "title": "Amor: katedra",
+    "id": "amor-3",
+    "type": "amor",
+    "after": 3,
+    "title": "Amor: katedra",
     "lines": [
       "Kadzidło. Wosk. Kamień zimny, oprócz jednego miejsca przy ścianie z obrazami, gdzie kamień jest ciepły jak brzuch śpiącego.",
       "Ona stoi przed obrazem i nie szuka. Amor widzi, jak jej oczy szukają same.",
@@ -45,7 +109,43 @@
     ]
   },
   {
-    "id": "amor-4", "type": "amor", "after": 4, "title": "Amor: człowiek ze spinkami",
+    "id": "anzelm",
+    "type": "talk",
+    "after": 3,
+    "title": "Rozmowa: brat Anzelm",
+    "intro": "Klasztor św. Jakuba, refektarz, zimno jak w kościele, bo to jest kościół. Anzelm nalewa herbatę z termosu, dwa kubki, jeden bez ucha. Mówi, jakby każde zdanie czytał z kartki, której nie ma. Pięć pytań. Jedna odpowiedź jest kłamstwem.",
+    "person": "Anzelm",
+    "questions": [
+      {
+        "q": "Co zginęło w tym kościele w 1260 roku?",
+        "a": "Czterdziestu dziewięciu braci i trzystu ludzi, którzy myśleli, że cegła ich uratuje. Cegła nie pali się, to prawda. Ale drzwi są z drewna. Sadok śpiewał Salve Regina. My śpiewamy to samo co wieczór, od siedmiuset lat, w tym samym miejscu. Nie z pobożności. Z pamięci."
+      },
+      {
+        "q": "Skąd brat wie o korytarzach?",
+        "a": "Z ust. Nie z papieru. Mój poprzednik od swojego, tamten od swojego. Głuchy telefon przez trzydzieści pokoleń. Część prawdy zgubiła się po drodze, część doszła zmieniona. Wiem, że są. Wiem, że mają wrota. Nie wiem, czy to, co wiem o wrotach, jest jeszcze prawdą."
+      },
+      {
+        "q": "Czy brat kiedykolwiek był na dole?",
+        "a": "Nigdy. Zakon zabrania. Reguła jest jasna: strażnik pamięci nie schodzi. Schodzą inni. Ja tylko pamiętam i przekazuję. Siedemdziesiąt lat w tym klasztorze i ani razu nie postawiłem stopy niżej niż krypta."
+      },
+      {
+        "q": "Po co braciom płyta z piaskiem?",
+        "a": "Żeby pokazać, nie tłumaczyć. Smyczek po krawędzi, piasek układa się w kształt. Kształt zależy od tonu. Sandomierz stoi na kwarcu, pięćset milionów lat. Katedra stoi na Sandomierzu. Ludzie nazywają to wiarą. Ja nazywam to fizyką i modlę się dalej, jedno drugiemu nie przeszkadza."
+      },
+      {
+        "q": "Co to znaczy: oprawa otwiera, kamień zamyka?",
+        "a": "Tyle mi przekazano i tyle przekazuję. Nie wiem, czy to nie jest odwrotnie. Trzydzieści pokoleń to dużo okazji, żeby ktoś pomylił kolejność. Dlatego mówię to panu wprost, a nie jako prawdę: to są słowa, nie wiedza."
+      }
+    ],
+    "lie": 2,
+    "reveal": "Buty. Pod habitem Anzelm ma buty z lessem w szwach, suchym, jasnym, takim, który nie wchodzi w skórę na powierzchni. Był na dole. Może nie raz. Reguła zabrania, a on pamięta za dobrze jak na kogoś, kto tylko słuchał.",
+    "wrong": "Anzelm dolewa herbaty. „Prawda. Chociaż rozumiem, czemu pan pyta.”"
+  },
+  {
+    "id": "amor-4",
+    "type": "amor",
+    "after": 4,
+    "title": "Amor: człowiek ze spinkami",
     "lines": [
       "Trzydzieści metrów. Wiatr od niego. Wino, wełna, coś metalicznego na mankietach i pod tym czwarty zapach, którego Amor nie zna z żadnego człowieka.",
       "Warczy. Nie planował. Warknięcie wyszło z miejsca, z którego wychodzą rzeczy, o które się nie pyta.",
@@ -53,7 +153,10 @@
     ]
   },
   {
-    "id": "amor-5", "type": "amor", "after": 5, "title": "Amor: schody",
+    "id": "amor-5",
+    "type": "amor",
+    "after": 5,
+    "title": "Amor: schody",
     "lines": [
       "Metalowe drzwi obok lapidarium. Schody w dół. Chodził tędy pierwszy przez cztery tygodnie.",
       "Dziś stoi. Łapy na bruku, cztery, równo. Uszy do tyłu. Nie strach. Strach ma inny zapach.",
@@ -61,7 +164,43 @@
     ]
   },
   {
-    "id": "amor-6", "type": "amor", "after": 6, "title": "Amor: śnieg",
+    "id": "berbec",
+    "type": "talk",
+    "after": 4,
+    "title": "Rozmowa: Berbeć senior",
+    "intro": "Archiwum miejskie, pokój na zapleczu. Berbeć prostuje krawędź teczki, która już jest prosta. Potem drugą. Nie patrzy na ciebie, patrzy na krawędzie. Pięć pytań. Jedna odpowiedź jest kłamstwem.",
+    "person": "Berbeć",
+    "questions": [
+      {
+        "q": "Od kiedy Berbeciowie są w Sandomierzu?",
+        "a": "Od zawsze, co w tym mieście znaczy od 1287. Kasztelan Berbeć na wałach, w kronice jest. Potem rajcy, pisarze, archiwiści. Nigdy nic wielkiego. Zawsze przy papierach i przy murach. Ktoś musi pilnować, co się zasypało, żeby nikt nie odkopał przez pomyłkę."
+      },
+      {
+        "q": "Zna pan karteczkę „Nie tędy” z planu podziemi?",
+        "a": "Nie. Pierwszy raz słyszę. Ludzie przypinają różne rzeczy do planów, uczniowie, turyści. Archiwum jest publiczne. Nie mam pojęcia, kto to napisał ani po co."
+      },
+      {
+        "q": "Dlaczego pan prostuje te krawędzie?",
+        "a": "Bo są krzywe. Nie są? To będą. Mój ojciec robił to samo, dziadek też. Pan się śmieje. Niech pan sobie wyobrazi siedemset lat pilnowania, żeby coś leżało równo i nikt tego nie ruszał. Potem niech pan spróbuje nie prostować."
+      },
+      {
+        "q": "Co pan wie o Fundacji?",
+        "a": "Że kupuje. Kamienice, przychylność, lampiony na Rynku. Że ma mapę, której nie powinna mieć, bo wyszła z tego archiwum, kiedy mnie nie było. Że pan Stańczyk pyta grzecznie i zawsze o to samo. I że mój syn mu odmówił, a ja nie wiem, czy ja bym potrafił."
+      },
+      {
+        "q": "Czy pana syn też pilnuje?",
+        "a": "Pilnował. Czas przeszły. Od trzech dni jest kimś innym, nie wiem jeszcze kim. Może lepszym. Strażnik pilnuje systemu. On zaczął pilnować człowieka. W naszej rodzinie to się nie zdarzało. Nie wiem, czy to zdrada, czy to jest to, do czego to wszystko miało prowadzić."
+      }
+    ],
+    "lie": 1,
+    "reveal": "Pismo na karteczce jest drobne, prostokątne, wyrównane do krawędzi planu z dokładnością do milimetra. Nikt inny w tym mieście nie prostuje tak krawędzi. „Nie tędy” napisał Berbeć. Kłamie, bo powiedzieć, że wie, znaczyłoby powiedzieć, co jest za murem.",
+    "wrong": "Berbeć prostuje krawędź. „To prawda. Pan pyta dalej.”"
+  },
+  {
+    "id": "amor-6",
+    "type": "amor",
+    "after": 6,
+    "title": "Amor: śnieg",
     "lines": [
       "Pierwszy śnieg. Mokry, topnieje na lessie. Dzieci na sankach krzyczą tak, że nie trzeba słuchać, słychać i tak.",
       "Skarpa. Pod skarpą coś, co oddycha wolniej niż wczoraj. Wolniej. Wolniej.",

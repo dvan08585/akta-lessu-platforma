@@ -1,6 +1,7 @@
 import { h, go, toast } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import { interludesFor } from "./interludes";
+import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import type { App } from "../app";
 import type { CaseData, Doc } from "../engine/types";
 import { evaluate, heatLabel, recordAttempt, passedCount } from "../engine/cases";
@@ -48,6 +49,10 @@ export function viewMap(app: App): HTMLElement {
   const sec = h("section", { class: "fade-in" }, topbar(app, "#/mapa"));
   sec.append(h("h2", {}, "Siedem wzgórz, jeden przekrój"));
   if (app.silent.length) sec.append(h("p", { class: "faint" }, `Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. Mapa jest psychograficzna: każdy biegły ma inną. Pełna istnieje tylko między ludźmi.`));
+  const wisla = h("p", { class: "faint wisla" }, "Wisła: …");
+  fetchWisla().then((w) => { const mean = monthlyMean(); const diff = w.cm - mean; wisla.textContent = `Wisła, wodowskaz Sandomierz: ${w.cm} cm${w.live ? "" : " (średnia miesięczna, API nie odpowiada)"}. ${diff < -40 ? "Nisko. Krypty zalewa przy niskiej wodzie." : diff > 40 ? "Wysoko. Nikt nie patrzy, co jest niżej." : "Jak zwykle o tej porze."}` + (isSnowSeason() ? " Śnieg na lessie." : ""); });
+  sec.append(wisla);
+  if (isSnowSeason()) sec.classList.add("snow");
   sec.append(renderMap({
     map: app.map, chapters: app.chapters, state: app.state,
     isUnlocked: (n) => app.isUnlocked(n), gateStatus: (n) => app.gateStatus(n),
