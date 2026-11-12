@@ -29,8 +29,8 @@
       "x": 80,
       "peak": 160,
       "depth": 339,
-      "elev": 178,
-      "elevSource": "szacunek: plateau lessowe przy św. Pawle, do weryfikacji na Geoportalu"
+      "elev": 192,
+      "elevSource": "Geoportal (pomiar autora): kościół św. Pawła 192 m"
     },
     {
       "n": 4,
@@ -40,8 +40,8 @@
       "x": 185,
       "peak": 130,
       "depth": 358,
-      "elev": 168,
-      "elevSource": "szacunek: św. Jakub leży niżej od Starego Miasta, do weryfikacji"
+      "elev": 171,
+      "elevSource": "Geoportal (pomiar autora): kościół św. Jakuba 171 m"
     },
     {
       "n": 1,
@@ -145,7 +145,7 @@
   },
   "scale": {
     "minElev": 145,
-    "maxElev": 195,
+    "maxElev": 200,
     "groundY": 230,
     "skyY": 60,
     "note": "wysokość wzgórza rysowana proporcjonalnie: 140 m = linia Wisły (y=230), 195 m = y=60"
