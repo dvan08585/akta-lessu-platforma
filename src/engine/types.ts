@@ -38,7 +38,7 @@ export interface CaseData {
   docs: Doc[]; questions: Question[];
   solution: string[]; reward?: { kind: "text"; title: string; file: string };
   decision?: { prompt: string; open: string; leave: string; buried: string[]; correct: "open" | "leave" };
-  pair?: { prompt: string; ask: string; refuse: string; finale: string[] };
+  pair?: { prompt: string; promptUnstable: string; ask: string; refuse: string; register: string; registerQuestion: string; yes: string; no: string; yesRefused: string; finale: string[] };
 }
 
 export interface Attempt { at: number; correct: number; total: number }
@@ -61,4 +61,8 @@ export interface SaveState {
   month: number;
   /** Czy gracz już zobaczył, kto wysyła akta (po sprawie 4). */
   sawFooter: boolean;
+  /** Odczyty cudzych zawieszek: wzgórze -> token dawcy. Otwierają wzgórza, na których własna zawieszka milczy. */
+  readings: Record<string, string>;
+  /** Czy gracz zostawił siódmą pozycję pustą (finał). */
+  leftSeventhEmpty: boolean;
 }

@@ -28,3 +28,11 @@ Dokumenty + pytania zamknięte. Zawieszka podaje tylko liczbę trafień jako cie
 - Tryb „na miejscu”: `?qr=` już działa; dokumenty tylko-na-miejscu = `docs[].requiresPlace`.
 - Wersja EN: `src/content/i18n/` + ten sam JSON spraw z kluczem `lang`.
 - Sceny 3D (splat): osobny host, ładowane leniwie z poziomu sprawy.
+
+## Klucze między ludźmi (`engine/pair.ts`)
+Bez serwera nie da się sprawdzić, kto wygenerował token. Da się sprawdzić, że token nie jest zmyślony: każdy ma 2 znaki sumy kontrolnej (SHA-256), losowy ciąg przechodzi z prawdopodobieństwem 1/256. To zamek na pamiętnik, nie kryptografia obronna; wystarcza, żeby finału nie otwierało „abcdef0".
+- **Połowa klucza** (sprawa 7): 5 znaków z ziarna gracza + 2 kontrolne. W karcie dopiero po 6 przebytych bramach.
+- **Odczyt zawieszki** (mapa 5/7): cyfra wzgórza + 4 znaki + 2 kontrolne. W karcie dla każdego wzgórza, które gracz rozpoznał i na którym jego zawieszka reaguje.
+
+## Mapa 5/7 (mechanika społeczna)
+Z ziarna gracza losowane są dwa wzgórza z {1,2,3,5,6}, na których jego zawieszka milczy. Spraw na tych wzgórzach nie otworzy sam: potrzebuje odczytu z karty innego biegłego, u którego to wzgórze reaguje. Pełna mapa istnieje tylko między ludźmi. Kto pociągnął cegłę (sprawa 6), ma bramę niestabilną: liczy się jako przebyta, ale w finale potrzebuje dwóch połówek klucza zamiast jednej.

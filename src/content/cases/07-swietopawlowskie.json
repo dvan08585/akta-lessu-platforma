@@ -6,7 +6,10 @@
   "subtitle": "Wzgórze Świętopawłowskie · żywioł: powietrze · Pimpo Limpo, zimą",
   "epigraph": "Tej sprawy nie da się rozwiązać samemu. To nie jest metafora.",
   "type": "pair",
-  "requires": { "solvedCases": 6, "chapter": 21 },
+  "requires": {
+    "solvedCases": 6,
+    "chapter": 21
+  },
   "docs": [
     {
       "id": "rejestr",
@@ -58,9 +61,15 @@
   ],
   "questions": [],
   "pair": {
-    "prompt": "Masz połowę klucza. Druga połowa jest w karcie udostępnienia kogoś, kto przeszedł sześć bram. Nie w rejestrze Fundacji. U człowieka. Poproś.",
-    "ask": "Nie mogę oddychać sama. Przeszłam sześć bram w Aktach Lessu, do siódmej potrzebuję twojej połowy klucza. Moja:",
+    "prompt": "Masz połowę klucza. Druga połowa jest w karcie udostępnienia kogoś, kto przebył sześć bram. Nie w rejestrze Fundacji. U człowieka. Poproś.",
+    "promptUnstable": "Pociągnąłeś cegłę. Brama, którą otworzyłeś, zabiera powietrze z tego korytarza. Jedna osoba nie wystarczy. Potrzebujesz dwóch połówek od dwóch różnych ludzi.",
+    "ask": "Nie mogę oddychać w pojedynkę. Sześć bram w Aktach Lessu za mną, do siódmej potrzebuję twojej połowy klucza. Moja:",
     "refuse": "To twoja własna połowa. Sam ze sobą nie oddychasz.",
+    "register": "1. Brama Pierwsza (Wzg. Żmigród) — rozpoznana przez biegłego\\n2. Brama Druga (Wzg. Katedralne) — rozpoznana przez biegłego\\n3. Brama Trzecia (Wzg. Miejskie) — rozpoznana przez biegłego\\n4. Brama Czwarta (Wzg. Staromiejskie) — rozpoznana przez biegłego\\n5. Brama Piąta (Wzg. Zamkowe) — rozpoznana przez biegłego\\n6. Brama Szósta (Wzg. Collegium) — rozpoznana przez biegłego\\n7. Brama Siódma (Wzg. Świętopawłowskie) — [puste]\\nAdnotacja: „Biegły dostarczy siódmy status do końca dnia. — S.”",
+    "registerQuestion": "Przeszliście. Wiesz, co jest pod Wzgórzem Świętopawłowskim. Fundacja czeka na siódmą pozycję do końca dnia. Wpisać?",
+    "yes": "Tak, wpisz",
+    "no": "Nie",
+    "yesRefused": "Zawieszka parzy. Ręka nie chce.",
     "finale": [
       "Fundacja czeka na siódmy status do końca dnia.",
       "Nie dostanie go. Siódma pozycja zostaje pusta. Nikt nie wie, i to „nikt” jest jedyną rzeczą, której Fundacja nie potrafi kupić.",
@@ -71,5 +80,9 @@
     "Dwie połowy. Dwa oddechy. Korytarz, w którym tlen spada z każdym krokiem, przeszliście we dwoje, zmieniając się przy ścianie.",
     "Rejestr Fundacji ma sześć pozycji wypełnionych przez biegłego, który sądził, że pracuje dla komisarza. Siódmej nie dostaną, bo siódmej nie da się dostarczyć samemu, a Stańczyk zawsze jest sam."
   ],
-  "reward": { "kind": "text", "title": "Siedem Bram Lessu", "file": "premiera" }
+  "reward": {
+    "kind": "text",
+    "title": "Siedem Bram Lessu",
+    "file": "premiera"
+  }
 }

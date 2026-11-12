@@ -23,16 +23,13 @@ export function recordAttempt(s: SaveState, c: CaseData, v: Verdict): SaveState 
   return s;
 }
 
+/** Bramy „przebyte": rozpoznane albo otwarte na siłę (niestabilne). Obie liczą się do postępu, ale niestabilna ma swoją cenę w finale. */
+export function passedCount(s: SaveState): number { return s.solvedCases.length + s.unstableGates.length; }
+
 export function caseAvailable(s: SaveState, c: CaseData, chapterUnlocked: (n: number) => boolean): boolean {
-  if (c.requires.solvedCases !== undefined && s.solvedCases.length < c.requires.solvedCases) return false;
+  if (c.requires.solvedCases !== undefined && passedCount(s) < c.requires.solvedCases) return false;
   if (c.requires.chapter === undefined) return true;
   return chapterUnlocked(c.requires.chapter);
 }
 
-/** Połowa klucza (sprawa 7): 7 znaków z ziarna gracza. Pojawia się w karcie dopiero po sześciu sprawach. */
-export async function halfKey(seed: string): Promise<string> {
-  const data = new TextEncoder().encode("akta-lessu:pair:" + seed);
-  const buf = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(buf)).slice(0, 4).map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 7);
-}
-export function looksLikeHalfKey(v: string): boolean { return /^[0-9a-f]{7}$/i.test(v.trim()); }
+export { halfKey, looksLikeHalfKey } from "./pair";

@@ -80,6 +80,9 @@ Nagroda: fragment Prologu. Ostatnie zdanie: „Siedemset pięćdziesiąt trzy la
 
 ---
 
+## 2b. MAPA 5/7 — MECHANIKA SPOŁECZNA (ZBUDOWANA)
+Każdy biegły ma zawieszkę, która milczy na dwóch losowych wzgórzach. Nikt nie zobaczy 7/7 sam. Karta udostępnienia niesie „odczyty" wzgórz, które u dawcy reagują; biorca wpisuje odczyt na swoim milczącym wzgórzu. Aneta ma 5/7 na papierze, Stańczyk 7/7 bez progów, czytelnicy razem mają 7/7 z progami. Intro to list od Zielińskiego z nazwą zlecenia, więc twist sprawy 4 ma co obalać. Finał: po złożeniu oddechów gracz widzi rejestr Fundacji z pustą siódmą pozycją i decyduje. „Tak" nie działa: zawieszka parzy. Działa tylko „Nie".
+
 ## 3. DLACZEGO TO JEST PIONIERSKIE (a nie tylko ładne)
 1. **Gracz jest postacią z kanonu** (nowy geolog Zielińskiego), nie „czytelnikiem”. Gra dopisuje książce bohatera, którego książka zapowiada.
 2. **Twist nadrzędny wynika z mechaniki, nie z cut-scenki.** Nadruk w stopce był od początku. Gracz sam wraca i sprawdza.

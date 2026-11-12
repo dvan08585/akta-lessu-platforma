@@ -2,7 +2,8 @@ import { h, go, toast } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import type { App } from "../app";
 import type { CaseData, Doc } from "../engine/types";
-import { evaluate, heatLabel, recordAttempt, halfKey, looksLikeHalfKey } from "../engine/cases";
+import { evaluate, heatLabel, recordAttempt, passedCount } from "../engine/cases";
+import { halfKey, looksLikeHalfKey, verifyCheck, readingToken, parseReading } from "../engine/pair";
 import { shareCard, shareText } from "../engine/share";
 import { codeMatches, unlockDate, placeFromUrl } from "../engine/unlock";
 import { exportCode, importCode, save, reset } from "../engine/state";
@@ -21,20 +22,31 @@ export function topbar(app: App, active: string): HTMLElement {
 
 export function viewIntro(app: App): HTMLElement {
   const solved = app.state.solvedCases.length;
+  const letter = h("article", { class: "doc mono letter" },
+    h("h4", {}, "Komenda Powiatowa Policji w Sandomierzu"),
+    h("div", { class: "src" }, "Zlecenie nr 7/G. Do rąk własnych. Biegły z zakresu geologii, Kraków."),
+    h("p", {}, "Szanowna Pani, Szanowny Panie,"),
+    h("p", {}, "w związku z postępowaniem w sprawie śmierci prof. W. oraz częściowego zawalenia korytarza pod Wzgórzem Miejskim zwracam się o ocenę stabilności podziemi pod siedmioma wzgórzami miasta. Dotychczasowy biegły wyłączył się ze sprawy z powodu konfliktu interesów."),
+    h("p", {}, "Materiały źródłowe (odpisy kronik, protokoły, inwentarze, pomiary) będą przekazywane partiami, w kopertach, za pośrednictwem miejskiego programu edukacyjnego, który dysponuje archiwum. Proszę o wnioski w formie ustrukturyzowanej, wzgórze po wzgórzu."),
+    h("p", {}, "Nikt w mieście nie ma Pani/Pana kwalifikacji."),
+    h("p", {}, "kom. Zieliński"),
+    h("div", { class: "footer" }, "Przekazano przez: Program edukacyjny „Sandomierz Pod Spodem”. Partner: Fundacja Sandomierska Memoria."));
   return h("section", { class: "intro fade-in" },
     h("p", { class: "faint" }, "Sandomierz · siedem wzgórz · pod nimi"),
     h("h1", {}, "Akta Lessu"),
     h("p", { class: "quote" }, "Less nie był pyłem. Less był materią, która pamięta. ", h("em", {}, "Jak skóra okładki, jak wosk na pieczęci, jak zapach jabłek w piwnicy.")),
-    h("p", { class: "muted" }, "Śledztwo z dokumentów. Siedem bram pod miastem. Jedna sprawa na raz, dziesięć minut, bez logowania. Mapa pokazuje tylko to, co już wiesz."),
+    solved ? null : letter,
+    h("p", { class: "muted" }, solved ? "Śledztwo trwa. Mapa pokazuje tylko to, co już wiesz." : "Jesteś biegłym. Dostajesz akta. Siedem wzgórz, siedem wniosków. Twoja zawieszka reaguje na pięciu z nich. Na dwóch milczy: tam potrzebujesz odczytu od innego biegłego."),
     h("div", { class: "cta" },
-      h("button", { class: "primary", onclick: () => go(solved ? "#/mapa" : "#/brama/4") }, solved ? "Wróć do mapy" : "Otwórz akta"),
-      h("button", { onclick: () => go("#/akta") }, "Mam kod z książki")),
+      h("button", { class: "primary", onclick: () => go(solved ? "#/mapa" : "#/brama/4") }, solved ? "Wróć do mapy" : "Przyjmij zlecenie"),
+      h("button", { onclick: () => go("#/akta") }, "Mam kod")),
     h("p", { class: "faint" }, "Do powieści „Siedem Bram Lessu”. Nic tutaj nie zdradza zakończenia."));
 }
 
 export function viewMap(app: App): HTMLElement {
   const sec = h("section", { class: "fade-in" }, topbar(app, "#/mapa"));
   sec.append(h("h2", {}, "Siedem wzgórz, jeden przekrój"));
+  if (app.silent.length) sec.append(h("p", { class: "faint" }, `Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. Mapa jest psychograficzna: każdy biegły ma inną. Pełna istnieje tylko między ludźmi.`));
   sec.append(renderMap({
     map: app.map, chapters: app.chapters, state: app.state,
     isUnlocked: (n) => app.isUnlocked(n), gateStatus: (n) => app.gateStatus(n),
@@ -60,6 +72,13 @@ export function viewGate(app: App, n: number): HTMLElement {
   const c = app.caseForGate(n);
   const st = app.gateStatus(n);
   sec.append(h("p", { class: "faint" }, `Brama ${n} · ${g.name} · żywioł: ${g.element}`));
+  if (st === "silent" && c) {
+    sec.append(h("h2", {}, "Zawieszka milczy."),
+      h("p", { class: "muted" }, "Na tym wzgórzu twoja zawieszka nie reaguje. Nie dlatego, że nie ma tu bramy. U innego biegłego reaguje. Jego karta udostępnienia ma linię „odczyt” z tokenem zaczynającym się od cyfry tego wzgórza."),
+      readingBox(app, n),
+      h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy"));
+    return sec;
+  }
   if (!c) {
     sec.append(h("h2", {}, g.silent ? "Zawieszka milczy." : "Status: nieznany"),
       h("p", { class: "muted" }, g.silent ? "Na tym wzgórzu zawieszka nie reaguje. Nie dlatego, że nie ma tu bramy." : "Ta sprawa otworzy się później. Mapa jest psychograficzna, nie kartograficzna."),
@@ -67,14 +86,32 @@ export function viewGate(app: App, n: number): HTMLElement {
     return sec;
   }
   if (st === "locked") {
-    const need = c.requires.solvedCases !== undefined && app.state.solvedCases.length < c.requires.solvedCases
-      ? `Ta sprawa otwiera się po ${c.requires.solvedCases} rozpoznanych bramach. Masz ${app.state.solvedCases.length}.`
+    const need = c.requires.solvedCases !== undefined && passedCount(app.state) < c.requires.solvedCases
+      ? `Ta sprawa otwiera się po ${c.requires.solvedCases} przebytych bramach. Masz ${passedCount(app.state)}.`
       : `Ta sprawa wymaga rozdziału ${c.requires.chapter}.`;
     sec.append(h("h2", {}, c.title), h("p", { class: "muted" }, need),
       h("button", { onclick: () => go("#/akta") }, "Wpisz kod z książki"), " ", h("button", { onclick: () => go("#/mapa") }, "Mapa"));
     return sec;
   }
   return viewCase(app, c, sec);
+}
+
+export function readingBox(app: App, hill?: number): HTMLElement {
+  const input = h("input", { type: "text", placeholder: hill ? `ODCZYT ${hill}…` : "ODCZYT Z CUDZEJ KARTY", "aria-label": "Odczyt cudzej zawieszki", style: "text-transform:none;letter-spacing:0.1em" }) as HTMLInputElement;
+  const btn = h("button", { class: "primary" }, "Przyjmij odczyt");
+  btn.addEventListener("click", async () => {
+    const r = parseReading(input.value);
+    if (!r || !(await verifyCheck(r.token))) { toast("To nie jest odczyt zawieszki. Siedem znaków, cyfra wzgórza na początku."); return; }
+    if (hill && r.hill !== hill) { toast(`Ten odczyt jest z wzgórza ${r.hill}, nie ${hill}.`); return; }
+    const own = await readingToken(app.state.seed, r.hill);
+    if (own === r.token) { toast("To twoja własna zawieszka. Ona tu milczy."); return; }
+    if (!app.silent.includes(r.hill)) { toast(`Na wzgórzu ${r.hill} twoja zawieszka reaguje sama. Odczyt niepotrzebny.`); return; }
+    app.state.readings[String(r.hill)] = r.token; save(app.state);
+    app.addNote(`Odczyt cudzej zawieszki na wzgórzu ${r.hill}: ${r.token}.`, "mapa 5/7");
+    toast(`Wzgórze ${r.hill} odpowiada. Cudzym ciepłem.`); go(`#/brama/${r.hill}`);
+  });
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter") btn.click(); });
+  return h("div", { class: "gatebox" }, h("h3", {}, "Odczyt cudzej zawieszki"), h("div", { class: "row" }, input, btn));
 }
 
 function docEl(app: App, d: Doc): HTMLElement {
@@ -201,31 +238,49 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     for (const p of d.buried) art.append(h("p", {}, p));
     const cover = h("div", { class: "less-cover" });
     const box = h("div", { class: "buried-wrap" }, art, cover);
-    sec.append(h("h3", {}, "Status: niestabilna"), box, h("p", { class: "faint" }, "Ta brama zostanie w twojej karcie jako ▲. Na zawsze."),
+    sec.append(h("h3", {}, "Status: niestabilna"), box, h("p", { class: "faint" }, "Ta brama zostanie w twojej karcie jako ▲. Na zawsze. Liczy się jako przebyta, ale droga do siódmej będzie dłuższa: tam zabraknie ci jednego oddechu i będziesz potrzebować dwóch osób."),
       h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy"));
     requestAnimationFrame(() => box.classList.add("go"));
   }
 
   function renderPair() {
     const p = c.pair!;
-    const box = h("div", { class: "pair" }, h("p", { class: "quote" }, p.prompt));
+    const needTwo = app.state.unstableGates.length > 0;
+    const box = h("div", { class: "pair" }, h("p", { class: "quote" }, needTwo ? p.promptUnstable : p.prompt));
     const mine = h("span", { class: "mono" }, "…");
     halfKey(app.state.seed).then((k) => (mine.textContent = k));
     box.append(h("p", { class: "muted" }, "Twoja połowa klucza: ", mine, ". Jest też w twojej karcie udostępnienia."));
-    const input = h("input", { type: "text", placeholder: "POŁOWA KLUCZA DRUGIEJ OSOBY", "aria-label": "Połowa klucza drugiej osoby", style: "text-transform:none;letter-spacing:0.1em" }) as HTMLInputElement;
+    const input = h("input", { type: "text", placeholder: needTwo ? "DWIE POŁOWY, PO SPACJI" : "POŁOWA KLUCZA DRUGIEJ OSOBY", "aria-label": "Połowa klucza drugiej osoby", style: "text-transform:none;letter-spacing:0.1em" }) as HTMLInputElement;
     const btn = h("button", { class: "primary" }, "Oddychaj razem");
     btn.addEventListener("click", async () => {
-      const v = input.value.trim().toLowerCase();
+      const parts = input.value.trim().toLowerCase().split(/[\s,;]+/).filter(Boolean);
       const own = await halfKey(app.state.seed);
-      if (!looksLikeHalfKey(v)) { toast("To nie jest połowa klucza. Siedem znaków, z czyjejś karty."); return; }
-      if (v === own) { toast(p.refuse); return; }
-      markSolved(); app.addNote(`Brama ${c.gate}: oddech we dwoje. Klucz partnera: ${v}.`, "para");
-      box.remove(); renderSolution(1);
+      if (parts.length < (needTwo ? 2 : 1)) { toast(needTwo ? "Otworzyłeś, czego nie trzeba było. Tym razem potrzebujesz dwóch oddechów." : "Wpisz połowę klucza z czyjejś karty."); return; }
+      for (const v of parts) {
+        if (!looksLikeHalfKey(v) || !(await verifyCheck(v))) { toast("To nie jest połowa klucza. Siedem znaków, z czyjejś karty, nie zmyślone."); return; }
+        if (v === own) { toast(p.refuse); return; }
+      }
+      if (new Set(parts).size !== parts.length) { toast("Dwa razy ten sam oddech to jeden oddech."); return; }
+      app.addNote(`Brama ${c.gate}: oddech we ${needTwo ? "troje" : "dwoje"}. Klucze: ${parts.join(", ")}.`, "para");
+      box.remove(); renderRegister();
     });
     const ask = h("button", { onclick: async () => { const own = await halfKey(app.state.seed); const r = await shareText(`${p.ask}\n${own}\n${app.cfg.share.url}#/brama/${c.gate}`); toast(r === "shared" ? "Wysłano." : r === "copied" ? "Skopiowano prośbę do schowka." : "Nie udało się."); } }, "Poproś kogoś");
     box.append(h("div", { class: "row" }, input, btn), h("div", { class: "verdict" }, ask));
     if (!solvedAlready) sec.append(box);
     sec.append(solutionBox);
+  }
+
+  /** Jedyna decyzja, która jest całą puentą: wpisać siódmą pozycję do rejestru Fundacji, czy zostawić pustą. */
+  function renderRegister() {
+    const p = c.pair!;
+    const reg = h("article", { class: "doc mono" }, h("h4", {}, "Rejestr statusów"), h("div", { class: "src" }, "Fundacja Sandomierska Memoria. Do uzupełnienia przez biegłego."));
+    for (const line of p.register.split("\n")) reg.append(h("p", {}, line));
+    const yes = h("button", {}, p.yes);
+    const no = h("button", { class: "primary" }, p.no);
+    const box = h("div", { class: "pair" }, reg, h("p", { class: "quote" }, p.registerQuestion), h("div", { class: "verdict" }, no, yes));
+    yes.addEventListener("click", () => { toast(p.yesRefused); yes.classList.add("shake"); });
+    no.addEventListener("click", () => { app.state.leftSeventhEmpty = true; markSolved(); app.addNote("Siódma pozycja: pusta. Zostawiona.", "finał"); box.remove(); renderSolution(1); });
+    sec.insertBefore(box, solutionBox);
   }
 
   function markSolved() {
@@ -239,8 +294,9 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     const sol = h("div", { class: "solution fade-in" });
     for (const p of c.solution) sol.append(h("p", {}, p));
     const build = async () => {
-      const hk = app.state.solvedCases.length >= 6 ? await halfKey(app.state.seed) : undefined;
-      return shareCard({ solved: app.solvedGates(), unstable: app.state.unstableGates, attempts: tries, streak: app.state.streak.days, url: app.cfg.share.url, hashtag: app.cfg.share.hashtag, caseN: c.n, halfKey: hk });
+      const hk = passedCount(app.state) >= 6 ? await halfKey(app.state.seed) : undefined;
+      const readings = await Promise.all(app.solvedGates().filter((g) => !app.silent.includes(g) && g !== 7).map((g) => readingToken(app.state.seed, g)));
+      return shareCard({ solved: app.solvedGates(), unstable: app.state.unstableGates, silent: app.silent.filter((g) => !app.state.readings[String(g)]), attempts: tries, streak: app.state.streak.days, url: app.cfg.share.url, hashtag: app.cfg.share.hashtag, caseN: c.n, halfKey: hk, readings });
     };
     const pre = h("pre", {}, "…");
     build().then((card) => (pre.textContent = card));
@@ -309,6 +365,13 @@ export function viewAkta(app: App): HTMLElement {
   const qr = placeFromUrl(location.search);
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz trzeci: miejsce"), h("p", { class: "muted" }, qr ? `Jesteś przy punkcie „${qr}”. Zapisano w zeszycie.` : "Kody QR w Sandomierzu otwierają dokumenty, których nie ma w trybie domowym. Zeskanuj je na miejscu."),
     h("p", { class: "faint" }, `Odwiedzone punkty: ${app.state.placeVisits.length ? app.state.placeVisits.join(", ") : "brak"}`)));
+
+  // Klucz czwarty: mapa 5/7
+  const silentTxt = app.silent.length ? `Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. ` : "";
+  const have = Object.keys(app.state.readings).map(Number);
+  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz czwarty: mapa 5/7"),
+    h("p", { class: "muted" }, `${silentTxt}Nikt nie ma pełnej mapy sam. Odczyty w kartach innych biegłych otwierają to, co u ciebie milczy.${have.length ? ` Masz odczyty: ${have.join(", ")}.` : ""}`),
+    readingBox(app)));
 
   // Wznowienie
   const inp2 = h("input", { type: "text", placeholder: "KOD WZNOWIENIA", "aria-label": "Kod wznowienia", style: "text-transform:none;letter-spacing:0" }) as HTMLInputElement;

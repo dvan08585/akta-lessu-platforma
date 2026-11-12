@@ -83,3 +83,29 @@ describe("nowe typy spraw", () => {
     expect(card).toContain("klucz: abc1234");
   });
 });
+
+import { halfKey, verifyCheck, silentHills, readingToken, parseReading } from "../src/engine/pair";
+describe("klucze między ludźmi", () => {
+  it("połowa klucza ma sumę kontrolną, losowy hex jej nie ma", async () => {
+    const k = await halfKey("seed-a");
+    expect(k).toMatch(/^[0-9a-f]{7}$/);
+    expect(await verifyCheck(k)).toBe(true);
+    expect(await verifyCheck("abcdef0")).toBe(false);
+    expect(await halfKey("seed-a")).toBe(k);
+    expect(await halfKey("seed-b")).not.toBe(k);
+  });
+  it("milczące wzgórza: dwa różne, nigdy 4 ani 7, deterministyczne", async () => {
+    for (const seed of ["a", "b", "c", "d", "e", "f", "g", "h"]) {
+      const [x, y] = await silentHills(seed);
+      expect(x).not.toBe(y); expect([4, 7]).not.toContain(x); expect([4, 7]).not.toContain(y);
+      expect(await silentHills(seed)).toEqual([x, y]);
+    }
+  });
+  it("odczyt niesie numer wzgórza i sumę kontrolną", async () => {
+    const t = await readingToken("seed-a", 3);
+    expect(parseReading(t)?.hill).toBe(3);
+    expect(await verifyCheck(t)).toBe(true);
+    expect(parseReading("3zzzzzz")).toBeNull();
+    expect(await verifyCheck("3abcdef")).toBe(false);
+  });
+});

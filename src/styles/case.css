@@ -45,3 +45,7 @@ select { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px 
 .buried-wrap.go .less-cover { height: 100%; }
 @media (prefers-reduced-motion: reduce) { .less-cover { transition: none; } }
 .finale { color: var(--sand); }
+.letter { margin: 0.5rem 0 1.2rem; }
+.letter p { margin-bottom: 0.6em; }
+.shake { animation: shake 0.4s; }
+@keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }

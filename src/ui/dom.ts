@@ -21,4 +21,4 @@ export function toast(msg: string): void {
   document.body.append(t);
   setTimeout(() => t.remove(), 2600);
 }
-export function go(hash: string): void { location.hash = hash; }
+export function go(hash: string): void { if (location.hash === hash) dispatchEvent(new HashChangeEvent("hashchange")); else location.hash = hash; }

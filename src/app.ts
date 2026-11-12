@@ -13,6 +13,7 @@ import case05 from "./content/cases/05-collegium.json";
 import case06 from "./content/cases/06-zmigrod.json";
 import case07 from "./content/cases/07-swietopawlowskie.json";
 import { caseAvailable } from "./engine/cases";
+import { silentHills } from "./engine/pair";
 
 export interface Config extends TimeConfig { title: string; share: { url: string; hashtag: string }; footer: string; newsletterUrl: string; bookUrl: string }
 export type Reward = { title: string; note: string; paragraphs: string[] };
@@ -25,13 +26,19 @@ export class App {
   rewards: Record<string, Reward> = rewardsJson as Record<string, Reward>;
   state: SaveState = load();
   now = () => new Date();
+  /** Wzgórza, na których zawieszka TEGO gracza milczy (mapa 5/7). Ustalane z ziarna przy starcie. */
+  silent: number[] = [];
+  ready: Promise<void>;
 
   constructor() {
     touchStreak(this.state);
     const qr = placeFromUrl(location.search);
     if (qr && !this.state.placeVisits.includes(qr)) { this.state.placeVisits.push(qr); this.addNote(`Punkt w Sandomierzu: ${qr}.`, "klucz: miejsce"); }
     save(this.state);
+    this.ready = silentHills(this.state.seed).then((h) => { this.silent = h; });
   }
+  /** Milczy u tego gracza i nie ma jeszcze odczytu od kogoś innego. */
+  isSilentFor(n: number): boolean { return this.silent.includes(n) && !this.state.readings[String(n)]; }
   isUnlocked(n: number): boolean { const ch = this.chapters.find((c) => c.n === n); return ch ? isChapterUnlocked(this.state, this.cfg, ch, this.now()) : false; }
   nextLocked(): Chapter | null { return nextLockedChapter(this.state, this.cfg, this.chapters, this.now()); }
   caseForGate(n: number): CaseData | undefined { return this.cases.find((c) => c.gate === n); }
@@ -40,8 +47,9 @@ export class App {
     const c = this.caseForGate(n);
     if (this.state.unstableGates.includes(n)) return "unstable";
     if (c && this.state.solvedCases.includes(c.n)) return "solved";
+    if (this.isSilentFor(n)) return "silent";
     if (c && caseAvailable(this.state, c, (k) => this.isUnlocked(k))) return "open";
-    if (g?.silent) return "silent";
+    if (!c && g?.silent) return "silent";
     return "locked";
   }
   solvedGates(): number[] { return this.state.solvedCases.map((n) => this.cases.find((c) => c.n === n)?.gate ?? n); }

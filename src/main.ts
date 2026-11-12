@@ -19,7 +19,7 @@ function route() {
   window.scrollTo({ top: 0 });
 }
 addEventListener("hashchange", route);
-route();
+app.ready.then(route);
 
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   navigator.serviceWorker.register(import.meta.env.BASE_URL + "sw.js").catch(() => {});
