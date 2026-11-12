@@ -5,7 +5,7 @@ import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 
 export interface Interlude {
-  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro"; after?: number; gate?: number; title: string; level?: string;
+  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass"; after?: number; gate?: number; title: string; level?: string;
   secret?: string[]; steps?: number;
   cycles?: number; inhale?: number; exhale?: number;
   audio?: string; q?: string; options?: string[]; answer?: number; seconds?: number;
@@ -30,7 +30,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} przebytych bramach.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   sec.append(h("p", { class: "faint" }, `Między sprawami${it.level ? " · " + it.level : ""}`), h("h2", {}, it.title));
-  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else renderPlate();
+  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else renderPlate();
   return sec;
 
   function finish(note: string) {
@@ -342,6 +342,45 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const verdict = h("div"); const btn = h("button", { class: "primary" }, "Odpowiedz");
     btn.addEventListener("click", () => { const el = sec.querySelector<HTMLInputElement>('input[name="spectro"]:checked'); if (!el) { toast("Najpierw patrz."); return; } if (Number(el.value) === it.answer) { verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: zobaczone.`); } else toast("Patrz wyżej. Ponad dzwonem."); });
     sec.append(h("div", { class: "q daily" }, h("div", { class: "qt" }, it.q!), opts), btn, verdict);
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Kompas-zawieszka: GPS + magnetometr. Grzeje, gdy telefon celuje w najbliższą bramę. Tylko na miejscu. */
+  function renderCompass() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const pend = h("div", { class: "pendant big", "data-heat": "0" }, h("i"));
+    const status = h("p", { class: "mono muted" }, "GPS: …");
+    const start = h("button", { class: "primary" }, "Wyjmij zawieszkę");
+    const verdict = h("div");
+    sec.append(pend, status, h("div", { class: "verdict" }, start), verdict);
+    let heading: number | null = null, pos: { lat: number; lon: number } | null = null, hot = 0, finished = done;
+    const toRad = (d: number) => (d * Math.PI) / 180;
+    const bearing = (a: { lat: number; lon: number }, b: { lat: number; lon: number }) => { const y = Math.sin(toRad(b.lon - a.lon)) * Math.cos(toRad(b.lat)); const x = Math.cos(toRad(a.lat)) * Math.sin(toRad(b.lat)) - Math.sin(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.cos(toRad(b.lon - a.lon)); return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360; };
+    const dist = (a: { lat: number; lon: number }, b: { lat: number; lon: number }) => { const R = 6371000; const dLat = toRad(b.lat - a.lat), dLon = toRad(b.lon - a.lon); const s1 = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLon / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(s1)); };
+    const onOrient = (e: DeviceOrientationEvent & { webkitCompassHeading?: number }) => { if (typeof e.webkitCompassHeading === "number") heading = e.webkitCompassHeading; else if (e.absolute && e.alpha !== null) heading = (360 - e.alpha) % 360; };
+    function tick() {
+      if (pos && heading !== null) {
+        const gates = app.map.gates.filter((g) => g.lat && g.lon).map((g) => ({ g, d: dist(pos!, { lat: g.lat!, lon: g.lon! }), b: bearing(pos!, { lat: g.lat!, lon: g.lon! }) })).sort((a, b) => a.d - b.d);
+        const near = gates[0]; const diff = Math.abs(((heading - near.b + 540) % 360) - 180);
+        const heat = diff < 12 ? 4 : diff < 25 ? 3 : diff < 50 ? 2 : diff < 90 ? 1 : 0;
+        pend.setAttribute("data-heat", String(heat));
+        status.textContent = `najbliżej: ${near.g.name}, ${near.d.toFixed(0)} m · kierunek ${near.b.toFixed(0)}° · ty ${heading.toFixed(0)}°`;
+        if (near.d > 1500 && !app.state.testMode) status.textContent += " · jesteś daleko od Sandomierza";
+        hot = heat === 4 && (near.d <= 1500 || app.state.testMode) ? hot + 1 : 0;
+        if (hot > 12 && !finished) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: ${near.g.name}.`); try { navigator.vibrate?.(300); } catch { /* */ } }
+      }
+      setTimeout(tick, 250);
+    }
+    start.addEventListener("click", async () => {
+      try {
+        const DO = DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> };
+        if (DO.requestPermission) { const r = await DO.requestPermission(); if (r !== "granted") throw new Error("denied"); }
+        addEventListener("deviceorientationabsolute" in window ? "deviceorientationabsolute" : "deviceorientation", onOrient as EventListener);
+      } catch { toast("Bez kompasu zawieszka nie wie, gdzie patrzysz."); }
+      if (!navigator.geolocation) { status.textContent = "GPS: brak"; return; }
+      navigator.geolocation.watchPosition((p) => { pos = { lat: p.coords.latitude, lon: p.coords.longitude }; }, () => { status.textContent = "GPS: odmowa. Zawieszka milczy bez miejsca."; }, { enableHighAccuracy: true, maximumAge: 2000 });
+      start.disabled = true; start.textContent = "Obracaj się powoli"; tick();
+    });
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
   }
 

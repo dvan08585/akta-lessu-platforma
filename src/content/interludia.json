@@ -342,5 +342,14 @@
     ],
     "answer": 0,
     "reveal": "Siedmiobok, zapisany w częstotliwościach od trzech do siedmiu tysięcy herców, tam, gdzie dzwon już nie sięga. Ktoś, kto to nagrał, wiedział, że ucho tego nie złoży, a oko tak. Synestezja nie jest chorobą. Jest sposobem czytania."
+  },
+  {
+    "id": "kompas",
+    "type": "compass",
+    "after": 0,
+    "title": "Kompas",
+    "level": "na miejscu",
+    "intro": "Tylko w Sandomierzu. Stań na Rynku, przy studni. Trzymaj telefon płasko i obracaj się powoli wokół siebie, jak Aneta z kompasem geologicznym. Zawieszka grzeje, kiedy celujesz w stronę najbliższej bramy. Współrzędne bram są przybliżone: to jest gra, nie geodezja.",
+    "reveal": "Zawieszka pulsuje. Stoisz zwrócony w stronę wzgórza, pod którym jest brama. Nie widać jej. Nie słychać. Kamień na szyi wie, a ty wiesz, bo kamień wie. Tak chodziła Aneta: kompas, notatnik, pies, pięć wzgórz, które odpowiadają, i dwa, które milczą."
   }
 ]

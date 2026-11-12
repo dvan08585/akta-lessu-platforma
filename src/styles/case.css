@@ -87,3 +87,5 @@ select { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px 
 .letter-card.unread { box-shadow: 0 0 0 2px var(--sand), 0 10px 30px rgba(0,0,0,0.35); }
 .letter-card .reply { color: #5a4a32; font-style: italic; margin-top: 0.6rem; }
 .topbar nav button.badge { border-color: var(--sand); color: var(--sand); }
+.pendant.big { display: flex; justify-content: center; margin: 1.5rem auto; }
+.pendant.big i { width: 64px; height: 64px; }

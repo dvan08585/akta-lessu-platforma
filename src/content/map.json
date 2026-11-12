@@ -30,7 +30,10 @@
       "peak": 160,
       "depth": 339,
       "elev": 192,
-      "elevSource": "Geoportal (pomiar autora): kościół św. Pawła 192 m"
+      "elevSource": "Geoportal (pomiar autora): kościół św. Pawła 192 m",
+      "lat": 50.6782,
+      "lon": 21.736,
+      "coordsNote": "przybliżone, do weryfikacji w terenie"
     },
     {
       "n": 4,
@@ -41,7 +44,10 @@
       "peak": 130,
       "depth": 358,
       "elev": 171,
-      "elevSource": "Geoportal (pomiar autora): kościół św. Jakuba 171 m"
+      "elevSource": "Geoportal (pomiar autora): kościół św. Jakuba 171 m",
+      "lat": 50.6753,
+      "lon": 21.7395,
+      "coordsNote": "przybliżone, do weryfikacji w terenie"
     },
     {
       "n": 1,
@@ -53,7 +59,10 @@
       "depth": 337,
       "silent": true,
       "elev": 176,
-      "elevSource": "mapcarta: Wzgórze Żmigrodzkie 176 m"
+      "elevSource": "mapcarta: Wzgórze Żmigrodzkie 176 m",
+      "lat": 50.679,
+      "lon": 21.742,
+      "coordsNote": "przybliżone, do weryfikacji w terenie"
     },
     {
       "n": 5,
@@ -64,7 +73,10 @@
       "peak": 115,
       "depth": 365,
       "elev": 164,
-      "elevSource": "atlasgrodzisk.pl: wypłaszczenie szczytowe 163,6 m, ok. 20 m nad doliną Wisły"
+      "elevSource": "atlasgrodzisk.pl: wypłaszczenie szczytowe 163,6 m, ok. 20 m nad doliną Wisły",
+      "lat": 50.6766,
+      "lon": 21.7449,
+      "coordsNote": "przybliżone, do weryfikacji w terenie"
     },
     {
       "n": 2,
@@ -75,7 +87,10 @@
       "peak": 105,
       "depth": 344,
       "elev": 175,
-      "elevSource": "atlasgrodzisk.pl: wypłaszczenie szczytowe 175,2 m (Wikipedia: 173 m)"
+      "elevSource": "atlasgrodzisk.pl: wypłaszczenie szczytowe 175,2 m (Wikipedia: 173 m)",
+      "lat": 50.6778,
+      "lon": 21.747,
+      "coordsNote": "przybliżone, do weryfikacji w terenie"
     },
     {
       "n": 3,
@@ -86,7 +101,10 @@
       "peak": 90,
       "depth": 351,
       "elev": 185,
-      "elevSource": "mapa-turystyczna.pl: Sandomierz 185 m; Rynek pochyły, 15 m różnicy"
+      "elevSource": "mapa-turystyczna.pl: Sandomierz 185 m; Rynek pochyły, 15 m różnicy",
+      "lat": 50.6815,
+      "lon": 21.746,
+      "coordsNote": "przybliżone, do weryfikacji w terenie"
     },
     {
       "n": 6,
@@ -98,7 +116,10 @@
       "depth": 332,
       "silent": true,
       "elev": 179,
-      "elevSource": "atlasgrodzisk.pl: wypłaszczenie szczytowe 174,5–179,0 m, ok. 30 m nad dnem doliny Wisły"
+      "elevSource": "atlasgrodzisk.pl: wypłaszczenie szczytowe 174,5–179,0 m, ok. 30 m nad dnem doliny Wisły",
+      "lat": 50.6792,
+      "lon": 21.7478,
+      "coordsNote": "przybliżone, do weryfikacji w terenie"
     }
   ],
   "corridors": [

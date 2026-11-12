@@ -5,6 +5,8 @@ export interface Gate {
   x: number; peak: number; depth: number; silent?: boolean;
   /** Wysokość n.p.m. i źródło (dane albo szacunek do weryfikacji). */
   elev?: number; elevSource?: string;
+  /** Współrzędne przybliżone (kompas-zawieszka na miejscu). */
+  lat?: number; lon?: number;
 }
 export interface Corridor { id: string; from: number; to: number; revealChapter: number }
 export interface MapData { viewBox: string; layers: { id: string; label: string; y: number; h: number }[]; gates: Gate[]; corridors: Corridor[]; wisla?: { elev: number; note: string }; scale?: { minElev: number; maxElev: number; groundY: number; skyY: number } }

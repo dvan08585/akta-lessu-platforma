@@ -180,5 +180,616 @@
       "Nic, to zabobon"
     ],
     "answer": 2
+  },
+  {
+    "id": "m15",
+    "title": "Łupki",
+    "doc": "Góry Pieprzowe: łupki kambryjskie, pięćset milionów lat. Pod butami trzeszczą jak pieprz w młynku. Stąd nazwa. Babcia Helena: „stoisz na najstarszej ziemi w tym kraju, dziecko”.",
+    "q": "Dlaczego Pieprzowe?",
+    "options": [
+      "Od koloru",
+      "Od dźwięku łupków pod stopami",
+      "Od przyprawy, którą tu uprawiano",
+      "Od nazwiska"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m16",
+    "title": "Dzika róża",
+    "doc": "Przy ścieżce na Pieprzówki rosną dzikie róże, ostatnie kwitną w październiku. Podobno kiedyś było ich mnóstwo. Ktoś je policzył w 1958: tysiąc dwieście krzewów. Dziś kilkadziesiąt.",
+    "q": "Co się stało z różami?",
+    "options": [
+      "Wymarzły",
+      "Nikt nie wie; w aktach jest tylko liczba z 1958 i liczba z dziś",
+      "Zjadły je sarny",
+      "Wycięto pod parking"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m17",
+    "title": "Kaufland, Biedronka, apteka",
+    "doc": "Obwodnica Sandomierza wygląda jak każda obwodnica w Polsce. Między hurtowniami domy ludzi, którzy mieszkali tu, zanim ulica stała się obwodnicą. Nic z tego nie przypomina miasta na wzgórzach.",
+    "q": "Gdzie zaczyna się Sandomierz?",
+    "options": [
+      "Na obwodnicy",
+      "Tam, gdzie kończą się sady, a zaczynają jabłonie przy drodze",
+      "Przy Bramie Opatowskiej",
+      "Na Rynku"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "m18",
+    "title": "Pokój numer siedem",
+    "doc": "Hotel Pod Ciżemką: dziewięć pokoi na górze, restauracja na dole, kamienica Węgra Lazarczyka z XVI wieku. Pani Wanda otwiera drzwi, zanim ktoś zapuka.",
+    "q": "Skąd pani Wanda wie, że ktoś idzie?",
+    "options": [
+      "Ma kamerę",
+      "Nie śpi i słyszy schody",
+      "Zgaduje",
+      "Pies ją uprzedza"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m19",
+    "title": "Trzy metry muru",
+    "doc": "Brama Opatowska, XIV wiek, Kazimierz Wielki. Mury grube na trzy metry. Na górze punkt widokowy, 69 tysięcy biletów rocznie. W środku kiedyś karcer.",
+    "q": "Co dziś zastępuje karcer?",
+    "options": [
+      "Sklep z pamiątkami",
+      "Punkt widokowy",
+      "Archiwum",
+      "Nic"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m20",
+    "title": "Ucho Igielne, raz jeszcze",
+    "doc": "Furta Dominikańska: wąska szczelina w murze obronnym. Przewodnik: „kto przejdzie, temu odpuszczone”. Aneta przeszła bokiem, z plecakiem w ręce. Amor nie chciał.",
+    "q": "Dlaczego pies nie chciał przejść?",
+    "options": [
+      "Bo był za gruby",
+      "Bo nie lubi ciasnych miejsc",
+      "Bo za murem jest w dół",
+      "Nie wiadomo; Amor nie tłumaczy"
+    ],
+    "answer": 3
+  },
+  {
+    "id": "m21",
+    "title": "Studnia bez wody",
+    "doc": "Na Rynku stoi drewniana studnia z kołowrotkiem i gontowym daszkiem. Atrapa: pod nią nie ma wody. Pod nią jest piaskowiec, pod piaskowcem korytarze, pod korytarzami głębiej.",
+    "q": "Co jest pod studnią?",
+    "options": [
+      "Woda",
+      "Piaskowiec i korytarze",
+      "Skarb",
+      "Beton"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m22",
+    "title": "Dziewięć pokoi",
+    "doc": "Profesor mieszkał w siódemce dwa tygodnie, płacił gotówką z góry, nie jadał śniadań. Schodził do piwnicy po słoiki kompotu. Pani Wanda mówi, że po kompot Heleny.",
+    "q": "Co w tym nie gra?",
+    "options": [
+      "Nic",
+      "Helena nie żyje od dwudziestu lat, a kompot stoi w jej piwnicy trzy domy dalej, nie w hotelu",
+      "Profesor nie lubił kompotu",
+      "Piwnica hotelu jest zamknięta"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m23",
+    "title": "Czterdziestu dziewięciu",
+    "doc": "Kościół św. Jakuba, 1260: przeor Sadok i czterdziestu dziewięciu braci śpiewało Salve Regina, gdy wyważano drzwi. Dominikanie śpiewają to samo co wieczór, od siedmiuset lat.",
+    "q": "Dlaczego śpiewają dalej?",
+    "options": [
+      "Z pobożności",
+      "Z pamięci",
+      "Bo tak każe reguła",
+      "Dla turystów"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m24",
+    "title": "Cegła nie chce się palić",
+    "doc": "W 1260 roku drewniane miasto spłonęło. Kościół św. Jakuba, ceglany, stał dalej, osmolony. Ludzie myśleli, że cegła ich uratuje. Drzwi były z drewna.",
+    "q": "Co uratowało Halinę?",
+    "options": [
+      "Cegła",
+      "Drzwi",
+      "Piwnica pod kościołem",
+      "Ojciec"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "m25",
+    "title": "Gołębnik",
+    "doc": "Inwentarz nowego grodu, styczeń 1288: gołębi do posłania było dwanaście, jest jedenaście. Jeden biały ubył w noc, gdy wdowa wyszła. Rano wrócił. Kasztelan kazał to zapisać.",
+    "q": "Po co kasztelan kazał zapisać gołębia?",
+    "options": [
+      "Bo liczył inwentarz",
+      "Żeby ktoś kiedyś zrozumiał, skąd przyszedł znak",
+      "Bo gołąb był drogi",
+      "Z nudów"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m26",
+    "title": "Zasyp 6,1 m",
+    "doc": "Protokół Saramy, 1959: zasyp celowy od 2,4 do 6,1 m, belki dębowe z końca XIII w. Poniżej less nienaruszony, korytarz biegnie dalej w dół. Sondaż przerwano: słabe powietrze.",
+    "q": "Co przerwało badania w 1959?",
+    "options": [
+      "Pieniądze",
+      "Powietrze",
+      "Zima",
+      "Milicja"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m27",
+    "title": "Krzemień pasiasty",
+    "doc": "Kamień z pasami kwarcu i krzemienia, jak żyły pod skórą. Pod naciskiem daje iskrę. Oprawiany w skórę albo srebro na zacisk, nigdy wiercony. Spinki Stańczyka są z niego.",
+    "q": "Dlaczego nie wiercić?",
+    "options": [
+      "Bo jest twardy",
+      "Bo pęka wzdłuż jasnych żył i traci to, co w nim jest",
+      "Bo jest drogi",
+      "Bo tak każe moda"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m28",
+    "title": "Siedmiobok w skale",
+    "doc": "Nacięcia na ścianach korytarza: siedem kresek, siedem ramion. Głębokość rycia, której nie osiągnie żadne znane narzędzie. Jednooki tłumacz w 1287: „nie nasze”.",
+    "q": "Czyje pismo?",
+    "options": [
+      "Tatarskie",
+      "Polskie",
+      "Niczyje, które znają",
+      "Łacińskie"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "m29",
+    "title": "Piotr z Krępy",
+    "doc": "Kasztelan Sandomierza, 1260. Uwierzył w słowo Tatarów, otworzył wrota. Ścięli go przed bramą, na oczach jego ludzi. Jego córka miała trzy lata.",
+    "q": "Czego nauczył miasto?",
+    "options": [
+      "Negocjować",
+      "Nie otwierać wrót na obietnice",
+      "Budować z cegły",
+      "Uciekać"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m30",
+    "title": "Teleboga",
+    "doc": "Grudzień 1287, chan Teleboga za Wisłą, setki ognisk. Oddział oblężniczy na Starym Wzgórzu, przy zgliszczach św. Jakuba. Nowy gród trzymał, bo nikt już nie otwierał wrót.",
+    "q": "Ile trzymałby gród?",
+    "options": [
+      "Rok",
+      "Tydzień, może dwa",
+      "Do wiosny",
+      "Wiecznie"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m31",
+    "title": "Kożuch",
+    "doc": "Halina stała na wałach w kożuchu męża, za dużym. Jedyne, co z niego zostało. Konie wróciły bez jeźdźców, bez siodeł. Inwentarz: „kożuch oddany wdowie, nie zwrócony”.",
+    "q": "Dlaczego inwentarz liczy kożuchy?",
+    "options": [
+      "Bo gród był biedny",
+      "Bo w inwentarzu liczy się wszystko, i dzięki temu wiemy, kto wyszedł",
+      "Bo kożuchy kradziono",
+      "Nie liczy"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m32",
+    "title": "Biały na białym, część druga",
+    "doc": "Less jest biały. Śnieg jest biały. Pierwszy śnieg na lessie znika, zanim dotknie ziemi, a potem zostaje. Z góry nie widać, gdzie kończy się jedno, a zaczyna drugie.",
+    "q": "Kiedy przychodzi pierwszy śnieg w Sandomierzu?",
+    "options": [
+      "We wrześniu",
+      "W listopadzie, zwykle mokry",
+      "W styczniu",
+      "Nigdy"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m33",
+    "title": "Dwadzieścia lat",
+    "doc": "Aneta była w Sandomierzu ostatni raz na pogrzebie babci Heleny. Miała siedemnaście lat i czarną sukienkę pożyczoną od matki, za dużą w ramionach. Matka sprzedała kamienicę trzy miesiące później.",
+    "q": "Co zabrała matka?",
+    "options": [
+      "Wszystko",
+      "Tylko to, co zmieściło się w samochodzie",
+      "Nic",
+      "Słoiki"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m34",
+    "title": "Nie wracaj",
+    "doc": "Kartka pismem matki: „Nie wracaj do Sandomierza”. Litery pochylone w lewo, długopis wgnieciony za mocno. Aneta wróciła cztery miesiące po jej śmierci, z robotą jako wymówką.",
+    "q": "Co jest wymówką, a co powodem?",
+    "options": [
+      "Robota to powód",
+      "Robota to wymówka, powód jest w piwnicy na Opatowskiej",
+      "Nie ma powodu",
+      "Pies"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m35",
+    "title": "Sto dwadzieścia trzy dni",
+    "doc": "Cztery miesiące od śmierci matki. Aneta nie liczyła. Dni liczyły się same. Głos matki zniknął z pamięci pierwszy, przed twarzą, przed zapachem.",
+    "q": "Co zostaje najdłużej?",
+    "options": [
+      "Głos",
+      "Twarz",
+      "Pismo",
+      "Zapach"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "m36",
+    "title": "Witamina Jazz",
+    "doc": "Festiwal na Rynku w październiku: scena, kable po bruku, food trucki, kawa z papieru. Hałas dobry, gęsty, przykrywający. W niedzielę po festiwalu zostają prostokątne ślady po stojakach.",
+    "q": "Co przykrywał hałas festiwalu?",
+    "options": [
+      "Nic",
+      "Zejście pod Ratusz",
+      "Dzwon",
+      "Psa"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m37",
+    "title": "Lapidarium",
+    "doc": "Pod zewnętrznymi schodami Ratusza metalowe drzwi obok lapidarium. Za nimi schody kamienne w górę, do Ratusza, i w dół, na trasę turystyczną. Klucz ma Krzysztof Maj.",
+    "q": "Dokąd prowadzą schody w dół?",
+    "options": [
+      "Do piwnicy Ratusza",
+      "Na trasę turystyczną i dalej",
+      "Do kanałów",
+      "Do archiwum"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m38",
+    "title": "470 metrów",
+    "doc": "Podziemna Trasa Turystyczna: 470 metrów, 34 komory, kilka metrów pod ziemią. Technicy policji przeszli ją całą. „Nic niezwykłego.” Profesor rysował tunele głębsze.",
+    "q": "Co policja sprawdziła, a czego nie?",
+    "options": [
+      "Wszystko",
+      "Trasę; szczelina za zawaleniem jest dwadzieścia metrów dalej i głębiej",
+      "Nic",
+      "Tylko bilety"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m39",
+    "title": "4,1 ppm",
+    "doc": "Miernik siarkowodoru przy kracie: 4,1 ppm, gradient rosnący. Próg bezpieczeństwa zawodowego piętnaście. Maska z filtrem zamówiona w Kielcach, dostawa poniedziałek.",
+    "q": "Dlaczego Aneta zeszła bez maski?",
+    "options": [
+      "Z odwagi",
+      "Z kalkulacji: czas pod ziemią jest krótki, ciało daje sygnały",
+      "Zapomniała",
+      "Nie wiedziała o gazie"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m40",
+    "title": "Zawieszka pod ziemią",
+    "doc": "Na powierzchni ciepła, z pulsem, który rósł tydzień po tygodniu. Pod ziemią zimna, zastygła. Ciepło szło gdzieś w piaskowiec, w wilgoć, w głębokość. Dwadzieścia gramów, które nie odpowiadały na nic.",
+    "q": "Co dzieje się z zawieszką pod ziemią?",
+    "options": [
+      "Grzeje mocniej",
+      "Zamiera",
+      "Świeci",
+      "Pęka"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m41",
+    "title": "Pies schodził pierwszy",
+    "doc": "Od pierwszych dni w Sandomierzu Amor schodził pierwszy, nos przy posadzce, ogon nisko. Tygodnie pod miastem, korytarz za korytarzem. Aż stanął na bruku przy Ratuszu i nie poszedł.",
+    "q": "Czym była odmowa Amora?",
+    "options": [
+      "Strachem",
+      "Zmęczeniem",
+      "Pewnością",
+      "Chorobą"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "m42",
+    "title": "Klucz Heleny",
+    "doc": "Klucz babci, zawinięty w płótno lniane, ciasno, z węzłem. W lewej kieszeni kurtki. Do czego pasuje, Aneta dowiedziała się dopiero pod ziemią.",
+    "q": "Dlaczego w płótnie?",
+    "options": [
+      "Żeby nie brzęczał",
+      "Żeby nie dotykać metalu",
+      "Bo tak zostawiła Helena",
+      "Z przesądu"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "m43",
+    "title": "Keylogger, część druga",
+    "doc": "Ktoś zainstalował na laptopie geologa program czytający każdy klawisz. Raport o korytarzach leży na skompromitowanym dysku. Aneta nie otworzy laptopa. Pisze w zeszycie.",
+    "q": "Kto mógł to zainstalować?",
+    "options": [
+      "Pani Wanda",
+      "Ktoś, kto miał dostęp do pokoju, i wiedział, czego szukać",
+      "Policja",
+      "Nikt, to wirus"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m44",
+    "title": "Rtęć",
+    "doc": "Toksykologia: rtęć, w małych dawkach, długo, w czymś, co profesor pił codziennie. Ktoś miał dostęp do jego kuchni w Krakowie. Analiza trwa tygodnie, pogrzeb czeka.",
+    "q": "Co zdradza sposób podania?",
+    "options": [
+      "Pośpiech",
+      "Kogoś z dostępem, cierpliwego, bywającego",
+      "Przypadek",
+      "Samobójstwo"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m45",
+    "title": "Sufragania",
+    "doc": "Marek Berbeć pracuje w sufraganii przy katedrze. Archiwum kościelne. Prostuje krawędzie dokumentów jak ojciec. Od trzech dni wie coś, czego nie powiedział.",
+    "q": "Co znaczy „prostowanie” w tej rodzinie?",
+    "options": [
+      "Nawyk",
+      "Siedemset lat pilnowania, żeby coś leżało równo i nikt tego nie ruszał",
+      "Zawód",
+      "Nerwy"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m46",
+    "title": "Dwa słowa, część druga",
+    "doc": "Stańczyk wita się dwoma słowami i żegna dwoma. Spinki z krzemienia pasiastego, szlif siedmioboczny. Pies warknął na niego z trzydziestu metrów.",
+    "q": "Co czuł pies z trzydziestu metrów?",
+    "options": [
+      "Wino",
+      "Coś, czego nie zna z żadnego człowieka",
+      "Krzemień",
+      "Strach"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m47",
+    "title": "Fundacja",
+    "doc": "Fundacja Sandomierska Memoria: kupuje kamienice, partneruje festiwalom, odnawia spinki herbowe w muzeum. Zarząd jednoosobowy. Program edukacyjny z biegłymi spoza miasta.",
+    "q": "Po co Fundacji biegli spoza miasta?",
+    "options": [
+      "Bo miejscowi są drodzy",
+      "Bo miejscowi wiedzą, dla kogo pracują",
+      "Bo tak każe statut",
+      "Bo są lepsi"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m48",
+    "title": "Kamienica na Opatowskiej",
+    "doc": "Helena mieszkała na Opatowskiej. Piwnica ze słoikami, suszarnia, wojna z sąsiadką z dołu o miejsce. Po jej śmierci córka sprzedała kamienicę. Kupiła spółka. Spółka należy do Fundacji.",
+    "q": "Ile czasu minęło od śmierci do sprzedaży?",
+    "options": [
+      "Rok",
+      "Trzy miesiące",
+      "Dziesięć lat",
+      "Tydzień"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m49",
+    "title": "Paragraf siódmy",
+    "doc": "Akt sprzedaży kamienicy: kupujący zobowiązuje się nie zmieniać przeznaczenia piwnic ani nie udostępniać ich bez zgody zarządu Fundacji. Notariusz zauważył, że to nietypowe.",
+    "q": "Czego naprawdę dotyczy umowa?",
+    "options": [
+      "Dachu",
+      "Piwnic",
+      "Czynszu",
+      "Mieszkań"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m50",
+    "title": "Pilnikarz z Biecza",
+    "doc": "Zapis z XIV wieku: pilnikarz sprowadzony z Biecza przez Kazimierza Wielkiego, do roboty w kamieniu. Kamień „ciepły mimo szesnastu lat w skarbcu bez ognia”.",
+    "q": "Co jest dziwne w tym zapisie?",
+    "options": [
+      "Biecz",
+      "Ciepły kamień po szesnastu latach",
+      "Pilnikarz",
+      "Skarbiec"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m51",
+    "title": "Cymatics",
+    "doc": "Płyta metalowa, piasek, smyczek po krawędzi. Piasek układa się w kształt zależny od tonu. Chladni, XVIII wiek. Anzelm pokazuje, nie tłumaczy.",
+    "q": "Co pokazuje piasek?",
+    "options": [
+      "Dźwięk",
+      "Miejsca, gdzie płyta nie drga",
+      "Wiatr",
+      "Smyczek"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m52",
+    "title": "Rezonator",
+    "doc": "„Sandomierz stoi na rezonatorze. Pięćset milionów lat kwarcu pod lessem. Ludzie budują nad tym katedry i nazywają wiarą. To fizyka.” Anzelm modli się dalej.",
+    "q": "Czy fizyka przeszkadza Anzelmowi w modlitwie?",
+    "options": [
+      "Tak",
+      "Nie, jedno drugiemu nie przeszkadza",
+      "Tylko w niedzielę",
+      "Nie wiadomo"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m53",
+    "title": "Kwarc pod naciskiem",
+    "doc": "Kwarc ściskany daje napięcie. Piezoelektryczność. Od milionów lat, pod ziemią, w ciemności. Halina uderzyła krzemieniem o krawędź otworu z całej siły i kamień odpowiedział błyskiem.",
+    "q": "Co odpowiedziało Halinie?",
+    "options": [
+      "Bóg",
+      "Fizyka kwarcu",
+      "Matka",
+      "Nic"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m54",
+    "title": "Obelisk",
+    "doc": "Komnata pod ziemią: obelisk z żyłkami krzemienia na cokole o siedmiu bokach. Nad nim owalny otwór w sklepieniu, w górę, w metry skały. Tamtędy wyleciał gołąb.",
+    "q": "Dokąd prowadzi otwór?",
+    "options": [
+      "Na Rynek",
+      "Na powierzchnię, gdzieś nad Starym Wzgórzem",
+      "Do rzeki",
+      "Nigdzie"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m55",
+    "title": "Kot z białą łatą",
+    "doc": "Ostatni obraz Haliny: kot, mały, bury, z białą łatą na piersi. Ojciec przyniósł go z targu. Halina włożyła mu palec do ucha, a ojciec się śmiał. Śmiechu nie pamięta. Wie, że był głośny, bo kot podskoczył.",
+    "q": "Skąd Halina wie, że śmiech był głośny?",
+    "options": [
+      "Pamięta",
+      "Bo kot podskoczył",
+      "Matka mówiła",
+      "Nie wie"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m56",
+    "title": "Amor, biała plamka",
+    "doc": "Cocker, trzynaście kilogramów, biała plamka na piersi. Jak kot Haliny. Nikt tego nie zauważył. Amor nie zna Haliny. Halina nie znała Amora.",
+    "q": "Co łączy psa z kotem sprzed siedmiuset lat?",
+    "options": [
+      "Nic",
+      "Biała plamka na piersi, którą zauważa tylko ten, kto czyta uważnie",
+      "Imię",
+      "Właściciel"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m57",
+    "title": "Materia pomiędzy",
+    "doc": "Less nie był pyłem. Less był materią, która pamięta. Jak skóra okładki, jak wosk na pieczęci, jak zapach jabłek w piwnicy. Materia pomiędzy.",
+    "q": "Pomiędzy czym a czym?",
+    "options": [
+      "Niebem a ziemią",
+      "Tym, co można zmierzyć, a tym, na co nie ma aparatury",
+      "Miastem a rzeką",
+      "Dniem a nocą"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m58",
+    "title": "Barka",
+    "doc": "Z rzeki dochodził dźwięk barki: niski, motorowy, z drżeniem, które miało barwę granatową i kształt podłużny. Woda niosła dźwięk inaczej niż powietrze: głębiej, z pogłosem w kościach stóp.",
+    "q": "Co słyszy geolożka po trzeciej bramie?",
+    "options": [
+      "To samo co wszyscy",
+      "Barwę dźwięku",
+      "Nic",
+      "Tylko dzwon"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m59",
+    "title": "Jedno słowo",
+    "doc": "Rozdział dwudziesty pierwszy kończy się jednym słowem powiedzianym cicho na Rynku, z Amorem przy nodze, z lessem na butach.",
+    "q": "Jakie to słowo?",
+    "options": [
+      "Wracam",
+      "Słyszę",
+      "Boję się",
+      "Mamo"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m60",
+    "title": "Sandomierskie jabłka",
+    "doc": "Babcia Helena mówiła „jabłka sandomierskie” jak o osobnym państwie, z własną ziemią i własnym pyłem, który wchodzi w skórę i nie zmywa się do końca.",
+    "q": "Co nie zmywa się do końca?",
+    "options": [
+      "Sok",
+      "Pył",
+      "Zapach",
+      "Wstyd"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m61",
+    "title": "Siedem złotych, raz jeszcze",
+    "doc": "Kasa na Pieprzówkach: kobieta w polarze, która nie podnosi wzroku od telefonu. Tablica wyblakła od słońca, mapa bez dolnego rogu. Luneta na słupku obrócona w stronę miasta.",
+    "q": "Czego brakuje na mapie szlaków?",
+    "options": [
+      "Legendy",
+      "Dolnego rogu",
+      "Rzeki",
+      "Miasta"
+    ],
+    "answer": 1
   }
 ]
