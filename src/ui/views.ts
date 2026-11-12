@@ -78,7 +78,7 @@ export function viewMap(app: App): HTMLElement {
     for (const i of inter) {
       const done = app.state.interludesDone.includes(i.id);
       il.append(h("div", { class: "gate-row", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) },
-        h("span", { class: "n" }, i.type === "amor" ? "♦" : i.type === "talk" ? "„”" : i.type === "beat" ? "∿" : i.type === "still" ? "❄" : i.type === "breath" ? "≈" : "◎"), h("span", { class: "t" }, i.title, h("small", {}, i.type === "amor" ? "pies" : i.type === "talk" ? "rozmowa, jedno kłamstwo" : i.type === "beat" ? "słuchawki" : i.type === "still" ? "nieruchomo, 30 sekund" : i.type === "breath" ? "dziesięć oddechów" : "mikrofon albo suwak")), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
+        h("span", { class: "n" }, i.type === "amor" ? "♦" : i.type === "talk" ? "„”" : i.type === "beat" ? "∿" : i.type === "still" ? "❄" : i.type === "breath" ? "≈" : i.type === "fire" ? "✶" : i.type === "dark" ? "●" : i.type === "earth" ? "▬" : "◎"), h("span", { class: "t" }, i.title, h("small", {}, ({ amor: "pies", talk: "rozmowa, jedno kłamstwo", beat: "słuchawki albo oczy", still: "nieruchomo, 30 sekund", breath: "dziesięć oddechów", fire: "kamera i coś czerwonego", dark: "kamera i ciemność", earth: "telefon płasko, 20 kroków", plate: "mikrofon albo suwak" } as Record<string, string>)[i.type])), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
     }
     sec.append(h("h3", {}, "Między sprawami"), il);
   }

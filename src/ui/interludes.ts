@@ -5,7 +5,8 @@ import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 
 export interface Interlude {
-  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath"; after: number; title: string;
+  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth"; after: number; title: string;
+  secret?: string[]; steps?: number;
   cycles?: number; inhale?: number; exhale?: number;
   audio?: string; q?: string; options?: string[]; answer?: number; seconds?: number;
   lines?: string[];
@@ -27,7 +28,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   if (it.after > passed) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, `Po ${it.after} przebytych bramach.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   sec.append(h("p", { class: "faint" }, "Między sprawami"), h("h2", {}, it.title));
-  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else renderPlate();
+  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else renderPlate();
   return sec;
 
   function finish(note: string) {
@@ -75,6 +76,26 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     sec.append(h("p", { class: "quote" }, it.intro!));
     const audio = h("audio", { controls: true, preload: "none", src: import.meta.env.BASE_URL + it.audio! }) as HTMLAudioElement;
     sec.append(h("div", { class: "card" }, audio, h("p", { class: "faint" }, "Słuchawki na obu uszach. Głośnik telefonu tego nie odda: nie dlatego, że jest słaby, tylko dlatego, że to powstaje dopiero między uszami.")));
+    // Bez słuchawek: zobaczysz. Dwie fale (200 i 218 Hz) i ich suma, zwolnione 400 razy, żeby dudnienie 18 Hz było widoczne jako powolny oddech amplitudy. Bez migania.
+    const wave = h("canvas", { class: "wave", width: "600", height: "180", "aria-label": "Dwie fale i dudnienie" }) as HTMLCanvasElement;
+    sec.append(wave, h("p", { class: "faint" }, "Góra: lewe ucho. Środek: prawe. Dół: to, co powstaje między nimi. Bez słuchawek zobaczysz, nie usłyszysz."));
+    const wctx = wave.getContext("2d")!;
+    const drawWave = (now: number) => {
+      const t = now / 400000; // zwolnienie
+      wctx.fillStyle = "#171511"; wctx.fillRect(0, 0, 600, 180);
+      const rows: [number, number, string][] = [[200, 30, "#a39a86"], [218, 90, "#a39a86"], [0, 150, "#c9a86a"]];
+      for (const [f, y, col] of rows) {
+        wctx.beginPath(); wctx.strokeStyle = col; wctx.lineWidth = 1.5;
+        for (let x = 0; x <= 600; x += 2) {
+          const tt = t + x / 6000;
+          const v = f ? Math.sin(2 * Math.PI * f * tt) : (Math.sin(2 * Math.PI * 200 * tt) + Math.sin(2 * Math.PI * 218 * tt)) / 2;
+          const yy = y + v * 22; x === 0 ? wctx.moveTo(x, yy) : wctx.lineTo(x, yy);
+        }
+        wctx.stroke();
+      }
+      requestAnimationFrame(drawWave);
+    };
+    requestAnimationFrame(drawWave);
     const opts = h("div", { class: "opts", role: "radiogroup" });
     it.options!.forEach((o, i) => opts.append(h("label", {}, h("input", { type: "radio", name: "beat", value: String(i) }), o)));
     const verdict = h("div");
@@ -178,6 +199,113 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         const samples: number[] = []; const iv = setInterval(() => { const r = rms(); if (r !== null) samples.push(r); }, 100);
         setTimeout(() => { clearInterval(iv); samples.sort((a, b) => a - b); baseline = Math.max(0.002, samples[Math.floor(samples.length / 2)] || 0.004); micBtn.textContent = "Tafla słucha"; }, 2500);
       } catch { toast("Bez mikrofonu: trzymaj palec na tafli, kiedy wydychasz."); }
+    });
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Kamera jako czujnik: mała klatka, średnia koloru i jasności, nic nie opuszcza telefonu. */
+  async function openCamera(video: HTMLVideoElement): Promise<boolean> {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment", width: { ideal: 320 } }, audio: false });
+      video.srcObject = stream; await video.play(); return true;
+    } catch { return false; }
+  }
+  function sampleFrame(video: HTMLVideoElement, c: HTMLCanvasElement): { red: number; lum: number } | null {
+    const w = 32, hh = 24; const x = c.getContext("2d"); if (!x || video.readyState < 2) return null;
+    x.drawImage(video, 0, 0, w, hh); const d = x.getImageData(0, 0, w, hh).data;
+    let red = 0, lum = 0; const n = w * hh;
+    for (let i = 0; i < d.length; i += 4) { const r = d[i], g = d[i + 1], b = d[i + 2]; lum += 0.2126 * r + 0.7152 * g + 0.0722 * b; if (r > 90 && r > g * 1.6 && r > b * 1.6) red++; }
+    return { red: red / n, lum: lum / n / 255 };
+  }
+
+  /** Ogień: czerwień przed kamerą. Zapas: wybór koloru. */
+  function renderFire() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const video = h("video", { playsinline: true, muted: true, class: "cam" }) as HTMLVideoElement;
+    const probe = h("canvas", { width: "32", height: "24", style: "display:none" }) as HTMLCanvasElement;
+    const stone = h("div", { class: "stone" }, h("i"));
+    const status = h("p", { class: "mono muted" }, "kamień: zimny");
+    const camBtn = h("button", { class: "primary" }, "Pokaż kamieniowi");
+    const pick = h("input", { type: "color", value: "#5a7d95", "aria-label": "Zapas: wybierz kolor" }) as HTMLInputElement;
+    const verdict = h("div");
+    sec.append(video, probe, stone, status, h("div", { class: "verdict" }, camBtn, h("span", { class: "faint" }, "albo kolor:"), pick), verdict);
+    let heat = 0, finished = done;
+    const bump = (ok: boolean) => { heat = Math.max(0, Math.min(1, heat + (ok ? 0.06 : -0.03))); (stone.firstElementChild as HTMLElement).style.opacity = String(heat); status.textContent = heat > 0.95 ? "kamień: pulsuje" : heat > 0.5 ? "kamień: ciepły" : "kamień: zimny"; if (heat >= 1 && !finished) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: kamień odpowiedział.`); try { navigator.vibrate?.(200); } catch { /* */ } } };
+    camBtn.addEventListener("click", async () => {
+      if (!(await openCamera(video))) { toast("Bez kamery: wybierz kolor poniżej."); return; }
+      camBtn.disabled = true; camBtn.textContent = "Kamień patrzy"; video.style.display = "block";
+      setInterval(() => { const f = sampleFrame(video, probe); if (f) bump(f.red > 0.35); }, 120);
+    });
+    pick.addEventListener("input", () => { const v = pick.value; const r = parseInt(v.slice(1, 3), 16), g = parseInt(v.slice(3, 5), 16), b = parseInt(v.slice(5, 7), 16); const ok = r > 120 && r > g * 1.6 && r > b * 1.6; for (let i = 0; i < 20; i++) bump(ok); });
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Ciemność: tekst pojawia się, gdy kamera widzi ciemność (względem kalibracji). Zapas: przytrzymaj „ciemno”. */
+  function renderDark() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const video = h("video", { playsinline: true, muted: true, class: "cam", style: "display:none" }) as HTMLVideoElement;
+    const probe = h("canvas", { width: "32", height: "24", style: "display:none" }) as HTMLCanvasElement;
+    const page = h("article", { class: "doc hand darkpage" });
+    const lines = it.secret!.map((t) => h("p", { style: "opacity:0" }, t));
+    page.append(h("h4", {}, "Kartka, której nie było w aktach"), ...lines);
+    const status = h("p", { class: "mono muted" }, "światło: …");
+    const camBtn = h("button", { class: "primary" }, "Niech kamera patrzy");
+    const hold = h("button", {}, "Trzymaj: ciemno");
+    const verdict = h("div");
+    sec.append(video, probe, page, status, h("div", { class: "verdict" }, camBtn, hold), verdict);
+    let dark = 0, baseline = 0.5, finished = done, holding = false;
+    const step = (isDark: boolean) => { dark = Math.max(0, Math.min(1, dark + (isDark ? 0.03 : -0.05))); lines.forEach((l, i) => (l.style.opacity = String(Math.max(0, Math.min(1, dark * 3 - i))))); page.style.background = `rgb(${241 - dark * 200},${235 - dark * 200},${221 - dark * 190})`; page.style.color = dark > 0.5 ? "#e8e0cf" : "#1e1a14"; if (dark >= 1 && !finished) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: przeczytane w ciemności.`); } };
+    camBtn.addEventListener("click", async () => {
+      if (!(await openCamera(video))) { toast("Bez kamery: przytrzymaj „ciemno”."); return; }
+      camBtn.disabled = true; camBtn.textContent = "Kalibruję światło…";
+      const samples: number[] = []; const iv = setInterval(() => { const f = sampleFrame(video, probe); if (f) samples.push(f.lum); }, 100);
+      setTimeout(() => { clearInterval(iv); samples.sort((a, b) => a - b); baseline = samples[Math.floor(samples.length / 2)] ?? 0.5; camBtn.textContent = "Kamera patrzy"; setInterval(() => { const f = sampleFrame(video, probe); if (f) { status.textContent = `światło: ${(f.lum * 100).toFixed(0)}%`; step(f.lum < Math.max(0.04, baseline * 0.3)); } }, 120); }, 2000);
+    });
+    hold.addEventListener("pointerdown", () => { holding = true; }); addEventListener("pointerup", () => { holding = false; });
+    setInterval(() => { if (holding) step(true); }, 120);
+    if (done) { lines.forEach((l) => (l.style.opacity = "1")); verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!))); }
+  }
+
+  /** Ziemia: telefon płasko, dwadzieścia kroków. Żyroskop: przechył sypie less na cegłę. Zapas: trzymanie przycisku. */
+  function renderEarth() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const total = it.steps ?? 20;
+    const canvas = h("canvas", { class: "plate corridor", width: "600", height: "300", "aria-label": "Korytarz i less" }) as HTMLCanvasElement;
+    const status = h("p", { class: "mono muted" }, `0 / ${total} kroków`);
+    const start = h("button", { class: "primary" }, "Idę");
+    const verdict = h("div");
+    sec.append(canvas, status, h("div", { class: "verdict" }, start), verdict);
+    const ctx = canvas.getContext("2d")!;
+    let tilt = 0, steps = 0, spill = 0, running = false, finished = done, lastStep = 0, sensor = false, holding = false;
+    const grains = Array.from({ length: 160 }, () => ({ x: Math.random() * 600, y: Math.random() * 300, v: 0.3 + Math.random() }));
+    const onOrient = (e: DeviceOrientationEvent) => { const b = e.beta ?? 0, g = e.gamma ?? 0; tilt = Math.min(1, Math.sqrt(b * b + g * g) / 25); sensor = true; };
+    function draw(now: number) {
+      ctx.fillStyle = "#171511"; ctx.fillRect(0, 0, 600, 300);
+      ctx.fillStyle = "#2a2620"; ctx.fillRect(0, 230, 600, 70);
+      ctx.fillStyle = "#7a1f1f"; ctx.globalAlpha = 0.8; ctx.fillRect(520, 150, 60, 80); ctx.globalAlpha = 1; // cegła na końcu
+      const level = running && (sensor ? tilt < 0.35 : holding);
+      if (running) {
+        if (level) { if (now - lastStep > 900) { steps++; lastStep = now; status.textContent = `${steps} / ${total} kroków`; try { navigator.vibrate?.(20); } catch { /* */ } } spill = Math.max(0, spill - 0.004); }
+        else { spill = Math.min(1, spill + 0.02); if (spill >= 1) { steps = 0; spill = 0; status.textContent = `Less na cegle. Wracasz. 0 / ${total}`; } }
+      }
+      ctx.fillStyle = "#e8e0cf";
+      for (const gr of grains) { gr.y += gr.v * (0.2 + (running && !level ? 3 : 0.4)); gr.x += (tilt - 0.2) * 1.5; if (gr.y > 300) { gr.y = -2; gr.x = Math.random() * 600; } ctx.fillRect(gr.x, gr.y, 1.5, 1.5); }
+      // less zsunięty na cegłę
+      ctx.fillStyle = "#e8e0cf"; ctx.globalAlpha = 0.9; ctx.fillRect(520, 150 - spill * 40, 60, spill * 40); ctx.globalAlpha = 1;
+      // pozycja
+      const px = 30 + (steps / total) * 470; ctx.beginPath(); ctx.arc(px, 225, 5, 0, Math.PI * 2); ctx.fillStyle = "#c9a86a"; ctx.fill();
+      if (steps >= total && !finished) { finished = true; running = false; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: dwadzieścia kroków.`); }
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+    start.addEventListener("click", async () => {
+      try {
+        const DO = DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> };
+        if (DO.requestPermission) { const r = await DO.requestPermission(); if (r !== "granted") throw new Error("denied"); }
+        addEventListener("deviceorientation", onOrient);
+      } catch { toast("Bez żyroskopu: trzymaj przycisk, żeby iść równo."); }
+      running = true; start.textContent = "Trzymaj równo"; lastStep = performance.now();
+      start.addEventListener("pointerdown", () => { holding = true; }); addEventListener("pointerup", () => { holding = false; });
     });
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
   }

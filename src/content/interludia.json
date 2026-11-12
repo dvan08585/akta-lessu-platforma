@@ -245,7 +245,7 @@
     "type": "beat",
     "after": 2,
     "title": "Ton dolny",
-    "intro": "Anzelm odkłada smyczek. „Tego się nie nuci. To się nosi.” Załóż słuchawki. Obie. Potem posłuchaj przez minutę i nic nie rób. Jeśli wyjmiesz jedną słuchawkę, zniknie.",
+    "intro": "Anzelm odkłada smyczek. „Tego się nie nuci. To się nosi.” Załóż słuchawki. Obie. Potem posłuchaj przez minutę i nic nie rób. Jeśli wyjmiesz jedną słuchawkę, zniknie. Bez słuchawek zobaczysz to, czego nie usłyszysz: dwie fale i to, co z nich powstaje.",
     "audio": "audio/ton-dolny.mp3",
     "q": "Co słyszysz, kiedy masz obie słuchawki?",
     "options": [
@@ -276,5 +276,35 @@
     "inhale": 5,
     "exhale": 5,
     "reveal": "Sto sekund. Tafla jest gładka i widać dno: spoiny posadzki, przez które przychodzi ciepło. Nic nie zrobiłeś. Oddychałeś wolniej, niż oddychasz zwykle, i to wystarczyło, żeby woda przestała drżeć. Zapamiętaj to tempo. Będzie potrzebne niżej."
+  },
+  {
+    "id": "ogien",
+    "type": "fire",
+    "after": 1,
+    "title": "Ogień",
+    "intro": "Halina natarła kamień krwią. Nie musi być twoja. Skieruj kamerę na coś czerwonego: jabłko, szalik, własną dłoń pod światło lampy. Kamień odpowiada na czerwień, nie na ciebie.",
+    "reveal": "Pasy krzemienia rozjaśniły się na sekundę. Nie dlatego, że to była krew. Dlatego, że kamień nie odróżnia. Nacisk i czerwień, od milionów lat, pod ziemią, w ciemności. Halina wiedziała tyle samo co ty: że coś się stanie. Nie wiedziała co."
+  },
+  {
+    "id": "ciemnosc",
+    "type": "dark",
+    "after": 5,
+    "title": "Ciemność",
+    "intro": "Collegium. Punkt szósty nie reaguje na pomiary. Kartka z notatnika profesora, której nie było w aktach, czyta się tylko wtedy, kiedy nie widzisz nic innego. Zakryj kamerę dłonią albo zgaś światło. Litery przyjdą, kiedy będzie ciemno.",
+    "secret": [
+      "Punkt 6. Nie mierzyć. Mierzenie jest tu rodzajem patrzenia, a to, co pod Collegium, reaguje na patrzenie tak, jak less reaguje na wodę: zamyka się.",
+      "Mniej wiesz, więcej rozumiesz. Nie pisałem tego dla uczelni. Pisałem dla kogoś, kto przyjedzie i nie będzie chciał wiedzieć, a będzie musiał.",
+      "Kto nosi krzemień, ten jest w sieci. H. nosiła. Jej wnuczka nosi. Nie powiedziałem jej. Nie umiem."
+    ],
+    "reveal": "Kiedy wróciło światło, kartki już nie było. Zapamiętałeś trzy zdania. Tyle wystarczy. Profesor nie pisał dla tych, którzy patrzą. Pisał dla tych, którzy potrafią przestać."
+  },
+  {
+    "id": "ziemia",
+    "type": "earth",
+    "after": 6,
+    "title": "Ziemia",
+    "intro": "Korytarz pod Żmigrodem. Less sypie się z łuku przy każdym kroku. Trzymaj telefon płasko, jak tacę z wodą, i idź: dwadzieścia kroków do muru. Przechylisz, less się zsunie na cegłę i trzeba będzie wracać. Nie tędy, mówił Berbeć. Tędy, ale równo.",
+    "steps": 20,
+    "reveal": "Dwadzieścia kroków. Less na butach, nie na cegle. Mur stoi, cegła wysunięta o centymetr jest ciepła, i nic nie zrobiłeś. Ziemia nie wymaga odwagi. Wymaga, żeby nie drgnąć."
   }
 ]
