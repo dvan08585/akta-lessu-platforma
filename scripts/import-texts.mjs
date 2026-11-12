@@ -7,7 +7,7 @@ const files = {};
 const load = (p) => (files[p] ??= JSON.parse(readFileSync(p, "utf8")));
 let n = 0, m;
 function setPath(obj, path, value) {
-  const parts = path.replace(/\[(\d+)\]/g, ".$1").split(".");
+  const parts = path.replace(/\[(\d+)\]/g, ".$1").replace(/^\./, "").split(".");
   let cur = obj; for (let i = 0; i < parts.length - 1; i++) cur = cur[parts[i]];
   cur[parts[parts.length - 1]] = value;
 }
@@ -20,7 +20,7 @@ while ((m = re.exec(md))) {
   else if (ref.startsWith("rewards.")) { path = "src/content/rewards.json"; field = ref.replace(/^rewards\./, ""); }
   else continue;
   const obj = load(path);
-  setPath(obj, field.replace(/^\./, "").replace(/^\[/, "[") , text);
+  setPath(obj, field, text);
   n++;
 }
 for (const [p, obj] of Object.entries(files)) writeFileSync(p, JSON.stringify(obj, null, 2) + "\n");

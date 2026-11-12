@@ -1,16 +1,184 @@
 [
-  { "id": "m01", "title": "Kompot", "doc": "Słoik w piwnicy na Opatowskiej. Etykieta ręką Heleny: „jabłka, 1998, nie otwierać przed grudniem”. Słoik stoi w rzędzie z dwudziestoma innymi, wszystkie z tą samą datą. Żaden nie otwarty.", "q": "Dlaczego nikt nie otworzył słoików?", "options": ["Bo kompot się zepsuł", "Bo Helena umarła przed grudniem 1998, a córka wyjechała trzy miesiące później", "Bo piwnica była zamknięta", "Bo nikt nie lubi kompotu"], "answer": 1 },
-  { "id": "m02", "title": "Karcer", "doc": "Brama Opatowska, mury grube na trzy metry. W środku dawniej karcer. Więzień słyszał targ za ścianą: ceny jabłek, targowanie, kłótnię o wagę. Zapis z 1611: „więzień Jakub skarżył się nie na głód, a na to, że słyszy, czego nie widzi”.", "q": "Co w tym zapisie powtarza się siedemset lat później?", "options": ["Ceny jabłek", "Słyszeć to, czego nie można zmierzyć", "Grube mury", "Nazwisko Jakub"], "answer": 1 },
-  { "id": "m03", "title": "Siedem złotych", "doc": "Kasa w drewnianej budce przy wejściu na Góry Pieprzowe. Bilet: siedem złotych. W internecie ludzie piszą, że to zdzierstwo, i podają dziki punkt widokowy za krzakami. Tablica: łupki kambryjskie, pięćset milionów lat, najstarsza ziemia w Polsce.", "q": "Ile kosztuje stanięcie na najstarszej ziemi w kraju?", "options": ["Nic, za krzakami", "Siedem złotych", "Pięćset milionów lat", "Tyle co kawa z automatu"], "answer": 1 },
-  { "id": "m04", "title": "Trzy obroty", "doc": "Cocker, trzynaście kilogramów, biała plamka na piersi. Przed położeniem się obraca się trzy razy. Nigdy dwa. Nigdy cztery. Na kocu, na bruku, na kamiennej posadzce krypty. Trzy.", "q": "Gdzie Amor nie obrócił się ani razu?", "options": ["Na kocu w samochodzie", "Na bruku Rynku", "Na schodach w dół przy Ratuszu, bo tam stanął i nie poszedł", "W hotelu"], "answer": 2 },
-  { "id": "m05", "title": "Ucho Igielne", "doc": "Furta Dominikańska, wąskie przejście w murze, zwane Uchem Igielnym. Jeden człowiek na raz. Przewodnicy: „kto przejdzie, temu odpuszczone”. Halina w 1287 prowadziła trzystu korytarzem na dwóch ludzi szerokości.", "q": "Co łączy furtę z korytarzem?", "options": ["Obie są z cegły", "W obu wchodzi się pojedynczo i nie ma jak zawrócić", "Obie prowadzą do klasztoru", "Nic"], "answer": 1 },
-  { "id": "m06", "title": "Pięć faz", "doc": "Z podręcznika medycyny ratunkowej: 36,6 → 35 lekkie drżenie. 33: silne drżenie, dezorientacja. 31: drżenie ustaje. To jest zły znak, nie dobry. Ciało przestaje walczyć o ciepło.", "q": "Kiedy w hipotermii przestać się cieszyć, że ktoś przestał drżeć?", "options": ["Zawsze, drżenie jest dobre", "Przy 31 stopniach: ustanie drżenia znaczy, że ciało się poddaje", "Przy 35 stopniach", "Nigdy, drżenie jest złe"], "answer": 1 },
-  { "id": "m07", "title": "Srebro w kadzi", "doc": "Zwyczaj ludwisarski: w dniu lania dzwonu mieszczanie wrzucają do kadzi srebrne monety, „na czysty głos”. Metalurgia mówi, że srebro w spiżu głosu nie poprawia. Zwyczaj trwał trzysta lat.", "q": "Skoro srebro nie poprawia głosu, po co je wrzucano?", "options": ["Z próżności", "Bo ktoś kiedyś wiedział, że chodzi nie o głos, a o rezonans, i zwyczaj przeżył wiedzę", "Żeby dzwon był cięższy", "Nie wiadomo"], "answer": 1 },
-  { "id": "m08", "title": "Keylogger", "doc": "Laptop geologa, zamknięty od tygodnia. Ktoś zainstalował program, który czyta każdy klawisz. Raport o korytarzach jest na tym dysku. Geolog pisze teraz w zeszycie, ołówkiem, pismem pochyłym.", "q": "Co jest bezpieczniejsze od szyfrowania?", "options": ["Hasło", "Ołówek", "Chmura", "Nic"], "answer": 1 },
-  { "id": "m09", "title": "Pochyłe litery", "doc": "Kartka: „Nie wracaj do Sandomierza.” Litery nachylone w lewo, długopis wgnieciony za mocno, jakby pisząca kłóciła się z papierem. Córka pamięta pismo matki lepiej niż jej głos. Głos znika z pamięci pierwszy.", "q": "Co znika z pamięci pierwsze?", "options": ["Twarz", "Zapach", "Głos", "Pismo"], "answer": 2 },
-  { "id": "m10", "title": "Biały na białym", "doc": "Pierwszy śnieg na lessie. Less jest biały, śnieg jest biały. Z góry nie widać, gdzie kończy się ziemia, a zaczyna to, co spadło. Dzieci na sankach nie pytają. Pies drapie skarpę.", "q": "Dlaczego trudno zobaczyć, gdzie kopać?", "options": ["Bo jest ciemno", "Bo biały na białym nie ma krawędzi", "Bo śnieg jest głęboki", "Bo nikt nie patrzy"], "answer": 1 },
-  { "id": "m11", "title": "Dwa słowa", "doc": "Pan Stańczyk wita się dwoma słowami. Zawsze dwoma. „Dzień dobry.” „Pani doktor.” „Miło mi.” Kiedy raz powiedział cztery, ludzie w pokoju zamilkli, choć nie wiedzieli dlaczego.", "q": "Co znaczy, gdy człowiek od dwóch słów mówi cztery?", "options": ["Nic", "Że stawka przestała mieścić się w dwóch", "Że jest w dobrym humorze", "Że się pomylił"], "answer": 1 },
-  { "id": "m12", "title": "Krzemień na progu", "doc": "Próg kamienicy na Zamkowej: krzemień pasiasty, wytarty stopami do połysku. Dawniej krzemieniem utwardzano drogi w Sandomierzu. Jedyny kamień w mieście, który pod naciskiem daje iskrę.", "q": "Co się dzieje, gdy tysiące stóp przez wieki naciska na krzemień?", "options": ["Kruszy się", "Ściera się do połysku i każdy krok jest małym naciskiem na kamień, który odpowiada", "Nic", "Zmienia kolor"], "answer": 1 },
-  { "id": "m13", "title": "Jedenaście osób", "doc": "Pogrzeb profesora. Czwartek. Jedenaście osób. Ktoś stał z boku, między matczynym grodem a obcą ziemią, i nie płakał. Śledztwo wstrzymywało wydanie ciała przez tygodnie, bo toksykologia rtęciowa trwa.", "q": "Dlaczego pogrzeb był tak późno?", "options": ["Bo nikt nie chciał przyjść", "Bo badanie na rtęć trwa tygodnie", "Bo zimą nie da się kopać", "Bo rodzina była daleko"], "answer": 1 },
-  { "id": "m14", "title": "Nie wiercić", "doc": "Rada przekazywana w jednej rodzinie od siedmiuset lat: krzemienia pasiastego nie wiercić, nie przebijać, nie rozdzielać pasów. Pęka wzdłuż jasnych żył i traci to, co w nim jest. Dlatego skóra, nie metal. Dlatego cały.", "q": "Co traci krzemień, gdy pęknie wzdłuż pasów?", "options": ["Kolor", "Wartość", "To, co w nim jest: nikt w rodzinie nie powiedział, co", "Nic, to zabobon"], "answer": 2 }
+  {
+    "id": "m01",
+    "title": "Kompot",
+    "doc": "Słoik w piwnicy na Opatowskiej. Etykieta ręką Heleny: „jabłka, 1998, nie otwierać przed grudniem”. Słoik stoi w rzędzie z dwudziestoma innymi, wszystkie z tą samą datą. Żaden nie otwarty.",
+    "q": "Dlaczego nikt nie otworzył słoików?",
+    "options": [
+      "Bo kompot się zepsuł",
+      "Bo Helena umarła przed grudniem 1998, a córka wyjechała trzy miesiące później",
+      "Bo piwnica była zamknięta",
+      "Bo nikt nie lubi kompotu"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m02",
+    "title": "Karcer",
+    "doc": "Brama Opatowska, mury grube na trzy metry. W środku dawniej karcer. Więzień słyszał targ za ścianą: ceny jabłek, targowanie, kłótnię o wagę. Zapis z 1611: „więzień Jakub skarżył się nie na głód, a na to, że słyszy, czego nie widzi”.",
+    "q": "Co w tym zapisie powtarza się siedemset lat później?",
+    "options": [
+      "Ceny jabłek",
+      "Słyszeć to, czego nie można zmierzyć",
+      "Grube mury",
+      "Nazwisko Jakub"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m03",
+    "title": "Siedem złotych",
+    "doc": "Kasa w drewnianej budce przy wejściu na Góry Pieprzowe. Bilet: siedem złotych. W internecie ludzie piszą, że to zdzierstwo, i podają dziki punkt widokowy za krzakami. Tablica: łupki kambryjskie, pięćset milionów lat, najstarsza ziemia w Polsce.",
+    "q": "Ile kosztuje stanięcie na najstarszej ziemi w kraju?",
+    "options": [
+      "Nic, za krzakami",
+      "Siedem złotych",
+      "Pięćset milionów lat",
+      "Tyle co kawa z automatu"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m04",
+    "title": "Trzy obroty",
+    "doc": "Cocker, trzynaście kilogramów, biała plamka na piersi. Przed położeniem się obraca się trzy razy. Nigdy dwa. Nigdy cztery. Na kocu, na bruku, na kamiennej posadzce krypty. Trzy.",
+    "q": "Gdzie Amor nie obrócił się ani razu?",
+    "options": [
+      "Na kocu w samochodzie",
+      "Na bruku Rynku",
+      "Na schodach w dół przy Ratuszu, bo tam stanął i nie poszedł",
+      "W hotelu"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "m05",
+    "title": "Ucho Igielne",
+    "doc": "Furta Dominikańska, wąskie przejście w murze, zwane Uchem Igielnym. Jeden człowiek na raz. Przewodnicy: „kto przejdzie, temu odpuszczone”. Halina w 1287 prowadziła trzystu korytarzem na dwóch ludzi szerokości.",
+    "q": "Co łączy furtę z korytarzem?",
+    "options": [
+      "Obie są z cegły",
+      "W obu wchodzi się pojedynczo i nie ma jak zawrócić",
+      "Obie prowadzą do klasztoru",
+      "Nic"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m06",
+    "title": "Pięć faz",
+    "doc": "Z podręcznika medycyny ratunkowej: 36,6 → 35 lekkie drżenie. 33: silne drżenie, dezorientacja. 31: drżenie ustaje. To jest zły znak, nie dobry. Ciało przestaje walczyć o ciepło.",
+    "q": "Kiedy w hipotermii przestać się cieszyć, że ktoś przestał drżeć?",
+    "options": [
+      "Zawsze, drżenie jest dobre",
+      "Przy 31 stopniach: ustanie drżenia znaczy, że ciało się poddaje",
+      "Przy 35 stopniach",
+      "Nigdy, drżenie jest złe"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m07",
+    "title": "Srebro w kadzi",
+    "doc": "Zwyczaj ludwisarski: w dniu lania dzwonu mieszczanie wrzucają do kadzi srebrne monety, „na czysty głos”. Metalurgia mówi, że srebro w spiżu głosu nie poprawia. Zwyczaj trwał trzysta lat.",
+    "q": "Skoro srebro nie poprawia głosu, po co je wrzucano?",
+    "options": [
+      "Z próżności",
+      "Bo ktoś kiedyś wiedział, że chodzi nie o głos, a o rezonans, i zwyczaj przeżył wiedzę",
+      "Żeby dzwon był cięższy",
+      "Nie wiadomo"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m08",
+    "title": "Keylogger",
+    "doc": "Laptop geologa, zamknięty od tygodnia. Ktoś zainstalował program, który czyta każdy klawisz. Raport o korytarzach jest na tym dysku. Geolog pisze teraz w zeszycie, ołówkiem, pismem pochyłym.",
+    "q": "Co jest bezpieczniejsze od szyfrowania?",
+    "options": [
+      "Hasło",
+      "Ołówek",
+      "Chmura",
+      "Nic"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m09",
+    "title": "Pochyłe litery",
+    "doc": "Kartka: „Nie wracaj do Sandomierza.” Litery nachylone w lewo, długopis wgnieciony za mocno, jakby pisząca kłóciła się z papierem. Córka pamięta pismo matki lepiej niż jej głos. Głos znika z pamięci pierwszy.",
+    "q": "Co znika z pamięci pierwsze?",
+    "options": [
+      "Twarz",
+      "Zapach",
+      "Głos",
+      "Pismo"
+    ],
+    "answer": 2
+  },
+  {
+    "id": "m10",
+    "title": "Biały na białym",
+    "doc": "Pierwszy śnieg na lessie. Less jest biały, śnieg jest biały. Z góry nie widać, gdzie kończy się ziemia, a zaczyna to, co spadło. Dzieci na sankach nie pytają. Pies drapie skarpę.",
+    "q": "Dlaczego trudno zobaczyć, gdzie kopać?",
+    "options": [
+      "Bo jest ciemno",
+      "Bo biały na białym nie ma krawędzi",
+      "Bo śnieg jest głęboki",
+      "Bo nikt nie patrzy"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m11",
+    "title": "Dwa słowa",
+    "doc": "Pan Stańczyk wita się dwoma słowami. Zawsze dwoma. „Dzień dobry.” „Pani doktor.” „Miło mi.” Kiedy raz powiedział cztery, ludzie w pokoju zamilkli, choć nie wiedzieli dlaczego.",
+    "q": "Co znaczy, gdy człowiek od dwóch słów mówi cztery?",
+    "options": [
+      "Nic",
+      "Że stawka przestała mieścić się w dwóch",
+      "Że jest w dobrym humorze",
+      "Że się pomylił"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m12",
+    "title": "Krzemień na progu",
+    "doc": "Próg kamienicy na Zamkowej: krzemień pasiasty, wytarty stopami do połysku. Dawniej krzemieniem utwardzano drogi w Sandomierzu. Jedyny kamień w mieście, który pod naciskiem daje iskrę.",
+    "q": "Co się dzieje, gdy tysiące stóp przez wieki naciska na krzemień?",
+    "options": [
+      "Kruszy się",
+      "Ściera się do połysku i każdy krok jest małym naciskiem na kamień, który odpowiada",
+      "Nic",
+      "Zmienia kolor"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m13",
+    "title": "Jedenaście osób",
+    "doc": "Pogrzeb profesora. Czwartek. Jedenaście osób. Ktoś stał z boku, między matczynym grodem a obcą ziemią, i nie płakał. Śledztwo wstrzymywało wydanie ciała przez tygodnie, bo toksykologia rtęciowa trwa.",
+    "q": "Dlaczego pogrzeb był tak późno?",
+    "options": [
+      "Bo nikt nie chciał przyjść",
+      "Bo badanie na rtęć trwa tygodnie",
+      "Bo zimą nie da się kopać",
+      "Bo rodzina była daleko"
+    ],
+    "answer": 1
+  },
+  {
+    "id": "m14",
+    "title": "Nie wiercić",
+    "doc": "Rada przekazywana w jednej rodzinie od siedmiuset lat: krzemienia pasiastego nie wiercić, nie przebijać, nie rozdzielać pasów. Pęka wzdłuż jasnych żył i traci to, co w nim jest. Dlatego skóra, nie metal. Dlatego cały.",
+    "q": "Co traci krzemień, gdy pęknie wzdłuż pasów?",
+    "options": [
+      "Kolor",
+      "Wartość",
+      "To, co w nim jest: nikt w rodzinie nie powiedział, co",
+      "Nic, to zabobon"
+    ],
+    "answer": 2
+  }
 ]
