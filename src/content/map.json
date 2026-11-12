@@ -1,0 +1,25 @@
+{
+  "viewBox": "0 0 800 560",
+  "layers": [
+    { "id": "less", "label": "less", "y": 230, "h": 70 },
+    { "id": "sand", "label": "piaskowiec kredowy", "y": 300, "h": 130 },
+    { "id": "deep", "label": "to, co nie ma nazwy", "y": 430, "h": 130 }
+  ],
+  "gates": [
+    { "n": 1, "id": "zmigrod",         "name": "Żmigród",             "element": "ziemia",    "x": 90,  "peak": 150, "depth": 395, "silent": true },
+    { "n": 2, "id": "katedralne",      "name": "Wzgórze Katedralne",  "element": "woda",      "x": 205, "peak": 105, "depth": 380 },
+    { "n": 3, "id": "miejskie",        "name": "Wzgórze Miejskie",    "element": "dźwięk",    "x": 330, "peak": 90,  "depth": 350 },
+    { "n": 4, "id": "staromiejskie",   "name": "Staromiejskie",       "element": "ogień",     "x": 455, "peak": 130, "depth": 400 },
+    { "n": 5, "id": "zamkowe",         "name": "Wzgórze Zamkowe",     "element": "zimno",     "x": 570, "peak": 115, "depth": 385 },
+    { "n": 6, "id": "collegium",       "name": "Collegium",           "element": "ciemność",  "x": 665, "peak": 125, "depth": 410, "silent": true },
+    { "n": 7, "id": "swietopawlowskie","name": "Świętopawłowskie",    "element": "powietrze", "x": 745, "peak": 160, "depth": 440 }
+  ],
+  "corridors": [
+    { "id": "c-3-2", "from": 3, "to": 2, "revealChapter": 15 },
+    { "id": "c-3-4", "from": 3, "to": 4, "revealChapter": 12 },
+    { "id": "c-2-1", "from": 2, "to": 1, "revealChapter": 99 },
+    { "id": "c-4-5", "from": 4, "to": 5, "revealChapter": 99 },
+    { "id": "c-5-6", "from": 5, "to": 6, "revealChapter": 99 },
+    { "id": "c-4-7", "from": 4, "to": 7, "revealChapter": 99 }
+  ]
+}

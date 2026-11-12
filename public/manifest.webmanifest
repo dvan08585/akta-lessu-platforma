@@ -1,0 +1,11 @@
+{
+  "name": "Akta Lessu",
+  "short_name": "Akta Lessu",
+  "description": "Śledztwo pod Sandomierzem. Interaktywna księga-gra.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0e0d0b",
+  "theme_color": "#0e0d0b",
+  "lang": "pl",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

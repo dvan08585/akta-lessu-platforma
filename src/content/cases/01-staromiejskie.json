@@ -1,0 +1,103 @@
+{
+  "n": 1,
+  "id": "bialy-golab",
+  "gate": 4,
+  "title": "Biały gołąb",
+  "subtitle": "Wzgórze Staromiejskie · żywioł: ziemia i ogień · grudzień 1287",
+  "epigraph": "Rocznik nazwał ją zdrajczynią. Przeczytaj go jeszcze raz.",
+  "requires": { "chapter": 0 },
+  "docs": [
+    {
+      "id": "rocznik-1260",
+      "title": "Dokument I",
+      "source": "Rocznik kapituły sandomierskiej, zapis pod rokiem 1260. Odpis z XVI w.",
+      "style": "chronicle",
+      "paragraphs": [
+        "Roku Pańskiego 1260 przyszli Tatarzy pod Sandomierz i cztery dni bili się na wałach. Potem wysłali posłów i przyrzekli, że oszczędzą ludność, jeśli gród się podda.",
+        "Kasztelan Piotr z Krępy uwierzył w ich słowo i kazał otworzyć wrota. I wjechali, i wycięli prawie wszystkich, bo miasto było drewniane i nie miało dokąd uciec. Kasztelana ścięli przed bramą, na oczach jego ludzi, gdy wyszedł układać się.",
+        "W kościele św. Jakuba przeor Sadok i czterdziestu dziewięciu braci śpiewali Salve Regina, gdy wyważano drzwi. Zginęli śpiewając, przeor pierwszy, nowicjusz ostatni. Z nimi trzystu mieszczan, kobiet i dzieci. Wrzucono ich razem do dołu na dziedzińcu klasztoru.",
+        "Z rodu kasztelana ocalała córka, dziecię trzech lat, którą stara niewiasta znalazła rano w piwnicy pod kościołem, całą w pyle."
+      ]
+    },
+    {
+      "id": "rocznik-1287",
+      "title": "Dokument II",
+      "source": "Rocznik kapituły sandomierskiej, zapis pod rokiem 1287. Ten sam odpis.",
+      "style": "chronicle",
+      "paragraphs": [
+        "Roku Pańskiego 1287 w grudniu przyszedł Telebuga z wielkim wojskiem i stanął za Wisłą, a oddział jego osiadł na Starym Wzgórzu, w zgliszczach, przy kościele św. Jakuba. Nowy gród na wyższym wzgórzu bronił się, bo nikt już nie otwierał wrót na obietnice.",
+        "Wtedy niewiasta z grodu, wdowa, córka kasztelana Piotra, wyszła o zmroku ku pogaństwu i rzekła, że zna przejście pod wałami. I wywiodła ich pod ziemię, naprzód dziesięciu, a potem trzystu z setnikiem na czele. I nie wrócili ani oni, ani ona.",
+        "O świcie kasztelan Berbeć ujrzał znak nad Starym Wzgórzem, gdzie nikt z naszych nie stał. I kazał zasypać wszystkie wejścia do korytarzy, belkami, kamieniem i ziemią, każde, które znano. A ziemia pod Starym Wzgórzem drżała sama, zanim pierwsza belka spadła.",
+        "Niewiasty tej imienia tu nie piszemy, bo wywiodła pogan pod ziemię, a nikt nie wie, czy nie chciała ich wyprowadzić pod gród. Niech ją Bóg sądzi."
+      ]
+    },
+    {
+      "id": "sarama-1959",
+      "title": "Dokument III",
+      "source": "Protokół badań archeologicznych, dziedziniec klasztoru oo. Dominikanów, Sandomierz. Kierownik: prof. J. Sarama. Sierpień 1959. Wyciąg.",
+      "style": "mono",
+      "paragraphs": [
+        "WARSTWA II (dziedziniec, głęb. 0,8–1,6 m): jama grobowa zbiorowa. Policzono 330 szkieletów. Ułożenie bezładne, bez szat, bez wyposażenia. U 41 osobników groty strzał typu wschodniego zaklinowane między żebrami lub w kręgach. Ślady cięć szablą na kościach czaszek i przedramion. Datowanie: zgodne z przekazem o rzezi 1260.",
+        "WARSTWA III (głęb. 1,6–2,4 m): rumowisko spalonej zabudowy drewnianej. Węgle, polepa, fragmenty ceramiki XIII w.",
+        "WARSTWA IV (głęb. 2,4–6,1 m, sondaż S-3 przy skarpie północnej): zasyp celowy. Belki dębowe, kamień łamany, ziemia mieszana. Zasyp wprowadzony OD GÓRY do dawnych wyrobisk (piwnice kupieckie?). Datowanie belek: koniec XIII w.",
+        "PONIŻEJ 6,1 m: less nienaruszony. Sondaż przerwano z powodu osuwania się ścian wykopu i słabego powietrza (uczucie duszności u dwóch pracowników, przerwa 2 h). Pod zasypem korytarz biegnie dalej w dół. Nie eksplorowano.",
+        "UWAGA: w jamie grobowej nie stwierdzono szczątków, które dałoby się datować na 1287. Przekaz o trzystu wojownikach i niewieście z 1287 nie znajduje potwierdzenia w warstwie II."
+      ]
+    },
+    {
+      "id": "inwentarz-1288",
+      "title": "Dokument IV",
+      "source": "Inwentarz nowego grodu sandomierskiego, spisany w styczniu 1288 po odejściu Tatarów. Fragment. Przekład z łaciny.",
+      "style": "mono",
+      "paragraphs": [
+        "LUDZIE DO BRONI: było 134, jest 131. Ubyli: Wojsław (strzała), Mikora (strzała), Dobiesław (zimno, w nocy na wale).",
+        "NIEWIASTY I STARCY NA WAŁACH: było 212, jest 211. Ubyła: Halina, wdowa po Sędziwoju, córka kasztelana Piotra z Krępy. W grudniu, przed świtem, wyszła za wały. Nie wróciła.",
+        "KOŻUCHY: 40. Jeden oddany wdowie po Sędziwoju, nie zwrócony.",
+        "GOŁĘBIE GRODOWE (do posłania): było 12, jest 11. Jeden biały ubył w grudniu, w noc, gdy wdowa wyszła. Nie posłano go z grodu. Powrócił rano nad Stare Wzgórze i stamtąd przyleciał do gołębnika. Kasztelan Berbeć kazał to zapisać.",
+        "KORYTARZE POD STARYM WZGÓRZEM: zasypano wejść siedem. Kasztelan Berbeć zeznał, że ziemia pracowała od spodu, nim zasypano pierwsze."
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Kto w 1260 roku kazał otworzyć wrota Tatarom?",
+      "options": ["Przeor Sadok", "Kasztelan Piotr z Krępy", "Kasztelan Berbeć", "Setnik tatarski"],
+      "answer": 1
+    },
+    {
+      "id": "q2",
+      "text": "Ile ciał z 1287 roku leży w dole na dziedzińcu klasztoru?",
+      "options": ["Trzystu wojowników i jedna kobieta", "Czterdzieści dziewięć", "Żadne", "Trzysta trzydzieści"],
+      "answer": 2,
+      "hint": "Sarama liczył warstwę po warstwie."
+    },
+    {
+      "id": "q3",
+      "text": "Jaki znak zobaczył Berbeć o świcie?",
+      "options": ["Dym z kościoła św. Jakuba", "Białego gołębia", "Ogień na wałach", "Dzwon z katedry"],
+      "answer": 1
+    },
+    {
+      "id": "q4",
+      "text": "Skąd przyleciał ten znak?",
+      "options": ["Z gołębnika nowego grodu", "Z obozu chana za Wisłą", "Spod Starego Wzgórza, z ziemi", "Znad Wisły, od strony mostu"],
+      "answer": 2,
+      "hint": "Gołębia nie posłano z grodu. Wrócił znad miejsca, gdzie nikt z obrońców nie stał."
+    },
+    {
+      "id": "q5",
+      "text": "Kto zamknął korytarze pod Starym Wzgórzem?",
+      "options": ["Berbeć i obrońcy, belkami i kamieniem", "Tatarzy, cofając się w panice", "Halina, od spodu, zanim spadła pierwsza belka", "Nikt. Less osunął się sam."],
+      "answer": 2,
+      "hint": "Zasyp obrońców sięga 6 metrów. Ziemia pracowała głębiej i wcześniej."
+    }
+  ],
+  "solution": [
+    "Rocznik nie zapisał jej imienia. Inwentarz zapisał kożuch.",
+    "Halina, córka Piotra z Krępy, wzięła z gołębnika białego gołębia, wyprowadziła trzystu pod ziemię i zamknęła od spodu. Gołąb wyleciał szybem w sklepieniu, kiedy już było po wszystkim. Berbeć zobaczył go nad Starym Wzgórzem i dopiero wtedy kazał sypać.",
+    "Zasyp obrońców sięga sześciu metrów. Poniżej less jest nienaruszony, a korytarz biegnie dalej w dół. Nikt z 1959 roku tam nie zszedł.",
+    "Siedemset pięćdziesiąt trzy lata później do Sandomierza przyjechała geolożka."
+  ],
+  "reward": { "kind": "text", "title": "Prolog: Krew na kamieniu (fragment)", "file": "prolog-fragment" }
+}

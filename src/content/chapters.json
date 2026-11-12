@@ -1,0 +1,222 @@
+[
+  {
+    "n": 0,
+    "title": "Prolog: Krew na kamieniu",
+    "date": "grudzień 1287",
+    "gate": 4,
+    "amor": false,
+    "underground": true,
+    "line": "Halina pamięta rzeź.",
+    "codeHash": "516e3572b8c3443c270349d88a6c437f1e505f413df90882114a9875a1b51c65"
+  },
+  {
+    "n": 1,
+    "title": "Powrót",
+    "date": "październik, dzień 1",
+    "gate": 3,
+    "amor": true,
+    "underground": false,
+    "line": "Sady jabłoniowe zaczęły się na kilkanaście kilometrów przed miastem.",
+    "codeHash": "09219520724a8ca17b8230fa5bc80f91e8bfd2c357b1d23fa5a02bb5d324718b"
+  },
+  {
+    "n": 2,
+    "title": "Pod Rynkiem",
+    "date": "dzień 2",
+    "gate": 3,
+    "amor": true,
+    "underground": true,
+    "line": "",
+    "codeHash": "8b6ec26741648bfb8299ffaa89dfc81c2f58a8716e3577204bae0fe9a5d8efa3"
+  },
+  {
+    "n": 3,
+    "title": "Pył na palcach",
+    "date": "dzień 3",
+    "gate": 3,
+    "amor": true,
+    "underground": true,
+    "line": "",
+    "codeHash": "49ae2bd1bccf2e5a72c04e50878c73e3feb1cde0f492a19192fc837760223f84"
+  },
+  {
+    "n": 4,
+    "title": "Archiwista",
+    "date": "dzień 4",
+    "gate": 2,
+    "amor": true,
+    "underground": false,
+    "line": "",
+    "codeHash": "a4d7c9f3407ce4a9111fb150e59e8088c100952aadfe90cc8f2461f587543d33"
+  },
+  {
+    "n": 5,
+    "title": "Zejście we dwoje",
+    "date": "dzień 5",
+    "gate": 3,
+    "amor": true,
+    "underground": true,
+    "line": "",
+    "codeHash": "9ce0d53a85a5cd4666e22acfef9311eec4f6fc02ae11dac21a3358e02b0e5125"
+  },
+  {
+    "n": 6,
+    "title": "Profesor",
+    "date": "dzień 6",
+    "gate": 3,
+    "amor": true,
+    "underground": false,
+    "line": "",
+    "codeHash": "507e60a24c5ce86eff723b3619a802e1fd971a0ce01143ac7118ec89a85ce664"
+  },
+  {
+    "n": 7,
+    "title": "Na powierzchni",
+    "date": "dzień 7",
+    "gate": 4,
+    "amor": true,
+    "underground": false,
+    "line": "",
+    "codeHash": "d1795ed28f06021d7c11a1389befa271dbd84555824c7f8739c09809bdf80a1b"
+  },
+  {
+    "n": 8,
+    "title": "Teczka",
+    "date": "tydzień 2",
+    "gate": 3,
+    "amor": true,
+    "underground": false,
+    "line": "",
+    "codeHash": ""
+  },
+  {
+    "n": 9,
+    "title": "Rodowód",
+    "date": "tydzień 2",
+    "gate": 2,
+    "amor": false,
+    "underground": false,
+    "line": "",
+    "codeHash": ""
+  },
+  {
+    "n": 10,
+    "title": "Dyrektor",
+    "date": "tydzień 2",
+    "gate": 5,
+    "amor": true,
+    "underground": false,
+    "line": "",
+    "codeHash": ""
+  },
+  {
+    "n": 11,
+    "title": "Dzwon Piotr",
+    "date": "tydzień 3",
+    "gate": 2,
+    "amor": true,
+    "underground": false,
+    "line": "",
+    "codeHash": ""
+  },
+  {
+    "n": 12,
+    "title": "Siedmiobok",
+    "date": "tydzień 3",
+    "gate": 3,
+    "amor": true,
+    "underground": true,
+    "line": "",
+    "codeHash": "e46729401ee217581a7f55d543ca38369b4099fd2702b755cbdad3f3b96a658e"
+  },
+  {
+    "n": 13,
+    "title": "Fundacja",
+    "date": "tydzień 3",
+    "gate": 5,
+    "amor": false,
+    "underground": false,
+    "line": "",
+    "codeHash": ""
+  },
+  {
+    "n": 14,
+    "title": "Trucizna",
+    "date": "tydzień 3",
+    "gate": 3,
+    "amor": true,
+    "underground": false,
+    "line": "",
+    "codeHash": ""
+  },
+  {
+    "n": 15,
+    "title": "Warstwy",
+    "date": "tydzień 4",
+    "gate": 3,
+    "amor": true,
+    "underground": true,
+    "line": "",
+    "codeHash": ""
+  },
+  {
+    "n": 16,
+    "title": "Strażnik",
+    "date": "tydzień 4",
+    "gate": 2,
+    "amor": false,
+    "underground": false,
+    "line": "",
+    "codeHash": ""
+  },
+  {
+    "n": 17,
+    "title": "Spuścizna",
+    "date": "tydzień 4",
+    "gate": 3,
+    "amor": true,
+    "underground": true,
+    "line": "",
+    "codeHash": ""
+  },
+  {
+    "n": 18,
+    "title": "Brama Trzecia",
+    "date": "niedziela, Witamina Jazz",
+    "gate": 3,
+    "amor": false,
+    "underground": true,
+    "line": "Amor stał.",
+    "codeHash": "1fab845ed462af3640eee3e673f437a04382598c5f701b77aaa3385f463a6023"
+  },
+  {
+    "n": 19,
+    "title": "List",
+    "date": "tydzień 5",
+    "gate": 3,
+    "amor": true,
+    "underground": false,
+    "line": "",
+    "codeHash": ""
+  },
+  {
+    "n": 20,
+    "title": "Archiwista",
+    "date": "tydzień 5",
+    "gate": 2,
+    "amor": false,
+    "underground": false,
+    "line": "",
+    "codeHash": ""
+  },
+  {
+    "n": 21,
+    "title": "Słyszę",
+    "date": "poniedziałek, ~25 X",
+    "gate": 3,
+    "amor": true,
+    "underground": false,
+    "line": "— Słyszę — powiedziała cicho.",
+    "codeHash": "c04b2f33b78603526268eeb4133578c90b45e437ad81370dce2ef6f101651ec2"
+  }
+]

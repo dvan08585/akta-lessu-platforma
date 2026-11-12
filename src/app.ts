@@ -1,0 +1,41 @@
+import type { CaseData, Chapter, GateStatus, MapData, SaveState } from "./engine/types";
+import { isChapterUnlocked, nextLockedChapter, placeFromUrl, type TimeConfig } from "./engine/unlock";
+import { load, save, touchStreak } from "./engine/state";
+import mapJson from "./content/map.json";
+import chaptersJson from "./content/chapters.json";
+import configJson from "./content/config.json";
+import rewardsJson from "./content/rewards.json";
+import case01 from "./content/cases/01-staromiejskie.json";
+
+export interface Config extends TimeConfig { title: string; share: { url: string; hashtag: string }; newsletterUrl: string; bookUrl: string }
+export type Reward = { title: string; note: string; paragraphs: string[] };
+
+export class App {
+  cfg: Config = configJson as Config;
+  map: MapData = mapJson as MapData;
+  chapters: Chapter[] = chaptersJson as Chapter[];
+  cases: CaseData[] = [case01 as CaseData];
+  rewards: Record<string, Reward> = rewardsJson as Record<string, Reward>;
+  state: SaveState = load();
+  now = () => new Date();
+
+  constructor() {
+    touchStreak(this.state);
+    const qr = placeFromUrl(location.search);
+    if (qr && !this.state.placeVisits.includes(qr)) { this.state.placeVisits.push(qr); this.addNote(`Punkt w Sandomierzu: ${qr}.`, "klucz: miejsce"); }
+    save(this.state);
+  }
+  isUnlocked(n: number): boolean { const ch = this.chapters.find((c) => c.n === n); return ch ? isChapterUnlocked(this.state, this.cfg, ch, this.now()) : false; }
+  nextLocked(): Chapter | null { return nextLockedChapter(this.state, this.cfg, this.chapters, this.now()); }
+  caseForGate(n: number): CaseData | undefined { return this.cases.find((c) => c.gate === n); }
+  gateStatus(n: number): GateStatus {
+    const g = this.map.gates.find((x) => x.n === n);
+    const c = this.caseForGate(n);
+    if (c && this.state.solvedCases.includes(c.n)) return "solved";
+    if (c && (c.requires.chapter === undefined || this.isUnlocked(c.requires.chapter))) return "open";
+    if (g?.silent) return "silent";
+    return "locked";
+  }
+  solvedGates(): number[] { return this.state.solvedCases.map((n) => this.cases.find((c) => c.n === n)?.gate ?? n); }
+  addNote(text: string, meta: string): void { this.state.notebook.push({ at: Date.now(), text, meta }); save(this.state); }
+}

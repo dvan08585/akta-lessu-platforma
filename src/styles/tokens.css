@@ -1,0 +1,39 @@
+/* Akta Lessu — tokeny. Paleta: less (biel pylasta), piaskowiec, krzemień, krew na kamieniu. */
+:root {
+  --bg: #0e0d0b;
+  --bg-2: #171511;
+  --bg-3: #221f19;
+  --ink: #e8e0cf;        /* less na czarnym */
+  --ink-dim: #a39a86;
+  --ink-faint: #6b6355;
+  --sand: #c9a86a;       /* piaskowiec kredowy */
+  --flint: #4b4d52;      /* krzemień pasiasty */
+  --blood: #7a1f1f;      /* krew na kamieniu */
+  --warm: #d9843a;       /* zawieszka ciepła */
+  --cold: #5a7d95;       /* zawieszka zimna */
+  --line: rgba(232, 224, 207, 0.14);
+  --radius: 4px;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+  --font-mono: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --fs-body: 1.0625rem;  /* 17px */
+  --lh-body: 1.6;
+  --gutter: 16px;
+  --maxw: 44rem;
+}
+:root:not([data-theme="dark"]) { color-scheme: dark; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f1ece1;
+    --bg-2: #e7e0d2;
+    --bg-3: #dcd3c2;
+    --ink: #1c1a16;
+    --ink-dim: #4d4639;
+    --ink-faint: #8a816f;
+    --line: rgba(28, 26, 22, 0.14);
+  }
+}
+:root[data-theme="light"] {
+  --bg: #f1ece1; --bg-2: #e7e0d2; --bg-3: #dcd3c2;
+  --ink: #1c1a16; --ink-dim: #4d4639; --ink-faint: #8a816f;
+  --line: rgba(28, 26, 22, 0.14);
+}
