@@ -138,7 +138,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const verdict = h("div");
     sec.append(canvas, phaseEl, count, h("div", { class: "verdict" }, start, micBtn), h("p", { class: "faint" }, "Nic nie jest nagrywane ani wysyłane: dźwięk liczy się w telefonie i znika."), verdict);
     const ctx = canvas.getContext("2d")!;
-    let running = false, finished = done, done_cycles = 0, calm = 0, touching = false, mic: AnalyserNode | null = null, micBuf: Float32Array | null = null, baseline = 0.004;
+    let running = false, finished = done, done_cycles = 0, calm = 0, touching = false, mic: AnalyserNode | null = null, micBuf: Float32Array<ArrayBuffer> | null = null, baseline = 0.004;
     canvas.addEventListener("pointerdown", () => { touching = true; }); addEventListener("pointerup", () => { touching = false; });
     const rms = () => { if (!mic || !micBuf) return null; mic.getFloatTimeDomainData(micBuf); let s = 0; for (let i = 0; i < micBuf.length; i++) s += micBuf[i] * micBuf[i]; return Math.sqrt(s / micBuf.length); };
     let t0 = 0;
@@ -172,7 +172,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     micBtn.addEventListener("click", async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const ac = new AudioContext(); const src = ac.createMediaStreamSource(stream); mic = ac.createAnalyser(); mic.fftSize = 2048; src.connect(mic); micBuf = new Float32Array(mic.fftSize);
+        const ac = new AudioContext(); const src = ac.createMediaStreamSource(stream); mic = ac.createAnalyser(); mic.fftSize = 2048; src.connect(mic); micBuf = new Float32Array(new ArrayBuffer(mic.fftSize * 4));
         micBtn.disabled = true; micBtn.textContent = "Tafla słucha. Kalibruję ciszę…";
         // kalibracja: 2,5 s ciszy = poziom zero (badania: progi absolutne zawodzą między telefonami)
         const samples: number[] = []; const iv = setInterval(() => { const r = rms(); if (r !== null) samples.push(r); }, 100);
