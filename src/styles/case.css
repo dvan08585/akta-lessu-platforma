@@ -83,3 +83,7 @@ select { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px 
 .bank button:disabled { opacity: 0.3; }
 .gesture-call { margin-top: 1.2rem; color: var(--sand); }
 .spectro { width: 100%; display: block; margin: 0.6rem 0; border: 1px solid var(--line); border-radius: var(--radius); image-rendering: pixelated; }
+.dawn-locked { color: #5a4a32; font-style: italic; }
+.letter-card.unread { box-shadow: 0 0 0 2px var(--sand), 0 10px 30px rgba(0,0,0,0.35); }
+.letter-card .reply { color: #5a4a32; font-style: italic; margin-top: 0.6rem; }
+.topbar nav button.badge { border-color: var(--sand); color: var(--sand); }

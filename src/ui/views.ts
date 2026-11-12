@@ -4,6 +4,8 @@ import { interludesFor } from "./interludes";
 import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import { pickDaily, dayKey } from "../engine/daily";
 import { track } from "../engine/track";
+import { isDawn, nextDawnLabel } from "../engine/sun";
+import { due, pending, unreadCount, ensureInbox, schedule } from "../engine/messages";
 import type { App } from "../app";
 import type { CaseData, Doc } from "../engine/types";
 import { evaluate, heatLabel, recordAttempt, encodeFill, GESTURE_OF } from "../engine/cases";
@@ -18,8 +20,9 @@ export function pendant(heat: 0 | 1 | 2 | 3 | 4, label?: string): HTMLElement {
 
 export function topbar(app: App, active: string): HTMLElement {
   const nav = h("nav");
-  for (const [hash, name] of [["#/mapa", "Mapa"], ["#/zeszyt", "Zeszyt"], ["#/akta", "Akta"]]) {
-    nav.append(h("button", { class: active === hash ? "" : "ghost", onclick: () => go(hash), "aria-current": active === hash ? "page" : "false" }, name));
+  const unread = unreadCount(app.state, app.messages);
+  for (const [hash, name] of [["#/mapa", "Mapa"], ["#/wiadomosci", unread ? `Listy (${unread})` : "Listy"], ["#/zeszyt", "Zeszyt"], ["#/akta", "Akta"]]) {
+    nav.append(h("button", { class: (active === hash ? "" : "ghost") + (hash === "#/wiadomosci" && unread ? " badge" : ""), onclick: () => go(hash), "aria-current": active === hash ? "page" : "false" }, name));
   }
   return h("header", { class: "topbar" }, h("a", { class: "brand", href: "#/" }, app.cfg.title), nav);
 }
@@ -182,6 +185,11 @@ export function readingBox(app: App, hill?: number): HTMLElement {
 
 function docEl(app: App, d: Doc): HTMLElement {
   const el = h("article", { class: `doc ${d.style ?? ""}` }, h("h4", {}, d.title), h("div", { class: "src" }, d.source));
+  if (d.requiresDawn && !isDawn() && !app.state.testMode) {
+    el.append(h("p", { class: "dawn-locked" }, `Litery są na papierze, ale czytelne tylko o świcie. Najbliższy wschód słońca nad Sandomierzem: ${nextDawnLabel()}. Masz godzinę od tej chwili.`));
+    el.append(h("p", { class: "faint" }, "Berbeć zobaczył znak o świcie. W dzień nikt nie uwierzy."));
+    return el;
+  }
   for (const p of d.paragraphs) el.append(h("p", {}, p));
   if (d.audio) {
     const audio = h("audio", { controls: true, preload: "none", src: import.meta.env.BASE_URL + d.audio }) as HTMLAudioElement;
@@ -536,5 +544,35 @@ export function viewBody(app: App): HTMLElement {
       S("Garcia-Argibay i in. 2019, metaanaliza dudnień różnicowych", "https://pubmed.ncbi.nlm.nih.gov/30073406/"),
       S("Keltner i Haidt 2003, Approaching awe", "https://doi.org/10.1080/02699930302297")),
     h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy"));
+  return sec;
+}
+
+/** Listy od postaci: przychodzą z opóźnieniem po zdarzeniach w grze. Czekanie można pominąć (Lifeline). */
+export function viewInbox(app: App): HTMLElement {
+  schedule(app.state, app.messages); save(app.state);
+  const inbox = ensureInbox(app.state);
+  const sec = h("section", { class: "fade-in inbox" }, topbar(app, "#/wiadomosci"), h("h2", {}, "Listy"));
+  const arrived = due(app.state, app.messages).reverse();
+  const waiting = pending(app.state, app.messages);
+  if (!arrived.length && !waiting.length) sec.append(h("p", { class: "faint" }, "Nikt jeszcze nie napisał. Ludzie w Sandomierzu piszą po tym, co zrobisz, nie przed."));
+  for (const m of arrived) {
+    const unread = !inbox.read.includes(m.id);
+    const card = h("article", { class: `doc letter-card ${unread ? "unread" : ""}` }, h("h4", {}, m.from), h("div", { class: "src" }, new Date(inbox.scheduled[m.id]).toLocaleString("pl-PL", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })), h("p", {}, m.text));
+    if (m.reply) {
+      const chosen = inbox.replies[m.id];
+      if (chosen !== undefined) card.append(h("p", { class: "reply" }, "Ty: ", m.reply[chosen]));
+      else { const row = h("div", { class: "verdict" }); m.reply.forEach((r, i) => row.append(h("button", { class: "ghost", onclick: () => { inbox.replies[m.id] = i; inbox.read.push(m.id); app.addNote(`Odpowiedź do ${m.from}: ${r}`, "list"); save(app.state); go("#/wiadomosci"); } }, r))); card.append(row); }
+    }
+    sec.append(card);
+    if (unread && !m.reply) inbox.read.push(m.id);
+  }
+  if (waiting.length) {
+    const soon = waiting.sort((a, b) => inbox.scheduled[a.id] - inbox.scheduled[b.id])[0];
+    const ms = inbox.scheduled[soon.id] - Date.now();
+    const when = ms < 3600000 ? `za ${Math.max(1, Math.round(ms / 60000))} min` : `za ${Math.round(ms / 3600000)} h`;
+    sec.append(h("div", { class: "gatebox" }, h("p", { class: "muted" }, `${soon.from} pisze. List przyjdzie ${when}. Ludzie w tym mieście nie odpowiadają od razu.`),
+      h("button", { class: "ghost", onclick: () => { inbox.scheduled[soon.id] = Date.now(); save(app.state); go("#/wiadomosci"); } }, "Nie chcę czekać")));
+  }
+  save(app.state);
   return sec;
 }

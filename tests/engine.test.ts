@@ -151,3 +151,23 @@ describe("luki z bankiem słów i bramy przebyte gestem", () => {
     s.unstableGates.push(1); expect(passedCount(s, gateOf)).toBe(2);
   });
 });
+
+import { sunrise, isDawn } from "../src/engine/sun";
+import { schedule, due, pending, unreadCount } from "../src/engine/messages";
+describe("świt i listy", () => {
+  it("wschód słońca w Sandomierzu: grudzień ok. 7:30, czerwiec ok. 4:20 czasu lokalnego PL", () => {
+    const dec = sunrise(new Date("2026-12-21T12:00:00Z")); const jun = sunrise(new Date("2026-06-21T12:00:00Z"));
+    const hDec = dec.getUTCHours() + dec.getUTCMinutes() / 60 + 1; const hJun = jun.getUTCHours() + jun.getUTCMinutes() / 60 + 2; // CET / CEST
+    expect(hDec).toBeGreaterThan(7.2); expect(hDec).toBeLessThan(7.8);
+    expect(hJun).toBeGreaterThan(4.1); expect(hJun).toBeLessThan(4.6);
+    expect(isDawn(new Date(dec.getTime() + 20 * 60000))).toBe(true);
+    expect(isDawn(new Date(dec.getTime() + 90 * 60000))).toBe(false);
+  });
+  it("listy planują się po zdarzeniu i przychodzą po opóźnieniu", () => {
+    const s = emptyState(); const rules = [{ id: "a", after: "case:1", delayMin: 30, from: "W", text: "t" }, { id: "b", after: "start", delayMin: 0, from: "Z", text: "u" }];
+    const t0 = 1_000_000;
+    schedule(s, rules, t0); expect(due(s, rules, t0).map((r) => r.id)).toEqual(["b"]); expect(pending(s, rules, t0)).toHaveLength(0);
+    s.solvedCases.push(1); schedule(s, rules, t0); expect(pending(s, rules, t0).map((r) => r.id)).toEqual(["a"]);
+    expect(due(s, rules, t0 + 31 * 60000).map((r) => r.id)).toEqual(["b", "a"]); expect(unreadCount(s, rules, t0 + 31 * 60000)).toBe(2);
+  });
+});

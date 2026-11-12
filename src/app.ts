@@ -15,6 +15,8 @@ import case07 from "./content/cases/07-swietopawlowskie.json";
 import { caseAvailable, passedCount, gestureDone } from "./engine/cases";
 import interludesJson from "./content/interludia.json";
 import mikroJson from "./content/mikroakta.json";
+import messagesJson from "./content/wiadomosci.json";
+import { schedule, type MessageRule } from "./engine/messages";
 import type { Mikro } from "./engine/daily";
 import { silentHills } from "./engine/pair";
 
@@ -29,6 +31,7 @@ export class App {
   rewards: Record<string, Reward> = rewardsJson as Record<string, Reward>;
   interludes: unknown[] = interludesJson as unknown[];
   mikro: Mikro[] = mikroJson as Mikro[];
+  messages: MessageRule[] = messagesJson as MessageRule[];
   state: SaveState = load();
   now = () => new Date();
   /** Wzgórza, na których zawieszka TEGO gracza milczy (mapa 5/7). Ustalane z ziarna przy starcie. */
@@ -39,6 +42,7 @@ export class App {
     touchStreak(this.state);
     const qr = placeFromUrl(location.search);
     if (qr && !this.state.placeVisits.includes(qr)) { this.state.placeVisits.push(qr); this.addNote(`Punkt w Sandomierzu: ${qr}.`, "klucz: miejsce"); }
+    schedule(this.state, this.messages);
     save(this.state);
     this.ready = silentHills(this.state.seed).then((h) => { this.silent = h; });
   }
@@ -63,5 +67,5 @@ export class App {
     return "locked";
   }
   solvedGates(): number[] { return this.state.solvedCases.map((n) => this.cases.find((c) => c.n === n)?.gate ?? n); }
-  addNote(text: string, meta: string): void { this.state.notebook.push({ at: Date.now(), text, meta }); save(this.state); }
+  addNote(text: string, meta: string): void { this.state.notebook.push({ at: Date.now(), text, meta }); schedule(this.state, this.messages); save(this.state); }
 }

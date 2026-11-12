@@ -21,6 +21,8 @@ export interface Doc {
   audio?: string;
   /** Stopka programu. Domyślnie z config.footer; pusty string = brak. */
   footer?: string;
+  /** Dokument czytelny tylko o świcie (wschód słońca + godzina, Sandomierz). */
+  requiresDawn?: boolean;
 }
 export type QuestionKind = "choice" | "reject" | "month" | "fill";
 export interface Question {
@@ -78,4 +80,6 @@ export interface SaveState {
   subscribed: boolean;
   /** Tryb testowy autora: bez kolejności, bez kalendarza, bez milczenia. */
   testMode: boolean;
+  /** Wiadomości od postaci: zaplanowane (id -> czas), przeczytane, odpowiedzi. */
+  inbox?: { scheduled: Record<string, number>; read: string[]; replies: Record<string, number> };
 }

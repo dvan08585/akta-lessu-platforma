@@ -69,6 +69,19 @@
         "Ceglany portal kościoła ma bruzdy. Przewodnicy mówią: rycerze ostrzyli miecze przed bitwą. Dotknij jednej.",
         "Skarpa północna, za murem: tam był sondaż S-3. Tam zasyp kończy się na 6,1 metra. Tam nikt nie zszedł niżej."
       ]
+    },
+    {
+      "id": "swit",
+      "title": "Dokument VI",
+      "source": "Tylko o świcie. Zapis Berbecia z grudnia 1287, odczytany przez jego potomka w archiwum. Czytelny od wschodu słońca przez godzinę.",
+      "style": "hand",
+      "requiresDawn": true,
+      "paragraphs": [
+        "Stałem na wale od północy. Mróz. Trzystu poszło za nią pod ziemię o zmroku, liczyłem pochodnie. Potem ziemia pod Starym Wzgórzem drżała sama, długo, i cichła, i drżała.",
+        "O świcie biały gołąb nad zgliszczami. Nie z naszego grodu, bo nasze siedziały w gołębniku, liczyłem rano i brakowało jednego, tego, który u niej.",
+        "Kazałem sypać. Belki, kamień, ziemia, w każde wejście, które znaliśmy. Sypaliśmy do południa. Nie wiedzieliśmy, że ona zamknęła wcześniej. Sypaliśmy na zamknięte.",
+        "Zapisuję, żeby ktoś kiedyś przeczytał o świcie, bo o świcie się to stało, a w dzień nikt nie uwierzy."
+      ]
     }
   ],
   "questions": [
