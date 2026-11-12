@@ -1,0 +1,69 @@
+{
+  "n": 4,
+  "id": "partner-wydarzenia",
+  "gate": 5,
+  "title": "Partner wydarzenia",
+  "subtitle": "Wzgórze Zamkowe · żywioł: zimno · akty, faktury, gala",
+  "epigraph": "Przeczytaj stopkę. Każdą stopkę. Od pierwszej sprawy.",
+  "requires": { "solvedCases": 3 },
+  "docs": [
+    {
+      "id": "akt-notarialny",
+      "title": "Dokument I",
+      "source": "Akt notarialny. Umowa sprzedaży nieruchomości: kamienica przy ul. Opatowskiej, Sandomierz. Wyciąg, dane osobowe usunięte.",
+      "style": "mono",
+      "paragraphs": [
+        "SPRZEDAJĄCY: osoba fizyczna, spadkobierczyni po Helenie S., zmarłej w Sandomierzu. Data sprzedaży: trzy miesiące po śmierci spadkodawczyni. Cena: poniżej wartości rynkowej o ok. 30%. Sprzedająca oświadcza, że „chce zakończyć sprawę szybko”.",
+        "KUPUJĄCY: Memoria Nieruchomości sp. z o.o., Sandomierz. Reprezentowana przez prezesa zarządu. Jedyny wspólnik: Fundacja Sandomierska Memoria.",
+        "§ 7. Kupujący zobowiązuje się nie zmieniać przeznaczenia piwnic ani nie udostępniać ich osobom trzecim bez pisemnej zgody zarządu Fundacji. Sprzedająca nie wnosi o wykreślenie tego zapisu, choć notariusz zwraca uwagę, że jest nietypowy.",
+        "Załącznik: inwentarz piwnic. „Pomieszczenie C: ściana wschodnia zamurowana cegłą nowszą niż pozostałe. Stan dobry. Nie naruszać.”"
+      ]
+    },
+    {
+      "id": "sprawozdanie-fundacji",
+      "title": "Dokument II",
+      "source": "Sprawozdanie merytoryczne Fundacji Sandomierska Memoria za rok ubiegły. Fragment dotyczący programów edukacyjnych.",
+      "style": "plain",
+      "paragraphs": [
+        "Program „Sandomierz Pod Spodem” to cykl materiałów edukacyjnych o podziemiach miasta, realizowany we współpracy z biegłymi z zakresu geologii, archeologii i historii. W roku sprawozdawczym program objął siedem punktów na mapie miasta, odpowiadających siedmiu wzgórzom.",
+        "Fundacja pozyskała do programu niezależnych ekspertów spoza Sandomierza, którzy otrzymują materiały źródłowe i przekazują Fundacji wnioski w formie ustrukturyzowanej. Wnioski te zasilają rejestr statusów punktów programu.",
+        "Fundacja była partnerem Święta Młodego Wina (degustacje, lampiony na Rynku) oraz współfinansowała odnowienie spinek herbowych w Muzeum Zamkowym.",
+        "Zarząd dziękuje biegłym za siedem rozpoznanych punktów. Do pełnego rejestru brakuje nam jednego."
+      ]
+    },
+    {
+      "id": "faktura",
+      "title": "Dokument III",
+      "source": "Faktura VAT. Wystawca: biegły geolog, Kraków. Nabywca: Fundacja Sandomierska Memoria. Kopia z adnotacją.",
+      "style": "mono",
+      "paragraphs": [
+        "Usługa: konsultacja geologiczna, ocena stabilności korytarzy, Sandomierz, siedem punktów. Wartość: wg umowy.",
+        "Adnotacja ręczna na kopii: „Biegły sądzi, że pracuje dla komisarza. Nie wyprowadzać z błędu. Materiały wysyłać dalej w kopertach z nadrukiem programu, jak dotąd. — S.”",
+        "Druga adnotacja, inną ręką: „Który to biegły?” Odpowiedź pod spodem: „Ten, który czyta to teraz.”"
+      ]
+    },
+    {
+      "id": "zdjecie-gala",
+      "title": "Dokument IV",
+      "source": "Zdjęcie z gali Święta Młodego Wina, Hotel Pod Ciżemką. Opis dla osoby niewidzącej.",
+      "style": "plain",
+      "paragraphs": [
+        "Sala restauracyjna, lampiony, stoły z kieliszkami. Na pierwszym planie mężczyzna w garniturze grafitowym, uśmiechnięty, z kieliszkiem młodego wina. Mankiet uniesiony do toastu. Spinka do mankietu: krzemień pasiasty, oprawiony w srebro, szlif siedmioboczny.",
+        "W tle baner: „Święto Młodego Wina. Partner: Fundacja Sandomierska Memoria.”",
+        "Pod stołami, pod posadzką, pod hotelem: piwnice kamienicy Węgra Lazarczyka. Pod piwnicami: to, czego zdjęcie nie pokazuje."
+      ]
+    }
+  ],
+  "questions": [
+    { "id": "q1", "text": "Kto jest jedynym wspólnikiem spółki, która kupiła kamienicę na Opatowskiej?", "options": ["Spadkobierczyni Heleny S.", "Miasto Sandomierz", "Fundacja Sandomierska Memoria", "Hotel Pod Ciżemką"], "answer": 2 },
+    { "id": "q2", "text": "Czego dotyczy nietypowy § 7 umowy?", "options": ["Ceny", "Piwnic: nie zmieniać, nie udostępniać", "Dachu", "Terminu wydania"], "answer": 1 },
+    { "id": "q3", "text": "Co Fundacja robi z wnioskami biegłych?", "options": ["Publikuje w prasie", "Oddaje policji", "Zasila nimi rejestr statusów siedmiu punktów", "Nic, to program edukacyjny"], "answer": 2 },
+    { "id": "q4", "text": "Dla kogo naprawdę pracuje biegły z Krakowa?", "options": ["Dla komisarza Zielińskiego", "Dla Fundacji, nie wiedząc o tym", "Dla miasta", "Dla konserwatora"], "answer": 1, "hint": "Adnotacja na fakturze. I stopka na każdym dokumencie, który dostałeś od sprawy pierwszej." },
+    { "id": "q5", "text": "Ile punktów brakuje Fundacji do pełnego rejestru?", "options": ["Siedmiu", "Trzech", "Jednego", "Żadnego"], "answer": 2 }
+  ],
+  "solution": [
+    "Koperty miały nadruk od pierwszego dnia. Mała czcionka w stopce: program edukacyjny, partner, kopia dla biegłego. Nikt nie czyta stopek.",
+    "Fundacja kupiła kamienicę Heleny z zapisem o piwnicach. Fundacja partneruje winu i lampionom. Fundacja płaci biegłemu, który sądzi, że pracuje dla komisarza. Biegłym jesteś ty.",
+    "Rejestr statusów na mapie od teraz nosi nazwę tego, kto go prowadzi. Rozpoznałeś dla nich cztery punkty. Zostały trzy. Do pełnego rejestru brakuje im jednego, i to nie jest ten, o którym myślisz."
+  ]
+}

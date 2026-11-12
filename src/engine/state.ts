@@ -6,7 +6,13 @@ export function emptyState(): SaveState {
   return {
     v: 1, createdAt: Date.now(), unlockedChapters: [], solvedCases: [], attempts: {}, answers: {},
     chapterCursor: 0, streak: { days: 0, last: "", freezeUsed: "" }, notebook: [], placeVisits: [],
+    unstableGates: [], seed: randomSeed(), month: 0, sawFooter: false,
   };
+}
+
+function randomSeed(): string {
+  try { const a = new Uint8Array(8); crypto.getRandomValues(a); return Array.from(a).map((b) => b.toString(16).padStart(2, "0")).join(""); }
+  catch { return Math.random().toString(16).slice(2, 18); }
 }
 
 export function load(): SaveState {
@@ -29,7 +35,7 @@ export function reset(): void {
 
 /** Kod wznowienia: base64url z JSON (bez serwera). */
 export function exportCode(s: SaveState): string {
-  const slim = { u: s.unlockedChapters, s: s.solvedCases, c: s.chapterCursor, d: s.streak.days, l: s.streak.last };
+  const slim = { u: s.unlockedChapters, s: s.solvedCases, c: s.chapterCursor, d: s.streak.days, l: s.streak.last, x: s.unstableGates, e: s.seed, m: s.month };
   const json = JSON.stringify(slim);
   return btoa(unescape(encodeURIComponent(json))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
@@ -37,9 +43,10 @@ export function importCode(code: string): SaveState | null {
   try {
     const b64 = code.trim().replace(/-/g, "+").replace(/_/g, "/");
     const json = decodeURIComponent(escape(atob(b64 + "===".slice((b64.length + 3) % 4))));
-    const slim = JSON.parse(json) as { u: number[]; s: number[]; c: number; d: number; l: string };
+    const slim = JSON.parse(json) as { u: number[]; s: number[]; c: number; d: number; l: string; x?: number[]; e?: string; m?: number };
     const s = emptyState();
     s.unlockedChapters = slim.u ?? []; s.solvedCases = slim.s ?? []; s.chapterCursor = slim.c ?? 0;
+    s.unstableGates = slim.x ?? []; if (slim.e) s.seed = slim.e; s.month = slim.m ?? 0;
     s.streak = { days: slim.d ?? 0, last: slim.l ?? "", freezeUsed: "" };
     return s;
   } catch { return null; }

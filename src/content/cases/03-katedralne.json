@@ -1,0 +1,88 @@
+{
+  "n": 3,
+  "id": "twoj-miesiac",
+  "gate": 2,
+  "title": "Twój miesiąc",
+  "subtitle": "Wzgórze Katedralne · żywioł: woda · katedra, krypty, Wisła",
+  "epigraph": "Podobno jeśli przyjdziesz w dniu urodzin i znajdziesz swój miesiąc, odczytasz z niego rodzaj własnej śmierci.",
+  "requires": { "solvedCases": 2 },
+  "docs": [
+    {
+      "id": "martyrologium",
+      "title": "Dokument I",
+      "source": "Opis cyklu Martyrologium Romanum w katedrze sandomierskiej. Karol de Prevot, XVIII w. Karta inwentarzowa, do weryfikacji na miejscu.",
+      "style": "plain",
+      "paragraphs": [
+        "Dwanaście obrazów na ścianach nawy, po jednym na każdy miesiąc roku. Każdy przedstawia męczeństwa świętych wspominanych w danym miesiącu. Pod obrazami nazwy miesięcy.",
+        "Legenda miejska: kto przyjdzie w dniu urodzin i odnajdzie swój miesiąc, odczyta z obrazu rodzaj własnej śmierci. Przewodnicy opowiadają ją z uśmiechem. Nikt nie szuka swojego miesiąca na głos.",
+        "Trzynasty obraz, bez miesiąca, w nawie zachodniej: Męczeństwo Sandomierzan 1260. Tatarzy, kościół św. Jakuba, dominikanie. Jedyny obraz cyklu, który dzieje się tu, pod tą posadzką, a nie w Rzymie.",
+        "Obraz „listopad” wisi najbliżej zejścia do krypt. Przy nim posadzka jest cieplejsza. Kościelny mówi, że od ogrzewania. Ogrzewanie jest po drugiej stronie nawy."
+      ]
+    },
+    {
+      "id": "zalanie-krypt",
+      "title": "Dokument II",
+      "source": "Protokół oględzin krypt katedralnych po zalaniu. Konserwator wojewódzki, maj. Wyciąg.",
+      "style": "mono",
+      "paragraphs": [
+        "Poziom wody w kryptach: 42 cm. Poziom Wisły w tym samym dniu: niski (stan 180 cm na wodowskazie, poniżej średniej). Korelacja z rzeką: brak.",
+        "Temperatura wody w kryptach: 14,8°C. Temperatura wód gruntowych w Sandomierzu o tej porze roku: 9–10°C. Różnica: niewyjaśniona.",
+        "Kierunek napływu: od spodu, przez spoiny posadzki w komorze południowej (pod obrazem XI). Nie od ściany, nie od rzeki.",
+        "Zalecenie: odpompować, osuszyć, monitorować. Nie badać źródła napływu bez ekspertyzy geologicznej. Ekspertyzy nie zlecono."
+      ]
+    },
+    {
+      "id": "wodowskaz",
+      "title": "Dokument III",
+      "source": "Wodowskaz Sandomierz, stany miesięczne Wisły, średnie z dziesięciu lat. IMGW.",
+      "style": "mono",
+      "paragraphs": [
+        "I 231 · II 248 · III 312 · IV 338 · V 301 · VI 290 · VII 276 · VIII 221 · IX 198 · X 187 · XI 210 · XII 224 (cm).",
+        "Najwyższy stan: kwiecień (roztopy). Najniższy: październik.",
+        "Zalania krypt odnotowane: maj, wrzesień, listopad. Dwa z trzech przy niskiej wodzie."
+      ]
+    },
+    {
+      "id": "zeszyt-geologa",
+      "title": "Dokument IV",
+      "source": "Kartka z zeszytu terenowego. Katedra, nawa, przy obrazie XI. Ołówek, pismo pochyłe.",
+      "style": "hand",
+      "paragraphs": [
+        "Wilgotność posadzki przy XI: 71%. Przy V (po drugiej stronie): 44%. Ogrzewanie przy V.",
+        "Zawieszka: ciepło przesuwa się w dół. Nie na zewnątrz, nie w górę. W dół, jakby źródło było pod posadzką.",
+        "Nie szukałam swojego miesiąca. Oczy same.",
+        "Woda w kryptach: nie z rzeki. Rzeka jest za nisko. Woda jest cieplejsza niż powinna. Coś ją grzeje od spodu."
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "q0", "kind": "month", "text": "W którym miesiącu się urodziłeś, urodziłaś? (Nie musisz. Ale legenda tak każe.)", "options": [], "answer": -1,
+      "monthLines": [
+        "Styczeń: śnieg na lessie, biały na białym. Nie zobaczysz, gdzie kończy się ziemia.",
+        "Luty: lód na Wiśle trzyma cztery dni. Ty uwierzysz piątego.",
+        "Marzec: roztopy. Woda nie przychodzi z góry. Przychodzi spod.",
+        "Kwiecień: najwyższy stan rzeki. Nikt nie patrzy, co jest niżej.",
+        "Maj: ogrzewanie wyłączone, posadzka ciepła. Kościelny powie, że od słońca.",
+        "Czerwiec: jabłka jeszcze zielone. Zdążysz je zobaczyć dojrzałe. Prawdopodobnie.",
+        "Lipiec: upał pod sklepieniem. Chłód w kryptach. Wybierzesz chłód.",
+        "Sierpień: wykopaliska. Ktoś policzy. Ciebie policzą osobno.",
+        "Wrzesień: zalanie krypt przy niskiej wodzie. Nie będzie powodzi. Będzie coś innego.",
+        "Październik: najniższy stan Wisły. Przyjedziesz do Sandomierza. Wszyscy przyjeżdżają w październiku.",
+        "Listopad: Święto Młodego Wina. Wino jest młode. Krew też.",
+        "Grudzień: Tatarzy przychodzą w grudniu. Zawsze przychodzą w grudniu."
+      ],
+      "monthClosing": "A potem oczy same lądują na listopadzie."
+    },
+    { "id": "q1", "text": "Który obraz wisi najbliżej zejścia do krypt?", "options": ["Kwiecień", "Listopad", "Męczeństwo Sandomierzan", "Maj"], "answer": 1 },
+    { "id": "q2", "text": "Skąd przychodzi woda w kryptach?", "options": ["Z Wisły, przy wysokim stanie", "Z deszczu, przez dach", "Od spodu, przez spoiny posadzki, przy niskiej rzece", "Z ogrzewania"], "answer": 2 },
+    { "id": "q3", "text": "Co jest nie tak z tą wodą?", "options": ["Jest słona", "Jest o pięć stopni za ciepła", "Jest za zimna", "Nic, to zwykła woda gruntowa"], "answer": 1, "hint": "Wody gruntowe mają 9–10 stopni. Protokół podaje inną liczbę." },
+    { "id": "q4", "text": "Który obraz w cyklu nie dzieje się w Rzymie?", "options": ["Listopad", "Grudzień", "Trzynasty, bez miesiąca: Sandomierz 1260", "Wszystkie dzieją się w Rzymie"], "answer": 2 },
+    { "id": "q5", "text": "Dlaczego nie zlecono ekspertyzy geologicznej?", "options": ["Brak pieniędzy", "Konserwator zalecił, a nikt nie chciał wiedzieć, co jest pod spodem", "Zalecono ją i wykonano", "Wisła była za wysoko"], "answer": 1 }
+  ],
+  "solution": [
+    "Dwanaście miesięcy na ścianach i trzynasty obraz bez miesiąca, który dzieje się tutaj. Woda w kryptach jest za ciepła o pięć stopni i przychodzi od spodu, kiedy rzeka jest nisko.",
+    "Konserwator napisał: nie badać bez geologa. Geologa nie zlecono. Przez dwadzieścia lat nikt nie chciał wiedzieć.",
+    "Każdy, kto szuka swojego miesiąca, kończy przy listopadzie. Posadzka tam jest cieplejsza. Ogrzewanie jest po drugiej stronie."
+  ]
+}

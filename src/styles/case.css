@@ -29,3 +29,19 @@
 .gatebox { border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin: 1rem 0; }
 .gatebox .row { display: flex; gap: 0.5rem; }
 .countdown { font-family: var(--font-mono); font-size: 0.9rem; color: var(--ink-dim); }
+
+.doc .footer { margin-top: 1rem; padding-top: 0.5rem; border-top: 1px dotted rgba(60,40,20,0.35); font-size: 0.62rem; letter-spacing: 0.06em; color: #8a7a60; opacity: 0.55; }
+.doc .footer.seen { opacity: 1; color: #7a1f1f; font-size: 0.72rem; }
+.doc .audio { margin-top: 0.8rem; }
+.doc .audio audio { width: 100%; }
+.month-line { margin-top: 0.7rem; font-size: 1.05rem; line-height: 1.6; }
+.month-line em { font-style: normal; color: var(--sand); }
+select { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.6rem 0.8rem; min-height: 44px; width: 100%; }
+.decision .quote, .pair .quote { font-size: 1.15rem; line-height: 1.55; }
+.pair .row { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+.buried-wrap { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.1rem; background: var(--bg-2); }
+.buried p { margin: 0 0 0.8em; font-size: 1.05rem; }
+.less-cover { position: absolute; left: 0; right: 0; top: 0; height: 0; background: linear-gradient(to bottom, transparent, var(--ink) 18%, var(--ink)); opacity: 0.92; transition: height 20s linear; pointer-events: none; }
+.buried-wrap.go .less-cover { height: 100%; }
+@media (prefers-reduced-motion: reduce) { .less-cover { transition: none; } }
+.finale { color: var(--sand); }

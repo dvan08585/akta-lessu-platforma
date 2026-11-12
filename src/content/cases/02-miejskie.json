@@ -1,0 +1,70 @@
+{
+  "n": 2,
+  "id": "dzwon-piotr",
+  "gate": 3,
+  "title": "Dzwon Piotr",
+  "subtitle": "Wzgórze Miejskie · żywioł: dźwięk · 1354 / 1677 / październik",
+  "epigraph": "Dzwon nie odmierza czasu. Dzwon mierzy.",
+  "requires": { "solvedCases": 1 },
+  "docs": [
+    {
+      "id": "zapiski-1354",
+      "title": "Dokument I",
+      "source": "Zapiski Kazimierza. Księga wydatków grodu sandomierskiego, rok 1354. Przekład z łaciny.",
+      "style": "chronicle",
+      "paragraphs": [
+        "Na rozkaz króla Kazimierza dano cechowi murarzy trzydzieści grzywien srebra za robotę pod wzgórzem, tak za mury z cegły palonej, jak za sklepienia z kamienia, jak za posadzkę z płyt, jak za wrota z dębu i żelaza.",
+        "Czynsz uiszczono w dwóch częściach: dwadzieścia grzywien po zakończeniu pierwszej kondygnacji, dziesięć po zamknięciu wrót ostatnich.",
+        "Za wrota płacono po grzywnie i dziesięć skojców od sztuki, wszystkie jednakie, z otworem na pieczęć pośrodku.",
+        "Murarzom nakazano milczenie pod karą gardła."
+      ]
+    },
+    {
+      "id": "ludwisarz-1677",
+      "title": "Dokument II",
+      "source": "Rachunek ludwisarza Jana Dehnego dla kapituły sandomierskiej za dzwon „Piotr”, 1677. Archiwum kapitulne.",
+      "style": "mono",
+      "paragraphs": [
+        "Za spiż na dzwon wielki, wagi cetnarów trzydzieści i sześć: 1 440 złp.",
+        "Za srebro, które kupcy sandomierscy wrzucili do kadzi w dniu lania, wedle zwyczaju, na głos czysty: nie liczono, bo dar.",
+        "Osobno, na żądanie kapituły: srebra z własnej kasy kapitulnej do kadzi grzywien jedenaście, co jest więcej niż zwyczaj każe i więcej niż głos potrzebuje. Kapituła prosiła, by dzwon „mówił niżej, niż ucho słyszy”. Spełniono.",
+        "Strojenie: ton główny i ton dolny, osobno. Ton dolny sprawdzano przy zapalonej świecy, stawiając ją na posadzce wieży: płomień ma drżeć, nie gasnąć."
+      ]
+    },
+    {
+      "id": "miernik-pazdziernik",
+      "title": "Dokument III",
+      "source": "Wydruk z rejestratora drgań gruntu. Punkt: Rynek, przy studni. Październik, godz. 11:50–12:10. Bez podpisu.",
+      "style": "mono",
+      "paragraphs": [
+        "11:50  tło: 0,3 µm/s · dominanta 18,0 Hz (stała, niska amplituda) · źródło: nieustalone, głębokie.",
+        "12:00  dzwon katedralny (Piotr), 12 uderzeń. Ton główny 196 Hz. Składowa dolna 18,2 Hz.",
+        "12:00–12:04  dominanta 18 Hz: amplituda ×6. Narasta po każdym uderzeniu. Nie zanika z dzwonem.",
+        "12:10  tło: 0,9 µm/s · dominanta 18,0 Hz. Trzykrotność stanu sprzed dzwonu. Powrót do tła po ~40 min.",
+        "Uwaga odręczna na marginesie: „Pies zaczął skomleć o 11:58. Przed pierwszym uderzeniem.”"
+      ]
+    },
+    {
+      "id": "nagranie",
+      "title": "Dokument IV",
+      "source": "Nagranie: dzwon Piotr, Rynek, południe. 24 sekundy. Pod dzwonem ton, którego głośnik telefonu nie odda.",
+      "style": "plain",
+      "audio": "audio/dzwon-piotr.mp3",
+      "paragraphs": [
+        "Posłuchaj. Potem posłuchaj drugi raz z dłonią na telefonie."
+      ]
+    }
+  ],
+  "questions": [
+    { "id": "q1", "text": "Ile wrót zbudował cech murarzy w 1354 roku?", "options": ["Dwoje", "Siedmioro", "Dziesięcioro", "Trzydzieścioro"], "answer": 1, "hint": "Dziesięć grzywien za wrota ostatnie. Grzywna i dziesięć skojców od sztuki. Grzywna to 24 skojce." },
+    { "id": "q2", "text": "Po co kapituła dopłaciła jedenaście grzywien srebra do kadzi?", "options": ["Na czysty głos", "Na trwałość spiżu", "Żeby dzwon mówił niżej, niż ucho słyszy", "Na chwałę fundatorów"], "answer": 2 },
+    { "id": "q3", "text": "Co dzieje się z dominantą 18 Hz po uderzeniach dzwonu?", "options": ["Znika na 40 minut", "Rośnie i nie zanika razem z dzwonem", "Nie zmienia się", "Przesuwa się na 196 Hz"], "answer": 1 },
+    { "id": "q4", "text": "Kto usłyszał ton dolny pierwszy?", "options": ["Rejestrator", "Ludwisarz", "Pies, dwie minuty przed dzwonem", "Kapituła"], "answer": 2 },
+    { "id": "q5", "text": "Czym w takim razie jest dzwon Piotr?", "options": ["Zegarem miasta", "Instrumentem muzycznym", "Miernikiem zawieszonym nad tym, co jest pod spodem", "Pamiątką po kupcach"], "answer": 2, "hint": "Świeca na posadzce wieży. Płomień ma drżeć." }
+  ],
+  "solution": [
+    "Siedmioro wrót, wszystkie jednakie, z otworem na pieczęć. Trzysta lat później kapituła zamówiła dzwon, który mówi niżej, niż ucho słyszy, i sprawdzała go świecą na posadzce.",
+    "Dzwon Piotr nie odmierza godzin. Od 1677 roku, dwanaście razy dziennie, uderza w coś, co odpowiada z dołu i nie cichnie z nim.",
+    "Pies słyszał to pierwszy. Potem rejestrator. Ludzie na Rynku nie słyszeli nic."
+  ]
+}

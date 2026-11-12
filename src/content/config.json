@@ -2,10 +2,24 @@
   "title": "Akta Lessu",
   "premiereDate": "2027-10-15T00:00:00+02:00",
   "timeline": {
-    "note": "Daty odblokowania czasowego liczone wzgledem premiery (dni, ujemne = przed premiera).",
-    "chapterOffsets": { "0": -60, "1": -53, "2": -46, "3": -39, "4": -32, "5": -25, "6": -18, "7": -11 }
+    "note": "Daty odblokowania czasowego liczone względem premiery (dni, ujemne = przed premierą). Rozdział 21 = dzień premiery = sprawa 7.",
+    "chapterOffsets": {
+      "0": -60,
+      "1": -53,
+      "2": -46,
+      "3": -39,
+      "4": -32,
+      "5": -25,
+      "6": -18,
+      "7": -11,
+      "21": 0
+    }
   },
-  "share": { "url": "https://dvan08585.github.io/akta-lessu-platforma/", "hashtag": "#AktaLessu" },
+  "share": {
+    "url": "https://dvan08585.github.io/akta-lessu-platforma/",
+    "hashtag": "#AktaLessu"
+  },
+  "footer": "Program edukacyjny „Sandomierz Pod Spodem”. Partner: Fundacja Sandomierska Memoria. Kopia dla biegłego.",
   "newsletterUrl": "",
   "bookUrl": ""
 }

@@ -69,3 +69,17 @@ describe("stan: kod wznowienia i seria", () => {
     touchStreak(s, new Date("2027-03-06T10:00:00Z")); expect(s.streak.days).toBe(1); // drugie w tym tygodniu: reset
   });
 });
+
+describe("nowe typy spraw", () => {
+  it("pytanie month liczy się jako trafione przy podanym miesiącu", () => {
+    const c = { n: 3, id: "m", gate: 2, title: "", subtitle: "", epigraph: "", requires: {}, docs: [], solution: [],
+      questions: [{ id: "q0", kind: "month", text: "", options: [], answer: -1 }, { id: "q1", text: "", options: ["a", "b"], answer: 0 }] } as CaseData;
+    expect(evaluate(c, [0, 0]).solved).toBe(false);
+    expect(evaluate(c, [11, 0]).solved).toBe(true);
+  });
+  it("karta zaznacza bramę niestabilną trójkątem i dodaje połowę klucza", () => {
+    const card = shareCard({ solved: [4, 3], unstable: [1], attempts: 2, streak: 0, url: "u", hashtag: "#A", halfKey: "abc1234" });
+    expect(card).toContain("▲ ○ ● ● ○ ○ ○");
+    expect(card).toContain("klucz: abc1234");
+  });
+});

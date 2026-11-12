@@ -1,0 +1,80 @@
+{
+  "n": 5,
+  "id": "falszywa-strona",
+  "gate": 6,
+  "title": "Fałszywa strona",
+  "subtitle": "Collegium · żywioł: ciemność · pięć stron z notatnika profesora",
+  "epigraph": "Mniej wiesz, więcej rozumiesz. Jedna z tych stron kłamie. Z pięcioma stronami zadanie nie ma rozwiązania.",
+  "requires": { "solvedCases": 4 },
+  "docs": [
+    {
+      "id": "strona-a",
+      "title": "Dokument I",
+      "source": "Notatnik prof. W., strona 14. Kopia z akt policyjnych. Ołówek, pismo drobne, przekrój geologiczny.",
+      "style": "hand",
+      "paragraphs": [
+        "Przekrój N–S przez Wzgórze Miejskie. Less 0–6 m (eoliczny, pylasty). Piaskowiec kredowy 6–38 m. Poniżej: brak rdzenia, odmowa wiertni (gaz). Szacunek na podstawie sejsmiki: warstwa o prędkości fali anomalnie wysokiej. Kwarc? Zbyt płytko na kwarc.",
+        "Siedem punktów anomalii na mapie grawimetrycznej. Rozkład: nieprzypadkowy. Odległości między punktami: proporcjonalne. Ktoś to zaprojektował albo ktoś wykorzystał coś, co już było.",
+        "Dopisek: „System jest głębszy, niż myśli AGH.”"
+      ]
+    },
+    {
+      "id": "strona-b",
+      "title": "Dokument II",
+      "source": "Notatnik prof. W., strona 15. Kopia. Tabela pomiarów.",
+      "style": "mono",
+      "paragraphs": [
+        "Punkt 3 (Rynek): 18,0 Hz stale. Amplituda rośnie po dzwonie. Pies reaguje przed dzwonem.",
+        "Punkt 2 (katedra): wilgotność posadzki 71% przy XI. Woda +5°C. Napływ od spodu.",
+        "Punkt 4 (św. Jakub): zasyp celowy do 6,1 m (Sarama 1959). Poniżej nienaruszone.",
+        "Punkt 5 (zamek): temperatura w piwnicach spada o 2°C w stosunku do sąsiednich. Odwrotność punktów 2 i 4. Zimno zamiast ciepła.",
+        "Punkty 1, 6: brak pomiaru. Nie reaguje. Nie wiem, czy to brak, czy cisza."
+      ]
+    },
+    {
+      "id": "strona-c",
+      "title": "Dokument III",
+      "source": "Notatnik prof. W., strona 16. Kopia. Pismo wyraźniejsze, atrament, data w nagłówku.",
+      "style": "hand",
+      "paragraphs": [
+        "Sandomierz, 14 października. Dziś zszedłem na trasę turystyczną z Łutowiczem i Berbeciem. Pokazali mi komorę za kratą, 20 m za zawaleniem. Obelisk na cokole o siedmiu bokach. Otwór w sklepieniu. Wszystko, co opisywała Halina w kronice, potwierdzone.",
+        "Punkt 6 (Collegium) jest główny. Pod Collegium leży centrum systemu. Tam trzeba kopać. Wejście od strony dziedzińca, pod schodami zachodnimi.",
+        "Klasa S, wariant K: potwierdzam. Przekazać Fundacji."
+      ]
+    },
+    {
+      "id": "strona-d",
+      "title": "Dokument IV",
+      "source": "Notatnik prof. W., strona 17. Kopia. Ołówek, skreślenia.",
+      "style": "hand",
+      "paragraphs": [
+        "Klasa S = struktura (nie złoże). Wariant K = krzemień pasiasty jako przewodnik. Tego nie ma w żadnej klasyfikacji. Wymyśliłem, żeby móc o tym pisać bez pisania.",
+        "Nikomu nie przekazywać. Ani uczelni, ani Fundacji. Fundacja pytała trzy razy. Odmówiłem trzy razy.",
+        "Kto nosi krzemień, ten jest w sieci. Nie wiem, czy to dobrze, czy źle. Wiem, że H. nosiła."
+      ]
+    },
+    {
+      "id": "strona-e",
+      "title": "Dokument V",
+      "source": "Dziennik wyjazdów prof. W. (kalendarz uczelniany, dane z systemu kadr). Październik.",
+      "style": "mono",
+      "paragraphs": [
+        "10–12 X: Kraków, zajęcia. 13 X: Kraków, rada wydziału (obecność potwierdzona podpisem). 14 X: Kraków, egzamin dyplomowy, godz. 9–15 (protokół, trzy podpisy). 15 X: wyjazd, Sandomierz. 16–21 X: Sandomierz.",
+        "Uwaga kadrowa: w dniu 14 X profesor nie opuszczał Krakowa."
+      ]
+    }
+  ],
+  "questions": [
+    { "id": "q0", "kind": "reject", "text": "Którą stronę odrzucasz jako fałszywą? (Bez tego nic dalej się nie zgadza.)", "options": [], "answer": 2, "hint": "Jedna strona ma datę. Jeden dokument mówi, gdzie profesor był tego dnia." },
+    { "id": "q1", "text": "Co oznacza „klasa S, wariant K”?", "options": ["Złoże srebra, wariant kopalniany", "Struktura, krzemień pasiasty jako przewodnik: klasyfikacja wymyślona, żeby pisać bez pisania", "Skala sejsmiczna", "Kod archiwalny Fundacji"], "answer": 1 },
+    { "id": "q2", "text": "Ile razy profesor odmówił Fundacji?", "options": ["Ani razu, współpracował", "Raz", "Trzy razy", "Nie wiadomo"], "answer": 2 },
+    { "id": "q3", "text": "Które punkty nie reagowały na pomiary?", "options": ["2 i 4", "3 i 5", "1 i 6", "Wszystkie reagowały"], "answer": 2 },
+    { "id": "q4", "text": "Gdzie fałszywa strona każe kopać?", "options": ["Pod Rynkiem", "Pod Collegium, od dziedzińca", "Pod katedrą", "Nigdzie, to tylko opis"], "answer": 1 },
+    { "id": "q5", "text": "Kto zyskuje, jeśli biegły uwierzy fałszywej stronie?", "options": ["Komisarz", "Uczelnia", "Ten, kto trzy razy pytał i trzy razy usłyszał nie", "Nikt"], "answer": 2 }
+  ],
+  "solution": [
+    "Strona z datą 14 października jest napisana atramentem, wyraźnie, z pełnym zdaniem o przekazaniu Fundacji. Tego dnia profesor podpisywał protokół egzaminu w Krakowie. Strona jest lepsza od prawdziwych. Dlatego jest fałszywa.",
+    "Bez niej reszta się zgadza: klasyfikacja wymyślona, żeby pisać bez pisania. Trzy odmowy. Dwa punkty, które milczą. I zdanie, którego profesor nie dokończył: kto nosi krzemień, ten jest w sieci.",
+    "Ktoś chciał, żebyś kopał pod Collegium. Nie kop."
+  ]
+}

@@ -1,6 +1,6 @@
 # SCENARIUSZ SIEDMIU SPRAW — „AKTA LESSU”
 ## Wersja 1.0 — MEGA PLOT (grono eksperckie + mistrzowie)
-**Status:** DO ZATWIERDZENIA PRZEZ ADAMA
+**Status:** ZBUDOWANE W PLATFORMIE (wszystkie 7 spraw jako szkice treści) — treść do redakcji przez Adama
 **Zasada:** każda sprawa ma własny twist, a cała gra ma jeden twist nadrzędny, którego gracz nie widzi do bramy czwartej. Nic nie zdradza finału Cz.1.
 
 ---
