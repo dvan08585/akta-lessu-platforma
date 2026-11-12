@@ -78,7 +78,7 @@ export function viewMap(app: App): HTMLElement {
     for (const i of inter) {
       const done = app.state.interludesDone.includes(i.id);
       il.append(h("div", { class: "gate-row", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) },
-        h("span", { class: "n" }, i.type === "amor" ? "♦" : i.type === "talk" ? "„”" : i.type === "beat" ? "∿" : i.type === "still" ? "❄" : "◎"), h("span", { class: "t" }, i.title, h("small", {}, i.type === "amor" ? "pies" : i.type === "talk" ? "rozmowa, jedno kłamstwo" : i.type === "beat" ? "słuchawki" : i.type === "still" ? "nieruchomo, 30 sekund" : "mikrofon albo suwak")), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
+        h("span", { class: "n" }, i.type === "amor" ? "♦" : i.type === "talk" ? "„”" : i.type === "beat" ? "∿" : i.type === "still" ? "❄" : i.type === "breath" ? "≈" : "◎"), h("span", { class: "t" }, i.title, h("small", {}, i.type === "amor" ? "pies" : i.type === "talk" ? "rozmowa, jedno kłamstwo" : i.type === "beat" ? "słuchawki" : i.type === "still" ? "nieruchomo, 30 sekund" : i.type === "breath" ? "dziesięć oddechów" : "mikrofon albo suwak")), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
     }
     sec.append(h("h3", {}, "Między sprawami"), il);
   }
@@ -462,6 +462,8 @@ export function viewAkta(app: App): HTMLElement {
 
   { const nb = newsletterBox(app, "Nowe sprawy przychodzą co dwa tygodnie. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
 
+  sec.append(h("p", { class: "faint" }, h("a", { href: "#/o-ciele" }, "Co robi z tobą ta gra: oddech, nucenie, dudnienie, bezruch, źródła.")));
+
   // Znacznik AR (strona książki pod kamerą)
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Znacznik w książce"), h("p", { class: "muted" }, "Na końcu każdego rozdziału jest siedmiobok w czarnej ramce. Skieruj na niego kamerę: nad stroną uniesie się przekrój z tą jedną bramą. Bez aplikacji."),
     h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "ar/" }, "Otwórz kamerę"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "ar/druk.html", target: "_blank" }, "Znaczniki do druku"))));
@@ -478,5 +480,35 @@ export function viewAkta(app: App): HTMLElement {
   const b2 = h("button", { onclick: () => { const st = importCode(inp2.value); if (!st) { toast("Nieprawidłowy kod."); return; } Object.assign(app.state, st); save(app.state); toast("Wznowiono."); go("#/mapa"); } }, "Wznów");
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Wznowienie na innym urządzeniu"), h("div", { class: "row" }, inp2, b2)));
   sec.append(h("p", {}, h("button", { class: "ghost", onclick: () => { if (confirm("Wyczyścić cały postęp na tym urządzeniu?")) { reset(); location.reload(); } } }, "Zacznij od nowa")));
+  return sec;
+}
+
+/** Co robi z tobą ta gra: bez obietnic, ze źródłami. */
+export function viewBody(app: App): HTMLElement {
+  const sec = h("section", { class: "fade-in" }, topbar(app, "#/akta"), h("h2", {}, "Co robi z tobą ta gra"));
+  const P = (t: string) => h("p", {}, t);
+  const S = (t: string, href: string) => h("li", {}, h("a", { href, target: "_blank", rel: "noopener" }, t));
+  sec.append(
+    P("Kilka scen prosi twoje ciało o coś, czego zwykle nie robisz: nucisz, oddychasz wolniej, trzymasz ręce nieruchomo, słuchasz dwoma uszami naraz. Nie obiecujemy, że to leczy. Piszemy, co o tym wiadomo."),
+    h("h3", {}, "Oddech (Woda)"),
+    P("Oddech w tempie około sześciu na minutę synchronizuje rytm serca z oddechem i daje największą zmienność rytmu serca. Przegląd badań z 2018 roku i metaanaliza z 2024 roku na 1133 osobach wiążą wolny oddech z niższym napięciem i stresem. Scena „Woda” prowadzi dokładnie to tempo: pięć sekund wdech, pięć wydech, dziesięć razy."),
+    h("h3", {}, "Nucenie (Płyta Chladniego)"),
+    P("Nucenie zwiększa ilość tlenku azotu w nosie kilkunastokrotnie w porównaniu ze zwykłym wydechem (badanie na dziesięciu osobach z 2002 roku). Czy to ma znaczenie dla zdrowia, nie wiadomo. Wiadomo, że nucenie to wydłużony wydech przez nos, czyli znów wolny oddech."),
+    h("h3", {}, "Dudnienie różnicowe (Ton dolny)"),
+    P("Dwa tony o różnych częstotliwościach w dwóch uszach dają wrażenie dudnienia, które nie istnieje w żadnym uchu osobno. Metaanaliza 22 badań z 2019 roku znalazła mały do średniego efekt na uwagę, pamięć i lęk, ale wyniki zależą od częstotliwości i czasu, a nowsze przeglądy są sprzeczne. „Ton dolny” ma 18 Hz, bo tyle ma dron pod Sandomierzem w książce. Nie wprowadza w żaden „stan”. Pozwala usłyszeć coś, czego głośnik nie odda."),
+    h("h3", {}, "Bezruch (Zimno)"),
+    P("Trzydzieści sekund uwagi na własne ręce. Nie nazywamy tego medytacją. Działa lepiej bez nazwy."),
+    h("h3", {}, "Zdziwienie"),
+    P("Badania nad doświadczeniem zdumienia (ang. awe) wiążą je z niższym stresem i większą życzliwością wobec innych. Cała ta gra jest o tym, żeby zdziwić się czymś, co masz w kieszeni albo w gardle."),
+    h("h3", {}, "Ostrożnie"),
+    P("Dudnienia i migające obrazy mogą przeszkadzać osobom z padaczką lub migreną: pomiń „Ton dolny”, jeśli to ciebie dotyczy. Dźwięk i obraz z mikrofonu i kamery liczą się w telefonie i nigdzie nie są wysyłane."),
+    h("h3", {}, "Źródła"),
+    h("ul", { class: "faint" },
+      S("Zaccaro i in. 2018, wolny oddech, przegląd systematyczny", "https://www.frontiersin.org/articles/10.3389/fnhum.2018.00353/full"),
+      S("Metaanaliza wolnego oddechu 2024, n = 1133", "https://link.springer.com/article/10.1007/s12671-023-02294-2"),
+      S("Weitzberg i Lundberg 2002, nucenie i tlenek azotu", "https://pubmed.ncbi.nlm.nih.gov/12119224/"),
+      S("Garcia-Argibay i in. 2019, metaanaliza dudnień różnicowych", "https://pubmed.ncbi.nlm.nih.gov/30073406/"),
+      S("Keltner i Haidt 2003, Approaching awe", "https://doi.org/10.1080/02699930302297")),
+    h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy"));
   return sec;
 }

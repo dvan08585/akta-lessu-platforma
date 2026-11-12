@@ -1,6 +1,6 @@
 import { App } from "./app";
 import { startLess } from "./ui/less";
-import { viewIntro, viewMap, viewGate, viewNotebook, viewAkta } from "./ui/views";
+import { viewIntro, viewMap, viewGate, viewNotebook, viewAkta, viewBody } from "./ui/views";
 import { viewInterlude } from "./ui/interludes";
 import { installAnalytics } from "./engine/track";
 
@@ -19,6 +19,7 @@ function route() {
   else if (hash.startsWith("#/mapa")) view = viewMap(app);
   else if (hash.startsWith("#/zeszyt")) view = viewNotebook(app);
   else if (hash.startsWith("#/akta")) view = viewAkta(app);
+  else if (hash.startsWith("#/o-ciele")) view = viewBody(app);
   else view = viewIntro(app);
   root.replaceChildren(view);
   window.scrollTo({ top: 0 });

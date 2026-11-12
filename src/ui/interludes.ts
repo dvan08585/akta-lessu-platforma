@@ -5,7 +5,8 @@ import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 
 export interface Interlude {
-  id: string; type: "amor" | "talk" | "plate" | "beat" | "still"; after: number; title: string;
+  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath"; after: number; title: string;
+  cycles?: number; inhale?: number; exhale?: number;
   audio?: string; q?: string; options?: string[]; answer?: number; seconds?: number;
   lines?: string[];
   intro?: string; person?: string; questions?: { q: string; a: string }[]; lie?: number; reveal?: string; wrong?: string;
@@ -26,7 +27,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   if (it.after > passed) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, `Po ${it.after} przebytych bramach.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   sec.append(h("p", { class: "faint" }, "Między sprawami"), h("h2", {}, it.title));
-  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else renderPlate();
+  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else renderPlate();
   return sec;
 
   function finish(note: string) {
@@ -122,6 +123,62 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     });
     // zapas bez czujnika: puszczenie przycisku = drgnięcie
     start.addEventListener("pointerdown", () => { jitter = 0; });
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Woda: oddech w tempie 5/5 (ok. 6 oddechów na minutę). Tafla gładzi się, gdy wydech jest równy. Mikrofon opcjonalny; zapas: palec na ekranie przy wydechu. */
+  function renderBreath() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const cycles = it.cycles ?? 10, tIn = (it.inhale ?? 5) * 1000, tOut = (it.exhale ?? 5) * 1000;
+    const canvas = h("canvas", { class: "plate water", width: "600", height: "600", "aria-label": "Tafla wody w krypcie" }) as HTMLCanvasElement;
+    const phaseEl = h("p", { class: "breath-phase" }, "…");
+    const count = h("p", { class: "mono muted" }, `0 / ${cycles}`);
+    const micBtn = h("button", {}, "Pozwól tafli słuchać");
+    const start = h("button", { class: "primary" }, "Zacznij");
+    const verdict = h("div");
+    sec.append(canvas, phaseEl, count, h("div", { class: "verdict" }, start, micBtn), h("p", { class: "faint" }, "Nic nie jest nagrywane ani wysyłane: dźwięk liczy się w telefonie i znika."), verdict);
+    const ctx = canvas.getContext("2d")!;
+    let running = false, finished = done, done_cycles = 0, calm = 0, touching = false, mic: AnalyserNode | null = null, micBuf: Float32Array | null = null, baseline = 0.004;
+    canvas.addEventListener("pointerdown", () => { touching = true; }); addEventListener("pointerup", () => { touching = false; });
+    const rms = () => { if (!mic || !micBuf) return null; mic.getFloatTimeDomainData(micBuf); let s = 0; for (let i = 0; i < micBuf.length; i++) s += micBuf[i] * micBuf[i]; return Math.sqrt(s / micBuf.length); };
+    let t0 = 0;
+    function draw(now: number) {
+      const period = tIn + tOut; const elapsed = running ? now - t0 : 0; const cyc = Math.floor(elapsed / period); const ph = elapsed % period; const inhale = ph < tIn;
+      const target = inhale ? ph / tIn : 1 - (ph - tIn) / tOut; // 0..1 "pełność płuc"
+      // ocena wydechu: mikrofon (szum wydechu powyżej tła) albo dotyk
+      if (running && !inhale) { const r = rms(); const ok = r !== null ? r > baseline * 1.6 : touching; calm += ok ? 0.012 : -0.006; }
+      calm = Math.max(0, Math.min(1, calm));
+      if (running && cyc > done_cycles) { done_cycles = cyc; count.textContent = `${Math.min(cyc, cycles)} / ${cycles}`; }
+      phaseEl.textContent = !running ? "…" : inhale ? "wdech" : "wydech";
+      // tafla: fale o amplitudzie malejącej z „calm”
+      ctx.fillStyle = "#101a1f"; ctx.fillRect(0, 0, 600, 600);
+      const amp = 18 * (1 - calm) + 1.5;
+      for (let y = 40; y < 600; y += 22) {
+        ctx.beginPath(); ctx.strokeStyle = `rgba(90,125,149,${0.25 + 0.5 * calm})`; ctx.lineWidth = 1.2;
+        for (let x = 0; x <= 600; x += 6) { const yy = y + Math.sin(x / 38 + now / 700 + y / 50) * amp * Math.sin(now / 900 + y); x === 0 ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy); }
+        ctx.stroke();
+      }
+      // dno widoczne, gdy spokojnie: spoiny posadzki
+      ctx.globalAlpha = calm * 0.8; ctx.strokeStyle = "#c9a86a"; ctx.lineWidth = 1;
+      for (let i = 1; i < 6; i++) { ctx.beginPath(); ctx.moveTo(100 * i, 80); ctx.lineTo(100 * i, 520); ctx.stroke(); ctx.beginPath(); ctx.moveTo(80, 100 * i - 20); ctx.lineTo(520, 100 * i - 20); ctx.stroke(); }
+      ctx.globalAlpha = 1;
+      // krąg oddechu
+      const r = 60 + target * 120; ctx.beginPath(); ctx.arc(300, 300, r, 0, Math.PI * 2); ctx.strokeStyle = "#e8e0cf"; ctx.lineWidth = 2; ctx.stroke();
+      if (running && cyc >= cycles && !finished) { finished = true; running = false; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("p", { class: "faint" }, "Dlaczego to działa: ", h("a", { href: "#/o-ciele" }, "co robi z tobą ta gra")), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: dziesięć oddechów.`); }
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+    start.addEventListener("click", () => { if (running) return; running = true; t0 = performance.now(); start.disabled = true; start.textContent = "Oddychaj"; });
+    micBtn.addEventListener("click", async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const ac = new AudioContext(); const src = ac.createMediaStreamSource(stream); mic = ac.createAnalyser(); mic.fftSize = 2048; src.connect(mic); micBuf = new Float32Array(mic.fftSize);
+        micBtn.disabled = true; micBtn.textContent = "Tafla słucha. Kalibruję ciszę…";
+        // kalibracja: 2,5 s ciszy = poziom zero (badania: progi absolutne zawodzą między telefonami)
+        const samples: number[] = []; const iv = setInterval(() => { const r = rms(); if (r !== null) samples.push(r); }, 100);
+        setTimeout(() => { clearInterval(iv); samples.sort((a, b) => a - b); baseline = Math.max(0.002, samples[Math.floor(samples.length / 2)] || 0.004); micBtn.textContent = "Tafla słucha"; }, 2500);
+      } catch { toast("Bez mikrofonu: trzymaj palec na tafli, kiedy wydychasz."); }
+    });
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
   }
 

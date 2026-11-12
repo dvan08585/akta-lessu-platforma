@@ -265,5 +265,16 @@
     "intro": "Piwnica pod zamkiem. O dwa stopnie zimniej niż obok. Weź telefon w obie dłonie i trzymaj go nieruchomo. Zupełnie. Pasek rośnie, dopóki ręce nie drżą. Przy trzydziestu trzech stopniach drżenie jest silne. Przy trzydziestu jeden ustaje, i to jest zły znak.",
     "seconds": 30,
     "reveal": "Trzydzieści sekund. Ręce zaczęły drżeć wcześniej, niż myślałeś, bo ciało nie umie trzymać ciepła bez ruchu. Ten, kto leży pod lessem, nie ma wyboru. Trzęsie się, dopóki może. Potem przestaje. Marek trzyma. Czeka."
+  },
+  {
+    "id": "woda",
+    "type": "breath",
+    "after": 3,
+    "title": "Woda",
+    "intro": "Krypta pod katedrą. Czterdzieści dwa centymetry wody, cieplejszej, niż powinna. Tafla drży, bo ty drżysz. Anzelm: „Oddychaj tak, jak oddycha woda, kiedy nikt jej nie rusza.” Pięć sekund wdech nosem, pięć sekund wydech. Dziesięć razy. Jeśli pozwolisz na mikrofon, tafla usłyszy twój wydech. Jeśli nie, trzymaj palec na ekranie, kiedy wydychasz.",
+    "cycles": 10,
+    "inhale": 5,
+    "exhale": 5,
+    "reveal": "Sto sekund. Tafla jest gładka i widać dno: spoiny posadzki, przez które przychodzi ciepło. Nic nie zrobiłeś. Oddychałeś wolniej, niż oddychasz zwykle, i to wystarczyło, żeby woda przestała drżeć. Zapamiętaj to tempo. Będzie potrzebne niżej."
   }
 ]
