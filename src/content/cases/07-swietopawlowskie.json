@@ -65,7 +65,7 @@
     "promptUnstable": "Pociągnąłeś cegłę. Brama, którą otworzyłeś, zabiera powietrze z tego korytarza. Jedna osoba nie wystarczy. Potrzebujesz dwóch połówek od dwóch różnych ludzi.",
     "ask": "Nie mogę oddychać w pojedynkę. Sześć bram w Aktach Lessu za mną, do siódmej potrzebuję twojej połowy klucza. Moja:",
     "refuse": "To twoja własna połowa. Sam ze sobą nie oddychasz.",
-    "register": "1. Brama Pierwsza (Wzg. Żmigród) — rozpoznana przez biegłego\\n2. Brama Druga (Wzg. Katedralne) — rozpoznana przez biegłego\\n3. Brama Trzecia (Wzg. Miejskie) — rozpoznana przez biegłego\\n4. Brama Czwarta (Wzg. Staromiejskie) — rozpoznana przez biegłego\\n5. Brama Piąta (Wzg. Zamkowe) — rozpoznana przez biegłego\\n6. Brama Szósta (Wzg. Collegium) — rozpoznana przez biegłego\\n7. Brama Siódma (Wzg. Świętopawłowskie) — [puste]\\nAdnotacja: „Biegły dostarczy siódmy status do końca dnia. — S.”",
+    "register": "1. Brama Pierwsza (Wzg. Żmigród) — rozpoznana przez biegłego\n2. Brama Druga (Wzg. Katedralne) — rozpoznana przez biegłego\n3. Brama Trzecia (Wzg. Miejskie) — rozpoznana przez biegłego\n4. Brama Czwarta (Wzg. Staromiejskie) — rozpoznana przez biegłego\n5. Brama Piąta (Wzg. Zamkowe) — rozpoznana przez biegłego\n6. Brama Szósta (Wzg. Collegium) — rozpoznana przez biegłego\n7. Brama Siódma (Wzg. Świętopawłowskie) — [puste]\nAdnotacja: „Biegły dostarczy siódmy status do końca dnia. — S.”",
     "registerQuestion": "Przeszliście. Wiesz, co jest pod Wzgórzem Świętopawłowskim. Fundacja czeka na siódmą pozycję do końca dnia. Wpisać?",
     "yes": "Tak, wpisz",
     "no": "Nie",
