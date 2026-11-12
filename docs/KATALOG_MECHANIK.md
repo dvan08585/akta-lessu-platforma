@@ -108,3 +108,50 @@ Wszystko powyżej działa w Safari i Chrome bez aplikacji, przez HTTPS, za zgod�
 6. **Strona Fundacji**: jeden wieczór, osobna domena albo podstrona.
 
 Zasada SCRAP na koniec: każda z tych rzeczy ma działać bez tłumaczenia, w pierwszej próbie, a drugiej próby ma chcieć się spróbować przy kimś.
+
+---
+---
+
+# ANEKS B — CO ROBI ŚWIAT, CO MÓWIĄ BADANIA, GDZIE JEST RYZYKO (listopad 2026)
+
+## B.1 Regiony: co rośnie, co pada
+| Region | Stan | Wniosek dla nas |
+|--------|------|-----------------|
+| **Japonia** (nazotoki) | Rynek ~100 mld JPY (2025), pierwszy raz powyżej 100. Rośnie: spacerowe gry miejskie (45 ze 171 eventów SCRAP w 2025; jedna trasa metra: 20 tys. osób w 4 miesiące), gadżety i książki (seria „5-minutowy Real Escape Game": 330 tys. egz.). | Tryb spacerowy z fizycznym zeszytem i pieczątkami to nie dodatek, to główny format wzrostu. |
+| **Chiny** (jubensha) | Po szoku 2022–23 (60% lokali zamkniętych) rynek skonsolidowany, sieci rosną. Trend: od „kto zabił" do skryptów emocjonalnych i romansowych, sesje 6–10 h z prowadzącym. | Rozmowy z postaciami i role dla grupy czytelników (wieczór w kawiarni z kartami ról) mają popyt bez technologii. |
+| **USA / UK** (immersive) | Sleep No More zamknięte (I 2025), Burnt City zamknięte, Meow Wolf zwolnienia, Van Gogh bankructwo po 7 mln biletów. Widzowie cenią cenę do wartości i wspólnotę. | Padają formaty drogie i pasywne. Nasz model (zero kosztów, telefon, wspólnota kart) jest po właściwej stronie. |
+| **Niemcy** (Kosmos EXIT) | >30 mln egz. na świecie, książka EXIT >275 tys. | Książka-gra jako przedmiot sprzedaje się masowo; łączyć papier z WWW. |
+| **Holandia / Nordic** | Sherlocked nr 1 na świecie 2025: pokoje jako pełne narracje z aktorami. Nordic larp: „chamber larp", 2 h, ciało jako interfejs, bez techniki. | Dwugodzinny scenariusz dla biblioteki/księgarni z kartami postaci: tanie, mocne, do zrobienia z Twoim tekstem. |
+
+## B.2 Gry sensoryczne: co zachwyca, co nudzi
+- **Zachwyca, gdy sensor jest diegetyczny:** głos do ducha (Phasmophobia), bieg przed zombie (Zombies, Run!: >10 mln pobrań), czas rzeczywisty (Lifeline, Bury Me My Love). Sensor jest częścią świata, nie sterowaniem.
+- **Nudzi, gdy sensor jest inputem:** krzyk = skok (Scream Go Hero: viral 2017, wygasł w miesiące). Device 6: przechylanie jako efekt, nie mechanika.
+- **Binaural:** badania (Moreira 2019; Mavridou 2025, n=68) pokazują wyższą immersję nawet, gdy gracz nie wie, że słucha binauralnie. Działa.
+- **Lekcja dla nas:** nasze gesty są diegetyczne (drżenie = hipotermia, oddech = korytarz, ciemność = Collegium). To dobry kierunek. Warunek: każdy sensor najwyżej raz lub dwa w całej grze, potem powrót do dokumentów.
+
+## B.3 Badania i liczby, które zmieniają decyzje
+- **Uprawnienia:** ~10% ludzi odrzuca prośbę o mikrofon/kamerę; tylko 23% „zawsze" zezwala; zgoda rośnie, gdy cel jest zrozumiały w momencie prośby. **U nas:** prosić dopiero w scenie, z przycisku, po zdaniu fabularnym (już tak jest: „Włącz mikrofon", „Trzymam"). Nigdy na wejściu.
+- **iOS:** DeviceMotion wymaga zgody z gestu kliknięcia, tylko HTTPS (mamy). Mikrofon na iOS przełącza dźwięk na głośnik i ścisza: **nie łączyć** mikrofonu z binauralem w jednej scenie (u nas są osobno: dobrze). PWA na iOS czyści pamięć po 7 dniach bez użycia: **kod wznowienia jest ważniejszy, niż myśleliśmy**; pokazać go wyraźniej.
+- **Słuchawki:** realnie 30–50% graczy w danej chwili ich nie ma. „Ton dolny" potrzebuje wersji bez słuchawek: widzialna fala 18 Hz albo wibracja, ze świadomą degradacją („bez słuchawek zobaczysz, nie usłyszysz").
+- **Dostępność:** każdy sygnał dźwiękowy ma mieć odpowiednik wizualny, każdy gest tekstowy. Mamy suwak przy płycie i przycisk przy zimnie; brakuje przy tonie dolnym.
+- **Oczekiwania graczy łamigłówek:** „rozsądna szansa" bez podpowiedzi, zero skoków logicznych, **red herringi to najczęstsza skarga** (max jeden), jasny sygnał, że i kiedy popełniłem błąd, gra bez dźwięku, cofanie wyborów. **U nas:** fałszywa strona w sprawie 5 to celowy red herring i jedyny; zawieszka daje sygnał błędu bez liczb; wszystko działa bez dźwięku poza dwoma przerywnikami.
+
+## B.4 Krytyka: osiem ryzyk tego projektu i co z nimi robimy
+1. **Odmowa uprawnień.** Mitygacja: prośba w scenie, zapas bez sensora przy każdym geście (jest przy płycie i zimnie; dodać przy tonie dolnym).
+2. **Fragmentacja telefonów.** Progi absolutne zawiodą (inny mikrofon, inny akcelerometr). Mitygacja: kalibracja na starcie sceny (3 s ciszy / 3 s bezruchu = poziom zero), tolerancje względne.
+3. **Wygaśnięcie nowości.** Mitygacja: siedem gestów na całą grę, nie więcej; każdy raz; reszta to dokumenty.
+4. **Wrażenie „tech demo".** Mitygacja: wynik gestu staje się dokumentem w aktach (zapis z płyty wchodzi do zeszytu i do sprawy), nie odznaką.
+5. **Objętość treści.** Jubensha i SCRAP pokazują: nośnikiem jest tekst. Proporcja: jedna zagadka sensoryczna na pięć dokumentowych. Mamy 7 spraw + 11 przerywników: proporcja dziś 7:11 to za dużo przerywników w stosunku do dokumentów; po Twojej redakcji dokumenty mają urosnąć, nie gesty.
+6. **Wyciek spoilerów.** Wszystko jest w kliencie, więc ktoś przeczyta JSON. Mitygacja: w kliencie nigdy nie ma finału książki (nie ma), kalendarz publikacji, warianty na miejscu. Nie da się ukryć tekstu w statycznej stronie i nie próbujemy.
+7. **Dostępność.** Wizualny odpowiednik dla tonu dolnego, tekst dla gestów, kontrast. Do zrobienia.
+8. **Słuchawki, hałas, prywatność.** Zero wysyłania audio i obrazu gdziekolwiek (prawda: wszystko liczy się w telefonie); napisać to w scenie jednym zdaniem.
+
+## B.5 Pięć pomysłów z innych regionów, których jeszcze nie mamy
+1. **Spacer nazotoki z zeszytem** sprzedawanym w CIT i w księgarni, pieczątki w lokalach (Toei: 20 tys. osób w 4 miesiące).
+2. **Wieczór jubensha „noc przed zbrodnią"**: 4–6 czytelników, tajne role (Wanda, Łutowicz, Berbeć, Anzelm, Stańczyk, Zieliński), prowadzący, dwie godziny w kawiarni. Bez technologii. Scenariusz do napisania z Twojego tekstu.
+3. **Jawna trudność po koreańsku**: każdy przerywnik ma etykietę „wejście / średnio / dla wytrwałych", żeby nikt nie zaczął od najtrudniejszego sensora.
+4. **Chamber larp dla biblioteki**: 2 h, karty postaci, monolog wewnętrzny jako mechanika.
+5. **Wątek w czasie rzeczywistym**: wiadomości od postaci przez kilka dni między sprawami (Lifeline), z opcją „pomiń czekanie". Spoiwo dla mikro-akt.
+
+## B.6 Werdykt
+Kierunek „ciało i świat jako interfejs" jest potwierdzony przez to, co rośnie (spacer, papier, wspólnota, tanie) i przez to, co pada (drogie, pasywne). Nasze gesty są diegetyczne, czyli po dobrej stronie granicy z gadżetem. Trzy rzeczy do poprawy natychmiast: wersja bez słuchawek dla tonu dolnego, kalibracja progów na starcie sceny, wyraźniejszy kod wznowienia (iOS kasuje pamięć po 7 dniach). I jedna zasada na przyszłość: siedem gestów, nie dwadzieścia.
