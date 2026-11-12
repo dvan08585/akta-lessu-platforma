@@ -37,5 +37,7 @@
   },
   "analyticsDomain": "",
   "testCodeHash": "9007b874265c529d434ac1b48a0a089c51ed78a5dcf482bf5d8313440524cc3b",
-  "testCodeNote": "Kod testowy (usunąć przed premierą): zdejmuje kolejność spraw, kalendarz i milczenie zawieszki. Nie daje połówek klucza."
+  "testCodeNote": "Kod testowy (usunąć przed premierą): zdejmuje kolejność spraw, kalendarz i milczenie zawieszki. Nie daje połówek klucza.",
+  "doneCodeHash": "5ef083990ee5ecbef017f42be526b29509fede32fdac55e5872417e5d7ce758f",
+  "doneCodeNote": "Kod testowy (usunąć przed premierą): zaznacza wszystkie sprawy i gesty jako wykonane, stopkę jako zauważoną. Do oglądania finału, listów i rejestru."
 }

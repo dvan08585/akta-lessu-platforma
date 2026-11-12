@@ -9,3 +9,4 @@ Każdy rozdział kończy się siedmiobokiem i jednym słowem. Czytelnik wpisuje 
 - Dobra praktyka: słowo z ostatniego zdania rozdziału, ale nie najbardziej oczywiste. Nie używać nazw własnych z okładki.
 
 - **Kod testowy:** BIEGŁY. Zdejmuje kolejność spraw, kalendarz publikacji i milczenie zawieszki na tym urządzeniu. Nie generuje cudzych połówek klucza do finału. Usunąć z `config.json` (`testCodeHash`) przed premierą.
+- **Kod testowy KONIEC:** zaznacza wszystkie sprawy i gesty jako wykonane (do oglądania finału i listów). Usunąć `doneCodeHash` przed premierą.

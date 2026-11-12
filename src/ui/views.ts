@@ -469,6 +469,12 @@ export function viewAkta(app: App): HTMLElement {
       app.state.testMode = true; app.state.unlockedChapters = app.chapters.map((c) => c.n); save(app.state);
       toast("Tryb biegłego: wszystkie bramy otwarte, zawieszka reaguje wszędzie."); input.value = ""; go("#/mapa"); return;
     }
+    if (app.cfg.doneCodeHash && (await codeMatches(val, app.cfg.doneCodeHash))) {
+      app.state.testMode = true; app.state.unlockedChapters = app.chapters.map((c) => c.n);
+      app.state.solvedCases = app.cases.map((c) => c.n); app.state.sawFooter = true;
+      app.state.interludesDone = Array.from(new Set([...app.state.interludesDone, ...Object.values(GESTURE_OF)]));
+      save(app.state); toast("Tryb końca: wszystkie sprawy i gesty zaliczone."); input.value = ""; go("#/mapa"); return;
+    }
     let hit: number | null = null;
     for (const ch of app.chapters) if (ch.codeHash && (await codeMatches(val, ch.codeHash))) { hit = ch.n; break; }
     if (hit === null) { toast("Zawieszka zimna. To nie ten kod."); return; }

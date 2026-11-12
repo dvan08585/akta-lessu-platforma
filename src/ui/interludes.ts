@@ -16,6 +16,7 @@ export interface Interlude {
 }
 
 export function interludeAvailable(app: App, i: Interlude): boolean {
+  if (app.state.testMode) return true;
   if (i.gate !== undefined) { const c = app.caseForGate(i.gate); return !!c && (app.state.solvedCases.includes(c.n) || app.state.testMode); }
   return (i.after ?? 0) <= app.passed();
 }
