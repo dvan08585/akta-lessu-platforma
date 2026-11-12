@@ -195,11 +195,16 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       ctx.globalAlpha = 1;
       // krąg oddechu
       const r = 60 + target * 120; ctx.beginPath(); ctx.arc(300, 300, r, 0, Math.PI * 2); ctx.strokeStyle = "#e8e0cf"; ctx.lineWidth = 2; ctx.stroke();
-      if (running && cyc >= cycles && !finished) { finished = true; running = false; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("p", { class: "faint" }, "Dlaczego to działa: ", h("a", { href: "#/o-ciele" }, "co robi z tobą ta gra")), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: dziesięć oddechów.`); }
+      if (running && cyc >= cycles && !finished) {
+        running = false;
+        // Liczy się oddech, nie czas: tafla musi być gładka. Bez wydechu (mikrofon) albo palca na tafli przy wydechu „calm" nie urośnie.
+        if (calm >= 0.7) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("p", { class: "faint" }, "Dlaczego to działa: ", h("a", { href: "#/o-ciele" }, "co robi z tobą ta gra")), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: dziesięć oddechów.`); }
+        else { calm = 0; done_cycles = 0; count.textContent = `0 / ${cycles}`; start.disabled = false; start.textContent = "Jeszcze raz"; toast("Tafla drży. Oddychałeś z nią, czy tylko czekałeś? Wydech ma być słyszalny albo palec na tafli."); }
+      }
       requestAnimationFrame(draw);
     }
     requestAnimationFrame(draw);
-    start.addEventListener("click", () => { if (running) return; running = true; t0 = performance.now(); start.disabled = true; start.textContent = "Oddychaj"; });
+    start.addEventListener("click", () => { if (running) return; running = true; t0 = performance.now(); calm = 0; done_cycles = 0; start.disabled = true; start.textContent = "Oddychaj"; });
     micBtn.addEventListener("click", async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
