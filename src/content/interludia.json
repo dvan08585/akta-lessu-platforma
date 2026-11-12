@@ -420,5 +420,14 @@
     "steps": 1200,
     "intro": "Korytarz z Opatowskiej do komnaty ma około kilometra. Tysiąc dwieście kroków. Nie musisz być w Sandomierzu. Weź telefon do kieszeni albo do ręki i idź: po mieszkaniu, po ulicy, po parku. Licznik pamięta między dniami. Ostatnie dwieście kroków idzie się z zatrzymanym oddechem, bo powietrze rzednie.",
     "reveal": "Tysiąc dwieście. Tyle kroków dzieli piwnicę na Opatowskiej od komnaty pod Wzgórzem Świętopawłowskim. Przeszedłeś to po własnym mieszkaniu, po swoim mieście, i nikt tego nie widział. Aneta szła dwie godziny. Tobie zajęło to tyle, ile zajęło."
+  },
+  {
+    "id": "dwa-glosy",
+    "type": "duet",
+    "after": 4,
+    "title": "Dwa głosy",
+    "level": "we dwoje",
+    "intro": "Anzelm kładzie na płycie drugą garść piasku. „Jeden ton daje jeden wzór. Dwa tony w kwincie dają wzór, którego jeden człowiek nie zrobi.” Dwie osoby, jeden telefon między wami. Jedna nuci niżej, druga wyżej, w odległości kwinty: jak początek „Wlazł kotek na płotek”, dwa pierwsze dźwięki. Trzymajcie trzy sekundy. Jeśli jesteś sam, telefon zanuci za drugą osobę.",
+    "reveal": "Dwa głosy, trzy do dwóch. Płyta rozpoznała oba, chociaż mikrofon dostał jeden sygnał. Rozdzieliła je tak, jak Aneta rozdziela warstwy w rdzeniu: po tym, co się powtarza. Helena nuciła sama. Halina nuciła sama. Wy nie."
   }
 ]

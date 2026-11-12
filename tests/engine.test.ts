@@ -180,3 +180,15 @@ describe("trzymanie oktawy", () => {
     expect(s.push(400)).toBeLessThan(210);
   });
 });
+
+import { detectDuet } from "../src/engine/duet";
+describe("dwa głosy: analiza widma", () => {
+  const sr = 44100, N = 8192, binHz = sr / N;
+  // syntetyczne widmo w dB: harmoniczne podanych tonów z malejącą energią, tło -90 dB
+  const spectrum = (tones: number[]) => { const s = new Float32Array(N / 2).fill(-90); for (const f of tones) for (let k = 1; k <= 5; k++) { const b = Math.round((f * k) / binHz); if (b < s.length) s[b] = Math.max(s[b], -10 - k * 6); } return s; };
+  it("jeden głos: f1 bez f2", () => { const r = detectDuet(spectrum([196]), binHz); expect(Math.abs(r.f1! - 196)).toBeLessThan(4); expect(r.f2).toBeNull(); expect(r.fifth).toBe(false); });
+  it("kwinta G–D: oba głosy i warunek spełniony", () => { const r = detectDuet(spectrum([196, 294]), binHz); expect(Math.abs(r.f1! - 196)).toBeLessThan(4); expect(Math.abs(r.f2! - 294)).toBeLessThan(5); expect(r.fifth).toBe(true); });
+  it("oktawa to nie drugi głos", () => { const r = detectDuet(spectrum([196, 392]), binHz); expect(r.f2).toBeNull(); });
+  it("tercja to dwa głosy, ale nie kwinta", () => { const r = detectDuet(spectrum([196, 247]), binHz); expect(r.f2).not.toBeNull(); expect(r.fifth).toBe(false); });
+  it("cisza", () => { expect(detectDuet(new Float32Array(N / 2).fill(-100), binHz).f1).toBeNull(); });
+});

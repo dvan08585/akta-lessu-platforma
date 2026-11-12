@@ -3,9 +3,10 @@ import { topbar } from "./views";
 import type { App } from "../app";
 import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
+import { detectDuet } from "../engine/duet";
 
 export interface Interlude {
-  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace" | "steps"; after?: number; gate?: number; title: string; level?: string;
+  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace" | "steps" | "duet"; after?: number; gate?: number; title: string; level?: string;
   secret?: string[]; steps?: number;
   cycles?: number; inhale?: number; exhale?: number;
   audio?: string; q?: string; options?: string[]; answer?: number; seconds?: number;
@@ -30,7 +31,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} przebytych bramach.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   sec.append(h("p", { class: "faint" }, `Między sprawami${it.level ? " · " + it.level : ""}`), h("h2", {}, it.title));
-  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else if (it.type === "whistle") renderWhistle(); else if (it.type === "touch7") renderTouch7(); else if (it.type === "hold") renderHold(); else if (it.type === "mirror") renderMirror(); else if (it.type === "trace") renderTrace(); else if (it.type === "steps") renderSteps(); else renderPlate();
+  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else if (it.type === "whistle") renderWhistle(); else if (it.type === "touch7") renderTouch7(); else if (it.type === "hold") renderHold(); else if (it.type === "mirror") renderMirror(); else if (it.type === "trace") renderTrace(); else if (it.type === "steps") renderSteps(); else if (it.type === "duet") renderDuet(); else renderPlate();
   return sec;
 
   function finish(note: string) {
@@ -532,6 +533,56 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     });
     addEventListener("hashchange", () => { document.body.style.filter = ""; save(app.state); }, { once: true });
     update();
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Dwa głosy: widmo (FFT 8192), dwie rodziny harmonicznych, warunek kwinty 3:2. Solo: telefon gra drugi głos z głośnika. */
+  function renderDuet() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const canvas = h("canvas", { class: "plate", width: "600", height: "600", "aria-label": "Płyta z piaskiem, dwa głosy" }) as HTMLCanvasElement;
+    const status = h("p", { class: "mono muted" }, "cisza");
+    const micBtn = h("button", { class: "primary" }, "Włącz mikrofon");
+    const soloBtn = h("button", {}, "Jestem sam: zanuć za mnie");
+    const verdict = h("div");
+    sec.append(canvas, status, h("div", { class: "verdict" }, micBtn, soloBtn), verdict);
+    const ctx = canvas.getContext("2d")!;
+    const N = 1400; const pts = Array.from({ length: N }, () => { const a = Math.random() * Math.PI * 2, r = Math.random(); return { a, r, j: Math.random(), x: 300 + Math.cos(a) * r * 270, y: 300 + Math.sin(a) * r * 270 }; });
+    let res: { f1: number | null; f2: number | null; fifth: boolean; ratio: number | null } = { f1: null, f2: null, fifth: false, ratio: null };
+    let hold = 0, finished = done, cSmooth = 0, ac: AudioContext | null = null, osc: OscillatorNode | null = null;
+    function draw() {
+      const c = res.fifth ? 1 : res.f1 && res.f2 ? 0.5 : res.f1 ? 0.2 : 0;
+      cSmooth += (c - cSmooth) * 0.08;
+      ctx.fillStyle = "#1a1813"; ctx.fillRect(0, 0, 600, 600); ctx.fillStyle = "#e8e0cf";
+      for (const p of pts) {
+        // jeden głos: siedem ramion; dwa głosy w kwincie: siedem ramion + wewnętrzny pierścień o pięciu (3:2 → 7 i 5 węzłów)
+        const star7 = 0.55 + 0.35 * Math.abs(Math.cos(3.5 * p.a)); const ring5 = 0.22 + 0.1 * Math.abs(Math.cos(2.5 * p.a));
+        const shape = p.j < 0.6 ? star7 : ring5; const target = p.j < 0.6 ? shape : (cSmooth > 0.75 ? ring5 : star7);
+        const r = (p.r * (1 - cSmooth) + target * cSmooth) * 270;
+        const tx = 300 + Math.cos(p.a) * r + (1 - cSmooth) * (p.j - 0.5) * 30, ty = 300 + Math.sin(p.a) * r + (1 - cSmooth) * (p.j - 0.5) * 30;
+        p.x += (tx - p.x) * 0.12; p.y += (ty - p.y) * 0.12; ctx.fillRect(p.x, p.y, 1.6, 1.6);
+      }
+      status.textContent = res.f1 ? `${res.f1.toFixed(1)} Hz${res.f2 ? ` + ${res.f2.toFixed(1)} Hz · ${res.ratio!.toFixed(2)}` : " · jeden głos"}${res.fifth ? " · kwinta" : ""}` : "cisza";
+      hold = res.fifth ? hold + 1 : Math.max(0, hold - 2);
+      if (hold > 180 && !finished) { finished = true; if (osc) { osc.stop(); osc = null; } verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: kwinta.`); try { navigator.vibrate?.(300); } catch { /* */ } }
+      requestAnimationFrame(draw);
+    }
+    draw();
+    micBtn.addEventListener("click", async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+        ac = ac ?? new AudioContext(); const src = ac.createMediaStreamSource(stream); const an = ac.createAnalyser(); an.fftSize = 8192; an.smoothingTimeConstant = 0.6; src.connect(an);
+        const spec = new Float32Array(new ArrayBuffer(an.frequencyBinCount * 4)); const binHz = ac.sampleRate / an.fftSize;
+        micBtn.disabled = true; micBtn.textContent = "Płyta słucha";
+        setInterval(() => { an.getFloatFrequencyData(spec); res = detectDuet(spec, binHz); }, 120);
+      } catch { toast("Bez mikrofonu płyta nie usłyszy ani jednego głosu."); }
+    });
+    soloBtn.addEventListener("click", () => {
+      ac = ac ?? new AudioContext(); if (ac.state === "suspended") ac.resume();
+      if (osc) { osc.stop(); osc = null; soloBtn.textContent = "Jestem sam: zanuć za mnie"; return; }
+      // telefon nuci 294 Hz (D) z głośnika; ty nucisz 196 Hz (G) niżej. Mikrofon słyszy oba.
+      osc = ac.createOscillator(); osc.type = "triangle"; osc.frequency.value = 294; const g = ac.createGain(); g.gain.value = 0.25; osc.connect(g).connect(ac.destination); osc.start();
+      soloBtn.textContent = "Telefon nuci 294 Hz. Ty nuć niżej (G). Stop";
+    });
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
   }
 
