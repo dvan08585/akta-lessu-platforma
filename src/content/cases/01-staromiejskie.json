@@ -5,7 +5,9 @@
   "title": "Biały gołąb",
   "subtitle": "Wzgórze Staromiejskie · żywioł: ziemia i ogień · grudzień 1287",
   "epigraph": "Rocznik nazwał ją zdrajczynią. Przeczytaj go jeszcze raz.",
-  "requires": { "chapter": 0 },
+  "requires": {
+    "chapter": 0
+  },
   "docs": [
     {
       "id": "rocznik-1260",
@@ -37,11 +39,10 @@
       "source": "Protokół badań archeologicznych, dziedziniec klasztoru oo. Dominikanów, Sandomierz. Kierownik: prof. J. Sarama. Sierpień 1959. Wyciąg.",
       "style": "mono",
       "paragraphs": [
-        "WARSTWA II (dziedziniec, głęb. 0,8–1,6 m): jama grobowa zbiorowa. Policzono 330 szkieletów. Ułożenie bezładne, bez szat, bez wyposażenia. U 41 osobników groty strzał typu wschodniego zaklinowane między żebrami lub w kręgach. Ślady cięć szablą na kościach czaszek i przedramion. Datowanie: zgodne z przekazem o rzezi 1260.",
-        "WARSTWA III (głęb. 1,6–2,4 m): rumowisko spalonej zabudowy drewnianej. Węgle, polepa, fragmenty ceramiki XIII w.",
-        "WARSTWA IV (głęb. 2,4–6,1 m, sondaż S-3 przy skarpie północnej): zasyp celowy. Belki dębowe, kamień łamany, ziemia mieszana. Zasyp wprowadzony OD GÓRY do dawnych wyrobisk (piwnice kupieckie?). Datowanie belek: koniec XIII w.",
-        "PONIŻEJ 6,1 m: less nienaruszony. Sondaż przerwano z powodu osuwania się ścian wykopu i słabego powietrza (uczucie duszności u dwóch pracowników, przerwa 2 h). Pod zasypem korytarz biegnie dalej w dół. Nie eksplorowano.",
-        "UWAGA: w jamie grobowej nie stwierdzono szczątków, które dałoby się datować na 1287. Przekaz o trzystu wojownikach i niewieście z 1287 nie znajduje potwierdzenia w warstwie II."
+        "WARSTWA II (dziedziniec, głęb. 0,8–1,6 m): jama grobowa zbiorowa. Policzono 330 szkieletów. Ułożenie bezładne, bez szat, bez wyposażenia. U 41 osobników groty strzał typu wschodniego między żebrami lub w kręgach. Ślady cięć szablą na czaszkach i przedramionach. Wśród szkieletów 49 mężczyzn w jednym wieku, bez śladów walki na przedramionach: zginęli, nie broniąc się.",
+        "WARSTWA III (głęb. 1,6–2,4 m): rumowisko spalonej zabudowy drewnianej. Węgle, polepa, ceramika XIII w.",
+        "WARSTWA IV (głęb. 2,4–6,1 m, sondaż S-3 przy skarpie północnej): zasyp celowy. Belki dębowe, kamień łamany, ziemia mieszana, wprowadzone OD GÓRY do dawnych wyrobisk (piwnice kupieckie). Datowanie belek: koniec XIII w. Szczątków ludzkich w zasypie nie stwierdzono.",
+        "PONIŻEJ 6,1 m: less nienaruszony przez zasyp. Korytarz biegnie dalej w dół, poza zasięg sondażu. Przerwano z powodu osuwania się ścian wykopu i słabego powietrza (duszność u dwóch pracowników). Nie eksplorowano."
       ]
     },
     {
@@ -53,44 +54,70 @@
         "LUDZIE DO BRONI: było 134, jest 131. Ubyli: Wojsław (strzała), Mikora (strzała), Dobiesław (zimno, w nocy na wale).",
         "NIEWIASTY I STARCY NA WAŁACH: było 212, jest 211. Ubyła: Halina, wdowa po Sędziwoju, córka kasztelana Piotra z Krępy. W grudniu, przed świtem, wyszła za wały. Nie wróciła.",
         "KOŻUCHY: 40. Jeden oddany wdowie po Sędziwoju, nie zwrócony.",
-        "GOŁĘBIE GRODOWE (do posłania): było 12, jest 11. Jeden biały ubył w grudniu, w noc, gdy wdowa wyszła. Nie posłano go z grodu. Powrócił rano nad Stare Wzgórze i stamtąd przyleciał do gołębnika. Kasztelan Berbeć kazał to zapisać.",
-        "KORYTARZE POD STARYM WZGÓRZEM: zasypano wejść siedem. Kasztelan Berbeć zeznał, że ziemia pracowała od spodu, nim zasypano pierwsze."
+        "GOŁĘBIE GRODOWE (do posłania): było 12, jest 11. Jeden biały ubył w noc, gdy wdowa wyszła. Z grodu go nie posyłano. Rano wrócił do gołębnika od strony południowej. Kasztelan Berbeć kazał to zapisać.",
+        "KORYTARZE POD STARYM WZGÓRZEM: zasypano wejść siedem, do głębokości, na jaką sięgały belki. Kasztelan Berbeć zeznał, że ziemia pracowała od spodu, nim zasypano pierwsze."
       ]
     }
   ],
   "questions": [
     {
       "id": "q1",
-      "text": "Kto w 1260 roku kazał otworzyć wrota Tatarom?",
-      "options": ["Przeor Sadok", "Kasztelan Piotr z Krępy", "Kasztelan Berbeć", "Setnik tatarski"],
-      "answer": 1
+      "text": "Ile lat miała wdowa po Sędziwoju, kiedy wyszła za wały?",
+      "options": [
+        "Około dwudziestu",
+        "Około trzydziestu",
+        "Około czterdziestu",
+        "Nie da się ustalić"
+      ],
+      "answer": 1,
+      "hint": "Dziecko trzech lat w 1260. Policz do 1287."
     },
     {
       "id": "q2",
-      "text": "Ile ciał z 1287 roku leży w dole na dziedzińcu klasztoru?",
-      "options": ["Trzystu wojowników i jedna kobieta", "Czterdzieści dziewięć", "Żadne", "Trzysta trzydzieści"],
+      "text": "Gdzie leżą ciała trzystu wojowników z 1287 roku?",
+      "options": [
+        "W dole na dziedzińcu, wśród 330 szkieletów",
+        "W zasypie między 2,4 a 6,1 m",
+        "Poniżej 6,1 m, tam, gdzie sondaż nie dotarł",
+        "W kościele św. Jakuba"
+      ],
       "answer": 2,
-      "hint": "Sarama liczył warstwę po warstwie."
+      "hint": "330 szkieletów ma groty i cięcia z 1260. W zasypie nie ma nikogo. Co jest niżej?"
     },
     {
       "id": "q3",
-      "text": "Jaki znak zobaczył Berbeć o świcie?",
-      "options": ["Dym z kościoła św. Jakuba", "Białego gołębia", "Ogień na wałach", "Dzwon z katedry"],
-      "answer": 1
+      "text": "Skąd Halina miała gołębia?",
+      "options": [
+        "Złapała w ruinach starego miasta",
+        "Dostała od Tatarów jako znak przymierza",
+        "Zabrała z gołębnika grodu w noc wyjścia",
+        "Nie było żadnego gołębia, kronika zmyśla"
+      ],
+      "answer": 2
     },
     {
       "id": "q4",
-      "text": "Skąd przyleciał ten znak?",
-      "options": ["Z gołębnika nowego grodu", "Z obozu chana za Wisłą", "Spod Starego Wzgórza, z ziemi", "Znad Wisły, od strony mostu"],
+      "text": "Skąd przyleciał znak, który Berbeć zobaczył o świcie?",
+      "options": [
+        "Z wałów nowego grodu, posłany przez obrońców",
+        "Z obozu chana za Wisłą",
+        "Spod Starego Wzgórza, z miejsca, gdzie nikt z obrońców nie stał",
+        "Znad Wisły, od strony przeprawy"
+      ],
       "answer": 2,
-      "hint": "Gołębia nie posłano z grodu. Wrócił znad miejsca, gdzie nikt z obrońców nie stał."
+      "hint": "Gołębia nie posłano z grodu. Wrócił od południa. Gdzie było Stare Wzgórze względem nowego?"
     },
     {
       "id": "q5",
       "text": "Kto zamknął korytarze pod Starym Wzgórzem?",
-      "options": ["Berbeć i obrońcy, belkami i kamieniem", "Tatarzy, cofając się w panice", "Halina, od spodu, zanim spadła pierwsza belka", "Nikt. Less osunął się sam."],
+      "options": [
+        "Berbeć i obrońcy, belkami i kamieniem od góry",
+        "Tatarzy, cofając się w panice",
+        "Halina, od spodu, zanim spadła pierwsza belka",
+        "Nikt. Less osunął się sam."
+      ],
       "answer": 2,
-      "hint": "Zasyp obrońców sięga 6 metrów. Ziemia pracowała głębiej i wcześniej."
+      "hint": "Zasyp obrońców kończy się na 6,1 m. Ziemia pracowała głębiej i wcześniej. Kto był głębiej?"
     }
   ],
   "solution": [
@@ -99,5 +126,9 @@
     "Zasyp obrońców sięga sześciu metrów. Poniżej less jest nienaruszony, a korytarz biegnie dalej w dół. Nikt z 1959 roku tam nie zszedł.",
     "Siedemset pięćdziesiąt trzy lata później do Sandomierza przyjechała geolożka."
   ],
-  "reward": { "kind": "text", "title": "Prolog: Krew na kamieniu (fragment)", "file": "prolog-fragment" }
+  "reward": {
+    "kind": "text",
+    "title": "Prolog: Krew na kamieniu (fragment)",
+    "file": "prolog-fragment"
+  }
 }

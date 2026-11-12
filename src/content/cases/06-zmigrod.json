@@ -6,7 +6,9 @@
   "subtitle": "Żmigród · żywioł: ziemia · zamurowany korytarz",
   "epigraph": "Zawieszka na tym wzgórzu milczy. To nie znaczy, że nic tu nie ma.",
   "type": "decision",
-  "requires": { "solvedCases": 5 },
+  "requires": {
+    "solvedCases": 5
+  },
   "docs": [
     {
       "id": "zdjecie-muru",
@@ -46,7 +48,7 @@
       "style": "hand",
       "paragraphs": [
         "Wizyta 1: nic. Wizyta 2: nic. Wizyta 3, przy murze, dłoń na wysuniętej cegle: nic.",
-        "Na pozostałych wzgórzach grzała, ziębiła, ciągnęła. Tu milczy. Nie dlatego, że nie ma bramy. Dlatego, że nie jestem gotowa. Albo dlatego, że ktoś, kto murował, wiedział, że nie będę."
+        "Na pozostałych wzgórzach grzała, ziębiła, ciągnęła. Tu milczy."
       ]
     }
   ],

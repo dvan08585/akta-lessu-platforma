@@ -5,7 +5,9 @@
   "title": "Dzwon Piotr",
   "subtitle": "Wzgórze Miejskie · żywioł: dźwięk · 1354 / 1677 / październik",
   "epigraph": "Dzwon nie odmierza czasu. Dzwon mierzy.",
-  "requires": { "solvedCases": 1 },
+  "requires": {
+    "solvedCases": 1
+  },
   "docs": [
     {
       "id": "zapiski-1354",
@@ -15,7 +17,7 @@
       "paragraphs": [
         "Na rozkaz króla Kazimierza dano cechowi murarzy trzydzieści grzywien srebra za robotę pod wzgórzem, tak za mury z cegły palonej, jak za sklepienia z kamienia, jak za posadzkę z płyt, jak za wrota z dębu i żelaza.",
         "Czynsz uiszczono w dwóch częściach: dwadzieścia grzywien po zakończeniu pierwszej kondygnacji, dziesięć po zamknięciu wrót ostatnich.",
-        "Za wrota płacono po grzywnie i dziesięć skojców od sztuki, wszystkie jednakie, z otworem na pieczęć pośrodku.",
+        "Z tego za same wrota, wszystkie jednakie, z otworem na pieczęć pośrodku, po grzywnie i dziesięć skojców od sztuki: razem grzywien dziewięć i skojców dwadzieścia i dwa. Rachuba grodowa: grzywna liczy skojców dwadzieścia i cztery.",
         "Murarzom nakazano milczenie pod karą gardła."
       ]
     },
@@ -41,7 +43,7 @@
         "12:00  dzwon katedralny (Piotr), 12 uderzeń. Ton główny 196 Hz. Składowa dolna 18,2 Hz.",
         "12:00–12:04  dominanta 18 Hz: amplituda ×6. Narasta po każdym uderzeniu. Nie zanika z dzwonem.",
         "12:10  tło: 0,9 µm/s · dominanta 18,0 Hz. Trzykrotność stanu sprzed dzwonu. Powrót do tła po ~40 min.",
-        "Uwaga odręczna na marginesie: „Pies zaczął skomleć o 11:58. Przed pierwszym uderzeniem.”"
+        "Uwaga odręczna na marginesie: „Pies zaczął skomleć o 11:58.”"
       ]
     },
     {
@@ -56,15 +58,68 @@
     }
   ],
   "questions": [
-    { "id": "q1", "text": "Ile wrót zbudował cech murarzy w 1354 roku?", "options": ["Dwoje", "Siedmioro", "Dziesięcioro", "Trzydzieścioro"], "answer": 1, "hint": "Dziesięć grzywien za wrota ostatnie. Grzywna i dziesięć skojców od sztuki. Grzywna to 24 skojce." },
-    { "id": "q2", "text": "Po co kapituła dopłaciła jedenaście grzywien srebra do kadzi?", "options": ["Na czysty głos", "Na trwałość spiżu", "Żeby dzwon mówił niżej, niż ucho słyszy", "Na chwałę fundatorów"], "answer": 2 },
-    { "id": "q3", "text": "Co dzieje się z dominantą 18 Hz po uderzeniach dzwonu?", "options": ["Znika na 40 minut", "Rośnie i nie zanika razem z dzwonem", "Nie zmienia się", "Przesuwa się na 196 Hz"], "answer": 1 },
-    { "id": "q4", "text": "Kto usłyszał ton dolny pierwszy?", "options": ["Rejestrator", "Ludwisarz", "Pies, dwie minuty przed dzwonem", "Kapituła"], "answer": 2 },
-    { "id": "q5", "text": "Czym w takim razie jest dzwon Piotr?", "options": ["Zegarem miasta", "Instrumentem muzycznym", "Miernikiem zawieszonym nad tym, co jest pod spodem", "Pamiątką po kupcach"], "answer": 2, "hint": "Świeca na posadzce wieży. Płomień ma drżeć." }
+    {
+      "id": "q1",
+      "text": "Ile wrót z otworem na pieczęć zbudował cech w 1354 roku?",
+      "options": [
+        "Dwoje",
+        "Siedmioro",
+        "Dziewięcioro",
+        "Dziesięcioro"
+      ],
+      "answer": 1,
+      "hint": "Grzywna i dziesięć skojców od sztuki. Grzywna to dwadzieścia cztery skojce. Dziewięć grzywien i dwadzieścia dwa skojce razem."
+    },
+    {
+      "id": "q2",
+      "text": "Dlaczego ton dolny dzwonu sprawdzano świecą na posadzce, a nie uchem?",
+      "options": [
+        "Bo w wieży było ciemno",
+        "Bo ton leży poniżej słuchu, a płomień reaguje na drganie, którego ucho nie łapie",
+        "Bo tak nakazuje liturgia",
+        "Bo ludwisarz był głuchy"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "q3",
+      "text": "Na co zareagował pies o 11:58?",
+      "options": [
+        "Na pierwsze uderzenie dzwonu",
+        "Na ton 18 Hz, który był w tle przed dzwonem",
+        "Na gołębie na Rynku",
+        "Na rejestrator"
+      ],
+      "answer": 1,
+      "hint": "Pierwsze uderzenie było o 12:00."
+    },
+    {
+      "id": "q4",
+      "text": "Co dowodzi, że to nie dzwon brzmi w ziemi, tylko coś pod nim?",
+      "options": [
+        "Dzwon ma 196 Hz, a ziemia 18 Hz",
+        "Dominanta rośnie po każdym uderzeniu i nie zanika razem z dzwonem",
+        "Rejestrator stał przy studni",
+        "Pies skomlał"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "q5",
+      "text": "Co łączy rachunek z 1677 roku z księgą z 1354?",
+      "options": [
+        "Ten sam cech murarzy",
+        "Nic, dzieli je trzysta lat",
+        "Kapituła stroiła dzwon do tego, co odpowiada spod wrót z otworem na pieczęć: ktoś w 1677 wiedział, co zbudowano w 1354",
+        "Obie wymieniają srebro kupców"
+      ],
+      "answer": 2,
+      "hint": "Ton dolny dzwonu: 18,2 Hz. Tło pod Rynkiem: 18,0 Hz. Kto zamawiał, wiedział, do czego stroi."
+    }
   ],
   "solution": [
-    "Siedmioro wrót, wszystkie jednakie, z otworem na pieczęć. Trzysta lat później kapituła zamówiła dzwon, który mówi niżej, niż ucho słyszy, i sprawdzała go świecą na posadzce.",
-    "Dzwon Piotr nie odmierza godzin. Od 1677 roku, dwanaście razy dziennie, uderza w coś, co odpowiada z dołu i nie cichnie z nim.",
-    "Pies słyszał to pierwszy. Potem rejestrator. Ludzie na Rynku nie słyszeli nic."
+    "Siedmioro wrót, wszystkie jednakie, z otworem na pieczęć. Trzysta lat później kapituła dopłaciła do kadzi jedenaście grzywien, więcej niż głos potrzebuje, i sprawdzała ton świecą, bo ucho go nie słyszy.",
+    "Dzwon Piotr nie odmierza godzin. Dwanaście razy dziennie uderza w coś, co odpowiada z dołu i nie cichnie razem z nim.",
+    "Pies usłyszał to dwie minuty przed dzwonem. Ludzie na Rynku nie słyszeli nic."
   ]
 }

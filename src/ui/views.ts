@@ -206,9 +206,11 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     else {
       const tries = (app.state.attempts[c.id] ?? []).length;
       const hints = c.questions.filter((q, i) => !v.perQuestion[i] && q.hint).map((q) => q.hint!);
-      const wrong = v.total - v.correct;
-      verdictText.textContent = `${v.correct} z ${v.total} ustaleń się zgadza. ${wrong === 1 ? "Jedno jest błędne" : wrong + " są błędne"}. Zawieszka nie mówi które: wróć do dokumentów.${tries >= 3 && hints.length ? " Podpowiedź: " + hints[0] : ""}`;
-      toast(`Zawieszka: ${heatLabel[v.heat]}. ${v.correct} z ${v.total}.`);
+      const rejectMissed = c.questions.some((q, i) => q.kind === "reject" && !v.perQuestion[i]);
+      verdictText.textContent = rejectMissed
+        ? "Zawieszka zimna. Z pięcioma stronami nic się nie zgadza. Najpierw odrzuć tę, która kłamie."
+        : `Zawieszka ${heatLabel[v.heat]}. Coś się nie zgadza. Zawieszka nie mówi co: wróć do dokumentów.${tries >= 3 && hints.length ? " Podpowiedź: " + hints[0] : ""}`;
+      toast(`Zawieszka: ${heatLabel[v.heat]}.`);
     }
   });
   sec.append(result, verdictText, btn, solutionBox);

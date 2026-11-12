@@ -5,7 +5,9 @@
   "title": "Twój miesiąc",
   "subtitle": "Wzgórze Katedralne · żywioł: woda · katedra, krypty, Wisła",
   "epigraph": "Podobno jeśli przyjdziesz w dniu urodzin i znajdziesz swój miesiąc, odczytasz z niego rodzaj własnej śmierci.",
-  "requires": { "solvedCases": 2 },
+  "requires": {
+    "solvedCases": 2
+  },
   "docs": [
     {
       "id": "martyrologium",
@@ -16,7 +18,7 @@
         "Dwanaście obrazów na ścianach nawy, po jednym na każdy miesiąc roku. Każdy przedstawia męczeństwa świętych wspominanych w danym miesiącu. Pod obrazami nazwy miesięcy.",
         "Legenda miejska: kto przyjdzie w dniu urodzin i odnajdzie swój miesiąc, odczyta z obrazu rodzaj własnej śmierci. Przewodnicy opowiadają ją z uśmiechem. Nikt nie szuka swojego miesiąca na głos.",
         "Trzynasty obraz, bez miesiąca, w nawie zachodniej: Męczeństwo Sandomierzan 1260. Tatarzy, kościół św. Jakuba, dominikanie. Jedyny obraz cyklu, który dzieje się tu, pod tą posadzką, a nie w Rzymie.",
-        "Obraz „listopad” wisi najbliżej zejścia do krypt. Przy nim posadzka jest cieplejsza. Kościelny mówi, że od ogrzewania. Ogrzewanie jest po drugiej stronie nawy."
+        "Obraz „listopad” wisi najbliżej zejścia do krypt. Kościelny mówi, że posadzka przy nim jest cieplejsza od ogrzewania."
       ]
     },
     {
@@ -25,10 +27,10 @@
       "source": "Protokół oględzin krypt katedralnych po zalaniu. Konserwator wojewódzki, maj. Wyciąg.",
       "style": "mono",
       "paragraphs": [
-        "Poziom wody w kryptach: 42 cm. Poziom Wisły w tym samym dniu: niski (stan 180 cm na wodowskazie, poniżej średniej). Korelacja z rzeką: brak.",
-        "Temperatura wody w kryptach: 14,8°C. Temperatura wód gruntowych w Sandomierzu o tej porze roku: 9–10°C. Różnica: niewyjaśniona.",
-        "Kierunek napływu: od spodu, przez spoiny posadzki w komorze południowej (pod obrazem XI). Nie od ściany, nie od rzeki.",
-        "Zalecenie: odpompować, osuszyć, monitorować. Nie badać źródła napływu bez ekspertyzy geologicznej. Ekspertyzy nie zlecono."
+        "Poziom wody w kryptach: 42 cm. Poziom Wisły w tym samym dniu: 180 cm na wodowskazie Sandomierz.",
+        "Temperatura wody w kryptach: 14,8°C.",
+        "Kierunek napływu: od spodu, przez spoiny posadzki w komorze południowej, pod obrazem XI. Nie od ściany, nie od rzeki.",
+        "Zalecenie: odpompować, osuszyć, monitorować. Nie badać źródła napływu bez ekspertyzy geologicznej."
       ]
     },
     {
@@ -37,9 +39,8 @@
       "source": "Wodowskaz Sandomierz, stany miesięczne Wisły, średnie z dziesięciu lat. IMGW.",
       "style": "mono",
       "paragraphs": [
-        "I 231 · II 248 · III 312 · IV 338 · V 301 · VI 290 · VII 276 · VIII 221 · IX 198 · X 187 · XI 210 · XII 224 (cm).",
-        "Najwyższy stan: kwiecień (roztopy). Najniższy: październik.",
-        "Zalania krypt odnotowane: maj, wrzesień, listopad. Dwa z trzech przy niskiej wodzie."
+        "I 231 · II 248 · III 312 · IV 338 · V 301 · VI 290 · VII 276 · VIII 221 · IX 198 · X 187 · XI 210 · XII 224 (cm, średnie miesięczne z dziesięciu lat).",
+        "Zalania krypt odnotowane w ostatnich latach: maj, wrzesień, listopad."
       ]
     },
     {
@@ -48,16 +49,20 @@
       "source": "Kartka z zeszytu terenowego. Katedra, nawa, przy obrazie XI. Ołówek, pismo pochyłe.",
       "style": "hand",
       "paragraphs": [
-        "Wilgotność posadzki przy XI: 71%. Przy V (po drugiej stronie): 44%. Ogrzewanie przy V.",
-        "Zawieszka: ciepło przesuwa się w dół. Nie na zewnątrz, nie w górę. W dół, jakby źródło było pod posadzką.",
-        "Nie szukałam swojego miesiąca. Oczy same.",
-        "Woda w kryptach: nie z rzeki. Rzeka jest za nisko. Woda jest cieplejsza niż powinna. Coś ją grzeje od spodu."
+        "Wilgotność posadzki przy XI: 71%. Przy V, po drugiej stronie nawy: 44%. Grzejniki są przy V.",
+        "Wody gruntowe w Sandomierzu o tej porze roku: 9–10°C.",
+        "Zawieszka: ciepło przesuwa się w dół. Nie na zewnątrz, nie w górę.",
+        "Nie szukałam swojego miesiąca. Oczy same."
       ]
     }
   ],
   "questions": [
     {
-      "id": "q0", "kind": "month", "text": "W którym miesiącu się urodziłeś, urodziłaś? (Nie musisz. Ale legenda tak każe.)", "options": [], "answer": -1,
+      "id": "q0",
+      "kind": "month",
+      "text": "W którym miesiącu się urodziłeś, urodziłaś? (Nie musisz. Ale legenda tak każe.)",
+      "options": [],
+      "answer": -1,
       "monthLines": [
         "Styczeń: śnieg na lessie, biały na białym. Nie zobaczysz, gdzie kończy się ziemia.",
         "Luty: lód na Wiśle trzyma cztery dni. Ty uwierzysz piątego.",
@@ -74,15 +79,69 @@
       ],
       "monthClosing": "A potem oczy same lądują na listopadzie."
     },
-    { "id": "q1", "text": "Który obraz wisi najbliżej zejścia do krypt?", "options": ["Kwiecień", "Listopad", "Męczeństwo Sandomierzan", "Maj"], "answer": 1 },
-    { "id": "q2", "text": "Skąd przychodzi woda w kryptach?", "options": ["Z Wisły, przy wysokim stanie", "Z deszczu, przez dach", "Od spodu, przez spoiny posadzki, przy niskiej rzece", "Z ogrzewania"], "answer": 2 },
-    { "id": "q3", "text": "Co jest nie tak z tą wodą?", "options": ["Jest słona", "Jest o pięć stopni za ciepła", "Jest za zimna", "Nic, to zwykła woda gruntowa"], "answer": 1, "hint": "Wody gruntowe mają 9–10 stopni. Protokół podaje inną liczbę." },
-    { "id": "q4", "text": "Który obraz w cyklu nie dzieje się w Rzymie?", "options": ["Listopad", "Grudzień", "Trzynasty, bez miesiąca: Sandomierz 1260", "Wszystkie dzieją się w Rzymie"], "answer": 2 },
-    { "id": "q5", "text": "Dlaczego nie zlecono ekspertyzy geologicznej?", "options": ["Brak pieniędzy", "Konserwator zalecił, a nikt nie chciał wiedzieć, co jest pod spodem", "Zalecono ją i wykonano", "Wisła była za wysoko"], "answer": 1 }
+    {
+      "id": "q1",
+      "text": "Czy to Wisła zalewa krypty?",
+      "options": [
+        "Tak, przy wysokiej wodzie na wiosnę",
+        "Nie: w dniu zalania rzeka stała o 120 cm poniżej majowej średniej",
+        "Tak, przez pęknięty wał",
+        "Nie wiadomo, brak pomiaru rzeki"
+      ],
+      "answer": 1,
+      "hint": "Protokół podaje stan rzeki w dniu zalania. Wodowskaz podaje średnią dla maja."
+    },
+    {
+      "id": "q2",
+      "text": "O ile woda w kryptach jest cieplejsza, niż powinna?",
+      "options": [
+        "Nie jest, to zwykła woda gruntowa",
+        "O około dwa stopnie",
+        "O około pięć stopni",
+        "O około dziesięć stopni"
+      ],
+      "answer": 2,
+      "hint": "Protokół ma jedną liczbę. Zeszyt ma drugą."
+    },
+    {
+      "id": "q3",
+      "text": "Dlaczego posadzka przy obrazie XI jest cieplejsza?",
+      "options": [
+        "Od grzejników",
+        "Od słońca przez witraże",
+        "Od ciepłej wody, która napływa od spodu w komorze pod XI",
+        "Od świec"
+      ],
+      "answer": 2,
+      "hint": "Grzejniki są po drugiej stronie nawy, przy V."
+    },
+    {
+      "id": "q4",
+      "text": "Które zalanie najwyraźniej nie ma nic wspólnego z rzeką?",
+      "options": [
+        "Majowe, przy 180 cm",
+        "Wrześniowe, przy średniej 198 cm",
+        "Listopadowe, przy średniej 210 cm",
+        "Wszystkie są z rzeki"
+      ],
+      "answer": 0,
+      "hint": "Porównaj stan rzeki w dniu zalania ze średnią tego miesiąca."
+    },
+    {
+      "id": "q5",
+      "text": "Na który miesiąc wskazują razem: cieplejsza posadzka, komora napływu i obraz najbliżej krypt?",
+      "options": [
+        "Maj",
+        "Kwiecień",
+        "Listopad",
+        "Grudzień"
+      ],
+      "answer": 2
+    }
   ],
   "solution": [
-    "Dwanaście miesięcy na ścianach i trzynasty obraz bez miesiąca, który dzieje się tutaj. Woda w kryptach jest za ciepła o pięć stopni i przychodzi od spodu, kiedy rzeka jest nisko.",
-    "Konserwator napisał: nie badać bez geologa. Geologa nie zlecono. Przez dwadzieścia lat nikt nie chciał wiedzieć.",
-    "Każdy, kto szuka swojego miesiąca, kończy przy listopadzie. Posadzka tam jest cieplejsza. Ogrzewanie jest po drugiej stronie."
+    "Dwanaście miesięcy na ścianach i trzynasty obraz bez miesiąca, który dzieje się tutaj. Woda w kryptach jest o pięć stopni za ciepła i przychodzi od spodu, kiedy rzeka stoi nisko.",
+    "Konserwator napisał: nie badać bez geologa. Nikt nie zlecił geologa.",
+    "Każdy, kto szuka swojego miesiąca, kończy przy listopadzie. Grzejniki są po drugiej stronie."
   ]
 }

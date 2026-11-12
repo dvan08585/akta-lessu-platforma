@@ -6,6 +6,9 @@ export interface Verdict { correct: number; total: number; perQuestion: boolean[
 export function evaluate(c: CaseData, answers: number[]): Verdict {
   // Pytanie „month" nie ma poprawnej odpowiedzi: liczy się jako trafione, gdy podano miesiąc.
   const per = c.questions.map((q, i) => (q.kind === "month" ? answers[i] >= 1 && answers[i] <= 12 : answers[i] === q.answer));
+  // Pytanie „reject": dopóki fałszywy dokument nie jest odrzucony, żadne inne ustalenie się nie liczy.
+  const rejectIdx = c.questions.findIndex((q) => q.kind === "reject");
+  if (rejectIdx >= 0 && !per[rejectIdx]) per.fill(false);
   const correct = per.filter(Boolean).length;
   const total = c.questions.length;
   const ratio = total ? correct / total : 0;
