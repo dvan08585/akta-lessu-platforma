@@ -95,51 +95,107 @@
     },
     {
       "id": "q1",
-      "text": "Czy to Wisła zalewa krypty?",
-      "options": [
-        "Tak, przy wysokiej wodzie na wiosnę",
-        "Nie: w dniu zalania rzeka stała o 120 cm poniżej majowej średniej",
-        "Tak, przez pęknięty wał",
-        "Nie wiadomo, brak pomiaru rzeki"
+      "text": "W dniu zalania Wisła stała na ___ cm przy majowej średniej ___ cm: krypt nie zalewa ___.",
+      "options": [],
+      "answer": -1,
+      "hint": "Protokół podaje stan w dniu zalania. Wodowskaz podaje średnią maja.",
+      "kind": "fill",
+      "bank": [
+        "180",
+        "210",
+        "301",
+        "338",
+        "rzeka",
+        "deszcz",
+        "Wisła",
+        "ogrzewanie",
+        "katedra",
+        "konserwator"
       ],
-      "answer": 1,
-      "hint": "Protokół podaje stan rzeki w dniu zalania. Wodowskaz podaje średnią dla maja."
+      "answerWords": [
+        "180",
+        "301",
+        "rzeka"
+      ]
     },
     {
       "id": "q2",
-      "text": "O ile woda w kryptach jest cieplejsza, niż powinna?",
-      "options": [
-        "Nie jest, to zwykła woda gruntowa",
-        "O około dwa stopnie",
-        "O około pięć stopni",
-        "O około dziesięć stopni"
+      "text": "Woda w kryptach ma ___°C, wody gruntowe ___°C: jest cieplejsza o około ___ stopni.",
+      "options": [],
+      "answer": -1,
+      "hint": "Protokół ma jedną liczbę. Zeszyt ma drugą.",
+      "kind": "fill",
+      "bank": [
+        "14,8",
+        "9–10",
+        "4,2",
+        "12,3",
+        "pięć",
+        "dwa",
+        "dziesięć",
+        "trzy",
+        "osiem",
+        "jeden"
       ],
-      "answer": 2,
-      "hint": "Protokół ma jedną liczbę. Zeszyt ma drugą."
+      "answerWords": [
+        "14,8",
+        "9–10",
+        "pięć"
+      ]
     },
     {
       "id": "q3",
-      "text": "Dlaczego posadzka przy obrazie XI jest cieplejsza?",
-      "options": [
-        "Od grzejników",
-        "Od słońca przez witraże",
-        "Od ciepłej wody, która napływa od spodu w komorze pod XI",
-        "Od świec"
+      "text": "Posadzka przy obrazie ___ ma wilgotność 71%, grzejniki są przy ___, więc ciepło pod XI pochodzi od ___.",
+      "options": [],
+      "answer": -1,
+      "hint": "Zeszyt geologa: dwie liczby, dwa miejsca.",
+      "kind": "fill",
+      "bank": [
+        "XI",
+        "V",
+        "XIII",
+        "I",
+        "wody od spodu",
+        "grzejników",
+        "słońca",
+        "świec",
+        "Wisły",
+        "kadzidła",
+        "konserwatora",
+        "ogrzewania"
       ],
-      "answer": 2,
-      "hint": "Grzejniki są po drugiej stronie nawy, przy V."
+      "answerWords": [
+        "XI",
+        "V",
+        "wody od spodu"
+      ]
     },
     {
       "id": "q4",
-      "text": "Które zalanie najwyraźniej nie ma nic wspólnego z rzeką?",
-      "options": [
-        "Majowe, przy 180 cm",
-        "Wrześniowe, przy średniej 198 cm",
-        "Listopadowe, przy średniej 210 cm",
-        "Wszystkie są z rzeki"
+      "text": "Zalania odnotowano w maju, wrześniu i ___; to majowe, przy ___ cm, najwyraźniej nie ma nic wspólnego z ___.",
+      "options": [],
+      "answer": -1,
+      "hint": "Wodowskaz: które miesiące. Protokół: który stan.",
+      "kind": "fill",
+      "bank": [
+        "listopadzie",
+        "kwietniu",
+        "grudniu",
+        "180",
+        "301",
+        "210",
+        "rzeką",
+        "deszczem",
+        "kryptą",
+        "Wisłą",
+        "ogrzewaniem",
+        "obrazem"
       ],
-      "answer": 0,
-      "hint": "Porównaj stan rzeki w dniu zalania ze średnią tego miesiąca."
+      "answerWords": [
+        "listopadzie",
+        "180",
+        "rzeką"
+      ]
     },
     {
       "id": "q5",

@@ -90,73 +90,28 @@ Ceglany portal kościoła ma bruzdy. Przewodnicy mówią: rycerze ostrzyli miecz
 Skarpa północna, za murem: tam był sondaż S-3. Tam zasyp kończy się na 6,1 metra. Tam nikt nie zszedł niżej.
 
 <!-- cases/01-staromiejskie.json questions[0].text -->
-Ile lat miała wdowa po Sędziwoju, kiedy wyszła za wały?
-
-<!-- cases/01-staromiejskie.json questions[0].options[0] -->
-Około dwudziestu
-
-<!-- cases/01-staromiejskie.json questions[0].options[1] -->
-Około trzydziestu
-
-<!-- cases/01-staromiejskie.json questions[0].options[2] -->
-Około czterdziestu
-
-<!-- cases/01-staromiejskie.json questions[0].options[3] -->
-Nie da się ustalić
+Wdowa po Sędziwoju miała w 1260 roku ___ lata, więc za wały wyszła, mając około ___.
 
 <!-- cases/01-staromiejskie.json questions[0].hint -->
 Dziecko trzech lat w 1260. Policz do 1287.
 
 <!-- cases/01-staromiejskie.json questions[1].text -->
-Gdzie leżą ciała trzystu wojowników z 1287 roku?
-
-<!-- cases/01-staromiejskie.json questions[1].options[0] -->
-W dole na dziedzińcu, wśród 330 szkieletów
-
-<!-- cases/01-staromiejskie.json questions[1].options[1] -->
-W zasypie między 2,4 a 6,1 m
-
-<!-- cases/01-staromiejskie.json questions[1].options[2] -->
-Poniżej 6,1 m, tam, gdzie sondaż nie dotarł
-
-<!-- cases/01-staromiejskie.json questions[1].options[3] -->
-W kościele św. Jakuba
+W dole na dziedzińcu leży ___ szkieletów z roku ___, a trzystu wojowników z 1287 leży ___.
 
 <!-- cases/01-staromiejskie.json questions[1].hint -->
-330 szkieletów ma groty i cięcia z 1260. W zasypie nie ma nikogo. Co jest niżej?
+Sarama liczył warstwami. W zasypie nie ma nikogo. Co jest niżej?
 
 <!-- cases/01-staromiejskie.json questions[2].text -->
-Skąd Halina miała gołębia?
+W noc wyjścia wdowy z gołębnika grodu ubył ___ gołąb, a rano wrócił od strony ___.
 
-<!-- cases/01-staromiejskie.json questions[2].options[0] -->
-Złapała w ruinach starego miasta
-
-<!-- cases/01-staromiejskie.json questions[2].options[1] -->
-Dostała od Tatarów jako znak przymierza
-
-<!-- cases/01-staromiejskie.json questions[2].options[2] -->
-Zabrała z gołębnika grodu w noc wyjścia
-
-<!-- cases/01-staromiejskie.json questions[2].options[3] -->
-Nie było żadnego gołębia, kronika zmyśla
+<!-- cases/01-staromiejskie.json questions[2].hint -->
+Inwentarz liczy gołębie. Zapisał też, skąd wrócił.
 
 <!-- cases/01-staromiejskie.json questions[3].text -->
-Skąd przyleciał znak, który Berbeć zobaczył o świcie?
-
-<!-- cases/01-staromiejskie.json questions[3].options[0] -->
-Z wałów nowego grodu, posłany przez obrońców
-
-<!-- cases/01-staromiejskie.json questions[3].options[1] -->
-Z obozu chana za Wisłą
-
-<!-- cases/01-staromiejskie.json questions[3].options[2] -->
-Spod Starego Wzgórza, z miejsca, gdzie nikt z obrońców nie stał
-
-<!-- cases/01-staromiejskie.json questions[3].options[3] -->
-Znad Wisły, od strony przeprawy
+Znak nad Starym Wzgórzem wzleciał spod ___, w miejscu, gdzie nie stał nikt z ___, i dopiero wtedy Berbeć kazał ___.
 
 <!-- cases/01-staromiejskie.json questions[3].hint -->
-Gołębia nie posłano z grodu. Wrócił od południa. Gdzie było Stare Wzgórze względem nowego?
+Gołębia nie posłano z grodu. Rocznik mówi, gdzie nikt z naszych nie stał.
 
 <!-- cases/01-staromiejskie.json questions[4].text -->
 Korytarze zamknęła ___, od ___, zanim spadła ___.
@@ -255,70 +210,28 @@ Mur odpowiada później niż dzwon. O ułamek. To, co czujesz w dłoni po tym, j
 Pod tobą, 470 metrów korytarzy trasy turystycznej. Pod trasą: to, do czego kapituła stroiła ton dolny.
 
 <!-- cases/02-miejskie.json questions[0].text -->
-Ile wrót z otworem na pieczęć zbudował cech w 1354 roku?
-
-<!-- cases/02-miejskie.json questions[0].options[0] -->
-Dwoje
-
-<!-- cases/02-miejskie.json questions[0].options[1] -->
-Siedmioro
-
-<!-- cases/02-miejskie.json questions[0].options[2] -->
-Dziewięcioro
-
-<!-- cases/02-miejskie.json questions[0].options[3] -->
-Dziesięcioro
+Za wrota płacono grzywnę i ___ skojców od sztuki, grzywna liczy ___ skojce, razem za wrota ___ grzywien i dwadzieścia dwa skojce: wrót było siedmioro.
 
 <!-- cases/02-miejskie.json questions[0].hint -->
-Grzywna i dziesięć skojców od sztuki. Grzywna to dwadzieścia cztery skojce. Razem zapłacono dziewięć grzywien i dwadzieścia dwa skojce.
+Trzy liczby z księgi wydatków. Reszta to dzielenie.
 
 <!-- cases/02-miejskie.json questions[1].text -->
-Dlaczego ton dolny dzwonu sprawdzano świecą na posadzce, a nie uchem?
+Ton dolny sprawdzano ___ na posadzce wieży, bo leży poniżej ___, a płomień reaguje na ___.
 
-<!-- cases/02-miejskie.json questions[1].options[0] -->
-Bo w wieży było ciemno
-
-<!-- cases/02-miejskie.json questions[1].options[1] -->
-Bo ton leży poniżej progu słyszenia, a płomień reaguje na drganie, którego ucho nie wychwyci
-
-<!-- cases/02-miejskie.json questions[1].options[2] -->
-Bo tak nakazuje liturgia
-
-<!-- cases/02-miejskie.json questions[1].options[3] -->
-Bo ludwisarz był głuchy
+<!-- cases/02-miejskie.json questions[1].hint -->
+Rachunek ludwisarza: jak strojono i czym.
 
 <!-- cases/02-miejskie.json questions[2].text -->
-Na co zareagował pies o 11:58?
-
-<!-- cases/02-miejskie.json questions[2].options[0] -->
-Na pierwsze uderzenie dzwonu
-
-<!-- cases/02-miejskie.json questions[2].options[1] -->
-Na ton 18 Hz, który był w tle przed dzwonem
-
-<!-- cases/02-miejskie.json questions[2].options[2] -->
-Na gołębie na Rynku
-
-<!-- cases/02-miejskie.json questions[2].options[3] -->
-Na rejestrator
+Pies zaczął skomleć o ___, dwie minuty przed ___, bo słyszał ton ___ Hz, który był w tle.
 
 <!-- cases/02-miejskie.json questions[2].hint -->
-Pierwsze uderzenie było o 12:00.
+Wydruk ma minuty. Margines ma psa.
 
 <!-- cases/02-miejskie.json questions[3].text -->
-Co dowodzi, że w ziemi brzmi nie dzwon, tylko coś pod nim?
+Po uderzeniach dzwonu dominanta 18 Hz rośnie ___ razy, nie zanika z dzwonem i wraca do tła po ___ minutach: w ziemi brzmi nie dzwon, tylko ___.
 
-<!-- cases/02-miejskie.json questions[3].options[0] -->
-Dzwon ma 196 Hz, a ziemia 18 Hz
-
-<!-- cases/02-miejskie.json questions[3].options[1] -->
-Dominanta rośnie po każdym uderzeniu i nie zanika razem z dzwonem
-
-<!-- cases/02-miejskie.json questions[3].options[2] -->
-Rejestrator stał przy studni
-
-<!-- cases/02-miejskie.json questions[3].options[3] -->
-Pies skomlał
+<!-- cases/02-miejskie.json questions[3].hint -->
+Wydruk z rejestratora, trzy wiersze.
 
 <!-- cases/02-miejskie.json questions[4].text -->
 Kapituła stroiła dzwon do tego, co odpowiada spod ___ zbudowanych w roku ___, a ton dolny ma ___ Hz.
@@ -456,76 +369,28 @@ Grudzień: Tatarzy przychodzą w grudniu. Zawsze przychodzą w grudniu.
 A potem oczy same lądują na listopadzie.
 
 <!-- cases/03-katedralne.json questions[1].text -->
-Czy to Wisła zalewa krypty?
-
-<!-- cases/03-katedralne.json questions[1].options[0] -->
-Tak, przy wysokiej wodzie na wiosnę
-
-<!-- cases/03-katedralne.json questions[1].options[1] -->
-Nie: w dniu zalania rzeka stała o 120 cm poniżej majowej średniej
-
-<!-- cases/03-katedralne.json questions[1].options[2] -->
-Tak, przez pęknięty wał
-
-<!-- cases/03-katedralne.json questions[1].options[3] -->
-Nie wiadomo, brak pomiaru rzeki
+W dniu zalania Wisła stała na ___ cm przy majowej średniej ___ cm: krypt nie zalewa ___.
 
 <!-- cases/03-katedralne.json questions[1].hint -->
-Protokół podaje stan rzeki w dniu zalania. Wodowskaz podaje średnią dla maja.
+Protokół podaje stan w dniu zalania. Wodowskaz podaje średnią maja.
 
 <!-- cases/03-katedralne.json questions[2].text -->
-O ile woda w kryptach jest cieplejsza, niż powinna?
-
-<!-- cases/03-katedralne.json questions[2].options[0] -->
-Nie jest, to zwykła woda gruntowa
-
-<!-- cases/03-katedralne.json questions[2].options[1] -->
-O około dwa stopnie
-
-<!-- cases/03-katedralne.json questions[2].options[2] -->
-O około pięć stopni
-
-<!-- cases/03-katedralne.json questions[2].options[3] -->
-O około dziesięć stopni
+Woda w kryptach ma ___°C, wody gruntowe ___°C: jest cieplejsza o około ___ stopni.
 
 <!-- cases/03-katedralne.json questions[2].hint -->
 Protokół ma jedną liczbę. Zeszyt ma drugą.
 
 <!-- cases/03-katedralne.json questions[3].text -->
-Dlaczego posadzka przy obrazie XI jest cieplejsza?
-
-<!-- cases/03-katedralne.json questions[3].options[0] -->
-Od grzejników
-
-<!-- cases/03-katedralne.json questions[3].options[1] -->
-Od słońca przez witraże
-
-<!-- cases/03-katedralne.json questions[3].options[2] -->
-Od ciepłej wody, która napływa od spodu w komorze pod XI
-
-<!-- cases/03-katedralne.json questions[3].options[3] -->
-Od świec
+Posadzka przy obrazie ___ ma wilgotność 71%, grzejniki są przy ___, więc ciepło pod XI pochodzi od ___.
 
 <!-- cases/03-katedralne.json questions[3].hint -->
-Grzejniki są po drugiej stronie nawy, przy V.
+Zeszyt geologa: dwie liczby, dwa miejsca.
 
 <!-- cases/03-katedralne.json questions[4].text -->
-Które zalanie najwyraźniej nie ma nic wspólnego z rzeką?
-
-<!-- cases/03-katedralne.json questions[4].options[0] -->
-Majowe, przy 180 cm
-
-<!-- cases/03-katedralne.json questions[4].options[1] -->
-Wrześniowe, przy średniej 198 cm
-
-<!-- cases/03-katedralne.json questions[4].options[2] -->
-Listopadowe, przy średniej 210 cm
-
-<!-- cases/03-katedralne.json questions[4].options[3] -->
-Wszystkie są z rzeki
+Zalania odnotowano w maju, wrześniu i ___; to majowe, przy ___ cm, najwyraźniej nie ma nic wspólnego z ___.
 
 <!-- cases/03-katedralne.json questions[4].hint -->
-Porównaj stan rzeki w dniu zalania ze średnią tego miesiąca.
+Wodowskaz: które miesiące. Protokół: który stan.
 
 <!-- cases/03-katedralne.json questions[5].text -->
 Woda w kryptach przychodzi od ___, jest cieplejsza o ___ stopni i zbiera się pod obrazem ___.
@@ -606,67 +471,28 @@ W tle baner: „Święto Młodego Wina. Partner: Fundacja Sandomierska Memoria.�
 Podpis pod zdjęciem: Hotel Pod Ciżemką, kamienica Węgra Lazarczyka, Rynek.
 
 <!-- cases/04-zamkowe.json questions[0].text -->
-Co łączy kamienicę Heleny na Opatowskiej z programem edukacyjnym?
+Kamienicę na Opatowskiej kupiła spółka ___, której jedynym wspólnikiem jest ___, prowadząca program ___.
 
-<!-- cases/04-zamkowe.json questions[0].options[0] -->
-Nic, to różne instytucje
-
-<!-- cases/04-zamkowe.json questions[0].options[1] -->
-Ten sam właściciel: spółka kupiła kamienicę, program prowadzi Fundacja, Fundacja jest jedynym wspólnikiem spółki
-
-<!-- cases/04-zamkowe.json questions[0].options[2] -->
-Kamienica jest siedzibą programu
-
-<!-- cases/04-zamkowe.json questions[0].options[3] -->
-Miasto dotuje oba
+<!-- cases/04-zamkowe.json questions[0].hint -->
+Akt notarialny i sprawozdanie: te same nazwy.
 
 <!-- cases/04-zamkowe.json questions[1].text -->
-Czego kupujący naprawdę szukał w tej kamienicy, sądząc po § 7 i inwentarzu?
+§ 7 zakazuje zmieniać ___ i udostępniać je bez zgody ___, a inwentarz każe nie naruszać ___.
 
-<!-- cases/04-zamkowe.json questions[1].options[0] -->
-Dachu i elewacji
-
-<!-- cases/04-zamkowe.json questions[1].options[1] -->
-Mieszkań na wynajem
-
-<!-- cases/04-zamkowe.json questions[1].options[2] -->
-Piwnic z zamurowaną ścianą, której kazano nie naruszać
-
-<!-- cases/04-zamkowe.json questions[1].options[3] -->
-Szybkiej transakcji po okazyjnej cenie
+<!-- cases/04-zamkowe.json questions[1].hint -->
+Akt notarialny: paragraf i załącznik.
 
 <!-- cases/04-zamkowe.json questions[2].text -->
-Kto wkłada do kopert akta, które dostajesz od pierwszej sprawy?
-
-<!-- cases/04-zamkowe.json questions[2].options[0] -->
-Komisarz Zieliński osobiście
-
-<!-- cases/04-zamkowe.json questions[2].options[1] -->
-Archiwum miejskie
-
-<!-- cases/04-zamkowe.json questions[2].options[2] -->
-Program edukacyjny, czyli Fundacja
-
-<!-- cases/04-zamkowe.json questions[2].options[3] -->
-Konserwator wojewódzki
+Komisarz pisze, że materiały przekazuje ___, sprawozdanie mówi, że to program ___, a stopka każdej koperty mówi to samo: koperty wkłada ___.
 
 <!-- cases/04-zamkowe.json questions[2].hint -->
-List od komisarza mówi, kto pośredniczy. Sprawozdanie mówi, czyj to program. Stopka każdego dokumentu mówi to samo.
+List od komisarza, sprawozdanie, stopka.
 
 <!-- cases/04-zamkowe.json questions[3].text -->
-Do kogo trafiają twoje wnioski, wzgórze po wzgórzu?
+Wnioski biegłego, wzgórze po wzgórzu, zasilają ___ prowadzony przez ___, a faktura prosi, by biegłego nie wyprowadzać z ___.
 
-<!-- cases/04-zamkowe.json questions[3].options[0] -->
-Do akt postępowania policyjnego
-
-<!-- cases/04-zamkowe.json questions[3].options[1] -->
-Do rejestru statusów prowadzonego przez zarząd Fundacji
-
-<!-- cases/04-zamkowe.json questions[3].options[2] -->
-Do uczelni w Krakowie
-
-<!-- cases/04-zamkowe.json questions[3].options[3] -->
-Nigdzie, to materiał edukacyjny
+<!-- cases/04-zamkowe.json questions[3].hint -->
+Sprawozdanie i adnotacja na fakturze.
 
 <!-- cases/04-zamkowe.json questions[4].text -->
 Pracujesz dla ___, która kupiła kamienicę przez ___ i prosi, by nie wyprowadzać cię z ___.
@@ -762,70 +588,28 @@ Którą stronę odrzucasz jako fałszywą?
 Jedna strona ma datę. Jeden dokument mówi, gdzie profesor był tego dnia. I jedna strona zna imię, którego kronika nie zapisała.
 
 <!-- cases/05-collegium.json questions[1].text -->
-Co oznacza „klasa S, wariant K”?
+„Klasa S, wariant K” to ___ wymyślona przez profesora: S jak ___, K jak ___.
 
-<!-- cases/05-collegium.json questions[1].options[0] -->
-Złoże srebra, wariant kopalniany
-
-<!-- cases/05-collegium.json questions[1].options[1] -->
-Klasyfikacja wymyślona przez profesora, żeby pisać o strukturze z krzemieniem bez pisania wprost
-
-<!-- cases/05-collegium.json questions[1].options[2] -->
-Skala sejsmiczna
-
-<!-- cases/05-collegium.json questions[1].options[3] -->
-Kod archiwalny Fundacji
+<!-- cases/05-collegium.json questions[1].hint -->
+Strona 17: profesor sam to tłumaczy.
 
 <!-- cases/05-collegium.json questions[2].text -->
-Co, oprócz daty, zdradza fałszerza?
-
-<!-- cases/05-collegium.json questions[2].options[0] -->
-Zbyt ładne pismo
-
-<!-- cases/05-collegium.json questions[2].options[1] -->
-Nazywa Halinę po imieniu, a kronika z 1287 imienia celowo nie zapisała
-
-<!-- cases/05-collegium.json questions[2].options[2] -->
-Używa atramentu
-
-<!-- cases/05-collegium.json questions[2].options[3] -->
-Wspomina Berbecia
+Oprócz daty fałszerza zdradza ___, którego Rocznik z 1287 celowo nie zapisał, bo nazwał ją ___.
 
 <!-- cases/05-collegium.json questions[2].hint -->
-Wróć do sprawy pierwszej. Co Rocznik zrobił z imieniem?
+Wróć do sprawy pierwszej. Co Rocznik zrobił z imieniem i jak ją nazwał?
 
 <!-- cases/05-collegium.json questions[3].text -->
-Dlaczego fałszywa strona każe kopać właśnie pod Collegium?
-
-<!-- cases/05-collegium.json questions[3].options[0] -->
-Bo tam jest najpłycej
-
-<!-- cases/05-collegium.json questions[3].options[1] -->
-Bo punkt 6 nie reaguje na pomiary, więc tylko ktoś z kluczem może tam cokolwiek potwierdzić, a Fundacja sama nie może
-
-<!-- cases/05-collegium.json questions[3].options[2] -->
-Bo tam jest parking
-
-<!-- cases/05-collegium.json questions[3].options[3] -->
-Bo tak napisał profesor
+Fałszywa strona każe kopać pod ___, bo punkt ___ nie reaguje na pomiary i tylko ktoś z ___ może tam cokolwiek potwierdzić.
 
 <!-- cases/05-collegium.json questions[3].hint -->
-Strona 15: które punkty milczą? Sprawa 4: czego Fundacji brakuje?
+Strona 15: które punkty milczą. Sprawa 4: czego Fundacji brakuje.
 
 <!-- cases/05-collegium.json questions[4].text -->
-Ile razy profesor odmówił Fundacji i co z tego wynika dla strony „przekazać Fundacji”?
+Profesor odmówił Fundacji ___ razy, więc zdanie „przekazać Fundacji” nie mogło wyjść spod ___ ręki, a zyskuje na nim ten, kto ___.
 
-<!-- cases/05-collegium.json questions[4].options[0] -->
-Ani razu, więc strona jest prawdziwa
-
-<!-- cases/05-collegium.json questions[4].options[1] -->
-Trzy razy, więc zdanie o przekazaniu nie mogło wyjść spod jego ręki
-
-<!-- cases/05-collegium.json questions[4].options[2] -->
-Raz, reszta nieznana
-
-<!-- cases/05-collegium.json questions[4].options[3] -->
-Nie wiadomo
+<!-- cases/05-collegium.json questions[4].hint -->
+Strona 17 i faktura ze sprawy czwartej.
 
 <!-- cases/05-collegium.json questions[5].text -->
 Fałszywą stronę zdradza ___, w którym profesor był w ___, oraz ___, którego kronika nie zapisała.

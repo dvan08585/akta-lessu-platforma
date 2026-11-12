@@ -60,48 +60,111 @@
   "questions": [
     {
       "id": "q1",
-      "text": "Co łączy kamienicę Heleny na Opatowskiej z programem edukacyjnym?",
-      "options": [
-        "Nic, to różne instytucje",
-        "Ten sam właściciel: spółka kupiła kamienicę, program prowadzi Fundacja, Fundacja jest jedynym wspólnikiem spółki",
-        "Kamienica jest siedzibą programu",
-        "Miasto dotuje oba"
+      "text": "Kamienicę na Opatowskiej kupiła spółka ___, której jedynym wspólnikiem jest ___, prowadząca program ___.",
+      "options": [],
+      "answer": -1,
+      "kind": "fill",
+      "bank": [
+        "Memoria Nieruchomości",
+        "Sandomierska Memoria",
+        "Ciżemka",
+        "Fundacja",
+        "miasto",
+        "hotel",
+        "Sandomierz Pod Spodem",
+        "Święto Młodego Wina",
+        "Witamina Jazz",
+        "archiwum",
+        "Collegium",
+        "konserwator"
       ],
-      "answer": 1
+      "answerWords": [
+        "Memoria Nieruchomości",
+        "Fundacja",
+        "Sandomierz Pod Spodem"
+      ],
+      "hint": "Akt notarialny i sprawozdanie: te same nazwy."
     },
     {
       "id": "q2",
-      "text": "Czego kupujący naprawdę szukał w tej kamienicy, sądząc po § 7 i inwentarzu?",
-      "options": [
-        "Dachu i elewacji",
-        "Mieszkań na wynajem",
-        "Piwnic z zamurowaną ścianą, której kazano nie naruszać",
-        "Szybkiej transakcji po okazyjnej cenie"
+      "text": "§ 7 zakazuje zmieniać ___ i udostępniać je bez zgody ___, a inwentarz każe nie naruszać ___.",
+      "options": [],
+      "answer": -1,
+      "kind": "fill",
+      "bank": [
+        "piwnic",
+        "dachu",
+        "mieszkań",
+        "zarządu Fundacji",
+        "miasta",
+        "notariusza",
+        "zamurowanej ściany",
+        "drzwi",
+        "okien",
+        "podłogi",
+        "słoików",
+        "kłódki"
       ],
-      "answer": 2
+      "answerWords": [
+        "piwnic",
+        "zarządu Fundacji",
+        "zamurowanej ściany"
+      ],
+      "hint": "Akt notarialny: paragraf i załącznik."
     },
     {
       "id": "q3",
-      "text": "Kto wkłada do kopert akta, które dostajesz od pierwszej sprawy?",
-      "options": [
-        "Komisarz Zieliński osobiście",
-        "Archiwum miejskie",
-        "Program edukacyjny, czyli Fundacja",
-        "Konserwator wojewódzki"
+      "text": "Komisarz pisze, że materiały przekazuje ___, sprawozdanie mówi, że to program ___, a stopka każdej koperty mówi to samo: koperty wkłada ___.",
+      "options": [],
+      "answer": -1,
+      "hint": "List od komisarza, sprawozdanie, stopka.",
+      "kind": "fill",
+      "bank": [
+        "program edukacyjny",
+        "komenda",
+        "archiwum",
+        "Fundacji",
+        "miasta",
+        "uczelni",
+        "Fundacja",
+        "komisarz",
+        "konserwator",
+        "Wanda",
+        "Berbeć",
+        "Zieliński"
       ],
-      "answer": 2,
-      "hint": "List od komisarza mówi, kto pośredniczy. Sprawozdanie mówi, czyj to program. Stopka każdego dokumentu mówi to samo."
+      "answerWords": [
+        "program edukacyjny",
+        "Fundacji",
+        "Fundacja"
+      ]
     },
     {
       "id": "q4",
-      "text": "Do kogo trafiają twoje wnioski, wzgórze po wzgórzu?",
-      "options": [
-        "Do akt postępowania policyjnego",
-        "Do rejestru statusów prowadzonego przez zarząd Fundacji",
-        "Do uczelni w Krakowie",
-        "Nigdzie, to materiał edukacyjny"
+      "text": "Wnioski biegłego, wzgórze po wzgórzu, zasilają ___ prowadzony przez ___, a faktura prosi, by biegłego nie wyprowadzać z ___.",
+      "options": [],
+      "answer": -1,
+      "kind": "fill",
+      "bank": [
+        "rejestr statusów",
+        "akta policyjne",
+        "archiwum",
+        "zarząd Fundacji",
+        "komisarza",
+        "uczelnię",
+        "błędu",
+        "miasta",
+        "Sandomierza",
+        "hotelu",
+        "kopert",
+        "programu"
       ],
-      "answer": 1
+      "answerWords": [
+        "rejestr statusów",
+        "zarząd Fundacji",
+        "błędu"
+      ],
+      "hint": "Sprawozdanie i adnotacja na fakturze."
     },
     {
       "id": "q5",

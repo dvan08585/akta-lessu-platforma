@@ -74,50 +74,105 @@
   "questions": [
     {
       "id": "q1",
-      "text": "Ile lat miała wdowa po Sędziwoju, kiedy wyszła za wały?",
-      "options": [
-        "Około dwudziestu",
-        "Około trzydziestu",
-        "Około czterdziestu",
-        "Nie da się ustalić"
+      "text": "Wdowa po Sędziwoju miała w 1260 roku ___ lata, więc za wały wyszła, mając około ___.",
+      "options": [],
+      "answer": -1,
+      "hint": "Dziecko trzech lat w 1260. Policz do 1287.",
+      "kind": "fill",
+      "bank": [
+        "trzy",
+        "pięć",
+        "dziesięć",
+        "trzydziestu",
+        "dwudziestu",
+        "czterdziestu",
+        "pięćdziesięciu",
+        "dwa",
+        "siedem",
+        "sześćdziesięciu"
       ],
-      "answer": 1,
-      "hint": "Dziecko trzech lat w 1260. Policz do 1287."
+      "answerWords": [
+        "trzy",
+        "trzydziestu"
+      ]
     },
     {
       "id": "q2",
-      "text": "Gdzie leżą ciała trzystu wojowników z 1287 roku?",
-      "options": [
-        "W dole na dziedzińcu, wśród 330 szkieletów",
-        "W zasypie między 2,4 a 6,1 m",
-        "Poniżej 6,1 m, tam, gdzie sondaż nie dotarł",
-        "W kościele św. Jakuba"
+      "text": "W dole na dziedzińcu leży ___ szkieletów z roku ___, a trzystu wojowników z 1287 leży ___.",
+      "options": [],
+      "answer": -1,
+      "hint": "Sarama liczył warstwami. W zasypie nie ma nikogo. Co jest niżej?",
+      "kind": "fill",
+      "bank": [
+        "330",
+        "300",
+        "49",
+        "1260",
+        "1287",
+        "1959",
+        "poniżej 6,1 m",
+        "w zasypie",
+        "w kościele",
+        "nad rzeką",
+        "w krypcie",
+        "pod Rynkiem"
       ],
-      "answer": 2,
-      "hint": "330 szkieletów ma groty i cięcia z 1260. W zasypie nie ma nikogo. Co jest niżej?"
+      "answerWords": [
+        "330",
+        "1260",
+        "poniżej 6,1 m"
+      ]
     },
     {
       "id": "q3",
-      "text": "Skąd Halina miała gołębia?",
-      "options": [
-        "Złapała w ruinach starego miasta",
-        "Dostała od Tatarów jako znak przymierza",
-        "Zabrała z gołębnika grodu w noc wyjścia",
-        "Nie było żadnego gołębia, kronika zmyśla"
+      "text": "W noc wyjścia wdowy z gołębnika grodu ubył ___ gołąb, a rano wrócił od strony ___.",
+      "options": [],
+      "answer": -1,
+      "kind": "fill",
+      "bank": [
+        "biały",
+        "szary",
+        "czarny",
+        "południowej",
+        "północnej",
+        "wschodniej",
+        "rzeki",
+        "obozu",
+        "wałów",
+        "Starego Wzgórza"
       ],
-      "answer": 2
+      "answerWords": [
+        "biały",
+        "południowej"
+      ],
+      "hint": "Inwentarz liczy gołębie. Zapisał też, skąd wrócił."
     },
     {
       "id": "q4",
-      "text": "Skąd przyleciał znak, który Berbeć zobaczył o świcie?",
-      "options": [
-        "Z wałów nowego grodu, posłany przez obrońców",
-        "Z obozu chana za Wisłą",
-        "Spod Starego Wzgórza, z miejsca, gdzie nikt z obrońców nie stał",
-        "Znad Wisły, od strony przeprawy"
+      "text": "Znak nad Starym Wzgórzem wzleciał spod ___, w miejscu, gdzie nie stał nikt z ___, i dopiero wtedy Berbeć kazał ___.",
+      "options": [],
+      "answer": -1,
+      "hint": "Gołębia nie posłano z grodu. Rocznik mówi, gdzie nikt z naszych nie stał.",
+      "kind": "fill",
+      "bank": [
+        "ziemi",
+        "wałów",
+        "nieba",
+        "obrońców",
+        "Tatarów",
+        "mieszczan",
+        "zasypywać",
+        "dzwonić",
+        "otworzyć wrota",
+        "modlić się",
+        "czekać",
+        "liczyć"
       ],
-      "answer": 2,
-      "hint": "Gołębia nie posłano z grodu. Wrócił od południa. Gdzie było Stare Wzgórze względem nowego?"
+      "answerWords": [
+        "ziemi",
+        "obrońców",
+        "zasypywać"
+      ]
     },
     {
       "id": "q5",

@@ -78,49 +78,108 @@
     },
     {
       "id": "q1",
-      "text": "Co oznacza „klasa S, wariant K”?",
-      "options": [
-        "Złoże srebra, wariant kopalniany",
-        "Klasyfikacja wymyślona przez profesora, żeby pisać o strukturze z krzemieniem bez pisania wprost",
-        "Skala sejsmiczna",
-        "Kod archiwalny Fundacji"
+      "text": "„Klasa S, wariant K” to ___ wymyślona przez profesora: S jak ___, K jak ___.",
+      "options": [],
+      "answer": -1,
+      "kind": "fill",
+      "bank": [
+        "klasyfikacja",
+        "skala",
+        "nagroda",
+        "struktura",
+        "złoże",
+        "srebro",
+        "krzemień",
+        "kopalnia",
+        "kwarc",
+        "Kraków",
+        "klasa",
+        "katedra"
       ],
-      "answer": 1
+      "answerWords": [
+        "klasyfikacja",
+        "struktura",
+        "krzemień"
+      ],
+      "hint": "Strona 17: profesor sam to tłumaczy."
     },
     {
       "id": "q2",
-      "text": "Co, oprócz daty, zdradza fałszerza?",
-      "options": [
-        "Zbyt ładne pismo",
-        "Nazywa Halinę po imieniu, a kronika z 1287 imienia celowo nie zapisała",
-        "Używa atramentu",
-        "Wspomina Berbecia"
+      "text": "Oprócz daty fałszerza zdradza ___, którego Rocznik z 1287 celowo nie zapisał, bo nazwał ją ___.",
+      "options": [],
+      "answer": -1,
+      "hint": "Wróć do sprawy pierwszej. Co Rocznik zrobił z imieniem i jak ją nazwał?",
+      "kind": "fill",
+      "bank": [
+        "imię Haliny",
+        "nazwisko profesora",
+        "atrament",
+        "zdrajczynią",
+        "świętą",
+        "wdową",
+        "kasztelanką",
+        "córką",
+        "gołębiem",
+        "Haliną"
       ],
-      "answer": 1,
-      "hint": "Wróć do sprawy pierwszej. Co Rocznik zrobił z imieniem?"
+      "answerWords": [
+        "imię Haliny",
+        "zdrajczynią"
+      ]
     },
     {
       "id": "q3",
-      "text": "Dlaczego fałszywa strona każe kopać właśnie pod Collegium?",
-      "options": [
-        "Bo tam jest najpłycej",
-        "Bo punkt 6 nie reaguje na pomiary, więc tylko ktoś z kluczem może tam cokolwiek potwierdzić, a Fundacja sama nie może",
-        "Bo tam jest parking",
-        "Bo tak napisał profesor"
+      "text": "Fałszywa strona każe kopać pod ___, bo punkt ___ nie reaguje na pomiary i tylko ktoś z ___ może tam cokolwiek potwierdzić.",
+      "options": [],
+      "answer": -1,
+      "hint": "Strona 15: które punkty milczą. Sprawa 4: czego Fundacji brakuje.",
+      "kind": "fill",
+      "bank": [
+        "Collegium",
+        "Rynkiem",
+        "katedrą",
+        "6",
+        "3",
+        "1",
+        "kluczem",
+        "łopatą",
+        "zgodą",
+        "Fundacją",
+        "komisarzem",
+        "mapą"
       ],
-      "answer": 1,
-      "hint": "Strona 15: które punkty milczą? Sprawa 4: czego Fundacji brakuje?"
+      "answerWords": [
+        "Collegium",
+        "6",
+        "kluczem"
+      ]
     },
     {
       "id": "q4",
-      "text": "Ile razy profesor odmówił Fundacji i co z tego wynika dla strony „przekazać Fundacji”?",
-      "options": [
-        "Ani razu, więc strona jest prawdziwa",
-        "Trzy razy, więc zdanie o przekazaniu nie mogło wyjść spod jego ręki",
-        "Raz, reszta nieznana",
-        "Nie wiadomo"
+      "text": "Profesor odmówił Fundacji ___ razy, więc zdanie „przekazać Fundacji” nie mogło wyjść spod ___ ręki, a zyskuje na nim ten, kto ___.",
+      "options": [],
+      "answer": -1,
+      "kind": "fill",
+      "bank": [
+        "trzy",
+        "raz",
+        "ani razu",
+        "jego",
+        "niczyjej",
+        "mojej",
+        "trzy razy pytał",
+        "kopał",
+        "czytał",
+        "płacił fakturę",
+        "pisał kronikę",
+        "słuchał"
       ],
-      "answer": 1
+      "answerWords": [
+        "trzy",
+        "jego",
+        "trzy razy pytał"
+      ],
+      "hint": "Strona 17 i faktura ze sprawy czwartej."
     },
     {
       "id": "q5",

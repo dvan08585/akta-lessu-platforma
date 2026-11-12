@@ -74,49 +74,109 @@
   "questions": [
     {
       "id": "q1",
-      "text": "Ile wrót z otworem na pieczęć zbudował cech w 1354 roku?",
-      "options": [
-        "Dwoje",
-        "Siedmioro",
-        "Dziewięcioro",
-        "Dziesięcioro"
+      "text": "Za wrota płacono grzywnę i ___ skojców od sztuki, grzywna liczy ___ skojce, razem za wrota ___ grzywien i dwadzieścia dwa skojce: wrót było siedmioro.",
+      "options": [],
+      "answer": -1,
+      "hint": "Trzy liczby z księgi wydatków. Reszta to dzielenie.",
+      "kind": "fill",
+      "bank": [
+        "dziesięć",
+        "dwadzieścia",
+        "pięć",
+        "dwadzieścia cztery",
+        "dwanaście",
+        "trzydzieści",
+        "dziewięć",
+        "siedem",
+        "dziesięć i pół",
+        "osiem"
       ],
-      "answer": 1,
-      "hint": "Grzywna i dziesięć skojców od sztuki. Grzywna to dwadzieścia cztery skojce. Razem zapłacono dziewięć grzywien i dwadzieścia dwa skojce."
+      "answerWords": [
+        "dziesięć",
+        "dwadzieścia cztery",
+        "dziewięć"
+      ]
     },
     {
       "id": "q2",
-      "text": "Dlaczego ton dolny dzwonu sprawdzano świecą na posadzce, a nie uchem?",
-      "options": [
-        "Bo w wieży było ciemno",
-        "Bo ton leży poniżej progu słyszenia, a płomień reaguje na drganie, którego ucho nie wychwyci",
-        "Bo tak nakazuje liturgia",
-        "Bo ludwisarz był głuchy"
+      "text": "Ton dolny sprawdzano ___ na posadzce wieży, bo leży poniżej ___, a płomień reaguje na ___.",
+      "options": [],
+      "answer": -1,
+      "kind": "fill",
+      "bank": [
+        "świecą",
+        "uchem",
+        "dzwonem",
+        "progu słyszenia",
+        "Rynku",
+        "wieży",
+        "drganie",
+        "światło",
+        "modlitwę",
+        "srebro",
+        "ciepło",
+        "wiatr"
       ],
-      "answer": 1
+      "answerWords": [
+        "świecą",
+        "progu słyszenia",
+        "drganie"
+      ],
+      "hint": "Rachunek ludwisarza: jak strojono i czym."
     },
     {
       "id": "q3",
-      "text": "Na co zareagował pies o 11:58?",
-      "options": [
-        "Na pierwsze uderzenie dzwonu",
-        "Na ton 18 Hz, który był w tle przed dzwonem",
-        "Na gołębie na Rynku",
-        "Na rejestrator"
+      "text": "Pies zaczął skomleć o ___, dwie minuty przed ___, bo słyszał ton ___ Hz, który był w tle.",
+      "options": [],
+      "answer": -1,
+      "hint": "Wydruk ma minuty. Margines ma psa.",
+      "kind": "fill",
+      "bank": [
+        "11:58",
+        "12:00",
+        "11:50",
+        "pierwszym uderzeniem",
+        "dzwonem Piotrem",
+        "rejestratorem",
+        "18",
+        "196",
+        "12",
+        "barką",
+        "gołębiami",
+        "wiatrem"
       ],
-      "answer": 1,
-      "hint": "Pierwsze uderzenie było o 12:00."
+      "answerWords": [
+        "11:58",
+        "pierwszym uderzeniem",
+        "18"
+      ]
     },
     {
       "id": "q4",
-      "text": "Co dowodzi, że w ziemi brzmi nie dzwon, tylko coś pod nim?",
-      "options": [
-        "Dzwon ma 196 Hz, a ziemia 18 Hz",
-        "Dominanta rośnie po każdym uderzeniu i nie zanika razem z dzwonem",
-        "Rejestrator stał przy studni",
-        "Pies skomlał"
+      "text": "Po uderzeniach dzwonu dominanta 18 Hz rośnie ___ razy, nie zanika z dzwonem i wraca do tła po ___ minutach: w ziemi brzmi nie dzwon, tylko ___.",
+      "options": [],
+      "answer": -1,
+      "kind": "fill",
+      "bank": [
+        "sześć",
+        "dwa",
+        "dziesięć",
+        "czterdziestu",
+        "dziesięciu",
+        "pięciu",
+        "coś pod nim",
+        "echo",
+        "Wisła",
+        "rejestrator",
+        "pies",
+        "wiatr"
       ],
-      "answer": 1
+      "answerWords": [
+        "sześć",
+        "czterdziestu",
+        "coś pod nim"
+      ],
+      "hint": "Wydruk z rejestratora, trzy wiersze."
     },
     {
       "id": "q5",
