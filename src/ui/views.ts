@@ -47,7 +47,7 @@ export function viewIntro(app: App): HTMLElement {
 
 export function viewMap(app: App): HTMLElement {
   const sec = h("section", { class: "fade-in" }, topbar(app, "#/mapa"));
-  sec.append(h("h2", {}, "Siedem wzgórz, jeden przekrój"));
+  sec.append(h("h2", {}, "Siedem wzgórz, jeden przekrój"), h("p", { class: "faint" }, "Przekrój z zachodu na wschód wzdłuż Wisły. Wysokości z danych; znak zapytania = szacunek do sprawdzenia w terenie. Głębokość bram jest fabularna."));
   if (app.silent.length) sec.append(h("p", { class: "faint" }, `Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. Mapa jest psychograficzna: każdy biegły ma inną. Pełna istnieje tylko między ludźmi.`));
   const wisla = h("p", { class: "faint wisla" }, "Wisła: …");
   fetchWisla().then((w) => { const mean = monthlyMean(); const diff = w.cm - mean; wisla.textContent = `Wisła, wodowskaz Sandomierz: ${w.cm} cm${w.live ? "" : " (średnia miesięczna, API nie odpowiada)"}. ${diff < -40 ? "Nisko. Krypty zalewa przy niskiej wodzie." : diff > 40 ? "Wysoko. Nikt nie patrzy, co jest niżej." : "Jak zwykle o tej porze."}` + (isSnowSeason() ? " Śnieg na lessie." : ""); });

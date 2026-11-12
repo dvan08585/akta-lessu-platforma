@@ -1,25 +1,153 @@
 {
   "viewBox": "0 0 800 560",
   "layers": [
-    { "id": "less", "label": "less", "y": 230, "h": 70 },
-    { "id": "sand", "label": "piaskowiec kredowy", "y": 300, "h": 130 },
-    { "id": "deep", "label": "to, co nie ma nazwy", "y": 430, "h": 130 }
+    {
+      "id": "less",
+      "label": "less",
+      "y": 230,
+      "h": 70
+    },
+    {
+      "id": "sand",
+      "label": "piaskowiec kredowy",
+      "y": 300,
+      "h": 130
+    },
+    {
+      "id": "deep",
+      "label": "to, co nie ma nazwy",
+      "y": 430,
+      "h": 130
+    }
   ],
   "gates": [
-    { "n": 1, "id": "zmigrod",         "name": "Żmigród",             "element": "ziemia",    "x": 90,  "peak": 150, "depth": 395, "silent": true },
-    { "n": 2, "id": "katedralne",      "name": "Wzgórze Katedralne",  "element": "woda",      "x": 205, "peak": 105, "depth": 380 },
-    { "n": 3, "id": "miejskie",        "name": "Wzgórze Miejskie",    "element": "dźwięk",    "x": 330, "peak": 90,  "depth": 350 },
-    { "n": 4, "id": "staromiejskie",   "name": "Staromiejskie",       "element": "ogień",     "x": 455, "peak": 130, "depth": 400 },
-    { "n": 5, "id": "zamkowe",         "name": "Wzgórze Zamkowe",     "element": "zimno",     "x": 570, "peak": 115, "depth": 385 },
-    { "n": 6, "id": "collegium",       "name": "Collegium",           "element": "ciemność",  "x": 665, "peak": 125, "depth": 410, "silent": true },
-    { "n": 7, "id": "swietopawlowskie","name": "Świętopawłowskie",    "element": "powietrze", "x": 745, "peak": 160, "depth": 440 }
+    {
+      "n": 7,
+      "id": "swietopawlowskie",
+      "name": "Świętopawłowskie",
+      "element": "powietrze",
+      "x": 80,
+      "peak": 160,
+      "depth": 339,
+      "elev": 178,
+      "elevSource": "szacunek: plateau lessowe przy św. Pawle, do weryfikacji na Geoportalu"
+    },
+    {
+      "n": 4,
+      "id": "staromiejskie",
+      "name": "Staromiejskie",
+      "element": "ogień",
+      "x": 185,
+      "peak": 130,
+      "depth": 358,
+      "elev": 168,
+      "elevSource": "szacunek: św. Jakub leży niżej od Starego Miasta, do weryfikacji"
+    },
+    {
+      "n": 1,
+      "id": "zmigrod",
+      "name": "Żmigród",
+      "element": "ziemia",
+      "x": 300,
+      "peak": 150,
+      "depth": 337,
+      "silent": true,
+      "elev": 176,
+      "elevSource": "mapcarta: Wzgórze Żmigrodzkie 176 m"
+    },
+    {
+      "n": 5,
+      "id": "zamkowe",
+      "name": "Wzgórze Zamkowe",
+      "element": "zimno",
+      "x": 410,
+      "peak": 115,
+      "depth": 365,
+      "elev": 164,
+      "elevSource": "atlasgrodzisk.pl: wypłaszczenie szczytowe 163,6 m"
+    },
+    {
+      "n": 2,
+      "id": "katedralne",
+      "name": "Wzgórze Katedralne",
+      "element": "woda",
+      "x": 520,
+      "peak": 105,
+      "depth": 344,
+      "elev": 174,
+      "elevSource": "Wikipedia 173 m / atlasgrodzisk 175,2 m"
+    },
+    {
+      "n": 3,
+      "id": "miejskie",
+      "name": "Wzgórze Miejskie",
+      "element": "dźwięk",
+      "x": 630,
+      "peak": 90,
+      "depth": 351,
+      "elev": 185,
+      "elevSource": "mapa-turystyczna.pl: Sandomierz 185 m; Rynek pochyły, 15 m różnicy"
+    },
+    {
+      "n": 6,
+      "id": "collegium",
+      "name": "Collegium",
+      "element": "ciemność",
+      "x": 735,
+      "peak": 125,
+      "depth": 332,
+      "silent": true,
+      "elev": 182,
+      "elevSource": "szacunek: ten sam plateau co Rynek, skraj skarpy, do weryfikacji"
+    }
   ],
   "corridors": [
-    { "id": "c-3-2", "from": 3, "to": 2, "revealChapter": 15 },
-    { "id": "c-3-4", "from": 3, "to": 4, "revealChapter": 12 },
-    { "id": "c-2-1", "from": 2, "to": 1, "revealChapter": 99 },
-    { "id": "c-4-5", "from": 4, "to": 5, "revealChapter": 99 },
-    { "id": "c-5-6", "from": 5, "to": 6, "revealChapter": 99 },
-    { "id": "c-4-7", "from": 4, "to": 7, "revealChapter": 99 }
-  ]
+    {
+      "id": "c-3-2",
+      "from": 3,
+      "to": 2,
+      "revealChapter": 15
+    },
+    {
+      "id": "c-3-4",
+      "from": 3,
+      "to": 4,
+      "revealChapter": 12
+    },
+    {
+      "id": "c-2-1",
+      "from": 2,
+      "to": 1,
+      "revealChapter": 99
+    },
+    {
+      "id": "c-4-5",
+      "from": 4,
+      "to": 5,
+      "revealChapter": 99
+    },
+    {
+      "id": "c-5-6",
+      "from": 5,
+      "to": 6,
+      "revealChapter": 99
+    },
+    {
+      "id": "c-4-7",
+      "from": 4,
+      "to": 7,
+      "revealChapter": 99
+    }
+  ],
+  "wisla": {
+    "elev": 140,
+    "note": "poziom Wisły pod Sandomierzem ok. 140 m n.p.m. (szacunek; rzędna zera wodowskazu do sprawdzenia w IMGW)"
+  },
+  "scale": {
+    "minElev": 140,
+    "maxElev": 195,
+    "groundY": 230,
+    "skyY": 60,
+    "note": "wysokość wzgórza rysowana proporcjonalnie: 140 m = linia Wisły (y=230), 195 m = y=60"
+  }
 }

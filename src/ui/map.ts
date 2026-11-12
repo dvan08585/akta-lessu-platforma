@@ -18,17 +18,27 @@ export function renderMap(ctx: MapCtx): HTMLElement {
     svg.append(s("rect", { x: "0", y: String(l.y), width: "800", height: String(l.h), class: `layer-${l.id}` }));
     svg.append(s("text", { x: "12", y: String(l.y + 16), class: "layer-label" }, l.label));
   }
-  // Wzgórza (powierzchnia)
+  // Wzgórza (powierzchnia): wysokość z danych, proporcjonalnie między linią Wisły a górą rysunku.
   const ground = 230;
+  const sc = map.scale ?? { minElev: 140, maxElev: 195, groundY: 230, skyY: 60 };
+  const peakOf = (g: typeof map.gates[number]) => g.elev ? sc.groundY - ((g.elev - sc.minElev) / (sc.maxElev - sc.minElev)) * (sc.groundY - sc.skyY) : g.peak;
+  for (const g of map.gates) g.peak = Math.round(peakOf(g));
   const path = map.gates.map((g, i) => {
     const prevX = i === 0 ? 0 : (map.gates[i - 1].x + g.x) / 2;
     return `${i === 0 ? `M 0 ${ground} L 0 ${ground - 20}` : ""} Q ${prevX} ${ground - 10} ${g.x} ${g.peak}`;
   }).join(" ") + ` Q 780 ${ground - 10} 800 ${ground - 25} L 800 ${ground} Z`;
   svg.append(s("path", { d: path, class: "hill" }));
-  // Wisła po prawej
-  svg.append(s("text", { x: "770", y: "222", "text-anchor": "end", style: "font-size:11px;fill:var(--ink-faint)" }, "Wisła →"));
-  // Nazwy wzgórz
-  for (const g of map.gates) svg.append(s("text", { x: String(g.x), y: String(g.peak - 14), "text-anchor": "middle" }, g.name));
+  // Linia Wisły i strony świata
+  svg.append(s("line", { x1: "0", y1: String(ground), x2: "800", y2: String(ground), stroke: "var(--cold)", "stroke-width": "1", opacity: "0.6" }));
+  svg.append(s("text", { x: "12", y: String(ground - 6), style: "font-size:10px;fill:var(--cold)" }, `Wisła ~${map.wisla?.elev ?? 140} m n.p.m.`));
+  svg.append(s("text", { x: "12", y: "20", style: "font-size:10px;fill:var(--ink-faint);letter-spacing:0.14em" }, "ZACHÓD · PIMPO LIMPO"));
+  svg.append(s("text", { x: "788", y: "20", "text-anchor": "end", style: "font-size:10px;fill:var(--ink-faint);letter-spacing:0.14em" }, "SKARPA · WSCHÓD"));
+  // Nazwy wzgórz i wysokości
+  map.gates.forEach((g, i) => {
+    const dy = i % 2 ? -26 : -14;
+    svg.append(s("text", { x: String(g.x), y: String(g.peak + dy), "text-anchor": "middle" }, g.name));
+    if (g.elev) svg.append(s("text", { x: String(g.x), y: String(g.peak + dy + 12), "text-anchor": "middle", style: "font-size:10px;fill:var(--ink-faint)" }, `${g.elev} m${g.elevSource?.startsWith("szacunek") ? "?" : ""}`));
+  });
 
   // Korytarze (ujawniają się rozdziałem)
   for (const c of map.corridors) {

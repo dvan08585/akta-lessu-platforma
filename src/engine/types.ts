@@ -3,9 +3,11 @@ export type GateStatus = "locked" | "open" | "solved" | "unstable" | "silent";
 export interface Gate {
   n: number; id: string; name: string; element: string;
   x: number; peak: number; depth: number; silent?: boolean;
+  /** Wysokość n.p.m. i źródło (dane albo szacunek do weryfikacji). */
+  elev?: number; elevSource?: string;
 }
 export interface Corridor { id: string; from: number; to: number; revealChapter: number }
-export interface MapData { viewBox: string; layers: { id: string; label: string; y: number; h: number }[]; gates: Gate[]; corridors: Corridor[] }
+export interface MapData { viewBox: string; layers: { id: string; label: string; y: number; h: number }[]; gates: Gate[]; corridors: Corridor[]; wisla?: { elev: number; note: string }; scale?: { minElev: number; maxElev: number; groundY: number; skyY: number } }
 
 export interface Chapter {
   n: number; title: string; date: string; gate: number; amor: boolean; underground: boolean; line: string; codeHash: string;
