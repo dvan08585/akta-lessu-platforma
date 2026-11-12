@@ -49,3 +49,4 @@ select { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px 
 .letter p { margin-bottom: 0.6em; }
 .shake { animation: shake 0.4s; }
 @keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.verdict-text { margin: 0.5rem 0 1rem; min-height: 1.2em; }

@@ -187,6 +187,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   sec.append(h("h3", {}, "Ustal"), grid);
 
   const pend = pendant(0);
+  const verdictText = h("p", { class: "verdict-text muted", "aria-live": "polite" });
   const result = h("div", { class: "verdict" }, pend);
   const btn = h("button", { class: "primary" }, "Sprawdź zawieszką") as HTMLButtonElement;
   btn.addEventListener("click", async () => {
@@ -201,14 +202,16 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     save(app.state);
     const cold = c.gate === 5; // Brama Zamkowa: żywioł zimno. Zawieszka ziębi zamiast grzać.
     pend.replaceWith(pendant(v.heat, cold ? `zawieszka: ${["zimna", "zimniejsza", "lodowata", "parzy zimnem", "zamarza"][v.heat]}` : undefined));
-    if (v.solved) { grid.querySelectorAll(".q").forEach((el) => el.classList.add("ok")); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
+    if (v.solved) { verdictText.textContent = ""; grid.querySelectorAll(".q").forEach((el) => el.classList.add("ok")); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
     else {
       const tries = (app.state.attempts[c.id] ?? []).length;
       const hints = c.questions.filter((q, i) => !v.perQuestion[i] && q.hint).map((q) => q.hint!);
-      toast(tries >= 3 && hints.length ? hints[0] : `Zawieszka: ${heatLabel[v.heat]}. ${v.correct} z ${v.total}.`);
+      const wrong = v.total - v.correct;
+      verdictText.textContent = `${v.correct} z ${v.total} ustaleń się zgadza. ${wrong === 1 ? "Jedno jest błędne" : wrong + " są błędne"}. Zawieszka nie mówi które: wróć do dokumentów.${tries >= 3 && hints.length ? " Podpowiedź: " + hints[0] : ""}`;
+      toast(`Zawieszka: ${heatLabel[v.heat]}. ${v.correct} z ${v.total}.`);
     }
   });
-  sec.append(result, btn, solutionBox);
+  sec.append(result, verdictText, btn, solutionBox);
   if (solvedAlready) { pend.replaceWith(pendant(4)); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
   return sec;
 
