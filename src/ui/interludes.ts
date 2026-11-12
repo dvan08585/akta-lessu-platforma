@@ -5,7 +5,7 @@ import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 
 export interface Interlude {
-  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass"; after?: number; gate?: number; title: string; level?: string;
+  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace"; after?: number; gate?: number; title: string; level?: string;
   secret?: string[]; steps?: number;
   cycles?: number; inhale?: number; exhale?: number;
   audio?: string; q?: string; options?: string[]; answer?: number; seconds?: number;
@@ -30,7 +30,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} przebytych bramach.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   sec.append(h("p", { class: "faint" }, `Między sprawami${it.level ? " · " + it.level : ""}`), h("h2", {}, it.title));
-  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else renderPlate();
+  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else if (it.type === "whistle") renderWhistle(); else if (it.type === "touch7") renderTouch7(); else if (it.type === "hold") renderHold(); else if (it.type === "mirror") renderMirror(); else if (it.type === "trace") renderTrace(); else renderPlate();
   return sec;
 
   function finish(note: string) {
@@ -386,6 +386,131 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       navigator.geolocation.watchPosition((p) => { pos = { lat: p.coords.latitude, lon: p.coords.longitude }; }, () => { status.textContent = "GPS: odmowa. Zawieszka milczy bez miejsca."; }, { enableHighAccuracy: true, maximumAge: 2000 });
       start.disabled = true; start.textContent = "Obracaj się powoli"; tick();
     });
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Gwizd: czysty ton wysoko (700–3000 Hz) utrzymany 3 s. Nucenie (poniżej 500 Hz) nie liczy się. */
+  function renderWhistle() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const status = h("p", { class: "mono muted" }, "cisza");
+    const bar = h("div", { class: "still-bar" }, h("i")); const fill = bar.firstElementChild as HTMLElement;
+    const micBtn = h("button", { class: "primary" }, "Gwizdnij");
+    const verdict = h("div");
+    sec.append(bar, status, h("div", { class: "verdict" }, micBtn), verdict);
+    let held = 0, finished = done;
+    micBtn.addEventListener("click", async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const ac = new AudioContext(); const src = ac.createMediaStreamSource(stream); const an = ac.createAnalyser(); an.fftSize = 2048; src.connect(an);
+        const buf = new Float32Array(new ArrayBuffer(an.fftSize * 4)); const smooth = new PitchSmoother(5);
+        micBtn.disabled = true; micBtn.textContent = "Słucham";
+        setInterval(() => {
+          an.getFloatTimeDomainData(buf); const hz = smooth.push(detectPitch(buf, ac.sampleRate));
+          if (hz && hz > 700 && hz < 3000) { held += 0.1; status.textContent = `${hz.toFixed(0)} Hz · czysty`; }
+          else if (hz && hz < 500) { held = Math.max(0, held - 0.2); status.textContent = `${hz.toFixed(0)} Hz · to głos, nie gwizd`; }
+          else { held = Math.max(0, held - 0.05); status.textContent = hz ? `${hz.toFixed(0)} Hz` : "cisza"; }
+          fill.style.width = `${Math.min(100, (held / 3) * 100)}%`;
+          if (held >= 3 && !finished) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: czysty ton.`); }
+        }, 100);
+      } catch { toast("Bez mikrofonu nie da się gwizdać do telefonu. Wróć, kiedy będziesz mógł."); }
+    });
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Siedem palców: multi-touch, siedem punktów heptagramu dotkniętych jednocześnie przez 3 s. */
+  function renderTouch7() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const canvas = h("canvas", { class: "plate hept", width: "600", height: "600", "aria-label": "Heptagram z siedmioma punktami" }) as HTMLCanvasElement;
+    const status = h("p", { class: "mono muted" }, "0 / 7 palców");
+    const verdict = h("div");
+    sec.append(canvas, status, verdict);
+    const ctx = canvas.getContext("2d")!;
+    const pts = Array.from({ length: 7 }, (_, i) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 7; return { x: 300 + Math.cos(a) * 220, y: 300 + Math.sin(a) * 220 }; });
+    const touches = new Map<number, { x: number; y: number }>(); let held = 0, finished = done;
+    const toCanvas = (e: PointerEvent) => { const r = canvas.getBoundingClientRect(); return { x: ((e.clientX - r.left) / r.width) * 600, y: ((e.clientY - r.top) / r.height) * 600 }; };
+    canvas.addEventListener("pointerdown", (e) => { touches.set(e.pointerId, toCanvas(e)); });
+    canvas.addEventListener("pointermove", (e) => { if (touches.has(e.pointerId)) touches.set(e.pointerId, toCanvas(e)); });
+    const up = (e: PointerEvent) => touches.delete(e.pointerId); canvas.addEventListener("pointerup", up); canvas.addEventListener("pointercancel", up); canvas.addEventListener("pointerleave", up);
+    function draw() {
+      ctx.fillStyle = "#171511"; ctx.fillRect(0, 0, 600, 600);
+      ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath(); ctx.strokeStyle = "#6b6355"; ctx.lineWidth = 2; ctx.stroke();
+      const covered = pts.map((p) => [...touches.values()].some((t) => Math.hypot(t.x - p.x, t.y - p.y) < 60));
+      pts.forEach((p, i) => { ctx.beginPath(); ctx.arc(p.x, p.y, 34, 0, Math.PI * 2); ctx.fillStyle = covered[i] ? "#c9a86a" : "#2a2620"; ctx.fill(); ctx.strokeStyle = "#e8e0cf"; ctx.lineWidth = 1.5; ctx.stroke(); });
+      const n = covered.filter(Boolean).length; status.textContent = `${n} / 7 palców`;
+      held = n === 7 ? held + 1 / 60 : 0;
+      if (held >= 3 && !finished) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: siedem palców.`); try { navigator.vibrate?.(300); } catch { /* */ } }
+      requestAnimationFrame(draw);
+    }
+    draw();
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Marek trzyma: przycisk trzymany N sekund. Puszczenie = od nowa. Nic się nie dzieje. */
+  function renderHold() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const total = it.seconds ?? 90;
+    const btn = h("button", { class: "primary hold-btn" }, "Trzymaj");
+    const status = h("p", { class: "mono muted" }, `0 / ${total} s`);
+    const verdict = h("div");
+    sec.append(h("div", { class: "verdict" }, btn), status, verdict);
+    let t0 = 0, iv: number | undefined, finished = done;
+    const stop = () => { if (iv) clearInterval(iv); iv = undefined; if (!finished) { status.textContent = `0 / ${total} s. Puściłeś.`; btn.textContent = "Trzymaj"; } };
+    btn.addEventListener("pointerdown", (e) => { e.preventDefault(); t0 = Date.now(); btn.textContent = "…"; iv = window.setInterval(() => { const sec_ = (Date.now() - t0) / 1000; status.textContent = `${sec_.toFixed(0)} / ${total} s`; if (sec_ >= total && !finished) { finished = true; clearInterval(iv); verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: ${total} sekund.`); } }, 250); });
+    ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => btn.addEventListener(ev, stop));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Lustro: tekst w odbiciu, do przeczytania w lustrze. Zero technologii. */
+  function renderMirror() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const page = h("article", { class: "doc hand mirror" }, h("h4", {}, "Kartka w odbiciu"));
+    it.secret!.forEach((t) => page.append(h("p", {}, t)));
+    sec.append(page);
+    const opts = h("div", { class: "opts", role: "radiogroup" });
+    it.options!.forEach((o, i) => opts.append(h("label", {}, h("input", { type: "radio", name: "mirror", value: String(i) }), o)));
+    const verdict = h("div"); const btn = h("button", { class: "primary" }, "Odpowiedz");
+    btn.addEventListener("click", () => { const el = sec.querySelector<HTMLInputElement>('input[name="mirror"]:checked'); if (!el) { toast("Najpierw lustro."); return; } if (Number(el.value) === it.answer) { verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: przeczytane w odbiciu.`); } else toast("Lustro nie kłamie. Przeczytaj jeszcze raz."); });
+    sec.append(h("div", { class: "q daily" }, h("div", { class: "qt" }, it.q!), opts), btn, verdict);
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Nie podnoś palca: labirynt z trzema rozgałęzieniami, ekran ciemnieje z postępem. Puszczenie albo zła odnoga = powrót. */
+  function renderTrace() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const canvas = h("canvas", { class: "plate corridor trace", width: "600", height: "600", "aria-label": "Korytarz" }) as HTMLCanvasElement;
+    const status = h("p", { class: "mono muted" }, "Opatowska");
+    const verdict = h("div");
+    sec.append(canvas, status, verdict);
+    const ctx = canvas.getContext("2d")!;
+    // korytarz jako łamana (główna droga) + trzy odnogi (ślepe)
+    const path = [[60, 40], [60, 200], [300, 200], [300, 380], [120, 380], [120, 520], [540, 520]]; // Opatowska → S → komnata (W)
+    const dead = [[[300, 200], [540, 200], [540, 300]], [[300, 380], [540, 380], [540, 450]], [[120, 520], [60, 520], [60, 580]]];
+    const W = 28; let progress = 0, tracing = false, finished = done;
+    const near = (x: number, y: number, a: number[], b: number[]) => { const dx = b[0] - a[0], dy = b[1] - a[1]; const t = Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / (dx * dx + dy * dy))); return Math.hypot(x - (a[0] + dx * t), y - (a[1] + dy * t)) < W; };
+    const toC = (e: PointerEvent) => { const r = canvas.getBoundingClientRect(); return { x: ((e.clientX - r.left) / r.width) * 600, y: ((e.clientY - r.top) / r.height) * 600 }; };
+    const reset = (why: string) => { tracing = false; progress = 0; status.textContent = why; };
+    canvas.addEventListener("pointerdown", (e) => { const p = toC(e); if (Math.hypot(p.x - 60, p.y - 40) < 40) { tracing = true; progress = 0; status.textContent = "Opatowska. Nie puszczaj."; } });
+    canvas.addEventListener("pointermove", (e) => {
+      if (!tracing || finished) return; const p = toC(e);
+      for (const d of dead) for (let i = 0; i < d.length - 1; i++) if (near(p.x, p.y, d[i], d[i + 1]) && !near(p.x, p.y, path[Math.min(progress, path.length - 2)], path[Math.min(progress + 1, path.length - 1)])) { reset("Zła odnoga. Wracasz na Opatowską."); return; }
+      let onPath = false;
+      for (let i = Math.max(0, progress - 1); i < path.length - 1; i++) if (near(p.x, p.y, path[i], path[i + 1])) { onPath = true; if (i > progress) progress = i; }
+      if (!onPath) { reset("Ściana. Wracasz na Opatowską."); return; }
+      if (Math.hypot(p.x - 540, p.y - 520) < 30 && !finished) { finished = true; tracing = false; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: komnata.`); }
+    });
+    ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => canvas.addEventListener(ev, () => { if (tracing && !finished) reset("Puściłeś. Wracasz na Opatowską."); }));
+    function draw() {
+      const dark = tracing ? Math.min(0.85, progress / (path.length - 1)) : 0;
+      ctx.fillStyle = "#171511"; ctx.fillRect(0, 0, 600, 600);
+      ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.lineWidth = W * 2; ctx.strokeStyle = "#2a2620";
+      const stroke = (pts: number[][]) => { ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.stroke(); };
+      dead.forEach(stroke); stroke(path);
+      ctx.fillStyle = "#c9a86a"; ctx.beginPath(); ctx.arc(60, 40, 14, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#7a1f1f"; ctx.beginPath(); ctx.arc(540, 520, 14, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#a39a86"; ctx.font = "13px Georgia"; ctx.fillText("Opatowska", 80, 44); ctx.fillText("komnata", 455, 560);
+      ctx.fillStyle = `rgba(14,13,11,${dark})`; ctx.fillRect(0, 0, 600, 600);
+      requestAnimationFrame(draw);
+    }
+    draw();
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
   }
 

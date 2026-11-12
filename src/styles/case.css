@@ -89,3 +89,6 @@ select { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px 
 .topbar nav button.badge { border-color: var(--sand); color: var(--sand); }
 .pendant.big { display: flex; justify-content: center; margin: 1.5rem auto; }
 .pendant.big i { width: 64px; height: 64px; }
+.doc.mirror p, .doc.mirror h4 { transform: scaleX(-1); display: block; }
+.hold-btn { min-width: 60%; min-height: 64px; touch-action: none; user-select: none; -webkit-user-select: none; }
+.plate.hept, .plate.trace { touch-action: none; border-radius: var(--radius); }

@@ -351,5 +351,64 @@
     "level": "na miejscu",
     "intro": "Tylko w Sandomierzu. Stań na Rynku, przy studni. Trzymaj telefon płasko i obracaj się powoli wokół siebie, jak Aneta z kompasem geologicznym. Zawieszka grzeje, kiedy celujesz w stronę najbliższej bramy. Współrzędne bram są przybliżone: to jest gra, nie geodezja.",
     "reveal": "Zawieszka pulsuje. Stoisz zwrócony w stronę wzgórza, pod którym jest brama. Nie widać jej. Nie słychać. Kamień na szyi wie, a ty wiesz, bo kamień wie. Tak chodziła Aneta: kompas, notatnik, pies, pięć wzgórz, które odpowiadają, i dwa, które milczą."
+  },
+  {
+    "id": "gwizd",
+    "type": "whistle",
+    "after": 3,
+    "title": "Gwizd",
+    "level": "dla wytrwałych",
+    "intro": "Anzelm: „Głos ma za dużo w sobie. Kości rezonują na czysty ton.” Nucenie nie wystarczy. Gwizdnij do telefonu, równo, przez trzy sekundy. Jeśli nie umiesz gwizdać, to jest dobry dzień, żeby się nauczyć: usta jak do „u”, język nisko, powietrze powoli.",
+    "reveal": "Czysty ton. Bez składowych, bez ciała, sam kształt. Piasek na płycie Anzelma nie układa się w siedmiobok od głosu, bo głos jest zbyt bogaty. Od gwizdu tak. Halina nie umiała gwizdać. Ktoś w jej rodzinie musiał."
+  },
+  {
+    "id": "siedem-palcow",
+    "type": "touch7",
+    "after": 4,
+    "title": "Siedem punktów",
+    "level": "we dwoje",
+    "intro": "Heptagram ma siedem punktów nacisku. Jedna dłoń ma pięć palców. Połóż telefon na stole. Potrzebujesz drugiej osoby: siedem palców na siedmiu punktach naraz, przez trzy sekundy. System odpowiada na parę, nie na jednego.",
+    "reveal": "Siedem punktów pod siedmioma palcami dwóch ludzi. Helena była sama i zamurowała. Halina była sama i została. Ty nie jesteś. To nie jest metafora, to jest liczba palców."
+  },
+  {
+    "id": "marek-trzyma",
+    "type": "hold",
+    "after": 5,
+    "title": "Marek trzyma",
+    "level": "wejście",
+    "seconds": 90,
+    "intro": "Pod ziemią. Droga zablokowana. Nie można jej wynieść. Można trzymać. Połóż palec i nie puszczaj. Dziewięćdziesiąt sekund. Nic się nie wydarzy. To jest cała scena.",
+    "reveal": "Trzymałeś. Nic się nie wydarzyło, i to było wszystko, co dało się zrobić. Amor gdzieś nad wami drapie skarpę. Dzieci na sankach. Ktoś kopie od góry. Ty trzymasz."
+  },
+  {
+    "id": "lustro",
+    "type": "mirror",
+    "after": 2,
+    "title": "Lustro",
+    "level": "wejście",
+    "intro": "Kartka z notatnika profesora, przepisana w odbiciu. Profesor pisał tak, kiedy nie chciał, żeby ktoś czytał mu przez ramię. Podejdź do lustra. Albo włącz aparat z przodu i patrz na ekran w jego odbiciu.",
+    "secret": [
+      "Siedem punktów. Nie szukać ósmego. Ósmy to mit Florka: Wzgórze Salve Regina, którego nie ma.",
+      "Klasa S, wariant K. S jak struktura. K jak krzemień. Nikomu.",
+      "Jeśli to czytasz w lustrze, to znaczy, że masz czas. Ja nie mam."
+    ],
+    "q": "Które wzgórze profesor nazywa mitem?",
+    "options": [
+      "Żmigród",
+      "Salve Regina",
+      "Collegium",
+      "Zamkowe"
+    ],
+    "answer": 1,
+    "reveal": "Wzgórze Salve Regina: archeolodzy spierali się o nie przez dekady, a Florek w 2003 roku napisał, że to mit. Profesor wiedział. Ósmego punktu nie ma. Siedem wystarczy."
+  },
+  {
+    "id": "korytarz",
+    "type": "trace",
+    "after": 6,
+    "title": "Nie podnoś palca",
+    "level": "dla wytrwałych",
+    "intro": "Korytarz z Opatowskiej na południe. Trzy rozgałęzienia. Prowadź palcem od wejścia do komnaty, nie odrywając go od ekranu. Powietrze rzednie z każdym metrem: ekran ciemnieje. Jeśli puścisz, wracasz na Opatowską. Jeśli skręcisz w złą odnogę, wracasz na Opatowską.",
+    "reveal": "Opatowska, pod Wzgórzem Miejskim, na południe, na zachód. Trzy odnogi, których nie wybrałeś. Ciemność, w której nie puściłeś. To jest ta droga. Reszta jest w książce."
   }
 ]
