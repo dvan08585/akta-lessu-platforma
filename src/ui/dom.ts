@@ -19,6 +19,6 @@ export function s<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<st
 export function toast(msg: string): void {
   const t = h("div", { class: "toast", role: "status" }, msg);
   document.body.append(t);
-  setTimeout(() => t.remove(), 2600);
+  setTimeout(() => t.remove(), Math.min(9000, 2600 + msg.length * 30));
 }
 export function go(hash: string): void { if (location.hash === hash) dispatchEvent(new HashChangeEvent("hashchange")); else location.hash = hash; }

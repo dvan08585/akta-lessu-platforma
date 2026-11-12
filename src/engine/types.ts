@@ -73,4 +73,6 @@ export interface SaveState {
   daily: Record<string, boolean>;
   /** Czy gracz zostawił e-mail (my go nie znamy, tylko fakt). */
   subscribed: boolean;
+  /** Tryb testowy autora: bez kolejności, bez kalendarza, bez milczenia. */
+  testMode: boolean;
 }

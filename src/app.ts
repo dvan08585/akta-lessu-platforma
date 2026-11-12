@@ -18,7 +18,7 @@ import mikroJson from "./content/mikroakta.json";
 import type { Mikro } from "./engine/daily";
 import { silentHills } from "./engine/pair";
 
-export interface Config extends TimeConfig { title: string; share: { url: string; hashtag: string }; footer: string; bookUrl: string; newsletter: { action: string; fieldName: string; method: string }; analyticsDomain: string }
+export interface Config extends TimeConfig { testCodeHash?: string; title: string; share: { url: string; hashtag: string }; footer: string; bookUrl: string; newsletter: { action: string; fieldName: string; method: string }; analyticsDomain: string }
 export type Reward = { title: string; note: string; paragraphs: string[] };
 
 export class App {
@@ -43,7 +43,7 @@ export class App {
     this.ready = silentHills(this.state.seed).then((h) => { this.silent = h; });
   }
   /** Milczy u tego gracza i nie ma jeszcze odczytu od kogoś innego. */
-  isSilentFor(n: number): boolean { return this.silent.includes(n) && !this.state.readings[String(n)]; }
+  isSilentFor(n: number): boolean { return !this.state.testMode && this.silent.includes(n) && !this.state.readings[String(n)]; }
   isUnlocked(n: number): boolean { const ch = this.chapters.find((c) => c.n === n); return ch ? isChapterUnlocked(this.state, this.cfg, ch, this.now()) : false; }
   nextLocked(): Chapter | null { return nextLockedChapter(this.state, this.cfg, this.chapters, this.now()); }
   caseForGate(n: number): CaseData | undefined { return this.cases.find((c) => c.gate === n); }
@@ -53,6 +53,7 @@ export class App {
     if (this.state.unstableGates.includes(n)) return "unstable";
     if (c && this.state.solvedCases.includes(c.n)) return "solved";
     if (this.isSilentFor(n)) return "silent";
+    if (c && this.state.testMode) return "open";
     if (c && caseAvailable(this.state, c, (k) => this.isUnlocked(k), (k) => isReleased(this.cfg, k, this.now()))) return "open";
     if (!c && g?.silent) return "silent";
     return "locked";

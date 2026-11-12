@@ -35,5 +35,7 @@
     "fieldName": "email",
     "method": "post"
   },
-  "analyticsDomain": ""
+  "analyticsDomain": "",
+  "testCodeHash": "9007b874265c529d434ac1b48a0a089c51ed78a5dcf482bf5d8313440524cc3b",
+  "testCodeNote": "Kod testowy (usunąć przed premierą): zdejmuje kolejność spraw, kalendarz i milczenie zawieszki. Nie daje połówek klucza."
 }

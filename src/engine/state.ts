@@ -6,7 +6,7 @@ export function emptyState(): SaveState {
   return {
     v: 1, createdAt: Date.now(), unlockedChapters: [], solvedCases: [], attempts: {}, answers: {},
     chapterCursor: 0, streak: { days: 0, last: "", freezeUsed: "" }, notebook: [], placeVisits: [],
-    unstableGates: [], seed: randomSeed(), month: 0, sawFooter: false, readings: {}, leftSeventhEmpty: false, interludesDone: [], daily: {}, subscribed: false,
+    unstableGates: [], seed: randomSeed(), month: 0, sawFooter: false, readings: {}, leftSeventhEmpty: false, interludesDone: [], daily: {}, subscribed: false, testMode: false,
   };
 }
 

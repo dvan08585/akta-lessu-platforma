@@ -67,7 +67,7 @@ export function viewMap(app: App): HTMLElement {
     list.append(h("div", { class: "gate-row", "data-status": st, role: "button", tabindex: "0", onclick: () => go(`#/brama/${g.n}`) },
       h("span", { class: "n" }, String(g.n)),
       h("span", { class: "t" }, g.name, h("small", {}, `żywioł: ${g.element}${c ? " · " + c.title : ""}`)),
-      h("span", { class: "s" }, statusLabel(st))));
+      h("span", { class: "s" }, st === "locked" && c ? lockedWhy(app, c) : statusLabel(st))));
   }
   sec.append(h("h3", {}, app.state.sawFooter ? "Rejestr statusów — Fundacja Sandomierska Memoria" : "Rejestr statusów"), list);
   sec.append(dailyBox(app));
@@ -83,6 +83,14 @@ export function viewMap(app: App): HTMLElement {
     sec.append(h("h3", {}, "Między sprawami"), il);
   }
   return sec;
+}
+
+function lockedWhy(app: App, c: CaseData): string {
+  const need = c.requires.solvedCases ?? 0;
+  if (passedCount(app.state) < need) return `po ${need} bramach`;
+  const rel = c.requires.release ? releaseDate(app.cfg, c.requires.release) : null;
+  if (rel && rel.getTime() > Date.now()) return `od ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "short" })} lub kod`;
+  return "kod z książki";
 }
 
 export function viewGate(app: App, n: number): HTMLElement {
@@ -411,12 +419,25 @@ export function viewAkta(app: App): HTMLElement {
   const btn = h("button", { class: "primary" }, "Otwórz");
   btn.addEventListener("click", async () => {
     const val = input.value.trim(); if (!val) return;
+    if (app.cfg.testCodeHash && (await codeMatches(val, app.cfg.testCodeHash))) {
+      app.state.testMode = true; app.state.unlockedChapters = app.chapters.map((c) => c.n); save(app.state);
+      toast("Tryb biegłego: wszystkie bramy otwarte, zawieszka reaguje wszędzie."); input.value = ""; go("#/mapa"); return;
+    }
     let hit: number | null = null;
     for (const ch of app.chapters) if (ch.codeHash && (await codeMatches(val, ch.codeHash))) { hit = ch.n; break; }
     if (hit === null) { toast("Zawieszka zimna. To nie ten kod."); return; }
     if (!app.state.unlockedChapters.includes(hit)) { app.state.unlockedChapters.push(hit); app.state.chapterCursor = Math.max(app.state.chapterCursor, hit); save(app.state); }
     app.addNote(`Otwarto ${hit === 0 ? "Prolog" : "rozdział " + hit} kodem z książki.`, "klucz: kod"); track("code", { chapter: hit });
-    toast(`Otwarto: ${hit === 0 ? "Prolog" : "R." + hit}.`); input.value = ""; go("#/mapa");
+    // Co ten kod realnie zmienia: która sprawa i co ją jeszcze blokuje.
+    const c = app.cases.find((x) => x.requires.chapter === hit);
+    let msg = `Otwarto: ${hit === 0 ? "Prolog" : "R." + hit}.`;
+    if (c) {
+      const need = c.requires.solvedCases ?? 0; const have = passedCount(app.state);
+      if (app.isSilentFor(c.gate)) msg += ` Sprawa „${c.title}” (brama ${c.gate}) czeka: tam twoja zawieszka milczy, potrzebny odczyt z cudzej karty.`;
+      else if (have < need) msg += ` Sprawa „${c.title}” (brama ${c.gate}) otworzy się po ${need} przebytych bramach, masz ${have}. Kod zdjął tylko datę.`;
+      else msg += ` Sprawa „${c.title}” (brama ${c.gate}) jest otwarta.`;
+    }
+    toast(msg); input.value = ""; go(c && !app.isSilentFor(c.gate) && passedCount(app.state) >= (c.requires.solvedCases ?? 0) ? `#/brama/${c.gate}` : "#/mapa");
   });
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") btn.click(); });
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz pierwszy: kod z książki"), h("p", { class: "muted" }, "Każdy rozdział kończy się siedmiobokiem i jednym słowem. Wpisz je tutaj."), h("div", { class: "row" }, input, btn)));
