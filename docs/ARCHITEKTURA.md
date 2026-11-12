@@ -45,3 +45,7 @@ Sprawa rozwiązana dokumentami daje status „rozpoznana". Bramę liczy się jak
 
 ## Pytania z lukami (`kind: "fill"`)
 Kluczowe ustalenie każdej sprawy to zdanie z lukami i bank 12 słów, w tym fałszywe (wzór: Golden Idol). Wybór kodowany jako jedna liczba (`encodeFill`), więc stan zostaje liczbowy. Puste luki blokują sprawdzenie.
+
+## Miasto 3D (`public/miasto/`) i sceny (`public/sceny/`)
+Miasto: MapLibre GL (CDN) + kafelki wektorowe OpenFreeMap (OSM, bez klucza) + teren AWS Terrarium (bez klucza), budynki jako bryły w palecie gry, siedem bram jako znaczniki, GPS „idź za mną", kompas obraca mapę, zawieszka grzeje w stronę najbliższej bramy. Nieprzetestowane w tej sesji (CDN i kafelki zablokowane): pierwsza próba na telefonie. Jeśli bryły nie mają wysokości (braki w OSM), warstwa `akta-buildings` daje 9 m domyślnie.
+Sceny: Three.js + Spark (CDN) jako przeglądarka plików splat nagranych telefonem (Scaniverse/Polycam/Luma). Pliki w `public/sceny/`, lista w README tamże.

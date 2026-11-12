@@ -516,6 +516,10 @@ export function viewAkta(app: App): HTMLElement {
 
   sec.append(h("p", { class: "faint" }, h("a", { href: "#/o-ciele" }, "Co robi z tobą ta gra: oddech, nucenie, dudnienie, bezruch, źródła.")));
 
+  // Miasto 3D i sceny z telefonu
+  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Miasto"), h("p", { class: "muted" }, "Sandomierz w trzech wymiarach z otwartych danych: siedem wzgórz z prawdziwą rzeźbą terenu, kamienice jako bryły, bramy pod wzgórzami. Z GPS i kompasem idziesz po mieście, a zawieszka grzeje w stronę bramy."),
+    h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "miasto/" }, "Otwórz miasto"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "sceny/?plik=rynek.splat" }, "Scena z Rynku"))));
+
   // Znacznik AR (strona książki pod kamerą)
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Znacznik w książce"), h("p", { class: "muted" }, "Na końcu każdego rozdziału jest siedmiobok w czarnej ramce. Skieruj na niego kamerę: nad stroną uniesie się przekrój z tą jedną bramą. Bez aplikacji."),
     h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "ar/" }, "Otwórz kamerę"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "ar/druk.html", target: "_blank" }, "Znaczniki do druku"))));

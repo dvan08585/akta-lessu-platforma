@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Akta Lessu — scena</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0e0d0b; color: #e8e0cf; font-family: Georgia, serif; overflow: hidden; }
+  canvas { display: block; width: 100%; height: 100%; }
+  #hud { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: rgba(14,13,11,.86); font-size: 14px; }
+  #hud a { color: #c9a86a; }
+</style>
+<script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.169.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.169.0/examples/jsm/", "@sparkjsdev/spark": "https://sparkjs.dev/releases/spark/0.1.6/spark.module.js" } }</script>
+</head>
+<body>
+<div id="hud"><span id="msg">Ładuję scenę…</span> · <a href="../">Wróć do akt</a></div>
+<script type="module">
+// Przeglądarka scen nagranych telefonem (Gaussian splatting). Plik: ?plik=rynek.splat (w katalogu sceny/). Przeciągnij, żeby się rozejrzeć; na telefonie żyroskop.
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { SplatMesh } from "@sparkjsdev/spark";
+const q = new URLSearchParams(location.search); const file = q.get("plik") || "rynek.splat";
+const msg = document.getElementById("msg");
+const renderer = new THREE.WebGLRenderer({ antialias: false }); renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(innerWidth, innerHeight); document.body.prepend(renderer.domElement);
+const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.05, 200); camera.position.set(0, 0.2, 2.2);
+const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.target.set(0, 0, 0);
+try {
+  const splat = new SplatMesh({ url: "./" + file, onLoad: () => { msg.textContent = file.replace(/\.(splat|ply|spz)$/, "") + " · przeciągnij, żeby się rozejrzeć"; } });
+  splat.rotation.x = Math.PI; scene.add(splat);
+} catch (e) { msg.textContent = "Nie udało się wczytać sceny: " + file; }
+addEventListener("resize", () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
+</script>
+</body>
+</html>

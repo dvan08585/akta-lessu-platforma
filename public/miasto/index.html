@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Akta Lessu — Miasto</title>
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; background: #0e0d0b; color: #e8e0cf; font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; }
+  #map { position: absolute; inset: 0; }
+  #hud { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: rgba(14,13,11,0.86); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 14px; z-index: 5; }
+  #hud button { font: inherit; color: #e8e0cf; background: transparent; border: 1px solid #a39a86; border-radius: 4px; padding: 8px 12px; min-height: 40px; }
+  #hud button.on { border-color: #c9a86a; color: #c9a86a; }
+  #hud a { color: #c9a86a; }
+  .pend { display: inline-flex; align-items: center; gap: 6px; }
+  .pend i { width: 12px; height: 12px; border-radius: 50%; background: #5a7d95; display: inline-block; transition: background .5s, box-shadow .5s; }
+  .pend[data-heat="1"] i { background: #6f7a7a; } .pend[data-heat="2"] i { background: #a7773f; } .pend[data-heat="3"] i { background: #d9843a; box-shadow: 0 0 12px rgba(217,132,58,.7); } .pend[data-heat="4"] i { background: #ff9c4a; box-shadow: 0 0 20px rgba(255,156,74,.9); }
+  .gate { width: 30px; height: 30px; cursor: pointer; }
+  .gate svg { width: 100%; height: 100%; filter: drop-shadow(0 0 6px rgba(201,168,106,.8)); }
+  .maplibregl-popup-content { background: #171511; color: #e8e0cf; font-family: inherit; border: 1px solid #6b6355; }
+  .maplibregl-popup-tip { border-top-color: #171511 !important; }
+  #top { position: absolute; left: 12px; top: 12px; z-index: 5; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #a39a86; }
+</style>
+</head>
+<body>
+<div id="top">Sandomierz · siedem wzgórz · pod nimi</div>
+<div id="map"></div>
+<div id="hud">
+  <button id="follow">Idź za mną</button>
+  <button id="compass">Kompas</button>
+  <span class="pend" id="pend" data-heat="0"><i></i><span id="pendtxt">zawieszka</span></span>
+  <span id="info" style="color:#a39a86"></span>
+  <a href="../" style="margin-left:auto">Wróć do akt</a>
+</div>
+<script>
+// Stylizowany Sandomierz 3D: kafelki wektorowe OpenFreeMap (OSM), teren AWS Terrarium, budynki jako bryły w palecie gry.
+// Bramy: współrzędne przybliżone (jak w map.json), do poprawy po pomiarze w terenie.
+const GATES = [
+  { n: 7, name: "Świętopawłowskie", el: "powietrze", lat: 50.6782, lon: 21.7360 },
+  { n: 4, name: "Staromiejskie", el: "ogień", lat: 50.6753, lon: 21.7395 },
+  { n: 1, name: "Żmigród", el: "ziemia", lat: 50.6790, lon: 21.7420 },
+  { n: 5, name: "Zamkowe", el: "zimno", lat: 50.6766, lon: 21.7449 },
+  { n: 2, name: "Katedralne", el: "woda", lat: 50.6778, lon: 21.7470 },
+  { n: 3, name: "Miejskie", el: "dźwięk", lat: 50.6815, lon: 21.7460 },
+  { n: 6, name: "Collegium", el: "ciemność", lat: 50.6792, lon: 21.7478 },
+];
+const map = new maplibregl.Map({
+  container: "map",
+  style: "https://tiles.openfreemap.org/styles/liberty",
+  center: [21.7455, 50.6790], zoom: 15.6, pitch: 62, bearing: -20, maxPitch: 75,
+  attributionControl: true,
+});
+map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
+map.on("load", () => {
+  // teren
+  map.addSource("terrain", { type: "raster-dem", tiles: ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"], encoding: "terrarium", tileSize: 256, maxzoom: 15 });
+  map.setTerrain({ source: "terrain", exaggeration: 1.6 });
+  // paleta gry: tło less/piaskowiec, budynki jako bryły, woda jak w grze
+  const layers = map.getStyle().layers;
+  for (const l of layers) {
+    if (l.type === "background") map.setPaintProperty(l.id, "background-color", "#1f1b15");
+    if (l.id.includes("water") && l.type === "fill") map.setPaintProperty(l.id, "fill-color", "#2b3f4c");
+    if ((l.id.includes("landuse") || l.id.includes("landcover") || l.id.includes("park")) && l.type === "fill") map.setPaintProperty(l.id, "fill-color", "#242019");
+    if (l.type === "symbol" && !l.id.includes("place")) map.setLayoutProperty(l.id, "visibility", "none");
+    if (l.type === "line" && (l.id.includes("road") || l.id.includes("street") || l.id.includes("highway"))) map.setPaintProperty(l.id, "line-color", "#3a342a");
+    if (l.type === "fill-extrusion") { map.setPaintProperty(l.id, "fill-extrusion-color", "#4a4236"); map.setPaintProperty(l.id, "fill-extrusion-opacity", 0.95); }
+  }
+  // jeśli styl nie ma brył, dodaj z warstwy building (OpenMapTiles): wysokość z danych albo 9 m domyślnie
+  if (!layers.some((l) => l.type === "fill-extrusion")) {
+    const src = Object.keys(map.getStyle().sources).find((k) => map.getStyle().sources[k].type === "vector");
+    if (src) map.addLayer({ id: "akta-buildings", type: "fill-extrusion", source: src, "source-layer": "building", minzoom: 13,
+      paint: { "fill-extrusion-color": "#4a4236", "fill-extrusion-height": ["coalesce", ["get", "render_height"], ["get", "height"], 9], "fill-extrusion-base": ["coalesce", ["get", "render_min_height"], 0], "fill-extrusion-opacity": 0.95 } });
+  }
+  // bramy
+  for (const g of GATES) {
+    const el = document.createElement("div"); el.className = "gate";
+    el.innerHTML = `<svg viewBox="0 0 30 30"><polygon points="15,2 26,8 29,19 22,28 8,28 1,19 4,8" fill="#0e0d0b" stroke="#c9a86a" stroke-width="2"/><text x="15" y="19" text-anchor="middle" font-size="11" fill="#e8e0cf" font-family="Georgia">${g.n}</text></svg>`;
+    new maplibregl.Marker({ element: el }).setLngLat([g.lon, g.lat]).setPopup(new maplibregl.Popup({ offset: 18 }).setHTML(`<strong>Brama ${g.n}: ${g.name}</strong><br>żywioł: ${g.el}<br><a href="../#/brama/${g.n}" style="color:#c9a86a">otwórz sprawę</a>`)).addTo(map);
+  }
+});
+// GPS + kompas: „idź za mną" trzyma kamerę na tobie, „kompas" obraca mapę tam, gdzie patrzysz
+let follow = false, useCompass = false, pos = null, heading = null, me = null;
+const info = document.getElementById("info"), pend = document.getElementById("pend"), pendtxt = document.getElementById("pendtxt");
+const toRad = (d) => d * Math.PI / 180;
+const bearing = (a, b) => { const y = Math.sin(toRad(b.lon - a.lon)) * Math.cos(toRad(b.lat)); const x = Math.cos(toRad(a.lat)) * Math.sin(toRad(b.lat)) - Math.sin(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.cos(toRad(b.lon - a.lon)); return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360; };
+const dist = (a, b) => { const R = 6371000, dLat = toRad(b.lat - a.lat), dLon = toRad(b.lon - a.lon); const s = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLon / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(s)); };
+function tick() {
+  if (pos) {
+    if (!me) { const d = document.createElement("div"); d.style.cssText = "width:14px;height:14px;border-radius:50%;background:#e8e0cf;box-shadow:0 0 0 4px rgba(232,224,207,.25)"; me = new maplibregl.Marker({ element: d }).setLngLat([pos.lon, pos.lat]).addTo(map); } else me.setLngLat([pos.lon, pos.lat]);
+    const near = GATES.map((g) => ({ g, d: dist(pos, g), b: bearing(pos, g) })).sort((a, b) => a.d - b.d)[0];
+    let txt = `najbliżej: ${near.g.name}, ${near.d.toFixed(0)} m`;
+    if (heading !== null) { const diff = Math.abs(((heading - near.b + 540) % 360) - 180); const heat = diff < 12 ? 4 : diff < 25 ? 3 : diff < 50 ? 2 : diff < 90 ? 1 : 0; pend.dataset.heat = String(heat); pendtxt.textContent = ["zimna", "letnia", "ciepła", "gorąca", "pulsuje"][heat]; txt += ` · obróć się o ${Math.round(diff)}°`; }
+    info.textContent = txt;
+    if (follow) map.easeTo({ center: [pos.lon, pos.lat], bearing: useCompass && heading !== null ? heading : map.getBearing(), duration: 400 });
+  }
+  setTimeout(tick, 400);
+}
+tick();
+document.getElementById("follow").addEventListener("click", (e) => {
+  follow = !follow; e.target.classList.toggle("on", follow);
+  if (follow && !pos && navigator.geolocation) navigator.geolocation.watchPosition((p) => { pos = { lat: p.coords.latitude, lon: p.coords.longitude }; }, () => { info.textContent = "GPS: odmowa."; }, { enableHighAccuracy: true, maximumAge: 2000 });
+});
+document.getElementById("compass").addEventListener("click", async (e) => {
+  useCompass = !useCompass; e.target.classList.toggle("on", useCompass);
+  if (!useCompass) return;
+  try {
+    if (typeof DeviceOrientationEvent !== "undefined" && DeviceOrientationEvent.requestPermission) { const r = await DeviceOrientationEvent.requestPermission(); if (r !== "granted") throw new Error(); }
+    const h = (ev) => { if (typeof ev.webkitCompassHeading === "number") heading = ev.webkitCompassHeading; else if (ev.absolute && ev.alpha !== null) heading = (360 - ev.alpha) % 360; };
+    window.addEventListener("deviceorientationabsolute" in window ? "deviceorientationabsolute" : "deviceorientation", h);
+  } catch { info.textContent = "Bez kompasu: obracaj mapę palcem."; }
+});
+</script>
+</body>
+</html>
