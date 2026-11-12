@@ -5,7 +5,8 @@ import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 
 export interface Interlude {
-  id: string; type: "amor" | "talk" | "plate"; after: number; title: string;
+  id: string; type: "amor" | "talk" | "plate" | "beat" | "still"; after: number; title: string;
+  audio?: string; q?: string; options?: string[]; answer?: number; seconds?: number;
   lines?: string[];
   intro?: string; person?: string; questions?: { q: string; a: string }[]; lie?: number; reveal?: string; wrong?: string;
   targetHz?: number; tolerance?: number;
@@ -25,7 +26,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   if (it.after > passed) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, `Po ${it.after} przebytych bramach.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   sec.append(h("p", { class: "faint" }, "Między sprawami"), h("h2", {}, it.title));
-  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else renderPlate();
+  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else renderPlate();
   return sec;
 
   function finish(note: string) {
@@ -66,6 +67,62 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         } }, `Odpowiedź ${i + 1}`));
       });
     }
+  }
+
+  /** Dudnienie różnicowe: dwa tony w słuchawkach, 18 Hz powstaje w głowie. */
+  function renderBeat() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const audio = h("audio", { controls: true, preload: "none", src: import.meta.env.BASE_URL + it.audio! }) as HTMLAudioElement;
+    sec.append(h("div", { class: "card" }, audio, h("p", { class: "faint" }, "Słuchawki na obu uszach. Głośnik telefonu tego nie odda: nie dlatego, że jest słaby, tylko dlatego, że to powstaje dopiero między uszami.")));
+    const opts = h("div", { class: "opts", role: "radiogroup" });
+    it.options!.forEach((o, i) => opts.append(h("label", {}, h("input", { type: "radio", name: "beat", value: String(i) }), o)));
+    const verdict = h("div");
+    const btn = h("button", { class: "primary" }, "Odpowiedz");
+    btn.addEventListener("click", () => {
+      const el = sec.querySelector<HTMLInputElement>('input[name="beat"]:checked'); if (!el) { toast("Najpierw posłuchaj."); return; }
+      if (Number(el.value) === it.answer) { verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: usłyszane.`); }
+      else toast("Posłuchaj jeszcze raz. Obie słuchawki.");
+    });
+    sec.append(h("div", { class: "q daily" }, h("div", { class: "qt" }, it.q!), opts), btn, verdict);
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Zimno: trzymać telefon nieruchomo. Akcelerometr mierzy drżenie rąk; każde drgnięcie cofa pasek. */
+  function renderStill() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const total = it.seconds ?? 30;
+    const bar = h("div", { class: "still-bar" }, h("i"));
+    const fill = bar.firstElementChild as HTMLElement;
+    const status = h("p", { class: "mono muted" }, "0 s");
+    const temp = h("p", { class: "muted" }, "36,6°C");
+    const start = h("button", { class: "primary" }, "Trzymam");
+    const verdict = h("div");
+    sec.append(bar, status, temp, h("div", { class: "verdict" }, start), verdict);
+    let held = 0, last = 0, running = false, jitter = 0, finished = done;
+    const onMotion = (e: DeviceMotionEvent) => {
+      const a = e.accelerationIncludingGravity; if (!a) return;
+      const mag = Math.sqrt((a.x ?? 0) ** 2 + (a.y ?? 0) ** 2 + (a.z ?? 0) ** 2);
+      if (last) jitter = Math.abs(mag - last); last = mag;
+    };
+    function tick() {
+      if (!running) return;
+      if (jitter > 0.35) { held = Math.max(0, held - 1.5); temp.textContent = "Drżysz. 33°C."; }
+      else { held += 0.1; temp.textContent = `${(36.6 - (held / total) * 5.6).toFixed(1).replace(".", ",")}°C`; }
+      fill.style.width = `${Math.min(100, (held / total) * 100)}%`; status.textContent = `${held.toFixed(0)} s`;
+      if (held >= total && !finished) { finished = true; running = false; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: wytrzymane.`); return; }
+      setTimeout(tick, 100);
+    }
+    start.addEventListener("click", async () => {
+      try {
+        const DM = DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> };
+        if (DM.requestPermission) { const r = await DM.requestPermission(); if (r !== "granted") throw new Error("denied"); }
+        addEventListener("devicemotion", onMotion);
+      } catch { toast("Bez czujnika ruchu: liczy się samo trzymanie przycisku."); }
+      running = true; start.disabled = true; start.textContent = "Nie ruszaj się"; tick();
+    });
+    // zapas bez czujnika: puszczenie przycisku = drgnięcie
+    start.addEventListener("pointerdown", () => { jitter = 0; });
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
   }
 
   function renderPlate() {

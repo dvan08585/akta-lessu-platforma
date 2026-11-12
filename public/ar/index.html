@@ -14,12 +14,14 @@
 </head>
 <body>
 <a-scene embedded arjs="sourceType: webcam; detectionMode: mono; debugUIEnabled: false;" vr-mode-ui="enabled: false" renderer="logarithmicDepthBuffer: true;">
-  <a-assets><img id="mapa" src="../og.png" crossorigin="anonymous" /></a-assets>
+  <a-assets><img id="mapa" src="./przekroj.png" crossorigin="anonymous" /></a-assets>
   <a-marker type="pattern" url="./znacznik.patt" id="marker">
     <!-- Przekrój unosi się nad stroną: siedem wzgórz i jedna zapalona brama -->
-    <a-plane src="#mapa" width="1.9" height="1.0" position="0 0.55 0" rotation="-90 0 0" material="shader: flat; transparent: true; opacity: 0.95"></a-plane>
-    <a-entity id="gate" geometry="primitive: cylinder; radius: 0.09; height: 0.02; segmentsRadial: 7" material="color: #c9a86a; shader: flat" position="0 0.03 0.25" animation="property: position; to: 0 0.5 0.25; dir: alternate; dur: 2200; loop: true; easing: easeInOutSine"></a-entity>
-    <a-entity id="label" text="value: Akta Lessu; color: #e8e0cf; align: center; width: 2" position="0 0.75 -0.5" rotation="-90 0 0"></a-entity>
+    <!-- Przekrój stoi PIONOWO nad stroną jak kartka wyjęta z ziemi; brama z adresu unosi się i pulsuje -->
+    <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" rotation="0 0 0" material="shader: flat; transparent: true; opacity: 0.96" animation="property: position; from: 0 0.1 0; to: 0 0.6 0; dur: 900; easing: easeOutCubic"></a-plane>
+    <a-entity id="gate" geometry="primitive: cylinder; radius: 0.07; height: 0.03; segmentsRadial: 7" material="color: #c9a86a; shader: flat; opacity: 0.95" position="0 0.3 0.06" rotation="90 0 0" animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1100; loop: true; easing: easeInOutSine"></a-entity>
+    <a-entity id="label" text="value: Akta Lessu; color: #e8e0cf; align: center; width: 1.8; font: roboto" position="0 1.2 0.02"></a-entity>
+    <a-entity id="sub" text="value: Siedem wzgorz nad strona.; color: #a39a86; align: center; width: 1.4; font: roboto" position="0 1.1 0.02"></a-entity>
     <a-light type="ambient" color="#fff"></a-light>
   </a-marker>
   <a-entity camera></a-entity>
@@ -29,10 +31,16 @@
   const q = new URLSearchParams(location.search);
   const brama = Number(q.get("brama") || 0);
   const names = { 1: "Żmigród", 2: "Wzgórze Katedralne", 3: "Wzgórze Miejskie", 4: "Staromiejskie", 5: "Wzgórze Zamkowe", 6: "Collegium", 7: "Świętopawłowskie" };
-  const xs = { 7: -0.85, 4: -0.57, 1: -0.28, 5: 0, 2: 0.28, 3: 0.57, 6: 0.85 };
+  // pozycje bram na przekroju (2.0 szer., 1.0 wys.; obraz 1024x512): x = (px/1024-0.5)*2, y = 0.6 + (0.5 - py/512)*1.0
+  const px = { 7: [102, 436], 4: [237, 411], 1: [384, 396], 5: [525, 426], 2: [666, 416], 3: [806, 406], 6: [941, 431] };
+  const el = { 1: "ziemia", 2: "woda", 3: "dzwiek", 4: "ogien", 5: "zimno", 6: "ciemnosc", 7: "powietrze" };
   if (brama && names[brama]) {
-    document.getElementById("gate").setAttribute("position", `${xs[brama]} 0.03 0.25`);
-    document.getElementById("label").setAttribute("text", `value: Brama ${brama}: ${names[brama]}; color: #e8e0cf; align: center; width: 2`);
+    const [x, y] = px[brama];
+    document.getElementById("gate").setAttribute("position", `${((x / 1024) - 0.5) * 2} ${0.6 + (0.5 - y / 512)} 0.06`);
+    document.getElementById("label").setAttribute("text", `value: Brama ${brama}: ${names[brama]}; color: #e8e0cf; align: center; width: 1.8; font: roboto`);
+    document.getElementById("sub").setAttribute("text", `value: zywiol: ${el[brama]}; color: #c9a86a; align: center; width: 1.4; font: roboto`);
+  } else {
+    document.getElementById("gate").setAttribute("visible", "false");
   }
   const m = document.getElementById("marker");
   m.addEventListener("markerFound", () => { document.getElementById("msg").textContent = brama ? `Brama ${brama}. Pod tą stroną: ${names[brama]}.` : "Siedem wzgórz nad stroną. Pod nimi to, co jest pod nimi."; try { navigator.vibrate && navigator.vibrate(60); } catch (e) {} });

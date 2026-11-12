@@ -64,3 +64,5 @@ select { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px 
 .daily .opts { display: grid; gap: 0.4rem; margin: 0.5rem 0 0.8rem; }
 .daily .opts label { display: flex; gap: 0.6rem; align-items: center; padding: 0.5rem 0.7rem; border: 1px solid var(--line); border-radius: var(--radius); min-height: 44px; }
 .newsletter input[type="email"] { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.6rem 0.8rem; width: 100%; min-height: 44px; }
+.still-bar { height: 10px; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; margin: 1rem 0 0.4rem; background: var(--bg-2); }
+.still-bar i { display: block; height: 100%; width: 0; background: var(--cold); transition: width 0.1s linear; }

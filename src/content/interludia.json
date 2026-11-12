@@ -239,5 +239,31 @@
     "lie": 3,
     "reveal": "„Nie widzę w tym problemu.” Widzi. Komisarz wie, kto płaci za koperty, bo faktura przeszła przez jego biurko, i wie, że biegły tego nie wie. Nie kłamie: pyta, czy pan widzi. Przemilcza, bo bez Fundacji nie ma archiwum, a bez archiwum nie ma akt. Zieliński gra na dwie strony i obie o tym wiedzą oprócz pana.",
     "wrong": "Zieliński obraca filiżankę. „To była prawda. Ja nie kłamię, proszę pana. Ja wybieram, co mówię.”"
+  },
+  {
+    "id": "ton-dolny",
+    "type": "beat",
+    "after": 2,
+    "title": "Ton dolny",
+    "intro": "Anzelm odkłada smyczek. „Tego się nie nuci. To się nosi.” Załóż słuchawki. Obie. Potem posłuchaj przez minutę i nic nie rób. Jeśli wyjmiesz jedną słuchawkę, zniknie.",
+    "audio": "audio/ton-dolny.mp3",
+    "q": "Co słyszysz, kiedy masz obie słuchawki?",
+    "options": [
+      "Dwa osobne tony, jeden w każdym uchu",
+      "Powolne dudnienie, którego nie ma w żadnym uchu osobno",
+      "Dzwon",
+      "Nic poza szumem"
+    ],
+    "answer": 1,
+    "reveal": "Lewe ucho dostaje 200 Hz. Prawe 218. Żadne z nich nie słyszy osiemnastu. Osiemnaście powstaje dopiero w tobie, między uszami, tam, gdzie mózg składa dwa dźwięki w jeden. Głośnik tego nie odda. Ciało tak. Aneta nie słyszała drona uszami. Słyszała go tym, czym ty go teraz słyszysz."
+  },
+  {
+    "id": "zimno",
+    "type": "still",
+    "after": 4,
+    "title": "Zimno",
+    "intro": "Piwnica pod zamkiem. O dwa stopnie zimniej niż obok. Weź telefon w obie dłonie i trzymaj go nieruchomo. Zupełnie. Pasek rośnie, dopóki ręce nie drżą. Przy trzydziestu trzech stopniach drżenie jest silne. Przy trzydziestu jeden ustaje, i to jest zły znak.",
+    "seconds": 30,
+    "reveal": "Trzydzieści sekund. Ręce zaczęły drżeć wcześniej, niż myślałeś, bo ciało nie umie trzymać ciepła bez ruchu. Ten, kto leży pod lessem, nie ma wyboru. Trzęsie się, dopóki może. Potem przestaje. Marek trzyma. Czeka."
   }
 ]

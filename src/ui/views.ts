@@ -78,7 +78,7 @@ export function viewMap(app: App): HTMLElement {
     for (const i of inter) {
       const done = app.state.interludesDone.includes(i.id);
       il.append(h("div", { class: "gate-row", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) },
-        h("span", { class: "n" }, i.type === "amor" ? "♦" : i.type === "talk" ? "„”" : "◎"), h("span", { class: "t" }, i.title, h("small", {}, i.type === "amor" ? "pies" : i.type === "talk" ? "rozmowa, jedno kłamstwo" : "mikrofon albo suwak")), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
+        h("span", { class: "n" }, i.type === "amor" ? "♦" : i.type === "talk" ? "„”" : i.type === "beat" ? "∿" : i.type === "still" ? "❄" : "◎"), h("span", { class: "t" }, i.title, h("small", {}, i.type === "amor" ? "pies" : i.type === "talk" ? "rozmowa, jedno kłamstwo" : i.type === "beat" ? "słuchawki" : i.type === "still" ? "nieruchomo, 30 sekund" : "mikrofon albo suwak")), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
     }
     sec.append(h("h3", {}, "Między sprawami"), il);
   }
