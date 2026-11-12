@@ -517,7 +517,7 @@ export function viewBody(app: App): HTMLElement {
     h("h3", {}, "Nucenie (Płyta Chladniego)"),
     P("Nucenie zwiększa ilość tlenku azotu w nosie kilkunastokrotnie w porównaniu ze zwykłym wydechem (badanie na dziesięciu osobach z 2002 roku). Czy to ma znaczenie dla zdrowia, nie wiadomo. Wiadomo, że nucenie to wydłużony wydech przez nos, czyli znów wolny oddech."),
     h("h3", {}, "Dudnienie różnicowe (Ton dolny)"),
-    P("Dwa tony o różnych częstotliwościach w dwóch uszach dają wrażenie dudnienia, które nie istnieje w żadnym uchu osobno. Metaanaliza 22 badań z 2019 roku znalazła mały do średniego efekt na uwagę, pamięć i lęk, ale wyniki zależą od częstotliwości i czasu, a nowsze przeglądy są sprzeczne. „Ton dolny” ma 18 Hz, bo tyle ma dron pod Sandomierzem w książce. Nie wprowadza w żaden „stan”. Pozwala usłyszeć coś, czego głośnik nie odda."),
+    P("Dwa tony w dwóch uszach, 110 i 128 Hz, dają wrażenie tętnienia o 18 Hz różnicy, które nie istnieje w żadnym uchu osobno: wyjmij jedną słuchawkę i zniknie. Metaanaliza 22 badań z 2019 roku znalazła mały do średniego efekt na uwagę, pamięć i lęk, ale wyniki zależą od częstotliwości i czasu, a nowsze przeglądy są sprzeczne. „Ton dolny” ma 18 Hz, bo tyle ma dron pod Sandomierzem w książce. Nie wprowadza w żaden „stan”. Pozwala usłyszeć coś, czego głośnik nie odda."),
     h("h3", {}, "Bezruch (Zimno)"),
     P("Trzydzieści sekund uwagi na własne ręce. Nie nazywamy tego medytacją. Działa lepiej bez nazwy."),
     h("h3", {}, "Zdziwienie"),

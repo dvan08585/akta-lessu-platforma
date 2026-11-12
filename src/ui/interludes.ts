@@ -84,7 +84,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     sec.append(h("div", { class: "card" }, audio, h("p", { class: "faint" }, "Słuchawki na obu uszach. Głośnik telefonu tego nie odda: nie dlatego, że jest słaby, tylko dlatego, że to powstaje dopiero między uszami.")));
     // Bez słuchawek: zobaczysz. Dwie fale (200 i 218 Hz) i ich suma, zwolnione 400 razy, żeby dudnienie 18 Hz było widoczne jako powolny oddech amplitudy. Bez migania.
     const wave = h("canvas", { class: "wave", width: "600", height: "180", "aria-label": "Dwie fale i dudnienie" }) as HTMLCanvasElement;
-    sec.append(wave, h("p", { class: "faint" }, "Góra: lewe ucho. Środek: prawe. Dół: to, co powstaje między nimi. Bez słuchawek zobaczysz, nie usłyszysz."));
+    sec.append(wave, h("p", { class: "faint" }, "Góra: lewe ucho, 110 Hz. Środek: prawe, 128 Hz. Dół: 18 Hz różnicy, to, co powstaje między nimi. Bez słuchawek zobaczysz, nie usłyszysz."));
     const wctx = wave.getContext("2d")!;
     const drawWave = (now: number) => {
       const t = now / 400000; // zwolnienie

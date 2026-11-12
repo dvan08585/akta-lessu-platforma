@@ -1342,10 +1342,10 @@ Zieliński obraca filiżankę. „To była prawda. Ja nie kłamię, proszę pana
 Ton dolny
 
 <!-- interludia[12].intro -->
-Anzelm odkłada smyczek. „Tego się nie nuci. To się nosi.” Załóż słuchawki. Obie. Potem posłuchaj przez minutę i nic nie rób. Jeśli wyjmiesz jedną słuchawkę, zniknie. Bez słuchawek zobaczysz to, czego nie usłyszysz: dwie fale i to, co z nich powstaje.
+Anzelm odkłada smyczek. „Tego się nie nuci. To się nosi.” Załóż słuchawki. Obie. Lewe ucho dostanie 110 Hz, prawe 128 Hz: 18 Hz różnicy, tyle, ile ma dron pod Rynkiem. Posłuchaj minutę i nic nie rób. Potem wyjmij jedną słuchawkę i posłuchaj jeszcze raz. Bez słuchawek zobaczysz to, czego nie usłyszysz: dwie fale i to, co z nich powstaje.
 
 <!-- interludia[12].reveal -->
-Lewe ucho dostaje 110 Hz. Prawe 128. Żadne z nich nie słyszy osiemnastu. Osiemnaście powstaje dopiero w tobie, między uszami, tam, gdzie mózg składa dwa dźwięki w jeden. Pod spodem jest jeszcze jedna warstwa: ton, który tętni osiemnaście razy na sekundę i który czuć w kościach słuchawek. Głośnik tego nie odda w całości. Ciało tak.
+Lewe ucho dostaje 110 Hz. Prawe 128. Osiemnaście hercy różnicy nie istnieje w żadnym z nich. Powstaje dopiero w tobie, między uszami, tam, gdzie mózg składa dwa dźwięki w jeden. Wyjmij jedną słuchawkę: tętnienie znika, bo nie ma go gdzie złożyć. Głośnik tego nie odda. Ciało tak. Aneta nie słyszała drona uszami.
 
 <!-- interludia[13].title -->
 Zimno
