@@ -14,9 +14,11 @@ import case06 from "./content/cases/06-zmigrod.json";
 import case07 from "./content/cases/07-swietopawlowskie.json";
 import { caseAvailable } from "./engine/cases";
 import interludesJson from "./content/interludia.json";
+import mikroJson from "./content/mikroakta.json";
+import type { Mikro } from "./engine/daily";
 import { silentHills } from "./engine/pair";
 
-export interface Config extends TimeConfig { title: string; share: { url: string; hashtag: string }; footer: string; newsletterUrl: string; bookUrl: string }
+export interface Config extends TimeConfig { title: string; share: { url: string; hashtag: string }; footer: string; bookUrl: string; newsletter: { action: string; fieldName: string; method: string }; analyticsDomain: string }
 export type Reward = { title: string; note: string; paragraphs: string[] };
 
 export class App {
@@ -26,6 +28,7 @@ export class App {
   cases: CaseData[] = [case01, case02, case03, case04, case05, case06, case07] as CaseData[];
   rewards: Record<string, Reward> = rewardsJson as Record<string, Reward>;
   interludes: unknown[] = interludesJson as unknown[];
+  mikro: Mikro[] = mikroJson as Mikro[];
   state: SaveState = load();
   now = () => new Date();
   /** Wzgórza, na których zawieszka TEGO gracza milczy (mapa 5/7). Ustalane z ziarna przy starcie. */

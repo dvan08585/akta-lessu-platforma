@@ -2,8 +2,10 @@ import { App } from "./app";
 import { startLess } from "./ui/less";
 import { viewIntro, viewMap, viewGate, viewNotebook, viewAkta } from "./ui/views";
 import { viewInterlude } from "./ui/interludes";
+import { installAnalytics } from "./engine/track";
 
 const app = new App();
+installAnalytics(app.cfg.analyticsDomain);
 const root = document.getElementById("app")!;
 startLess(document.getElementById("less") as HTMLCanvasElement);
 

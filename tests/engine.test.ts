@@ -109,3 +109,13 @@ describe("klucze między ludźmi", () => {
     expect(await verifyCheck("3abcdef")).toBe(false);
   });
 });
+
+import { pickDaily, dayIndex } from "../src/engine/daily";
+describe("mikro-akta", () => {
+  it("ten sam dzień = ten sam dokument dla wszystkich; kolejny dzień = następny", () => {
+    const pool = Array.from({ length: 5 }, (_, i) => ({ id: "m" + i, title: "", doc: "", q: "", options: [], answer: 0 }));
+    const a = pickDaily(pool, new Date("2027-01-01T08:00:00Z")), b = pickDaily(pool, new Date("2027-01-01T22:00:00Z")), c = pickDaily(pool, new Date("2027-01-02T08:00:00Z"));
+    expect(a.id).toBe(b.id); expect(c.id).not.toBe(a.id);
+    expect(dayIndex(new Date("2027-01-02T00:00:00Z")) - dayIndex(new Date("2027-01-01T00:00:00Z"))).toBe(1);
+  });
+});

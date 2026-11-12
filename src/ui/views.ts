@@ -2,6 +2,8 @@ import { h, go, toast } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import { interludesFor } from "./interludes";
 import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
+import { pickDaily, dayKey } from "../engine/daily";
+import { track } from "../engine/track";
 import type { App } from "../app";
 import type { CaseData, Doc } from "../engine/types";
 import { evaluate, heatLabel, recordAttempt, passedCount } from "../engine/cases";
@@ -68,6 +70,8 @@ export function viewMap(app: App): HTMLElement {
       h("span", { class: "s" }, statusLabel(st))));
   }
   sec.append(h("h3", {}, app.state.sawFooter ? "Rejestr statusów — Fundacja Sandomierska Memoria" : "Rejestr statusów"), list);
+  sec.append(dailyBox(app));
+  if (app.state.solvedCases.length >= 3) { const nb = newsletterBox(app, "Trzy bramy za tobą. Kolejne akta przyjdą w terminie z kalendarza; jeśli zostawisz adres, dostaniesz je pierwszego dnia, razem z dokumentem, którego nie ma na stronie."); if (nb) sec.append(nb); }
   const inter = interludesFor(app);
   if (inter.length) {
     const il = h("div", { class: "gates-list" });
@@ -113,6 +117,38 @@ export function viewGate(app: App, n: number): HTMLElement {
     return sec;
   }
   return viewCase(app, c, sec);
+}
+
+/** Zapis na listę: formularz POST do dostawcy (adres w config). Bez adresu nic się nie pokazuje. Nie znamy e-maila, znamy tylko fakt zapisu. */
+export function newsletterBox(app: App, why: string): HTMLElement | null {
+  const nl = app.cfg.newsletter;
+  if (!nl.action || app.state.subscribed) return null;
+  const input = h("input", { type: "email", name: nl.fieldName, placeholder: "twój e-mail", required: true, "aria-label": "E-mail", style: "text-transform:none;letter-spacing:0" }) as HTMLInputElement;
+  const form = h("form", { action: nl.action, method: nl.method, target: "_blank", class: "row" }, input, h("button", { class: "primary", type: "submit" }, "Zapisz"));
+  form.addEventListener("submit", () => { app.state.subscribed = true; save(app.state); track("signup"); toast("Dziękuję. Akta przyjdą pocztą."); });
+  return h("div", { class: "gatebox newsletter" }, h("h3", {}, "Akta pocztą"), h("p", { class: "muted" }, why), form, h("p", { class: "faint" }, "Jeden list na nową sprawę. Zero reklam. Wypisanie jednym kliknięciem."));
+}
+
+/** Mikro-akta: jeden dokument, jedno pytanie, to samo dla wszystkich tego dnia. */
+export function dailyBox(app: App): HTMLElement {
+  const m = pickDaily(app.mikro);
+  const key = dayKey();
+  const done = app.state.daily[key];
+  const box = h("div", { class: "gatebox daily" }, h("h3", {}, "Mikro-akta na dziś"), h("article", { class: "doc hand" }, h("h4", {}, m.title), h("p", {}, m.doc)));
+  if (done !== undefined) {
+    box.append(h("p", { class: done ? "muted" : "faint" }, done ? "Rozpoznane. Jutro następne." : "Nie dziś. Jutro następne."));
+    return box;
+  }
+  const opts = h("div", { class: "opts", role: "radiogroup" });
+  m.options.forEach((o, i) => { const inp = h("input", { type: "radio", name: "daily", value: String(i) }); opts.append(h("label", {}, inp, o)); });
+  const btn = h("button", { class: "primary" }, "Sprawdź");
+  btn.addEventListener("click", () => {
+    const el = box.querySelector<HTMLInputElement>('input[name="daily"]:checked'); if (!el) { toast("Wybierz odpowiedź."); return; }
+    const ok = Number(el.value) === m.answer; app.state.daily[key] = ok; save(app.state); track("daily", { ok: ok ? 1 : 0 });
+    box.replaceWith(dailyBox(app)); toast(ok ? "Zawieszka ciepła." : "Zawieszka zimna. Jutro następne.");
+  });
+  box.append(h("div", { class: "q" }, h("div", { class: "qt" }, m.q), opts), btn);
+  return box;
 }
 
 export function readingBox(app: App, hill?: number): HTMLElement {
@@ -326,6 +362,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   }
 
   function renderSolution(tries: number) {
+    if (!solvedAlready) track("case_solved", { gate: c.gate, tries });
     if (c.gate === 5 && !app.state.sawFooter) { app.state.sawFooter = true; save(app.state); }
     const sol = h("div", { class: "solution fade-in" });
     for (const p of c.solution) sol.append(h("p", {}, p));
@@ -338,7 +375,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     build().then((card) => (pre.textContent = card));
     const share = h("div", { class: "share" }, h("h3", {}, "Zostaw ślad"), pre,
       h("div", { class: "verdict" },
-        h("button", { class: "primary", onclick: async () => { const r = await shareText(await build()); toast(r === "shared" ? "Udostępniono." : r === "copied" ? "Skopiowano do schowka." : "Nie udało się. Zaznacz i skopiuj."); } }, "Udostępnij"),
+        h("button", { class: "primary", onclick: async () => { track("share", { gate: c.gate }); const r = await shareText(await build()); toast(r === "shared" ? "Udostępniono." : r === "copied" ? "Skopiowano do schowka." : "Nie udało się. Zaznacz i skopiuj."); } }, "Udostępnij"),
         h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")));
     solutionBox.replaceChildren(sol, share);
     if (c.pair) for (const p of c.pair.finale) sol.append(h("p", { class: "finale" }, p));
@@ -378,7 +415,7 @@ export function viewAkta(app: App): HTMLElement {
     for (const ch of app.chapters) if (ch.codeHash && (await codeMatches(val, ch.codeHash))) { hit = ch.n; break; }
     if (hit === null) { toast("Zawieszka zimna. To nie ten kod."); return; }
     if (!app.state.unlockedChapters.includes(hit)) { app.state.unlockedChapters.push(hit); app.state.chapterCursor = Math.max(app.state.chapterCursor, hit); save(app.state); }
-    app.addNote(`Otwarto ${hit === 0 ? "Prolog" : "rozdział " + hit} kodem z książki.`, "klucz: kod");
+    app.addNote(`Otwarto ${hit === 0 ? "Prolog" : "rozdział " + hit} kodem z książki.`, "klucz: kod"); track("code", { chapter: hit });
     toast(`Otwarto: ${hit === 0 ? "Prolog" : "R." + hit}.`); input.value = ""; go("#/mapa");
   });
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") btn.click(); });
@@ -401,6 +438,8 @@ export function viewAkta(app: App): HTMLElement {
   const qr = placeFromUrl(location.search);
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz trzeci: miejsce"), h("p", { class: "muted" }, qr ? `Jesteś przy punkcie „${qr}”. Zapisano w zeszycie.` : "Kody QR w Sandomierzu otwierają dokumenty, których nie ma w trybie domowym. Zeskanuj je na miejscu."),
     h("p", { class: "faint" }, `Odwiedzone punkty: ${app.state.placeVisits.length ? app.state.placeVisits.join(", ") : "brak"}`)));
+
+  { const nb = newsletterBox(app, "Nowe sprawy przychodzą co dwa tygodnie. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
 
   // Klucz czwarty: mapa 5/7
   const silentTxt = app.silent.length ? `Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. ` : "";
