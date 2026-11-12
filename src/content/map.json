@@ -64,7 +64,7 @@
       "peak": 115,
       "depth": 365,
       "elev": 164,
-      "elevSource": "atlasgrodzisk.pl: wypłaszczenie szczytowe 163,6 m"
+      "elevSource": "atlasgrodzisk.pl: wypłaszczenie szczytowe 163,6 m, ok. 20 m nad doliną Wisły"
     },
     {
       "n": 2,
@@ -74,8 +74,8 @@
       "x": 520,
       "peak": 105,
       "depth": 344,
-      "elev": 174,
-      "elevSource": "Wikipedia 173 m / atlasgrodzisk 175,2 m"
+      "elev": 175,
+      "elevSource": "atlasgrodzisk.pl: wypłaszczenie szczytowe 175,2 m (Wikipedia: 173 m)"
     },
     {
       "n": 3,
@@ -140,11 +140,11 @@
     }
   ],
   "wisla": {
-    "elev": 140,
-    "note": "poziom Wisły pod Sandomierzem ok. 140 m n.p.m. (szacunek; rzędna zera wodowskazu do sprawdzenia w IMGW)"
+    "elev": 143,
+    "note": "atlasgrodzisk.pl: Wzgórze Zamkowe (163,6 m) góruje ok. 20 m nad doliną Wisły, więc dno doliny ok. 143 m; rzędna zera wodowskazu do sprawdzenia w IMGW"
   },
   "scale": {
-    "minElev": 140,
+    "minElev": 143,
     "maxElev": 195,
     "groundY": 230,
     "skyY": 60,
