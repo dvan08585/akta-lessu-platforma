@@ -441,6 +441,10 @@ export function viewAkta(app: App): HTMLElement {
 
   { const nb = newsletterBox(app, "Nowe sprawy przychodzą co dwa tygodnie. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
 
+  // Znacznik AR (strona książki pod kamerą)
+  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Znacznik w książce"), h("p", { class: "muted" }, "Na końcu każdego rozdziału jest siedmiobok w czarnej ramce. Skieruj na niego kamerę: nad stroną uniesie się przekrój z tą jedną bramą. Bez aplikacji."),
+    h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "ar/" }, "Otwórz kamerę"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "ar/druk.html", target: "_blank" }, "Znaczniki do druku"))));
+
   // Klucz czwarty: mapa 5/7
   const silentTxt = app.silent.length ? `Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. ` : "";
   const have = Object.keys(app.state.readings).map(Number);

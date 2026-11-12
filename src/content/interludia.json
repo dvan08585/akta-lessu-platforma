@@ -206,5 +206,38 @@
       "Skarpa. Pod skarpą coś, co oddycha wolniej niż wczoraj. Wolniej. Wolniej.",
       "Drapie. Łapami, mokrymi, w białą ścianę. Dziecko woła: piesek, chodź. Nie idzie."
     ]
+  },
+  {
+    "id": "zielinski",
+    "type": "talk",
+    "after": 5,
+    "title": "Rozmowa: komisarz Zieliński",
+    "intro": "Restauracja hotelowa, rano, kawa w białej filiżance, którą komisarz obraca uchem w lewo, zanim się napije. Teczka na stole, zamknięta. Pięć pytań. Komisarz nie kłamie. Ale jedna odpowiedź jest nieprawdą, bo komisarz przemilcza.",
+    "person": "Zieliński",
+    "questions": [
+      {
+        "q": "Dlaczego cofnął pan zlecenie poprzedniemu biegłemu?",
+        "a": "Konflikt interesów. Nazwisko, które pojawiło się w notatniku profesora, było nazwiskiem biegłego. Nie oskarżam nikogo. Procedura. Potrzebowałem kogoś spoza miasta, bez nazwiska w tych papierach. Pan nie ma nazwiska w tych papierach. Sprawdziłem."
+      },
+      {
+        "q": "Co jest w notatniku profesora?",
+        "a": "Rysunki. Przekroje, tunele głębsze niż trasa turystyczna, siedem punktów. I jedno słowo, które nie jest terminem geologicznym. Nie powiem jakie, bo to materiał dowodowy. Nasi technicy przeszli trasę: 470 metrów, 34 komory, nic niezwykłego. Profesor rysował coś, czego nie znaleźliśmy."
+      },
+      {
+        "q": "Jak zginął profesor?",
+        "a": "Toksykologia mówi: rtęć. Podawana długo, w małych dawkach, w czymś, co pił codziennie. Ktoś miał dostęp do jego kuchni. Nie geolog. Nie archiwista. Ktoś, kto bywał. Więcej nie powiem, bo więcej nie wiem na pewno, a na pewno to jedyne, co w tym zawodzie ma wartość."
+      },
+      {
+        "q": "Kto przekazuje mi akta?",
+        "a": "Program edukacyjny miasta, przez archiwum. Komenda nie ma ludzi do kopiowania kronik. Fundacja udostępniła materiały i koperty, to jest partner miasta, wszystko oficjalnie. Nie widzę w tym problemu. Pan widzi?"
+      },
+      {
+        "q": "Czy policja wie, co jest poniżej 6 metrów pod św. Jakubem?",
+        "a": "Policja szuka truciciela, nie korytarzy. Sondaż z 1959 roku jest w archiwum, czytałem. Przerwano z powodu powietrza. Nikt od tej pory nie schodził niżej i nikt z mojej komendy nie zejdzie. Nie mam ekipy speleologicznej, mam dwa radiowozy i jeden z nich ma przebitą oponę."
+      }
+    ],
+    "lie": 3,
+    "reveal": "„Nie widzę w tym problemu.” Widzi. Komisarz wie, kto płaci za koperty, bo faktura przeszła przez jego biurko, i wie, że biegły tego nie wie. Nie kłamie: pyta, czy pan widzi. Przemilcza, bo bez Fundacji nie ma archiwum, a bez archiwum nie ma akt. Zieliński gra na dwie strony i obie o tym wiedzą oprócz pana.",
+    "wrong": "Zieliński obraca filiżankę. „To była prawda. Ja nie kłamię, proszę pana. Ja wybieram, co mówię.”"
   }
 ]

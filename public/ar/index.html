@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Akta Lessu — znacznik</title>
+<script src="https://cdn.jsdelivr.net/npm/aframe@1.4.2/dist/aframe-master.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/aframe/build/aframe-ar.js"></script>
+<style>
+  body { margin: 0; overflow: hidden; font-family: Georgia, serif; }
+  #hud { position: fixed; left: 0; right: 0; bottom: 0; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: rgba(14,13,11,0.85); color: #e8e0cf; font-size: 15px; z-index: 5; }
+  #hud a { color: #c9a86a; }
+</style>
+</head>
+<body>
+<a-scene embedded arjs="sourceType: webcam; detectionMode: mono; debugUIEnabled: false;" vr-mode-ui="enabled: false" renderer="logarithmicDepthBuffer: true;">
+  <a-assets><img id="mapa" src="../og.png" crossorigin="anonymous" /></a-assets>
+  <a-marker type="pattern" url="./znacznik.patt" id="marker">
+    <!-- Przekrój unosi się nad stroną: siedem wzgórz i jedna zapalona brama -->
+    <a-plane src="#mapa" width="1.9" height="1.0" position="0 0.55 0" rotation="-90 0 0" material="shader: flat; transparent: true; opacity: 0.95"></a-plane>
+    <a-entity id="gate" geometry="primitive: cylinder; radius: 0.09; height: 0.02; segmentsRadial: 7" material="color: #c9a86a; shader: flat" position="0 0.03 0.25" animation="property: position; to: 0 0.5 0.25; dir: alternate; dur: 2200; loop: true; easing: easeInOutSine"></a-entity>
+    <a-entity id="label" text="value: Akta Lessu; color: #e8e0cf; align: center; width: 2" position="0 0.75 -0.5" rotation="-90 0 0"></a-entity>
+    <a-light type="ambient" color="#fff"></a-light>
+  </a-marker>
+  <a-entity camera></a-entity>
+</a-scene>
+<div id="hud"><span id="msg">Skieruj kamerę na siedmiobok z końca rozdziału.</span> · <a href="../">Wróć do akt</a></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const brama = Number(q.get("brama") || 0);
+  const names = { 1: "Żmigród", 2: "Wzgórze Katedralne", 3: "Wzgórze Miejskie", 4: "Staromiejskie", 5: "Wzgórze Zamkowe", 6: "Collegium", 7: "Świętopawłowskie" };
+  const xs = { 7: -0.85, 4: -0.57, 1: -0.28, 5: 0, 2: 0.28, 3: 0.57, 6: 0.85 };
+  if (brama && names[brama]) {
+    document.getElementById("gate").setAttribute("position", `${xs[brama]} 0.03 0.25`);
+    document.getElementById("label").setAttribute("text", `value: Brama ${brama}: ${names[brama]}; color: #e8e0cf; align: center; width: 2`);
+  }
+  const m = document.getElementById("marker");
+  m.addEventListener("markerFound", () => { document.getElementById("msg").textContent = brama ? `Brama ${brama}. Pod tą stroną: ${names[brama]}.` : "Siedem wzgórz nad stroną. Pod nimi to, co jest pod nimi."; try { navigator.vibrate && navigator.vibrate(60); } catch (e) {} });
+  m.addEventListener("markerLost", () => { document.getElementById("msg").textContent = "Znacznik zniknął. Trzymaj stronę płasko, w świetle."; });
+</script>
+</body>
+</html>

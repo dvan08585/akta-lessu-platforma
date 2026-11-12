@@ -36,3 +36,6 @@ Bez serwera nie da się sprawdzić, kto wygenerował token. Da się sprawdzić, 
 
 ## Mapa 5/7 (mechanika społeczna)
 Z ziarna gracza losowane są dwa wzgórza z {1,2,3,5,6}, na których jego zawieszka milczy. Spraw na tych wzgórzach nie otworzy sam: potrzebuje odczytu z karty innego biegłego, u którego to wzgórze reaguje. Pełna mapa istnieje tylko między ludźmi. Kto pociągnął cegłę (sprawa 6), ma bramę niestabilną: liczy się jako przebyta, ale w finale potrzebuje dwóch połówek klucza zamiast jednej.
+
+## Znacznik AR (`public/ar/`)
+A-Frame + AR.js (marker-based, z CDN, ładowane tylko na stronie `ar/`). Znacznik: siedmiobok w czarnej ramce (`znacznik.png`), wzorzec `znacznik.patt` generowany skryptem z obrazu (16×16, 4 obroty, BGR). Parametr `?brama=N` ustawia, która brama świeci nad stroną. Arkusz do druku: `ar/druk.html`. Działa w Safari i Chrome bez aplikacji; wymaga HTTPS (GitHub Pages ma) i zgody na kamerę. Nieprzetestowane z kamerą w tej sesji: sprawdzić na telefonie przy dobrym świetle, znacznik 30–62 mm, matowy druk.
