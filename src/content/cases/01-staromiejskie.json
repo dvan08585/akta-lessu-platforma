@@ -121,15 +121,30 @@
     },
     {
       "id": "q5",
-      "text": "Kto zamknął korytarze pod Starym Wzgórzem?",
-      "options": [
-        "Berbeć i obrońcy, belkami i kamieniem od góry",
-        "Tatarzy, cofając się w panice",
-        "Halina, od spodu, zanim spadła pierwsza belka",
-        "Nikt. Less osunął się sam."
+      "text": "Korytarze zamknęła ___, od ___, zanim spadła ___.",
+      "options": [],
+      "answer": -1,
+      "hint": "Zasyp obrońców kończy się na 6,1 m. Ziemia pracowała głębiej i wcześniej.",
+      "kind": "fill",
+      "bank": [
+        "Halina",
+        "Berbeć",
+        "setnik",
+        "spodu",
+        "góry",
+        "wałów",
+        "pierwsza belka",
+        "ostatnia belka",
+        "Wisła",
+        "gołąb",
+        "Sadok",
+        "ziemia"
       ],
-      "answer": 2,
-      "hint": "Zasyp obrońców kończy się na 6,1 m. Ziemia pracowała głębiej i wcześniej. Kto był głębiej?"
+      "answerWords": [
+        "Halina",
+        "spodu",
+        "pierwsza belka"
+      ]
     }
   ],
   "solution": [

@@ -6,7 +6,7 @@ import { pickDaily, dayKey } from "../engine/daily";
 import { track } from "../engine/track";
 import type { App } from "../app";
 import type { CaseData, Doc } from "../engine/types";
-import { evaluate, heatLabel, recordAttempt, passedCount } from "../engine/cases";
+import { evaluate, heatLabel, recordAttempt, encodeFill, GESTURE_OF } from "../engine/cases";
 import { halfKey, looksLikeHalfKey, verifyCheck, readingToken, parseReading } from "../engine/pair";
 import { shareCard, shareText } from "../engine/share";
 import { codeMatches, unlockDate, placeFromUrl, releaseDate } from "../engine/unlock";
@@ -67,7 +67,7 @@ export function viewMap(app: App): HTMLElement {
     list.append(h("div", { class: "gate-row", "data-status": st, role: "button", tabindex: "0", onclick: () => go(`#/brama/${g.n}`) },
       h("span", { class: "n" }, String(g.n)),
       h("span", { class: "t" }, g.name, h("small", {}, `żywioł: ${g.element}${c ? " · " + c.title : ""}`)),
-      h("span", { class: "s" }, st === "locked" && c ? lockedWhy(app, c) : statusLabel(st))));
+      h("span", { class: "s" }, st === "locked" && c ? lockedWhy(app, c) : st === "solved" && app.awaitingGesture(g.n) ? "rozpoznana, czeka na gest" : st === "solved" ? "przebyta" : statusLabel(st))));
   }
   sec.append(h("h3", {}, app.state.sawFooter ? "Rejestr statusów — Fundacja Sandomierska Memoria" : "Rejestr statusów"), list);
   sec.append(dailyBox(app));
@@ -87,7 +87,7 @@ export function viewMap(app: App): HTMLElement {
 
 function lockedWhy(app: App, c: CaseData): string {
   const need = c.requires.solvedCases ?? 0;
-  if (passedCount(app.state) < need) return `po ${need} bramach`;
+  if (app.passed() < need) return `po ${need} bramach`;
   const rel = c.requires.release ? releaseDate(app.cfg, c.requires.release) : null;
   if (rel && rel.getTime() > Date.now()) return `od ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "short" })} lub kod`;
   return "kod z książki";
@@ -115,8 +115,8 @@ export function viewGate(app: App, n: number): HTMLElement {
   }
   if (st === "locked") {
     const rel = c.requires.release ? releaseDate(app.cfg, c.requires.release) : null;
-    const need = c.requires.solvedCases !== undefined && passedCount(app.state) < c.requires.solvedCases
-      ? `Ta sprawa otwiera się po ${c.requires.solvedCases} przebytych bramach. Masz ${passedCount(app.state)}.`
+    const need = c.requires.solvedCases !== undefined && app.passed() < c.requires.solvedCases
+      ? `Ta sprawa otwiera się po ${c.requires.solvedCases} przebytych bramach. Masz ${app.passed()}.`
       : rel && rel.getTime() > Date.now()
         ? `Te akta przyjdą ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}. Wcześniej otwiera je tylko kod z rozdziału ${c.requires.chapter}.`
         : `Ta sprawa wymaga rozdziału ${c.requires.chapter}.`;
@@ -247,6 +247,22 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       });
       sel.addEventListener("change", showLine); showLine();
       block.append(sel, line, shareBtn);
+    } else if (q.kind === "fill" && q.bank) {
+      // Zdanie z lukami i bank słów (Golden Idol): stuknij słowo, wchodzi w pierwszą wolną lukę; stuknij lukę, żeby ją opróżnić.
+      const parts = q.text.split("___"); const nSlots = parts.length - 1; const chosen: (string | null)[] = Array(nSlots).fill(null);
+      const sentence = h("p", { class: "fill" }); const bank = h("div", { class: "bank" });
+      const hidden = h("input", { type: "hidden", name: q.id, value: "0" }) as HTMLInputElement;
+      const render = () => {
+        sentence.replaceChildren();
+        parts.forEach((t, k) => { sentence.append(t); if (k < nSlots) { const slot = h("button", { class: `slot ${chosen[k] ? "set" : ""}`, type: "button", onclick: () => { chosen[k] = null; render(); } }, chosen[k] ?? "·····"); sentence.append(slot); } });
+        bank.querySelectorAll("button").forEach((b) => { (b as HTMLButtonElement).disabled = chosen.includes(b.textContent); });
+        hidden.value = String(encodeFill(q.bank!, chosen.map((w) => w ?? "")));
+      };
+      q.bank.forEach((w) => bank.append(h("button", { type: "button", onclick: () => { const k = chosen.indexOf(null); if (k >= 0) { chosen[k] = w; render(); } } }, w)));
+      block.replaceChildren(h("div", { class: "qt" }, `${qi + 1}.`), sentence, bank, hidden);
+      // przywróć zapis
+      if (saved[qi] > 0) { let v = saved[qi]; const N = q.bank.length + 1; for (let k = 0; k < nSlots; k++) { const i = v % N; v = Math.floor(v / N); chosen[k] = i ? q.bank[i - 1] : null; } }
+      render();
     } else {
       const options = q.kind === "reject" ? docs.map((d) => `${d.title}: ${d.source.length > 90 ? d.source.slice(0, 88) + "…" : d.source}`) : q.options;
       const opts = h("div", { class: "opts", role: "radiogroup", "aria-label": q.text });
@@ -268,9 +284,11 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   btn.addEventListener("click", async () => {
     const answers = c.questions.map((q) => {
       if (q.kind === "month") { const el = sec.querySelector<HTMLSelectElement>(`select[name="${q.id}"]`); return el ? Number(el.value) : 0; }
+      if (q.kind === "fill") { const el = sec.querySelector<HTMLInputElement>(`input[type="hidden"][name="${q.id}"]`); return el ? Number(el.value) : 0; }
       const el = sec.querySelector<HTMLInputElement>(`input[name="${q.id}"]:checked`); return el ? Number(el.value) : -1;
     });
-    if (answers.some((a) => a < 0) || c.questions.some((q, i) => q.kind === "month" && answers[i] < 1)) { toast("Odpowiedz na wszystkie pytania. Zawieszka nie reaguje na puste miejsca."); return; }
+    const fillIncomplete = c.questions.some((q, i) => q.kind === "fill" && q.bank && (() => { let v = answers[i]; const N = q.bank!.length + 1; const n = q.text.split("___").length - 1; for (let k = 0; k < n; k++) { if (v % N === 0) return true; v = Math.floor(v / N); } return false; })());
+    if (answers.some((a) => a < 0) || fillIncomplete || c.questions.some((q, i) => q.kind === "month" && answers[i] < 1)) { toast("Odpowiedz na wszystkie pytania. Zawieszka nie reaguje na puste miejsca."); return; }
     app.state.answers[c.id] = answers;
     const v = evaluate(c, answers);
     recordAttempt(app.state, c, v);
@@ -374,8 +392,12 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     if (c.gate === 5 && !app.state.sawFooter) { app.state.sawFooter = true; save(app.state); }
     const sol = h("div", { class: "solution fade-in" });
     for (const p of c.solution) sol.append(h("p", {}, p));
+    const gestureId = GESTURE_OF[c.gate];
+    if (gestureId && !app.state.interludesDone.includes(gestureId) && !app.state.testMode) {
+      sol.append(h("p", { class: "gesture-call" }, "Brama rozpoznana. Żeby ją przejść, potrzebne jest ciało, nie papier. ", h("a", { href: `#/miedzy/${gestureId}` }, "Przejdź bramę →")));
+    }
     const build = async () => {
-      const hk = passedCount(app.state) >= 6 ? await halfKey(app.state.seed) : undefined;
+      const hk = app.passed() >= 6 ? await halfKey(app.state.seed) : undefined;
       const readings = await Promise.all(app.solvedGates().filter((g) => !app.silent.includes(g) && g !== 7).map((g) => readingToken(app.state.seed, g)));
       return shareCard({ solved: app.solvedGates(), unstable: app.state.unstableGates, silent: app.silent.filter((g) => !app.state.readings[String(g)]), attempts: tries, streak: app.state.streak.days, url: app.cfg.share.url, hashtag: app.cfg.share.hashtag, caseN: c.n, halfKey: hk, readings });
     };
@@ -432,12 +454,12 @@ export function viewAkta(app: App): HTMLElement {
     const c = app.cases.find((x) => x.requires.chapter === hit);
     let msg = `Otwarto: ${hit === 0 ? "Prolog" : "R." + hit}.`;
     if (c) {
-      const need = c.requires.solvedCases ?? 0; const have = passedCount(app.state);
+      const need = c.requires.solvedCases ?? 0; const have = app.passed();
       if (app.isSilentFor(c.gate)) msg += ` Sprawa „${c.title}” (brama ${c.gate}) czeka: tam twoja zawieszka milczy, potrzebny odczyt z cudzej karty.`;
       else if (have < need) msg += ` Sprawa „${c.title}” (brama ${c.gate}) otworzy się po ${need} przebytych bramach, masz ${have}. Kod zdjął tylko datę.`;
       else msg += ` Sprawa „${c.title}” (brama ${c.gate}) jest otwarta.`;
     }
-    toast(msg); input.value = ""; go(c && !app.isSilentFor(c.gate) && passedCount(app.state) >= (c.requires.solvedCases ?? 0) ? `#/brama/${c.gate}` : "#/mapa");
+    toast(msg); input.value = ""; go(c && !app.isSilentFor(c.gate) && app.passed() >= (c.requires.solvedCases ?? 0) ? `#/brama/${c.gate}` : "#/mapa");
   });
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") btn.click(); });
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz pierwszy: kod z książki"), h("p", { class: "muted" }, "Każdy rozdział kończy się siedmiobokiem i jednym słowem. Wpisz je tutaj."), h("div", { class: "row" }, input, btn)));

@@ -134,3 +134,20 @@ describe("wysokość dźwięku bez błędu oktawy", () => {
     expect(s.push(136)).toBe(136);
   });
 });
+
+import { encodeFill, expectedAnswer, passedCount, GESTURE_OF } from "../src/engine/cases";
+describe("luki z bankiem słów i bramy przebyte gestem", () => {
+  it("koduje wybór słów jednoznacznie i rozpoznaje poprawny", () => {
+    const bank = ["a", "b", "c", "d"];
+    expect(encodeFill(bank, ["a", "c"])).not.toBe(encodeFill(bank, ["c", "a"]));
+    const q = { kind: "fill", answer: -1, bank, answerWords: ["b", "d"] };
+    expect(expectedAnswer(q)).toBe(encodeFill(bank, ["b", "d"]));
+    expect(encodeFill(bank, ["b", ""])).not.toBe(expectedAnswer(q));
+  });
+  it("sprawa rozpoznana bez gestu nie liczy się jako przebyta", () => {
+    const s = emptyState(); s.solvedCases = [1]; const gateOf = (n: number) => (n === 1 ? 4 : undefined);
+    expect(passedCount(s, gateOf)).toBe(0);
+    s.interludesDone.push(GESTURE_OF[4]); expect(passedCount(s, gateOf)).toBe(1);
+    s.unstableGates.push(1); expect(passedCount(s, gateOf)).toBe(2);
+  });
+});

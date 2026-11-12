@@ -22,7 +22,7 @@ export interface Doc {
   /** Stopka programu. Domyślnie z config.footer; pusty string = brak. */
   footer?: string;
 }
-export type QuestionKind = "choice" | "reject" | "month";
+export type QuestionKind = "choice" | "reject" | "month" | "fill";
 export interface Question {
   id: string; text: string; options: string[]; answer: number; hint?: string;
   /** choice (domyślnie) · reject: opcje to tytuły dokumentów, odrzuć fałszywy · month: bez poprawnej odpowiedzi, personalizacja */
@@ -30,6 +30,9 @@ export interface Question {
   /** month: 12 zdań, po jednym na miesiąc. */
   monthLines?: string[];
   monthClosing?: string;
+  /** fill: zdanie z lukami „___", bank słów (z fałszywymi), poprawne słowa po kolei. */
+  bank?: string[];
+  answerWords?: string[];
 }
 export type CaseType = "deduction" | "decision" | "pair";
 export interface CaseData {

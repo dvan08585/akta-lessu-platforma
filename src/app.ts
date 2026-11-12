@@ -12,7 +12,7 @@ import case04 from "./content/cases/04-zamkowe.json";
 import case05 from "./content/cases/05-collegium.json";
 import case06 from "./content/cases/06-zmigrod.json";
 import case07 from "./content/cases/07-swietopawlowskie.json";
-import { caseAvailable } from "./engine/cases";
+import { caseAvailable, passedCount, gestureDone } from "./engine/cases";
 import interludesJson from "./content/interludia.json";
 import mikroJson from "./content/mikroakta.json";
 import type { Mikro } from "./engine/daily";
@@ -47,6 +47,10 @@ export class App {
   isUnlocked(n: number): boolean { const ch = this.chapters.find((c) => c.n === n); return ch ? isChapterUnlocked(this.state, this.cfg, ch, this.now()) : false; }
   nextLocked(): Chapter | null { return nextLockedChapter(this.state, this.cfg, this.chapters, this.now()); }
   caseForGate(n: number): CaseData | undefined { return this.cases.find((c) => c.gate === n); }
+  gateOfCase = (n: number): number | undefined => this.cases.find((c) => c.n === n)?.gate;
+  passed(): number { return passedCount(this.state, this.gateOfCase); }
+  /** Brama rozpoznana dedukcją, ale jeszcze nie przebyta gestem. */
+  awaitingGesture(n: number): boolean { const c = this.caseForGate(n); return !!c && this.state.solvedCases.includes(c.n) && !gestureDone(this.state, n); }
   gateStatus(n: number): GateStatus {
     const g = this.map.gates.find((x) => x.n === n);
     const c = this.caseForGate(n);
@@ -54,7 +58,7 @@ export class App {
     if (c && this.state.solvedCases.includes(c.n)) return "solved";
     if (this.isSilentFor(n)) return "silent";
     if (c && this.state.testMode) return "open";
-    if (c && caseAvailable(this.state, c, (k) => this.isUnlocked(k), (k) => isReleased(this.cfg, k, this.now()))) return "open";
+    if (c && caseAvailable(this.state, c, (k) => this.isUnlocked(k), (k) => isReleased(this.cfg, k, this.now()), this.gateOfCase)) return "open";
     if (!c && g?.silent) return "silent";
     return "locked";
   }

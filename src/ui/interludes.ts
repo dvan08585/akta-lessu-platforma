@@ -5,7 +5,7 @@ import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 
 export interface Interlude {
-  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth"; after: number; title: string;
+  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth"; after?: number; gate?: number; title: string;
   secret?: string[]; steps?: number;
   cycles?: number; inhale?: number; exhale?: number;
   audio?: string; q?: string; options?: string[]; answer?: number; seconds?: number;
@@ -14,9 +14,12 @@ export interface Interlude {
   targetHz?: number; tolerance?: number;
 }
 
+export function interludeAvailable(app: App, i: Interlude): boolean {
+  if (i.gate !== undefined) { const c = app.caseForGate(i.gate); return !!c && (app.state.solvedCases.includes(c.n) || app.state.testMode); }
+  return (i.after ?? 0) <= app.passed();
+}
 export function interludesFor(app: App): Interlude[] {
-  const passed = app.state.solvedCases.length + app.state.unstableGates.length;
-  return (app.interludes as Interlude[]).filter((i) => i.after <= passed).sort((a, b) => a.after - b.after);
+  return (app.interludes as Interlude[]).filter((i) => interludeAvailable(app, i)).sort((a, b) => (a.after ?? a.gate ?? 0) - (b.after ?? b.gate ?? 0));
 }
 
 export function viewInterlude(app: App, id: string): HTMLElement {
@@ -24,15 +27,14 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   const sec = h("section", { class: "fade-in interlude" }, topbar(app, "#/mapa"));
   if (!found) { sec.append(h("p", {}, "Nie ma takiego przerywnika.")); return sec; }
   const it: Interlude = found;
-  const passed = app.state.solvedCases.length + app.state.unstableGates.length;
-  if (it.after > passed) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, `Po ${it.after} przebytych bramach.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
+  if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} przebytych bramach.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   sec.append(h("p", { class: "faint" }, "Między sprawami"), h("h2", {}, it.title));
   if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else renderPlate();
   return sec;
 
   function finish(note: string) {
-    if (!app.state.interludesDone.includes(it.id)) { app.state.interludesDone.push(it.id); app.addNote(note, "między sprawami"); save(app.state); }
+    if (!app.state.interludesDone.includes(it.id)) { app.state.interludesDone.push(it.id); app.addNote(note, it.gate !== undefined ? `brama ${it.gate} przebyta` : "między sprawami"); save(app.state); if (it.gate !== undefined) toast(`Brama ${it.gate} przebyta. Ciałem.`); }
   }
 
   function renderAmor() {
@@ -75,6 +77,10 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   function renderBeat() {
     sec.append(h("p", { class: "quote" }, it.intro!));
     const audio = h("audio", { controls: true, preload: "none", src: import.meta.env.BASE_URL + it.audio! }) as HTMLAudioElement;
+    // Wibracja w rytmie 18 Hz (Android; iOS Safari nie ma Vibration API): 28 ms + 28 ms ≈ 18 Hz
+    let vib: number | undefined;
+    audio.addEventListener("play", () => { try { vib = window.setInterval(() => navigator.vibrate?.(Array(10).fill(28)), 600); } catch { /* */ } });
+    audio.addEventListener("pause", () => { if (vib) clearInterval(vib); try { navigator.vibrate?.(0); } catch { /* */ } });
     sec.append(h("div", { class: "card" }, audio, h("p", { class: "faint" }, "Słuchawki na obu uszach. Głośnik telefonu tego nie odda: nie dlatego, że jest słaby, tylko dlatego, że to powstaje dopiero między uszami.")));
     // Bez słuchawek: zobaczysz. Dwie fale (200 i 218 Hz) i ich suma, zwolnione 400 razy, żeby dudnienie 18 Hz było widoczne jako powolny oddech amplitudy. Bez migania.
     const wave = h("canvas", { class: "wave", width: "600", height: "180", "aria-label": "Dwie fale i dudnienie" }) as HTMLCanvasElement;
@@ -83,12 +89,12 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const drawWave = (now: number) => {
       const t = now / 400000; // zwolnienie
       wctx.fillStyle = "#171511"; wctx.fillRect(0, 0, 600, 180);
-      const rows: [number, number, string][] = [[200, 30, "#a39a86"], [218, 90, "#a39a86"], [0, 150, "#c9a86a"]];
+      const rows: [number, number, string][] = [[110, 30, "#a39a86"], [128, 90, "#a39a86"], [0, 150, "#c9a86a"]];
       for (const [f, y, col] of rows) {
         wctx.beginPath(); wctx.strokeStyle = col; wctx.lineWidth = 1.5;
         for (let x = 0; x <= 600; x += 2) {
           const tt = t + x / 6000;
-          const v = f ? Math.sin(2 * Math.PI * f * tt) : (Math.sin(2 * Math.PI * 200 * tt) + Math.sin(2 * Math.PI * 218 * tt)) / 2;
+          const v = f ? Math.sin(2 * Math.PI * f * tt) : (Math.sin(2 * Math.PI * 110 * tt) + Math.sin(2 * Math.PI * 128 * tt)) / 2;
           const yy = y + v * 22; x === 0 ? wctx.moveTo(x, yy) : wctx.lineTo(x, yy);
         }
         wctx.stroke();

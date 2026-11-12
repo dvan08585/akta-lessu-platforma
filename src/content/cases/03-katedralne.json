@@ -143,14 +143,30 @@
     },
     {
       "id": "q5",
-      "text": "Na który miesiąc wskazują razem: cieplejsza posadzka, komora napływu i obraz najbliżej krypt?",
-      "options": [
-        "Maj",
-        "Kwiecień",
-        "Listopad",
-        "Grudzień"
+      "text": "Woda w kryptach przychodzi od ___, jest cieplejsza o ___ stopni i wskazuje na obraz ___.",
+      "options": [],
+      "answer": -1,
+      "kind": "fill",
+      "bank": [
+        "spodu",
+        "rzeki",
+        "dachu",
+        "pięć",
+        "dwa",
+        "dziesięć",
+        "listopad",
+        "kwiecień",
+        "maj",
+        "trzynasty",
+        "ogrzewania",
+        "Wisły"
       ],
-      "answer": 2
+      "answerWords": [
+        "spodu",
+        "pięć",
+        "listopad"
+      ],
+      "hint": "Protokół, zeszyt, wodowskaz."
     }
   ],
   "solution": [

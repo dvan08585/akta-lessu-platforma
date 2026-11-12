@@ -90,12 +90,12 @@
   {
     "id": "plyta",
     "type": "plate",
-    "after": 2,
     "title": "Płyta Chladniego",
     "intro": "Klasztor św. Jakuba, cela Anzelma. Na stole metalowa płyta, na niej piasek. Anzelm nie tłumaczy. Pokazuje. „Sandomierz stoi na rezonatorze. Znajdź ton.” Nuć do telefonu, aż piasek ułoży się w siedem ramion. Jeśli nie masz mikrofonu, użyj suwaka.",
     "targetHz": 196,
     "tolerance": 6,
-    "reveal": "Siedem ramion. G, ton główny dzwonu Piotra. Anzelm kiwa głową. „Pięćset milionów lat kwarcu pod lessem. Ludzie budują nad tym katedry i nazywają to wiarą. To fizyka.” A potem, ciszej: „Ton dolny też jest. Tego nie zanucisz. Tego się nie nuci. To się nosi.”"
+    "reveal": "Siedem ramion. G, ton główny dzwonu Piotra. Anzelm kiwa głową. „Pięćset milionów lat kwarcu pod lessem. Ludzie budują nad tym katedry i nazywają to wiarą. To fizyka.” A potem, ciszej: „Ton dolny też jest. Tego nie zanucisz. Tego się nie nuci. To się nosi.”",
+    "gate": 3
   },
   {
     "id": "amor-3",
@@ -255,40 +255,39 @@
       "Nic poza szumem"
     ],
     "answer": 1,
-    "reveal": "Lewe ucho dostaje 200 Hz. Prawe 218. Żadne z nich nie słyszy osiemnastu. Osiemnaście powstaje dopiero w tobie, między uszami, tam, gdzie mózg składa dwa dźwięki w jeden. Głośnik tego nie odda. Ciało tak. Aneta nie słyszała drona uszami. Słyszała go tym, czym ty go teraz słyszysz."
+    "reveal": "Lewe ucho dostaje 110 Hz. Prawe 128. Żadne z nich nie słyszy osiemnastu. Osiemnaście powstaje dopiero w tobie, między uszami, tam, gdzie mózg składa dwa dźwięki w jeden. Pod spodem jest jeszcze jedna warstwa: ton, który tętni osiemnaście razy na sekundę i który czuć w kościach słuchawek. Głośnik tego nie odda w całości. Ciało tak."
   },
   {
     "id": "zimno",
     "type": "still",
-    "after": 4,
     "title": "Zimno",
     "intro": "Piwnica pod zamkiem. O dwa stopnie zimniej niż obok. Weź telefon w obie dłonie i trzymaj go nieruchomo. Zupełnie. Pasek rośnie, dopóki ręce nie drżą. Przy trzydziestu trzech stopniach drżenie jest silne. Przy trzydziestu jeden ustaje, i to jest zły znak.",
     "seconds": 30,
-    "reveal": "Trzydzieści sekund. Ręce zaczęły drżeć wcześniej, niż myślałeś, bo ciało nie umie trzymać ciepła bez ruchu. Ten, kto leży pod lessem, nie ma wyboru. Trzęsie się, dopóki może. Potem przestaje. Marek trzyma. Czeka."
+    "reveal": "Trzydzieści sekund. Ręce zaczęły drżeć wcześniej, niż myślałeś, bo ciało nie umie trzymać ciepła bez ruchu. Ten, kto leży pod lessem, nie ma wyboru. Trzęsie się, dopóki może. Potem przestaje. Marek trzyma. Czeka.",
+    "gate": 5
   },
   {
     "id": "woda",
     "type": "breath",
-    "after": 3,
     "title": "Woda",
     "intro": "Krypta pod katedrą. Czterdzieści dwa centymetry wody, cieplejszej, niż powinna. Tafla drży, bo ty drżysz. Anzelm: „Oddychaj tak, jak oddycha woda, kiedy nikt jej nie rusza.” Pięć sekund wdech nosem, pięć sekund wydech. Dziesięć razy. Jeśli pozwolisz na mikrofon, tafla usłyszy twój wydech. Jeśli nie, trzymaj palec na ekranie, kiedy wydychasz.",
     "cycles": 10,
     "inhale": 5,
     "exhale": 5,
-    "reveal": "Sto sekund. Tafla jest gładka i widać dno: spoiny posadzki, przez które przychodzi ciepło. Nic nie zrobiłeś. Oddychałeś wolniej, niż oddychasz zwykle, i to wystarczyło, żeby woda przestała drżeć. Zapamiętaj to tempo. Będzie potrzebne niżej."
+    "reveal": "Sto sekund. Tafla jest gładka i widać dno: spoiny posadzki, przez które przychodzi ciepło. Nic nie zrobiłeś. Oddychałeś wolniej, niż oddychasz zwykle, i to wystarczyło, żeby woda przestała drżeć. Zapamiętaj to tempo. Będzie potrzebne niżej.",
+    "gate": 2
   },
   {
     "id": "ogien",
     "type": "fire",
-    "after": 1,
     "title": "Ogień",
     "intro": "Halina natarła kamień krwią. Nie musi być twoja. Skieruj kamerę na coś czerwonego: jabłko, szalik, własną dłoń pod światło lampy. Kamień odpowiada na czerwień, nie na ciebie.",
-    "reveal": "Pasy krzemienia rozjaśniły się na sekundę. Nie dlatego, że to była krew. Dlatego, że kamień nie odróżnia. Nacisk i czerwień, od milionów lat, pod ziemią, w ciemności. Halina wiedziała tyle samo co ty: że coś się stanie. Nie wiedziała co."
+    "reveal": "Pasy krzemienia rozjaśniły się na sekundę. Nie dlatego, że to była krew. Dlatego, że kamień nie odróżnia. Nacisk i czerwień, od milionów lat, pod ziemią, w ciemności. Halina wiedziała tyle samo co ty: że coś się stanie. Nie wiedziała co.",
+    "gate": 4
   },
   {
     "id": "ciemnosc",
     "type": "dark",
-    "after": 5,
     "title": "Ciemność",
     "intro": "Collegium. Punkt szósty nie reaguje na pomiary. Kartka z notatnika profesora, której nie było w aktach, czyta się tylko wtedy, kiedy nie widzisz nic innego. Zakryj kamerę dłonią albo zgaś światło. Litery przyjdą, kiedy będzie ciemno.",
     "secret": [
@@ -296,15 +295,16 @@
       "Mniej wiesz, więcej rozumiesz. Nie pisałem tego dla uczelni. Pisałem dla kogoś, kto przyjedzie i nie będzie chciał wiedzieć, a będzie musiał.",
       "Kto nosi krzemień, ten jest w sieci. H. nosiła. Jej wnuczka nosi. Nie powiedziałem jej. Nie umiem."
     ],
-    "reveal": "Kiedy wróciło światło, kartki już nie było. Zapamiętałeś trzy zdania. Tyle wystarczy. Profesor nie pisał dla tych, którzy patrzą. Pisał dla tych, którzy potrafią przestać."
+    "reveal": "Kiedy wróciło światło, kartki już nie było. Zapamiętałeś trzy zdania. Tyle wystarczy. Profesor nie pisał dla tych, którzy patrzą. Pisał dla tych, którzy potrafią przestać.",
+    "gate": 6
   },
   {
     "id": "ziemia",
     "type": "earth",
-    "after": 6,
     "title": "Ziemia",
     "intro": "Korytarz pod Żmigrodem. Less sypie się z łuku przy każdym kroku. Trzymaj telefon płasko, jak tacę z wodą, i idź: dwadzieścia kroków do muru. Przechylisz, less się zsunie na cegłę i trzeba będzie wracać. Nie tędy, mówił Berbeć. Tędy, ale równo.",
     "steps": 20,
-    "reveal": "Dwadzieścia kroków. Less na butach, nie na cegle. Mur stoi, cegła wysunięta o centymetr jest ciepła, i nic nie zrobiłeś. Ziemia nie wymaga odwagi. Wymaga, żeby nie drgnąć."
+    "reveal": "Dwadzieścia kroków. Less na butach, nie na cegle. Mur stoi, cegła wysunięta o centymetr jest ciepła, i nic nie zrobiłeś. Ziemia nie wymaga odwagi. Wymaga, żeby nie drgnąć.",
+    "gate": 1
   }
 ]

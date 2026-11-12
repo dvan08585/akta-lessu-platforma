@@ -120,15 +120,30 @@
     },
     {
       "id": "q5",
-      "text": "Co łączy rachunek z 1677 roku z księgą z 1354?",
-      "options": [
-        "Ten sam cech murarzy",
-        "Nic, dzieli je trzysta lat",
-        "Kapituła stroiła dzwon do tego, co odpowiada spod wrót z otworem na pieczęć: ktoś w 1677 wiedział, co zbudowano w 1354",
-        "Obie wymieniają srebro kupców"
+      "text": "Kapituła stroiła dzwon do tego, co odpowiada spod ___ zbudowanych w roku ___, a ton dolny ma ___ Hz.",
+      "options": [],
+      "answer": -1,
+      "hint": "Księga wydatków, rachunek ludwisarza, wydruk. Trzy dokumenty, jedno zdanie.",
+      "kind": "fill",
+      "bank": [
+        "wrót",
+        "piwnic",
+        "katedry",
+        "1354",
+        "1677",
+        "1260",
+        "18",
+        "196",
+        "11",
+        "Rynku",
+        "kadzi",
+        "srebra"
       ],
-      "answer": 2,
-      "hint": "Ton dolny dzwonu: 18,2 Hz. Tło pod Rynkiem: 18,0 Hz. Kto zamawiał, wiedział, do czego stroi."
+      "answerWords": [
+        "wrót",
+        "1354",
+        "18"
+      ]
     }
   ],
   "solution": [

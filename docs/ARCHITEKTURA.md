@@ -39,3 +39,9 @@ Z ziarna gracza losowane są dwa wzgórza z {1,2,3,5,6}, na których jego zawies
 
 ## Znacznik AR (`public/ar/`)
 A-Frame + AR.js (marker-based, z CDN, ładowane tylko na stronie `ar/`). Znacznik: siedmiobok w czarnej ramce (`znacznik.png`), wzorzec `znacznik.patt` generowany skryptem z obrazu (16×16, 4 obroty, BGR). Parametr `?brama=N` ustawia, która brama świeci nad stroną. Arkusz do druku: `ar/druk.html`. Działa w Safari i Chrome bez aplikacji; wymaga HTTPS (GitHub Pages ma) i zgody na kamerę. Nieprzetestowane z kamerą w tej sesji: sprawdzić na telefonie przy dobrym świetle, znacznik 30–62 mm, matowy druk.
+
+## Brama = dedukcja + gest (od v0.4)
+Sprawa rozwiązana dokumentami daje status „rozpoznana". Bramę liczy się jako „przebytą" dopiero po geście ciała przypisanym do wzgórza (`GESTURE_OF` w `engine/cases.ts`: 4 ogień, 3 płyta, 2 woda, 5 zimno, 6 ciemność, 1 ziemia; 7 jest parą). Kolejne sprawy odblokowuje liczba bram przebytych, nie rozpoznanych. Powód: zrzut ekranu i model językowy rozwiążą quiz, ale nie zanucą tonu ani nie zakryją kamery. Brama niestabilna (pociągnięta cegła) liczy się jako przebyta bez gestu, z ceną w finale.
+
+## Pytania z lukami (`kind: "fill"`)
+Kluczowe ustalenie każdej sprawy to zdanie z lukami i bank 12 słów, w tym fałszywe (wzór: Golden Idol). Wybór kodowany jako jedna liczba (`encodeFill`), więc stan zostaje liczbowy. Puste luki blokują sprawdzenie.

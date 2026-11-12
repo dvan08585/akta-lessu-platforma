@@ -124,14 +124,30 @@
     },
     {
       "id": "q5",
-      "text": "Kto zyskuje, jeśli biegły uwierzy fałszywej stronie?",
-      "options": [
-        "Komisarz",
-        "Uczelnia",
-        "Ten, kto trzy razy pytał i trzy razy usłyszał nie",
-        "Nikt"
+      "text": "Fałszywą stronę zdradza ___, w którym profesor był w ___, oraz ___, którego kronika nie zapisała.",
+      "options": [],
+      "answer": -1,
+      "kind": "fill",
+      "bank": [
+        "dzień",
+        "atrament",
+        "Krakowie",
+        "Sandomierzu",
+        "imię",
+        "nazwisko",
+        "miejsce",
+        "Collegium",
+        "Fundacja",
+        "pismo",
+        "egzamin",
+        "klasa"
       ],
-      "answer": 2
+      "answerWords": [
+        "dzień",
+        "Krakowie",
+        "imię"
+      ],
+      "hint": "Kalendarz uczelni i Rocznik ze sprawy pierwszej."
     }
   ],
   "solution": [

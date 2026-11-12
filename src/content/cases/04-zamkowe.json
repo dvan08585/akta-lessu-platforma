@@ -105,14 +105,30 @@
     },
     {
       "id": "q5",
-      "text": "Dla kogo pracujesz?",
-      "options": [
-        "Dla komisarza, jak w zleceniu",
-        "Dla miasta",
-        "Dla Fundacji, która płaci fakturę i prosi, by nie wyprowadzać cię z błędu",
-        "Dla nikogo, to gra"
+      "text": "Pracujesz dla ___, która kupiła kamienicę przez ___ i prosi, by nie wyprowadzać cię z ___.",
+      "options": [],
+      "answer": -1,
+      "kind": "fill",
+      "bank": [
+        "Fundacji",
+        "komisarza",
+        "miasta",
+        "spółkę",
+        "hotel",
+        "archiwum",
+        "błędu",
+        "Sandomierza",
+        "konserwatora",
+        "zarząd",
+        "program",
+        "Kraków"
       ],
-      "answer": 2
+      "answerWords": [
+        "Fundacji",
+        "spółkę",
+        "błędu"
+      ],
+      "hint": "Akt notarialny, faktura, stopka."
     }
   ],
   "solution": [
