@@ -159,22 +159,10 @@ Znad Wisły, od strony przeprawy
 Gołębia nie posłano z grodu. Wrócił od południa. Gdzie było Stare Wzgórze względem nowego?
 
 <!-- cases/01-staromiejskie.json questions[4].text -->
-Kto zamknął korytarze pod Starym Wzgórzem?
-
-<!-- cases/01-staromiejskie.json questions[4].options[0] -->
-Berbeć i obrońcy, belkami i kamieniem od góry
-
-<!-- cases/01-staromiejskie.json questions[4].options[1] -->
-Tatarzy, cofając się w panice
-
-<!-- cases/01-staromiejskie.json questions[4].options[2] -->
-Halina, od spodu, zanim spadła pierwsza belka
-
-<!-- cases/01-staromiejskie.json questions[4].options[3] -->
-Nikt. Less osunął się sam.
+Korytarze zamknęła ___, od ___, zanim spadła ___.
 
 <!-- cases/01-staromiejskie.json questions[4].hint -->
-Zasyp obrońców kończy się na 6,1 m. Ziemia pracowała głębiej i wcześniej. Kto był głębiej?
+Zasyp obrońców kończy się na 6,1 m. Ziemia pracowała głębiej i wcześniej.
 
 <!-- cases/01-staromiejskie.json solution[0] -->
 Rocznik nie zapisał jej imienia. Inwentarz zapisał kożuch.
@@ -282,7 +270,7 @@ Dziewięcioro
 Dziesięcioro
 
 <!-- cases/02-miejskie.json questions[0].hint -->
-Grzywna i dziesięć skojców od sztuki. Grzywna to dwadzieścia cztery skojce. Dziewięć grzywien i dwadzieścia dwa skojce razem.
+Grzywna i dziesięć skojców od sztuki. Grzywna to dwadzieścia cztery skojce. Razem zapłacono dziewięć grzywien i dwadzieścia dwa skojce.
 
 <!-- cases/02-miejskie.json questions[1].text -->
 Dlaczego ton dolny dzwonu sprawdzano świecą na posadzce, a nie uchem?
@@ -291,7 +279,7 @@ Dlaczego ton dolny dzwonu sprawdzano świecą na posadzce, a nie uchem?
 Bo w wieży było ciemno
 
 <!-- cases/02-miejskie.json questions[1].options[1] -->
-Bo ton leży poniżej słuchu, a płomień reaguje na drganie, którego ucho nie łapie
+Bo ton leży poniżej progu słyszenia, a płomień reaguje na drganie, którego ucho nie wychwyci
 
 <!-- cases/02-miejskie.json questions[1].options[2] -->
 Bo tak nakazuje liturgia
@@ -318,7 +306,7 @@ Na rejestrator
 Pierwsze uderzenie było o 12:00.
 
 <!-- cases/02-miejskie.json questions[3].text -->
-Co dowodzi, że to nie dzwon brzmi w ziemi, tylko coś pod nim?
+Co dowodzi, że w ziemi brzmi nie dzwon, tylko coś pod nim?
 
 <!-- cases/02-miejskie.json questions[3].options[0] -->
 Dzwon ma 196 Hz, a ziemia 18 Hz
@@ -333,22 +321,10 @@ Rejestrator stał przy studni
 Pies skomlał
 
 <!-- cases/02-miejskie.json questions[4].text -->
-Co łączy rachunek z 1677 roku z księgą z 1354?
-
-<!-- cases/02-miejskie.json questions[4].options[0] -->
-Ten sam cech murarzy
-
-<!-- cases/02-miejskie.json questions[4].options[1] -->
-Nic, dzieli je trzysta lat
-
-<!-- cases/02-miejskie.json questions[4].options[2] -->
-Kapituła stroiła dzwon do tego, co odpowiada spod wrót z otworem na pieczęć: ktoś w 1677 wiedział, co zbudowano w 1354
-
-<!-- cases/02-miejskie.json questions[4].options[3] -->
-Obie wymieniają srebro kupców
+Kapituła stroiła dzwon do tego, co odpowiada spod ___ zbudowanych w roku ___, a ton dolny ma ___ Hz.
 
 <!-- cases/02-miejskie.json questions[4].hint -->
-Ton dolny dzwonu: 18,2 Hz. Tło pod Rynkiem: 18,0 Hz. Kto zamawiał, wiedział, do czego stroi.
+Księga wydatków, rachunek ludwisarza, wydruk. Trzy dokumenty, jedno zdanie.
 
 <!-- cases/02-miejskie.json solution[0] -->
 Siedmioro wrót, wszystkie jednakie, z otworem na pieczęć. Trzysta lat później kapituła dopłaciła do kadzi jedenaście grzywien, więcej niż głos potrzebuje, i sprawdzała ton świecą, bo ucho go nie słyszy.
@@ -438,7 +414,7 @@ Posadzka. Zdejmij rękawiczkę, jeśli jest zima. Dotknij. Potem przejdź na dru
 Zapisz, która strona jest cieplejsza. Konserwator tego nie zapisał.
 
 <!-- cases/03-katedralne.json questions[0].text -->
-W którym miesiącu się urodziłeś, urodziłaś? (Nie musisz. Ale legenda tak każe.)
+W którym miesiącu masz urodziny? (Nie musisz odpowiadać. Ale legenda tak każe.)
 
 <!-- cases/03-katedralne.json questions[0].monthLines[0] -->
 Styczeń: śnieg na lessie, biały na białym. Nie zobaczysz, gdzie kończy się ziemia.
@@ -552,19 +528,10 @@ Wszystkie są z rzeki
 Porównaj stan rzeki w dniu zalania ze średnią tego miesiąca.
 
 <!-- cases/03-katedralne.json questions[5].text -->
-Na który miesiąc wskazują razem: cieplejsza posadzka, komora napływu i obraz najbliżej krypt?
+Woda w kryptach przychodzi od ___, jest cieplejsza o ___ stopni i zbiera się pod obrazem ___.
 
-<!-- cases/03-katedralne.json questions[5].options[0] -->
-Maj
-
-<!-- cases/03-katedralne.json questions[5].options[1] -->
-Kwiecień
-
-<!-- cases/03-katedralne.json questions[5].options[2] -->
-Listopad
-
-<!-- cases/03-katedralne.json questions[5].options[3] -->
-Grudzień
+<!-- cases/03-katedralne.json questions[5].hint -->
+Protokół, zeszyt, wodowskaz.
 
 <!-- cases/03-katedralne.json solution[0] -->
 Dwanaście miesięcy na ścianach i trzynasty obraz bez miesiąca, który dzieje się tutaj. Woda w kryptach jest o pięć stopni za ciepła i przychodzi od spodu, kiedy rzeka stoi nisko.
@@ -654,7 +621,7 @@ Kamienica jest siedzibą programu
 Miasto dotuje oba
 
 <!-- cases/04-zamkowe.json questions[1].text -->
-Czego kupujący naprawdę chciał w tej kamienicy, sądząc po §7 i inwentarzu?
+Czego kupujący naprawdę szukał w tej kamienicy, sądząc po § 7 i inwentarzu?
 
 <!-- cases/04-zamkowe.json questions[1].options[0] -->
 Dachu i elewacji
@@ -687,7 +654,7 @@ Konserwator wojewódzki
 List od komisarza mówi, kto pośredniczy. Sprawozdanie mówi, czyj to program. Stopka każdego dokumentu mówi to samo.
 
 <!-- cases/04-zamkowe.json questions[3].text -->
-Komu trafiają twoje wnioski „wzgórze po wzgórzu”?
+Do kogo trafiają twoje wnioski, wzgórze po wzgórzu?
 
 <!-- cases/04-zamkowe.json questions[3].options[0] -->
 Do akt postępowania policyjnego
@@ -702,19 +669,10 @@ Do uczelni w Krakowie
 Nigdzie, to materiał edukacyjny
 
 <!-- cases/04-zamkowe.json questions[4].text -->
-Dla kogo pracujesz?
+Pracujesz dla ___, która kupiła kamienicę przez ___ i prosi, by nie wyprowadzać cię z ___.
 
-<!-- cases/04-zamkowe.json questions[4].options[0] -->
-Dla komisarza, jak w zleceniu
-
-<!-- cases/04-zamkowe.json questions[4].options[1] -->
-Dla miasta
-
-<!-- cases/04-zamkowe.json questions[4].options[2] -->
-Dla Fundacji, która płaci fakturę i prosi, by nie wyprowadzać cię z błędu
-
-<!-- cases/04-zamkowe.json questions[4].options[3] -->
-Dla nikogo, to gra
+<!-- cases/04-zamkowe.json questions[4].hint -->
+Akt notarialny, faktura, stopka.
 
 <!-- cases/04-zamkowe.json solution[0] -->
 Koperty miały nadruk od pierwszego dnia. Mała czcionka w stopce: program edukacyjny, partner, kopia dla biegłego. List komisarza mówił, kto pośredniczy. Nikt nie czyta stopek.
@@ -870,19 +828,10 @@ Raz, reszta nieznana
 Nie wiadomo
 
 <!-- cases/05-collegium.json questions[5].text -->
-Kto zyskuje, jeśli biegły uwierzy fałszywej stronie?
+Fałszywą stronę zdradza ___, w którym profesor był w ___, oraz ___, którego kronika nie zapisała.
 
-<!-- cases/05-collegium.json questions[5].options[0] -->
-Komisarz
-
-<!-- cases/05-collegium.json questions[5].options[1] -->
-Uczelnia
-
-<!-- cases/05-collegium.json questions[5].options[2] -->
-Ten, kto trzy razy pytał i trzy razy usłyszał nie
-
-<!-- cases/05-collegium.json questions[5].options[3] -->
-Nikt
+<!-- cases/05-collegium.json questions[5].hint -->
+Kalendarz uczelni i Rocznik ze sprawy pierwszej.
 
 <!-- cases/05-collegium.json solution[0] -->
 Strona z datą 14 października jest napisana atramentem, wyraźnie, z pełnym zdaniem o przekazaniu Fundacji i z imieniem, którego kronika nie zapisała. Tego dnia profesor podpisywał protokół egzaminu w Krakowie. Strona jest lepsza od prawdziwych. Dlatego jest fałszywa.
@@ -1346,6 +1295,102 @@ Skarpa. Pod skarpą coś, co oddycha wolniej niż wczoraj. Wolniej. Wolniej.
 
 <!-- interludia[10].lines[2] -->
 Drapie. Łapami, mokrymi, w białą ścianę. Dziecko woła: piesek, chodź. Nie idzie.
+
+<!-- interludia[11].title -->
+Rozmowa: komisarz Zieliński
+
+<!-- interludia[11].intro -->
+Restauracja hotelowa, rano, kawa w białej filiżance, którą komisarz obraca uchem w lewo, zanim się napije. Teczka na stole, zamknięta. Pięć pytań. Komisarz nie kłamie. Ale jedna odpowiedź jest nieprawdą, bo komisarz przemilcza.
+
+<!-- interludia[11].questions[0].q -->
+Dlaczego cofnął pan zlecenie poprzedniemu biegłemu?
+
+<!-- interludia[11].questions[0].a -->
+Konflikt interesów. Nazwisko, które pojawiło się w notatniku profesora, było nazwiskiem biegłego. Nie oskarżam nikogo. Procedura. Potrzebowałem kogoś spoza miasta, bez nazwiska w tych papierach. Pan nie ma nazwiska w tych papierach. Sprawdziłem.
+
+<!-- interludia[11].questions[1].q -->
+Co jest w notatniku profesora?
+
+<!-- interludia[11].questions[1].a -->
+Rysunki. Przekroje, tunele głębsze niż trasa turystyczna, siedem punktów. I jedno słowo, które nie jest terminem geologicznym. Nie powiem jakie, bo to materiał dowodowy. Nasi technicy przeszli trasę: 470 metrów, 34 komory, nic niezwykłego. Profesor rysował coś, czego nie znaleźliśmy.
+
+<!-- interludia[11].questions[2].q -->
+Jak zginął profesor?
+
+<!-- interludia[11].questions[2].a -->
+Toksykologia mówi: rtęć. Podawana długo, w małych dawkach, w czymś, co pił codziennie. Ktoś miał dostęp do jego kuchni. Nie geolog. Nie archiwista. Ktoś, kto bywał. Więcej nie powiem, bo więcej nie wiem na pewno, a na pewno to jedyne, co w tym zawodzie ma wartość.
+
+<!-- interludia[11].questions[3].q -->
+Kto przekazuje mi akta?
+
+<!-- interludia[11].questions[3].a -->
+Program edukacyjny miasta, przez archiwum. Komenda nie ma ludzi do kopiowania kronik. Fundacja udostępniła materiały i koperty, to jest partner miasta, wszystko oficjalnie. Nie widzę w tym problemu. Pan widzi?
+
+<!-- interludia[11].questions[4].q -->
+Czy policja wie, co jest poniżej 6 metrów pod św. Jakubem?
+
+<!-- interludia[11].questions[4].a -->
+Policja szuka truciciela, nie korytarzy. Sondaż z 1959 roku jest w archiwum, czytałem. Przerwano z powodu powietrza. Nikt od tej pory nie schodził niżej i nikt z mojej komendy nie zejdzie. Nie mam ekipy speleologicznej, mam dwa radiowozy i jeden z nich ma przebitą oponę.
+
+<!-- interludia[11].reveal -->
+„Nie widzę w tym problemu.” Widzi. Komisarz wie, kto płaci za koperty, bo faktura przeszła przez jego biurko, i wie, że biegły tego nie wie. Nie kłamie: pyta, czy pan widzi. Przemilcza, bo bez Fundacji nie ma archiwum, a bez archiwum nie ma akt. Zieliński gra na dwie strony i obie o tym wiedzą oprócz pana.
+
+<!-- interludia[11].wrong -->
+Zieliński obraca filiżankę. „To była prawda. Ja nie kłamię, proszę pana. Ja wybieram, co mówię.”
+
+<!-- interludia[12].title -->
+Ton dolny
+
+<!-- interludia[12].intro -->
+Anzelm odkłada smyczek. „Tego się nie nuci. To się nosi.” Załóż słuchawki. Obie. Potem posłuchaj przez minutę i nic nie rób. Jeśli wyjmiesz jedną słuchawkę, zniknie. Bez słuchawek zobaczysz to, czego nie usłyszysz: dwie fale i to, co z nich powstaje.
+
+<!-- interludia[12].reveal -->
+Lewe ucho dostaje 110 Hz. Prawe 128. Żadne z nich nie słyszy osiemnastu. Osiemnaście powstaje dopiero w tobie, między uszami, tam, gdzie mózg składa dwa dźwięki w jeden. Pod spodem jest jeszcze jedna warstwa: ton, który tętni osiemnaście razy na sekundę i który czuć w kościach słuchawek. Głośnik tego nie odda w całości. Ciało tak.
+
+<!-- interludia[13].title -->
+Zimno
+
+<!-- interludia[13].intro -->
+Piwnica pod zamkiem. O dwa stopnie zimniej niż obok. Weź telefon w obie dłonie i trzymaj go nieruchomo. Zupełnie. Pasek rośnie, dopóki ręce nie drżą. Przy trzydziestu trzech stopniach drżenie jest silne. Przy trzydziestu jeden ustaje, i to jest zły znak.
+
+<!-- interludia[13].reveal -->
+Trzydzieści sekund. Ręce zaczęły drżeć wcześniej, niż myślałeś, bo ciało nie umie trzymać ciepła bez ruchu. Ten, kto leży pod lessem, nie ma wyboru. Trzęsie się, dopóki może. Potem przestaje. Marek trzyma. Czeka.
+
+<!-- interludia[14].title -->
+Woda
+
+<!-- interludia[14].intro -->
+Krypta pod katedrą. Czterdzieści dwa centymetry wody, cieplejszej, niż powinna. Tafla drży, bo ty drżysz. Anzelm: „Oddychaj tak, jak oddycha woda, kiedy nikt jej nie rusza.” Pięć sekund wdech nosem, pięć sekund wydech. Dziesięć razy. Jeśli pozwolisz na mikrofon, tafla usłyszy twój wydech. Jeśli nie, trzymaj palec na ekranie, kiedy wydychasz.
+
+<!-- interludia[14].reveal -->
+Sto sekund. Tafla jest gładka i widać dno: spoiny posadzki, przez które przychodzi ciepło. Nic nie zrobiłeś. Oddychałeś wolniej, niż oddychasz zwykle, i to wystarczyło, żeby woda przestała drżeć. Zapamiętaj to tempo. Będzie potrzebne niżej.
+
+<!-- interludia[15].title -->
+Ogień
+
+<!-- interludia[15].intro -->
+Halina natarła kamień krwią. Nie musi być twoja. Skieruj kamerę na coś czerwonego: jabłko, szalik, własną dłoń pod światło lampy. Kamień odpowiada na czerwień, nie na ciebie.
+
+<!-- interludia[15].reveal -->
+Pasy krzemienia rozjaśniły się na sekundę. Nie dlatego, że to była krew. Dlatego, że kamień nie odróżnia. Nacisk i czerwień, od milionów lat, pod ziemią, w ciemności. Halina wiedziała tyle samo co ty: że coś się stanie. Nie wiedziała co.
+
+<!-- interludia[16].title -->
+Ciemność
+
+<!-- interludia[16].intro -->
+Collegium. Punkt szósty nie reaguje na pomiary. Kartka z notatnika profesora, której nie było w aktach, czyta się tylko wtedy, kiedy nie widzisz nic innego. Zakryj kamerę dłonią albo zgaś światło. Litery przyjdą, kiedy będzie ciemno.
+
+<!-- interludia[16].reveal -->
+Kiedy wróciło światło, kartki już nie było. Zapamiętałeś trzy zdania. Tyle wystarczy. Profesor nie pisał dla tych, którzy patrzą. Pisał dla tych, którzy potrafią przestać.
+
+<!-- interludia[17].title -->
+Ziemia
+
+<!-- interludia[17].intro -->
+Korytarz pod Żmigrodem. Less sypie się z łuku przy każdym kroku. Trzymaj telefon płasko, jak tacę z wodą, i idź: dwadzieścia kroków do muru. Przechylisz, less się zsunie na cegłę i trzeba będzie wracać. Nie tędy, mówił Berbeć. Tędy, ale równo.
+
+<!-- interludia[17].reveal -->
+Dwadzieścia kroków. Less na butach, nie na cegle. Mur stoi, cegła wysunięta o centymetr jest ciepła, i nic nie zrobiłeś. Ziemia nie wymaga odwagi. Wymaga, żeby nie drgnąć.
 
 
 ## MIKRO-AKTA (mikroakta.json)

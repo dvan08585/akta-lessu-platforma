@@ -74,7 +74,7 @@
     {
       "id": "q0",
       "kind": "month",
-      "text": "W którym miesiącu się urodziłeś, urodziłaś? (Nie musisz. Ale legenda tak każe.)",
+      "text": "W którym miesiącu masz urodziny? (Nie musisz odpowiadać. Ale legenda tak każe.)",
       "options": [],
       "answer": -1,
       "monthLines": [
@@ -143,7 +143,7 @@
     },
     {
       "id": "q5",
-      "text": "Woda w kryptach przychodzi od ___, jest cieplejsza o ___ stopni i wskazuje na obraz ___.",
+      "text": "Woda w kryptach przychodzi od ___, jest cieplejsza o ___ stopni i zbiera się pod obrazem ___.",
       "options": [],
       "answer": -1,
       "kind": "fill",
@@ -154,17 +154,17 @@
         "pięć",
         "dwa",
         "dziesięć",
-        "listopad",
-        "kwiecień",
-        "maj",
-        "trzynasty",
+        "listopadem",
+        "kwietniem",
+        "majem",
+        "trzynastym",
         "ogrzewania",
         "Wisły"
       ],
       "answerWords": [
         "spodu",
         "pięć",
-        "listopad"
+        "listopadem"
       ],
       "hint": "Protokół, zeszyt, wodowskaz."
     }

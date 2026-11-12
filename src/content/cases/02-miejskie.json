@@ -82,14 +82,14 @@
         "Dziesięcioro"
       ],
       "answer": 1,
-      "hint": "Grzywna i dziesięć skojców od sztuki. Grzywna to dwadzieścia cztery skojce. Dziewięć grzywien i dwadzieścia dwa skojce razem."
+      "hint": "Grzywna i dziesięć skojców od sztuki. Grzywna to dwadzieścia cztery skojce. Razem zapłacono dziewięć grzywien i dwadzieścia dwa skojce."
     },
     {
       "id": "q2",
       "text": "Dlaczego ton dolny dzwonu sprawdzano świecą na posadzce, a nie uchem?",
       "options": [
         "Bo w wieży było ciemno",
-        "Bo ton leży poniżej słuchu, a płomień reaguje na drganie, którego ucho nie łapie",
+        "Bo ton leży poniżej progu słyszenia, a płomień reaguje na drganie, którego ucho nie wychwyci",
         "Bo tak nakazuje liturgia",
         "Bo ludwisarz był głuchy"
       ],
@@ -109,7 +109,7 @@
     },
     {
       "id": "q4",
-      "text": "Co dowodzi, że to nie dzwon brzmi w ziemi, tylko coś pod nim?",
+      "text": "Co dowodzi, że w ziemi brzmi nie dzwon, tylko coś pod nim?",
       "options": [
         "Dzwon ma 196 Hz, a ziemia 18 Hz",
         "Dominanta rośnie po każdym uderzeniu i nie zanika razem z dzwonem",
