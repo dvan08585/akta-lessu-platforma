@@ -69,6 +69,18 @@
         "Mur odpowiada później niż dzwon. O ułamek. To, co czujesz w dłoni po tym, jak dzwon ucichł, nie jest dzwonem.",
         "Pod tobą, 470 metrów korytarzy trasy turystycznej. Pod trasą: to, do czego kapituła stroiła ton dolny."
       ]
+    },
+    {
+      "id": "poludnie",
+      "title": "Dokument VI",
+      "source": "Tylko w południe. Notatka z marginesu wydruku, odczytana przy świetle dnia, między dwunastą a pierwszą.",
+      "style": "hand",
+      "requiresNoon": true,
+      "paragraphs": [
+        "Dwanaście uderzeń. Liczyłam. Przy dziewiątym pies położył uszy. Przy dwunastym ja.",
+        "Dominanta nie wraca do tła przez czterdzieści minut. Dwanaście razy dziennie przez trzysta pięćdziesiąt lat. Ktoś to policzył wcześniej niż ja: to jest w rachunku ludwisarza, w tej jedenastej grzywnie srebra, której nikt nie umiał wytłumaczyć.",
+        "Jeśli to czytasz w południe, posłuchaj. Nie dzwonu. Tego po dzwonie."
+      ]
     }
   ],
   "questions": [

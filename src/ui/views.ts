@@ -5,6 +5,7 @@ import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import { pickDaily, dayKey } from "../engine/daily";
 import { track } from "../engine/track";
 import { isDawn, nextDawnLabel } from "../engine/sun";
+import { fetchPogoda } from "../engine/pogoda";
 import { due, pending, unreadCount, ensureInbox, schedule } from "../engine/messages";
 import type { App } from "../app";
 import type { CaseData, Doc } from "../engine/types";
@@ -58,6 +59,13 @@ export function viewMap(app: App): HTMLElement {
   fetchWisla().then((w) => { const mean = monthlyMean(); const diff = w.cm - mean; wisla.textContent = `Wisła, wodowskaz Sandomierz: ${w.cm} cm${w.live ? "" : " (średnia miesięczna, API nie odpowiada)"}. ${diff < -40 ? "Nisko. Krypty zalewa przy niskiej wodzie." : diff > 40 ? "Wysoko. Nikt nie patrzy, co jest niżej." : "Jak zwykle o tej porze."}` + (isSnowSeason() ? " Śnieg na lessie." : ""); });
   sec.append(wisla);
   if (isSnowSeason()) sec.classList.add("snow");
+  fetchPogoda().then((w) => { if (!w) return; const line = h("p", { class: "faint pogoda" }, `Sandomierz teraz: ${w.tempC.toFixed(0)}°C${w.snowing ? ". Pada śnieg. Na Pimpo Limpo są sanki." : "."}`); wisla.after(line); if (w.snowing) sec.classList.add("sanki"); });
+  // Rejestr na żywo (dzień premiery): plik public/live/rejestr.json podmieniany ręcznie
+  fetch(import.meta.env.BASE_URL + "live/rejestr.json", { cache: "no-store" }).then((r) => r.json()).then((j: { active?: boolean; header?: string; lines?: string[]; updatedAt?: string }) => {
+    if (!j.active || !j.lines) return;
+    const box = h("div", { class: "gatebox live" }, h("h3", {}, j.header ?? "Rejestr na żywo"), h("div", { class: "mono" }, ...j.lines.map((l) => h("p", {}, l))), h("p", { class: "faint" }, `Ostatnia zmiana: ${j.updatedAt ?? "—"}. Rejestr zmienia się co godzinę.`));
+    wisla.after(box);
+  }).catch(() => { /* brak pliku: cisza */ });
   sec.append(renderMap({
     map: app.map, chapters: app.chapters, state: app.state,
     isUnlocked: (n) => app.isUnlocked(n), gateStatus: (n) => app.gateStatus(n),
@@ -84,7 +92,7 @@ export function viewMap(app: App): HTMLElement {
     for (const i of inter) {
       const done = app.state.interludesDone.includes(i.id);
       il.append(h("div", { class: "gate-row", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) },
-        h("span", { class: "n" }, ({ amor: "♦", talk: "„”", beat: "∿", still: "❄", breath: "≈", fire: "✶", dark: "●", earth: "▬", spectro: "▤", compass: "✧", whistle: "♪", touch7: "✋", hold: "▮", mirror: "◐", trace: "⌇", plate: "◎" } as Record<string, string>)[i.type]), h("span", { class: "t" }, i.title, h("small", {}, (({ amor: "pies", talk: "rozmowa, jedno kłamstwo", beat: "słuchawki albo oczy", still: "nieruchomo, 30 sekund", breath: "dziesięć oddechów", fire: "kamera i coś czerwonego", dark: "kamera i ciemność", earth: "telefon płasko, 20 kroków", spectro: "patrz, nie słuchaj", compass: "GPS i kompas, tylko w Sandomierzu", whistle: "mikrofon, czysty ton", touch7: "dwie osoby, siedem palców", hold: "palec, 90 sekund", mirror: "lustro", trace: "palec bez odrywania", plate: "mikrofon albo suwak" } as Record<string, string>)[i.type]) + (i.level ? " · " + i.level : ""))), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
+        h("span", { class: "n" }, ({ amor: "♦", talk: "„”", beat: "∿", still: "❄", breath: "≈", fire: "✶", dark: "●", earth: "▬", spectro: "▤", compass: "✧", whistle: "♪", touch7: "✋", hold: "▮", mirror: "◐", trace: "⌇", steps: "⇢", plate: "◎" } as Record<string, string>)[i.type]), h("span", { class: "t" }, i.title, h("small", {}, (({ amor: "pies", talk: "rozmowa, jedno kłamstwo", beat: "słuchawki albo oczy", still: "nieruchomo, 30 sekund", breath: "dziesięć oddechów", fire: "kamera i coś czerwonego", dark: "kamera i ciemność", earth: "telefon płasko, 20 kroków", spectro: "patrz, nie słuchaj", compass: "GPS i kompas, tylko w Sandomierzu", whistle: "mikrofon, czysty ton", touch7: "dwie osoby, siedem palców", hold: "palec, 90 sekund", mirror: "lustro", trace: "palec bez odrywania", steps: "akcelerometr, 1200 kroków, między dniami", plate: "mikrofon albo suwak" } as Record<string, string>)[i.type]) + (i.level ? " · " + i.level : ""))), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
     }
     sec.append(h("h3", {}, "Między sprawami"), il);
   }
@@ -185,6 +193,10 @@ export function readingBox(app: App, hill?: number): HTMLElement {
 
 function docEl(app: App, d: Doc): HTMLElement {
   const el = h("article", { class: `doc ${d.style ?? ""}` }, h("h4", {}, d.title), h("div", { class: "src" }, d.source));
+  if (d.requiresNoon && new Date().getHours() !== 12 && !app.state.testMode) {
+    el.append(h("p", { class: "dawn-locked" }, "Czytelne tylko między dwunastą a pierwszą, kiedy dzwon Piotr uderza dwanaście razy. Wróć w południe."));
+    return el;
+  }
   if (d.requiresDawn && !isDawn() && !app.state.testMode) {
     el.append(h("p", { class: "dawn-locked" }, `Litery są na papierze, ale czytelne tylko o świcie. Najbliższy wschód słońca nad Sandomierzem: ${nextDawnLabel()}. Masz godzinę od tej chwili.`));
     el.append(h("p", { class: "faint" }, "Berbeć zobaczył znak o świcie. W dzień nikt nie uwierzy."));

@@ -1,0 +1,15 @@
+{
+  "active": false,
+  "updatedAt": "",
+  "header": "Rejestr statusów — Fundacja Sandomierska Memoria — aktualizacja na żywo",
+  "lines": [
+    "1. Żmigród — nieznany",
+    "2. Katedralne — zapieczętowana",
+    "3. Miejskie — NIESTABILNA",
+    "4. Staromiejskie — zapieczętowana",
+    "5. Zamkowe — kontrolowana",
+    "6. Collegium — nieznany",
+    "7. Świętopawłowskie — [puste]"
+  ],
+  "note": "W dniu premiery ustaw active: true i podmieniaj lines co godzinę (commit + push, deploy ~1 min)."
+}

@@ -37,3 +37,5 @@
 .gate-row[data-status="locked"] { opacity: 0.55; }
 .snow .map-wrap .hill { fill: #2e2b25; stroke: rgba(232,224,207,0.35); }
 .snow .map-wrap svg { background: linear-gradient(to bottom, rgba(232,224,207,0.04), transparent 40%); }
+.sanki .map-wrap svg::after { content: ""; }
+.live .mono p { margin: 0.15rem 0; }

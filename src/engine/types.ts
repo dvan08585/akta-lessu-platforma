@@ -25,6 +25,8 @@ export interface Doc {
   footer?: string;
   /** Dokument czytelny tylko o świcie (wschód słońca + godzina, Sandomierz). */
   requiresDawn?: boolean;
+  /** Dokument czytelny tylko między 12:00 a 12:59 czasu lokalnego (dwanaście uderzeń). */
+  requiresNoon?: boolean;
 }
 export type QuestionKind = "choice" | "reject" | "month" | "fill";
 export interface Question {
@@ -82,6 +84,8 @@ export interface SaveState {
   subscribed: boolean;
   /** Tryb testowy autora: bez kolejności, bez kalendarza, bez milczenia. */
   testMode: boolean;
+  /** Kroki zliczone akcelerometrem (przerywnik „kroki"), między dniami. */
+  steps?: number;
   /** Wiadomości od postaci: zaplanowane (id -> czas), przeczytane, odpowiedzi. */
   inbox?: { scheduled: Record<string, number>; read: string[]; replies: Record<string, number> };
 }

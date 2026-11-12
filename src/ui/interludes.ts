@@ -5,7 +5,7 @@ import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 
 export interface Interlude {
-  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace"; after?: number; gate?: number; title: string; level?: string;
+  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace" | "steps"; after?: number; gate?: number; title: string; level?: string;
   secret?: string[]; steps?: number;
   cycles?: number; inhale?: number; exhale?: number;
   audio?: string; q?: string; options?: string[]; answer?: number; seconds?: number;
@@ -30,7 +30,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} przebytych bramach.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   sec.append(h("p", { class: "faint" }, `Między sprawami${it.level ? " · " + it.level : ""}`), h("h2", {}, it.title));
-  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else if (it.type === "whistle") renderWhistle(); else if (it.type === "touch7") renderTouch7(); else if (it.type === "hold") renderHold(); else if (it.type === "mirror") renderMirror(); else if (it.type === "trace") renderTrace(); else renderPlate();
+  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else if (it.type === "whistle") renderWhistle(); else if (it.type === "touch7") renderTouch7(); else if (it.type === "hold") renderHold(); else if (it.type === "mirror") renderMirror(); else if (it.type === "trace") renderTrace(); else if (it.type === "steps") renderSteps(); else renderPlate();
   return sec;
 
   function finish(note: string) {
@@ -511,6 +511,27 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       requestAnimationFrame(draw);
     }
     draw();
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Kroki: licznik z akcelerometru (szczyty przyspieszenia), zapisywany między dniami. Ostatnie 200 kroków ciemniej. */
+  function renderSteps() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const total = it.steps ?? 1200;
+    const bar = h("div", { class: "still-bar" }, h("i")); const fill = bar.firstElementChild as HTMLElement;
+    const status = h("p", { class: "mono muted" }, `${app.state.steps ?? 0} / ${total} kroków`);
+    const start = h("button", { class: "primary" }, "Idę");
+    const verdict = h("div");
+    sec.append(bar, status, h("div", { class: "verdict" }, start), verdict);
+    let last = 0, lastStep = 0, finished = done || (app.state.steps ?? 0) >= total;
+    const update = () => { const n = app.state.steps ?? 0; fill.style.width = `${Math.min(100, (n / total) * 100)}%`; status.textContent = `${n} / ${total} kroków${n > total - 200 && n < total ? " · powietrze rzednie" : ""}`; document.body.style.filter = n > total - 200 && n < total ? `brightness(${1 - ((n - (total - 200)) / 200) * 0.6})` : ""; if (n >= total && !finished) { finished = true; document.body.style.filter = ""; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: dotarłeś.`); } };
+    const onMotion = (e: DeviceMotionEvent) => { const a = e.accelerationIncludingGravity; if (!a) return; const mag = Math.sqrt((a.x ?? 0) ** 2 + (a.y ?? 0) ** 2 + (a.z ?? 0) ** 2); const now = Date.now(); if (last && mag - last > 1.6 && now - lastStep > 320) { lastStep = now; app.state.steps = (app.state.steps ?? 0) + 1; if (app.state.steps % 10 === 0) save(app.state); update(); } last = mag; };
+    start.addEventListener("click", async () => {
+      try { const DM = DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> }; if (DM.requestPermission) { const r = await DM.requestPermission(); if (r !== "granted") throw new Error("denied"); } addEventListener("devicemotion", onMotion); start.disabled = true; start.textContent = "Liczę kroki"; }
+      catch { toast("Bez czujnika ruchu kroków nie policzę. Wróć na telefonie."); }
+    });
+    addEventListener("hashchange", () => { document.body.style.filter = ""; save(app.state); }, { once: true });
+    update();
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
   }
 

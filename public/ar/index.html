@@ -15,14 +15,46 @@
 <body>
 <a-scene embedded arjs="sourceType: webcam; detectionMode: mono; debugUIEnabled: false;" vr-mode-ui="enabled: false" renderer="logarithmicDepthBuffer: true;">
   <a-assets><img id="mapa" src="./przekroj.png" crossorigin="anonymous" /></a-assets>
+  <a-marker type="pattern" url="./znacznik-1.patt" data-brama="1" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3" minConfidence="0.6">
+    <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" material="shader: flat; transparent: true; opacity: 0.96"></a-plane>
+    <a-entity geometry="primitive: cylinder; radius: 0.07; height: 0.03; segmentsRadial: 7" material="color: #c9a86a; shader: flat" position="-0.250 0.327 0.06" rotation="90 0 0" animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1100; loop: true; easing: easeInOutSine"></a-entity>
+    <a-entity text="value: Brama 1: Zmigrod; color: #e8e0cf; align: center; width: 1.8; font: roboto" position="0 1.2 0.02"></a-entity>
+  </a-marker>
+  <a-marker type="pattern" url="./znacznik-2.patt" data-brama="2" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3" minConfidence="0.6">
+    <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" material="shader: flat; transparent: true; opacity: 0.96"></a-plane>
+    <a-entity geometry="primitive: cylinder; radius: 0.07; height: 0.03; segmentsRadial: 7" material="color: #c9a86a; shader: flat" position="0.301 0.287 0.06" rotation="90 0 0" animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1100; loop: true; easing: easeInOutSine"></a-entity>
+    <a-entity text="value: Brama 2: Katedralne; color: #e8e0cf; align: center; width: 1.8; font: roboto" position="0 1.2 0.02"></a-entity>
+  </a-marker>
+  <a-marker type="pattern" url="./znacznik-3.patt" data-brama="3" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3" minConfidence="0.6">
+    <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" material="shader: flat; transparent: true; opacity: 0.96"></a-plane>
+    <a-entity geometry="primitive: cylinder; radius: 0.07; height: 0.03; segmentsRadial: 7" material="color: #c9a86a; shader: flat" position="0.574 0.307 0.06" rotation="90 0 0" animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1100; loop: true; easing: easeInOutSine"></a-entity>
+    <a-entity text="value: Brama 3: Miejskie; color: #e8e0cf; align: center; width: 1.8; font: roboto" position="0 1.2 0.02"></a-entity>
+  </a-marker>
+  <a-marker type="pattern" url="./znacznik-4.patt" data-brama="4" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3" minConfidence="0.6">
+    <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" material="shader: flat; transparent: true; opacity: 0.96"></a-plane>
+    <a-entity geometry="primitive: cylinder; radius: 0.07; height: 0.03; segmentsRadial: 7" material="color: #c9a86a; shader: flat" position="-0.537 0.297 0.06" rotation="90 0 0" animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1100; loop: true; easing: easeInOutSine"></a-entity>
+    <a-entity text="value: Brama 4: Staromiejskie; color: #e8e0cf; align: center; width: 1.8; font: roboto" position="0 1.2 0.02"></a-entity>
+  </a-marker>
+  <a-marker type="pattern" url="./znacznik-5.patt" data-brama="5" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3" minConfidence="0.6">
+    <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" material="shader: flat; transparent: true; opacity: 0.96"></a-plane>
+    <a-entity geometry="primitive: cylinder; radius: 0.07; height: 0.03; segmentsRadial: 7" material="color: #c9a86a; shader: flat" position="0.025 0.268 0.06" rotation="90 0 0" animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1100; loop: true; easing: easeInOutSine"></a-entity>
+    <a-entity text="value: Brama 5: Zamkowe; color: #e8e0cf; align: center; width: 1.8; font: roboto" position="0 1.2 0.02"></a-entity>
+  </a-marker>
+  <a-marker type="pattern" url="./znacznik-6.patt" data-brama="6" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3" minConfidence="0.6">
+    <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" material="shader: flat; transparent: true; opacity: 0.96"></a-plane>
+    <a-entity geometry="primitive: cylinder; radius: 0.07; height: 0.03; segmentsRadial: 7" material="color: #c9a86a; shader: flat" position="0.838 0.258 0.06" rotation="90 0 0" animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1100; loop: true; easing: easeInOutSine"></a-entity>
+    <a-entity text="value: Brama 6: Collegium; color: #e8e0cf; align: center; width: 1.8; font: roboto" position="0 1.2 0.02"></a-entity>
+  </a-marker>
+  <a-marker type="pattern" url="./znacznik-7.patt" data-brama="7" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3" minConfidence="0.6">
+    <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" material="shader: flat; transparent: true; opacity: 0.96"></a-plane>
+    <a-entity geometry="primitive: cylinder; radius: 0.07; height: 0.03; segmentsRadial: 7" material="color: #c9a86a; shader: flat" position="-0.801 0.248 0.06" rotation="90 0 0" animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1100; loop: true; easing: easeInOutSine"></a-entity>
+    <a-entity text="value: Brama 7: Swietopawlowskie; color: #e8e0cf; align: center; width: 1.8; font: roboto" position="0 1.2 0.02"></a-entity>
+  </a-marker>
   <a-marker type="pattern" url="./znacznik.patt" id="marker" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3" minConfidence="0.6">
-    <!-- Przekrój unosi się nad stroną: siedem wzgórz i jedna zapalona brama -->
-    <!-- Przekrój stoi PIONOWO nad stroną jak kartka wyjęta z ziemi; brama z adresu unosi się i pulsuje -->
-    <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" rotation="0 0 0" material="shader: flat; transparent: true; opacity: 0.96" animation="property: position; from: 0 0.1 0; to: 0 0.6 0; dur: 900; easing: easeOutCubic"></a-plane>
-    <a-entity id="gate" geometry="primitive: cylinder; radius: 0.07; height: 0.03; segmentsRadial: 7" material="color: #c9a86a; shader: flat; opacity: 0.95" position="0 0.3 0.06" rotation="90 0 0" animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1100; loop: true; easing: easeInOutSine"></a-entity>
+    <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" material="shader: flat; transparent: true; opacity: 0.96"></a-plane>
+    <a-entity id="gate" geometry="primitive: cylinder; radius: 0.07; height: 0.03; segmentsRadial: 7" material="color: #c9a86a; shader: flat" position="0 0.3 0.06" rotation="90 0 0" animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1100; loop: true; easing: easeInOutSine"></a-entity>
     <a-entity id="label" text="value: Akta Lessu; color: #e8e0cf; align: center; width: 1.8; font: roboto" position="0 1.2 0.02"></a-entity>
     <a-entity id="sub" text="value: Siedem wzgorz nad strona.; color: #a39a86; align: center; width: 1.4; font: roboto" position="0 1.1 0.02"></a-entity>
-    <a-light type="ambient" color="#fff"></a-light>
   </a-marker>
   <a-entity camera></a-entity>
 </a-scene>
@@ -42,6 +74,7 @@
   } else {
     document.getElementById("gate").setAttribute("visible", "false");
   }
+  document.querySelectorAll("a-marker[data-brama]").forEach((mk) => { mk.addEventListener("markerFound", () => { const n = mk.getAttribute("data-brama"); document.getElementById("msg").textContent = `Brama ${n}: ${names[n]}. Siedmiobok z rozdzialu nad strona.`; try { navigator.vibrate && navigator.vibrate(60); } catch (e) {} }); mk.addEventListener("markerLost", () => { document.getElementById("msg").textContent = "Znacznik zniknal. Trzymaj strone plasko, w swietle."; }); });
   const m = document.getElementById("marker");
   m.addEventListener("markerFound", () => { document.getElementById("msg").textContent = brama ? `Brama ${brama}. Pod tą stroną: ${names[brama]}.` : "Siedem wzgórz nad stroną. Pod nimi to, co jest pod nimi."; try { navigator.vibrate && navigator.vibrate(60); } catch (e) {} });
   m.addEventListener("markerLost", () => { document.getElementById("msg").textContent = "Znacznik zniknął. Trzymaj stronę płasko, w świetle."; });

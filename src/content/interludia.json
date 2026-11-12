@@ -410,5 +410,15 @@
     "level": "dla wytrwałych",
     "intro": "Korytarz z Opatowskiej na południe. Trzy rozgałęzienia. Prowadź palcem od wejścia do komnaty, nie odrywając go od ekranu. Powietrze rzednie z każdym metrem: ekran ciemnieje. Jeśli puścisz, wracasz na Opatowską. Jeśli skręcisz w złą odnogę, wracasz na Opatowską.",
     "reveal": "Opatowska, pod Wzgórzem Miejskim, na południe, na zachód. Trzy odnogi, których nie wybrałeś. Ciemność, w której nie puściłeś. To jest ta droga. Reszta jest w książce."
+  },
+  {
+    "id": "kroki",
+    "type": "steps",
+    "after": 6,
+    "title": "Tysiąc dwieście kroków",
+    "level": "dla wytrwałych",
+    "steps": 1200,
+    "intro": "Korytarz z Opatowskiej do komnaty ma około kilometra. Tysiąc dwieście kroków. Nie musisz być w Sandomierzu. Weź telefon do kieszeni albo do ręki i idź: po mieszkaniu, po ulicy, po parku. Licznik pamięta między dniami. Ostatnie dwieście kroków idzie się z zatrzymanym oddechem, bo powietrze rzednie.",
+    "reveal": "Tysiąc dwieście. Tyle kroków dzieli piwnicę na Opatowskiej od komnaty pod Wzgórzem Świętopawłowskim. Przeszedłeś to po własnym mieszkaniu, po swoim mieście, i nikt tego nie widział. Aneta szła dwie godziny. Tobie zajęło to tyle, ile zajęło."
   }
 ]
