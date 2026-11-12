@@ -97,8 +97,8 @@
       "peak": 125,
       "depth": 332,
       "silent": true,
-      "elev": 182,
-      "elevSource": "szacunek: ten sam plateau co Rynek, skraj skarpy, do weryfikacji"
+      "elev": 179,
+      "elevSource": "atlasgrodzisk.pl: wypłaszczenie szczytowe 174,5–179,0 m, ok. 30 m nad dnem doliny Wisły"
     }
   ],
   "corridors": [
@@ -140,11 +140,11 @@
     }
   ],
   "wisla": {
-    "elev": 143,
-    "note": "atlasgrodzisk.pl: Wzgórze Zamkowe (163,6 m) góruje ok. 20 m nad doliną Wisły, więc dno doliny ok. 143 m; rzędna zera wodowskazu do sprawdzenia w IMGW"
+    "elev": 145,
+    "note": "atlasgrodzisk.pl: Zamkowe 163,6 m ok. 20 m nad doliną, Collegium 179 m ok. 30 m nad doliną → dno doliny ok. 144–149 m; przyjęto 145. Rzędna zera wodowskazu do sprawdzenia w IMGW."
   },
   "scale": {
-    "minElev": 143,
+    "minElev": 145,
     "maxElev": 195,
     "groundY": 230,
     "skyY": 60,
