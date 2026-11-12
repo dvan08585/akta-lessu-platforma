@@ -69,7 +69,10 @@ export function viewMap(app: App): HTMLElement {
       h("span", { class: "t" }, g.name, h("small", {}, `żywioł: ${g.element}${c ? " · " + c.title : ""}`)),
       h("span", { class: "s" }, st === "locked" && c ? lockedWhy(app, c) : st === "solved" && app.awaitingGesture(g.n) ? "rozpoznana, czeka na gest" : st === "solved" ? "przebyta" : statusLabel(st))));
   }
-  sec.append(h("h3", {}, app.state.sawFooter ? "Rejestr statusów — Fundacja Sandomierska Memoria" : "Rejestr statusów"), list);
+  sec.append(app.state.sawFooter ? h("h3", {}, "Rejestr statusów — ", h("a", { href: import.meta.env.BASE_URL + "fundacja/", style: "color:var(--blood)" }, "Fundacja Sandomierska Memoria")) : h("h3", {}, "Rejestr statusów"), list);
+  if (app.state.solvedCases.length >= 2 && !app.state.notebook.some((n) => n.meta === "kod")) {
+    sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Zapisz postęp"), h("p", { class: "muted" }, "Dwie bramy za tobą. Przeglądarka na telefonie potrafi zapomnieć stronę po tygodniu. W Zeszycie jest kod wznowienia: skopiuj go raz, do notatek."), h("div", { class: "verdict" }, h("button", { onclick: () => go("#/zeszyt") }, "Pokaż kod"), h("button", { class: "ghost", onclick: () => { app.addNote("Przypomnienie o kodzie wznowienia zamknięte.", "kod"); go("#/mapa"); } }, "Mam już"))));
+  }
   sec.append(dailyBox(app));
   if (app.state.solvedCases.length >= 3) { const nb = newsletterBox(app, "Trzy bramy za tobą. Kolejne akta przyjdą w terminie z kalendarza; jeśli zostawisz adres, dostaniesz je pierwszego dnia, razem z dokumentem, którego nie ma na stronie."); if (nb) sec.append(nb); }
   const inter = interludesFor(app);
@@ -78,7 +81,7 @@ export function viewMap(app: App): HTMLElement {
     for (const i of inter) {
       const done = app.state.interludesDone.includes(i.id);
       il.append(h("div", { class: "gate-row", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) },
-        h("span", { class: "n" }, i.type === "amor" ? "♦" : i.type === "talk" ? "„”" : i.type === "beat" ? "∿" : i.type === "still" ? "❄" : i.type === "breath" ? "≈" : i.type === "fire" ? "✶" : i.type === "dark" ? "●" : i.type === "earth" ? "▬" : "◎"), h("span", { class: "t" }, i.title, h("small", {}, ({ amor: "pies", talk: "rozmowa, jedno kłamstwo", beat: "słuchawki albo oczy", still: "nieruchomo, 30 sekund", breath: "dziesięć oddechów", fire: "kamera i coś czerwonego", dark: "kamera i ciemność", earth: "telefon płasko, 20 kroków", plate: "mikrofon albo suwak" } as Record<string, string>)[i.type])), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
+        h("span", { class: "n" }, ({ amor: "♦", talk: "„”", beat: "∿", still: "❄", breath: "≈", fire: "✶", dark: "●", earth: "▬", spectro: "▤", plate: "◎" } as Record<string, string>)[i.type]), h("span", { class: "t" }, i.title, h("small", {}, (({ amor: "pies", talk: "rozmowa, jedno kłamstwo", beat: "słuchawki albo oczy", still: "nieruchomo, 30 sekund", breath: "dziesięć oddechów", fire: "kamera i coś czerwonego", dark: "kamera i ciemność", earth: "telefon płasko, 20 kroków", spectro: "patrz, nie słuchaj", plate: "mikrofon albo suwak" } as Record<string, string>)[i.type]) + (i.level ? " · " + i.level : ""))), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
     }
     sec.append(h("h3", {}, "Między sprawami"), il);
   }
@@ -430,7 +433,8 @@ export function viewNotebook(app: App): HTMLElement {
     sec.append(h("div", { class: "entry" }, h("div", { class: "meta" }, `${new Date(e.at).toLocaleString("pl-PL")} · ${e.meta}`), h("div", {}, e.text)));
   }
   const code = exportCode(app.state);
-  sec.append(h("h3", {}, "Kod wznowienia"), h("p", { class: "faint" }, "Wpisz go na innym urządzeniu w zakładce Akta. Bez konta, bez serwera."), h("pre", { class: "mono", style: "white-space:pre-wrap;word-break:break-all" }, code));
+  sec.append(h("h3", {}, "Kod wznowienia"), h("p", { class: "muted" }, "To jest twój postęp zapisany w tekście. Na iPhonie przeglądarka kasuje pamięć strony po siedmiu dniach bez wejścia; z tym kodem nic nie ginie. Skopiuj go do notatek albo wyślij sobie."), h("pre", { class: "mono", style: "white-space:pre-wrap;word-break:break-all" }, code),
+    h("button", { class: "primary", onclick: async () => { try { await navigator.clipboard.writeText(code); toast("Skopiowano kod wznowienia."); } catch { toast("Zaznacz i skopiuj ręcznie."); } } }, "Skopiuj kod"));
   return sec;
 }
 

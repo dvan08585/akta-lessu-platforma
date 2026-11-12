@@ -8,7 +8,8 @@
       "Koc na tylnym siedzeniu pachnie jabłkami i nią. Trzy obroty. Nigdy dwa. Nigdy cztery. Potem się kładzie.",
       "Miasto pod kołami warkocze inaczej niż Warszawa. Kamień. Mokry. Pod kamieniem coś, co nie jest kamieniem.",
       "Nos przy szparze okna. Jabłka, które leżą za długo. Rzeka. I to trzecie, od dołu, którego ona jeszcze nie czuje."
-    ]
+    ],
+    "level": "wejście"
   },
   {
     "id": "wanda",
@@ -41,7 +42,8 @@
     ],
     "lie": 4,
     "reveal": "Szklanki w kredensie. Powiedziała, że nie dzwonią, i powiedziała, od czego dzwonią, w jednym zdaniu. Pani Wanda słyszy. Od lat. Dlatego otwiera drzwi, zanim ktoś zapuka: nie śpi.",
-    "wrong": "Pani Wanda patrzy na ciebie dłużej, niż trzeba. „To była prawda, proszę pana.”"
+    "wrong": "Pani Wanda patrzy na ciebie dłużej, niż trzeba. „To była prawda, proszę pana.”",
+    "level": "wejście"
   },
   {
     "id": "amor-2",
@@ -52,7 +54,8 @@
       "Food trucki. Olej, który był kiedyś rybą. Kawa z papieru. Kable pod łapami, każdy brzęczy inaczej.",
       "Pod kostką coś niskiego. Nie dźwięk. Ciśnienie. Jak przed burzą, tylko od dołu.",
       "Siada przy jej nodze. Ucho prawe w dół. Ona tego nie słyszy. Jeszcze. Czeka, aż usłyszy."
-    ]
+    ],
+    "level": "wejście"
   },
   {
     "id": "lutowicz",
@@ -85,7 +88,8 @@
     ],
     "lie": 1,
     "reveal": "Profesor dzwonił do niego trzy razy w ostatnim tygodniu życia. Jest to w rejestrze połączeń, o którym Łutowicz nie wie, że istnieje. Kłamie, bo profesor zostawił u niego coś pod ladą i kazał to komuś oddać. Jeszcze nie wie komu.",
-    "wrong": "Łutowicz podnosi lupę na czoło. „To akurat prawda. Zapytaj o coś innego.”"
+    "wrong": "Łutowicz podnosi lupę na czoło. „To akurat prawda. Zapytaj o coś innego.”",
+    "level": "średnio"
   },
   {
     "id": "plyta",
@@ -95,7 +99,8 @@
     "targetHz": 196,
     "tolerance": 6,
     "reveal": "Siedem ramion. G, ton główny dzwonu Piotra. Anzelm kiwa głową. „Pięćset milionów lat kwarcu pod lessem. Ludzie budują nad tym katedry i nazywają to wiarą. To fizyka.” A potem, ciszej: „Ton dolny też jest. Tego nie zanucisz. Tego się nie nuci. To się nosi.”",
-    "gate": 3
+    "gate": 3,
+    "level": "średnio"
   },
   {
     "id": "amor-3",
@@ -106,7 +111,8 @@
       "Kadzidło. Wosk. Kamień zimny, oprócz jednego miejsca przy ścianie z obrazami, gdzie kamień jest ciepły jak brzuch śpiącego.",
       "Ona stoi przed obrazem i nie szuka. Amor widzi, jak jej oczy szukają same.",
       "Kładzie się na ciepłym kamieniu. Kościelny mówi, że nie wolno. Amor nie zna tego słowa."
-    ]
+    ],
+    "level": "wejście"
   },
   {
     "id": "anzelm",
@@ -139,7 +145,8 @@
     ],
     "lie": 2,
     "reveal": "Buty. Pod habitem Anzelm ma buty z lessem w szwach, suchym, jasnym, takim, który nie wchodzi w skórę na powierzchni. Był na dole. Może nie raz. Reguła zabrania, a on pamięta za dobrze jak na kogoś, kto tylko słuchał.",
-    "wrong": "Anzelm dolewa herbaty. „Prawda. Chociaż rozumiem, czemu pan pyta.”"
+    "wrong": "Anzelm dolewa herbaty. „Prawda. Chociaż rozumiem, czemu pan pyta.”",
+    "level": "średnio"
   },
   {
     "id": "amor-4",
@@ -150,7 +157,8 @@
       "Trzydzieści metrów. Wiatr od niego. Wino, wełna, coś metalicznego na mankietach i pod tym czwarty zapach, którego Amor nie zna z żadnego człowieka.",
       "Warczy. Nie planował. Warknięcie wyszło z miejsca, z którego wychodzą rzeczy, o które się nie pyta.",
       "Człowiek ze spinkami uśmiecha się. Do psa. Amor warczy drugi raz."
-    ]
+    ],
+    "level": "wejście"
   },
   {
     "id": "amor-5",
@@ -161,7 +169,8 @@
       "Metalowe drzwi obok lapidarium. Schody w dół. Chodził tędy pierwszy przez cztery tygodnie.",
       "Dziś stoi. Łapy na bruku, cztery, równo. Uszy do tyłu. Nie strach. Strach ma inny zapach.",
       "Ona kuca. Ręka za uchem, tam, gdzie sierść najgęstsza. „Zostań.” Zostaje. Patrzy w schody, po których znika."
-    ]
+    ],
+    "level": "wejście"
   },
   {
     "id": "berbec",
@@ -194,7 +203,8 @@
     ],
     "lie": 1,
     "reveal": "Pismo na karteczce jest drobne, prostokątne, wyrównane do krawędzi planu z dokładnością do milimetra. Nikt inny w tym mieście nie prostuje tak krawędzi. „Nie tędy” napisał Berbeć. Kłamie, bo powiedzieć, że wie, znaczyłoby powiedzieć, co jest za murem.",
-    "wrong": "Berbeć prostuje krawędź. „To prawda. Pan pyta dalej.”"
+    "wrong": "Berbeć prostuje krawędź. „To prawda. Pan pyta dalej.”",
+    "level": "średnio"
   },
   {
     "id": "amor-6",
@@ -205,7 +215,8 @@
       "Pierwszy śnieg. Mokry, topnieje na lessie. Dzieci na sankach krzyczą tak, że nie trzeba słuchać, słychać i tak.",
       "Skarpa. Pod skarpą coś, co oddycha wolniej niż wczoraj. Wolniej. Wolniej.",
       "Drapie. Łapami, mokrymi, w białą ścianę. Dziecko woła: piesek, chodź. Nie idzie."
-    ]
+    ],
+    "level": "wejście"
   },
   {
     "id": "zielinski",
@@ -238,7 +249,8 @@
     ],
     "lie": 3,
     "reveal": "„Nie widzę w tym problemu.” Widzi. Komisarz wie, kto płaci za koperty, bo faktura przeszła przez jego biurko, i wie, że biegły tego nie wie. Nie kłamie: pyta, czy pan widzi. Przemilcza, bo bez Fundacji nie ma archiwum, a bez archiwum nie ma akt. Zieliński gra na dwie strony i obie o tym wiedzą oprócz pana.",
-    "wrong": "Zieliński obraca filiżankę. „To była prawda. Ja nie kłamię, proszę pana. Ja wybieram, co mówię.”"
+    "wrong": "Zieliński obraca filiżankę. „To była prawda. Ja nie kłamię, proszę pana. Ja wybieram, co mówię.”",
+    "level": "dla wytrwałych"
   },
   {
     "id": "ton-dolny",
@@ -255,7 +267,8 @@
       "Zmienia się w dzwon"
     ],
     "answer": 1,
-    "reveal": "Cztery na sekundę słychać wyraźnie. Osiem jeszcze. Osiemnaście to już tylko drżenie na granicy, i właśnie tam mieszka dron pod Sandomierzem: nie w dźwięku, w drżeniu. Żadne z uszu nie słyszy różnicy. Powstaje dopiero w tobie, między nimi. Wyjmij jedną słuchawkę i jej nie ma. Aneta nie słyszała drona uszami. Słyszała go tym, czym ty go teraz słyszysz."
+    "reveal": "Cztery na sekundę słychać wyraźnie. Osiem jeszcze. Osiemnaście to już tylko drżenie na granicy, i właśnie tam mieszka dron pod Sandomierzem: nie w dźwięku, w drżeniu. Żadne z uszu nie słyszy różnicy. Powstaje dopiero w tobie, między nimi. Wyjmij jedną słuchawkę i jej nie ma. Aneta nie słyszała drona uszami. Słyszała go tym, czym ty go teraz słyszysz.",
+    "level": "średnio"
   },
   {
     "id": "zimno",
@@ -264,7 +277,8 @@
     "intro": "Piwnica pod zamkiem. O dwa stopnie zimniej niż obok. Weź telefon w obie dłonie i trzymaj go nieruchomo. Zupełnie. Pasek rośnie, dopóki ręce nie drżą. Przy trzydziestu trzech stopniach drżenie jest silne. Przy trzydziestu jeden ustaje, i to jest zły znak.",
     "seconds": 30,
     "reveal": "Trzydzieści sekund. Ręce zaczęły drżeć wcześniej, niż myślałeś, bo ciało nie umie trzymać ciepła bez ruchu. Ten, kto leży pod lessem, nie ma wyboru. Trzęsie się, dopóki może. Potem przestaje. Marek trzyma. Czeka.",
-    "gate": 5
+    "gate": 5,
+    "level": "średnio"
   },
   {
     "id": "woda",
@@ -275,7 +289,8 @@
     "inhale": 5,
     "exhale": 5,
     "reveal": "Sto sekund. Tafla jest gładka i widać dno: spoiny posadzki, przez które przychodzi ciepło. Nic nie zrobiłeś. Oddychałeś wolniej, niż oddychasz zwykle, i to wystarczyło, żeby woda przestała drżeć. Zapamiętaj to tempo. Będzie potrzebne niżej.",
-    "gate": 2
+    "gate": 2,
+    "level": "wejście"
   },
   {
     "id": "ogien",
@@ -283,7 +298,8 @@
     "title": "Ogień",
     "intro": "Halina natarła kamień krwią. Nie musi być twoja. Skieruj kamerę na coś czerwonego: jabłko, szalik, własną dłoń pod światło lampy. Kamień odpowiada na czerwień, nie na ciebie.",
     "reveal": "Pasy krzemienia rozjaśniły się na sekundę. Nie dlatego, że to była krew. Dlatego, że kamień nie odróżnia. Nacisk i czerwień, od milionów lat, pod ziemią, w ciemności. Halina wiedziała tyle samo co ty: że coś się stanie. Nie wiedziała co.",
-    "gate": 4
+    "gate": 4,
+    "level": "wejście"
   },
   {
     "id": "ciemnosc",
@@ -296,7 +312,8 @@
       "Kto nosi krzemień, ten jest w sieci. H. nosiła. Jej wnuczka nosi. Nie powiedziałem jej. Nie umiem."
     ],
     "reveal": "Kiedy wróciło światło, kartki już nie było. Zapamiętałeś trzy zdania. Tyle wystarczy. Profesor nie pisał dla tych, którzy patrzą. Pisał dla tych, którzy potrafią przestać.",
-    "gate": 6
+    "gate": 6,
+    "level": "średnio"
   },
   {
     "id": "ziemia",
@@ -305,6 +322,25 @@
     "intro": "Korytarz pod Żmigrodem. Less sypie się z łuku przy każdym kroku. Trzymaj telefon płasko, jak tacę z wodą, i idź: dwadzieścia kroków do muru. Przechylisz, less się zsunie na cegłę i trzeba będzie wracać. Nie tędy, mówił Berbeć. Tędy, ale równo.",
     "steps": 20,
     "reveal": "Dwadzieścia kroków. Less na butach, nie na cegle. Mur stoi, cegła wysunięta o centymetr jest ciepła, i nic nie zrobiłeś. Ziemia nie wymaga odwagi. Wymaga, żeby nie drgnąć.",
-    "gate": 1
+    "gate": 1,
+    "level": "średnio"
+  },
+  {
+    "id": "widmo",
+    "type": "spectro",
+    "after": 2,
+    "title": "Widmo",
+    "level": "dla wytrwałych",
+    "intro": "Berbeć zostawił w archiwum nagranie bez opisu. Dzwon, cztery uderzenia, nic więcej. Anzelm: „Nie słuchaj. Patrz.” Włącz nagranie i patrz na widmo: czas płynie w prawo, wysokość to częstotliwość. Między dwunastą a dwudziestą sekundą, wysoko, ponad dzwonem, ktoś coś narysował dźwiękiem.",
+    "audio": "audio/widmo.mp3",
+    "q": "Co jest narysowane w widmie?",
+    "options": [
+      "Siedmiobok",
+      "Krzyż",
+      "Litera S",
+      "Nic, to szum"
+    ],
+    "answer": 0,
+    "reveal": "Siedmiobok, zapisany w częstotliwościach od trzech do siedmiu tysięcy herców, tam, gdzie dzwon już nie sięga. Ktoś, kto to nagrał, wiedział, że ucho tego nie złoży, a oko tak. Synestezja nie jest chorobą. Jest sposobem czytania."
   }
 ]

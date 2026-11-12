@@ -5,7 +5,7 @@ import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 
 export interface Interlude {
-  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth"; after?: number; gate?: number; title: string;
+  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro"; after?: number; gate?: number; title: string; level?: string;
   secret?: string[]; steps?: number;
   cycles?: number; inhale?: number; exhale?: number;
   audio?: string; q?: string; options?: string[]; answer?: number; seconds?: number;
@@ -29,8 +29,8 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   const it: Interlude = found;
   if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} przebytych bramach.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
-  sec.append(h("p", { class: "faint" }, "Między sprawami"), h("h2", {}, it.title));
-  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else renderPlate();
+  sec.append(h("p", { class: "faint" }, `Między sprawami${it.level ? " · " + it.level : ""}`), h("h2", {}, it.title));
+  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else renderPlate();
   return sec;
 
   function finish(note: string) {
@@ -126,15 +126,16 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const start = h("button", { class: "primary" }, "Trzymam");
     const verdict = h("div");
     sec.append(bar, status, temp, h("div", { class: "verdict" }, start), verdict);
-    let held = 0, last = 0, running = false, jitter = 0, finished = done;
+    let held = 0, last = 0, running = false, jitter = 0, finished = done, base = 0.12, calib: number[] = [], calibrating = false;
     const onMotion = (e: DeviceMotionEvent) => {
       const a = e.accelerationIncludingGravity; if (!a) return;
       const mag = Math.sqrt((a.x ?? 0) ** 2 + (a.y ?? 0) ** 2 + (a.z ?? 0) ** 2);
-      if (last) jitter = Math.abs(mag - last); last = mag;
+      if (last) { jitter = Math.abs(mag - last); if (calibrating) calib.push(jitter); } last = mag;
     };
     function tick() {
       if (!running) return;
-      if (jitter > 0.35) { held = Math.max(0, held - 1.5); temp.textContent = "Drżysz. 33°C."; }
+      if (calibrating) { setTimeout(tick, 100); return; }
+      if (jitter > base * 2.5 + 0.08) { held = Math.max(0, held - 1.5); temp.textContent = "Drżysz. 33°C."; }
       else { held += 0.1; temp.textContent = `${(36.6 - (held / total) * 5.6).toFixed(1).replace(".", ",")}°C`; }
       fill.style.width = `${Math.min(100, (held / total) * 100)}%`; status.textContent = `${held.toFixed(0)} s`;
       if (held >= total && !finished) { finished = true; running = false; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: wytrzymane.`); return; }
@@ -146,7 +147,10 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         if (DM.requestPermission) { const r = await DM.requestPermission(); if (r !== "granted") throw new Error("denied"); }
         addEventListener("devicemotion", onMotion);
       } catch { toast("Bez czujnika ruchu: liczy się samo trzymanie przycisku."); }
-      running = true; start.disabled = true; start.textContent = "Nie ruszaj się"; tick();
+      running = true; start.disabled = true; start.textContent = "Kalibruję…"; calibrating = true; calib = [];
+      // 2 s kalibracji: mediana drgania TEJ ręki na TYM telefonie = poziom zero (progi absolutne zawodzą między urządzeniami)
+      setTimeout(() => { calib.sort((a, b) => a - b); base = calib.length ? calib[Math.floor(calib.length / 2)] : 0.12; calibrating = false; start.textContent = "Nie ruszaj się"; }, 2000);
+      tick();
     });
     // zapas bez czujnika: puszczenie przycisku = drgnięcie
     start.addEventListener("pointerdown", () => { jitter = 0; });
@@ -313,6 +317,31 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       running = true; start.textContent = "Trzymaj równo"; lastStep = performance.now();
       start.addEventListener("pointerdown", () => { holding = true; }); addEventListener("pointerup", () => { holding = false; });
     });
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+  }
+
+  /** Widmo: spektrogram nagrania rysowany na żywo; obraz ukryty w częstotliwościach, których ucho nie złoży. */
+  function renderSpectro() {
+    sec.append(h("p", { class: "quote" }, it.intro!));
+    const audio = h("audio", { controls: true, preload: "auto", crossorigin: "anonymous", src: import.meta.env.BASE_URL + it.audio! }) as HTMLAudioElement;
+    const canvas = h("canvas", { class: "spectro", width: "720", height: "260", "aria-label": "Spektrogram nagrania" }) as HTMLCanvasElement;
+    const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = "#0e0d0b"; ctx.fillRect(0, 0, 720, 260);
+    sec.append(audio, canvas, h("p", { class: "faint" }, "Oś pozioma: czas, 26 sekund. Oś pionowa: częstotliwość, 0 do 8 kHz, niskie na dole. Jasność: głośność."));
+    let ac: AudioContext | null = null, an: AnalyserNode | null = null, data: Uint8Array<ArrayBuffer> | null = null;
+    audio.addEventListener("play", () => {
+      if (!ac) { ac = new AudioContext(); const src = ac.createMediaElementSource(audio); an = ac.createAnalyser(); an.fftSize = 2048; an.smoothingTimeConstant = 0.2; src.connect(an); an.connect(ac.destination); data = new Uint8Array(new ArrayBuffer(an.frequencyBinCount)); }
+      if (ac.state === "suspended") ac.resume();
+      const draw = () => { if (audio.paused || !an || !data || !ac) return; an.getByteFrequencyData(data); const x = Math.floor((audio.currentTime / 26) * 720); const binHz = ac.sampleRate / an.fftSize; const maxBin = Math.floor(8000 / binHz);
+        for (let b = 0; b < maxBin; b++) { const v = data[b] / 255; const y = 260 - Math.floor((b / maxBin) * 260); ctx.fillStyle = `rgba(232,224,207,${Math.pow(v, 1.6)})`; ctx.fillRect(x, y - 1, 2, 2); }
+        requestAnimationFrame(draw); };
+      requestAnimationFrame(draw);
+    });
+    const opts = h("div", { class: "opts", role: "radiogroup" });
+    it.options!.forEach((o, i) => opts.append(h("label", {}, h("input", { type: "radio", name: "spectro", value: String(i) }), o)));
+    const verdict = h("div"); const btn = h("button", { class: "primary" }, "Odpowiedz");
+    btn.addEventListener("click", () => { const el = sec.querySelector<HTMLInputElement>('input[name="spectro"]:checked'); if (!el) { toast("Najpierw patrz."); return; } if (Number(el.value) === it.answer) { verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: zobaczone.`); } else toast("Patrz wyżej. Ponad dzwonem."); });
+    sec.append(h("div", { class: "q daily" }, h("div", { class: "qt" }, it.q!), opts), btn, verdict);
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
   }
 
