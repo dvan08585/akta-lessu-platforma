@@ -171,3 +171,12 @@ describe("świt i listy", () => {
     expect(due(s, rules, t0 + 31 * 60000).map((r) => r.id)).toEqual(["b", "a"]); expect(unreadCount(s, rules, t0 + 31 * 60000)).toBe(2);
   });
 });
+
+describe("trzymanie oktawy", () => {
+  it("odczyt o połowę niższy od stabilnego tonu jest poprawiany do tej samej oktawy", () => {
+    const s = new PitchSmoother(5);
+    [200, 201, 199, 200].forEach((v) => s.push(v));
+    expect(s.push(100)).toBeGreaterThan(190);
+    expect(s.push(400)).toBeLessThan(210);
+  });
+});

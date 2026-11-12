@@ -17,7 +17,7 @@ export function detectPitch(buf: Float32Array, sampleRate: number): number | nul
   }
   let best = 0; for (let lag = minLag; lag <= maxLag; lag++) if (corr[lag] > best) best = corr[lag];
   if (best < 0.3) return null;
-  const threshold = best * 0.85;
+  const threshold = best * 0.75;
   // pierwszy lokalny szczyt powyżej progu = okres podstawowy, nie jego wielokrotność
   let lag = -1;
   for (let l = minLag + 1; l < maxLag; l++) {
@@ -31,15 +31,22 @@ export function detectPitch(buf: Float32Array, sampleRate: number): number | nul
   return sampleRate / (lag + shift);
 }
 
-/** Mediana z ostatnich N odczytów: usuwa pojedyncze przeskoki. */
+/** Mediana z ostatnich N odczytów + trzymanie oktawy: odczyt równy połowie albo podwojeniu stabilnego tonu jest poprawiany do tej samej oktawy. */
 export class PitchSmoother {
   private buf: number[] = [];
+  private stable: number | null = null;
   constructor(private n = 7) {}
   push(hz: number | null): number | null {
-    if (hz === null) { this.buf = []; return null; }
+    if (hz === null) { this.buf = []; this.stable = null; return null; }
+    if (this.stable) {
+      const r = hz / this.stable;
+      if (r > 0.47 && r < 0.53) hz *= 2; else if (r > 1.9 && r < 2.1) hz /= 2;
+    }
     this.buf.push(hz); if (this.buf.length > this.n) this.buf.shift();
     const s = [...this.buf].sort((x, y) => x - y);
-    return s[Math.floor(s.length / 2)];
+    const med = s[Math.floor(s.length / 2)];
+    if (this.buf.length >= 3) this.stable = med;
+    return med;
   }
 }
 

@@ -544,22 +544,24 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const verdict = h("div");
     sec.append(canvas, status, h("div", { class: "verdict" }, micBtn, h("span", { class: "faint" }, "albo suwak:")), slider, verdict);
     const ctx = canvas.getContext("2d")!;
-    const N = 1400; const pts = Array.from({ length: N }, () => ({ a: Math.random() * Math.PI * 2, r: Math.random(), j: Math.random() }));
-    let hz: number | null = null, hold = 0, finished = done;
+    const N = 1400; const pts = Array.from({ length: N }, () => { const a = Math.random() * Math.PI * 2, r = Math.random(); return { a, r, j: Math.random(), x: 300 + Math.cos(a) * r * 270, y: 300 + Math.sin(a) * r * 270 }; });
+    let hz: number | null = null, hold = 0, finished = done, cSmooth = 0;
     const target = it.targetHz ?? 196, tol = it.tolerance ?? 6;
     function draw() {
       const c = hz ? closeness(hz, target, tol) : 0;
+      cSmooth += (c - cSmooth) * 0.08; // bezwładność wzoru: piasek nie przeskakuje, dogania
       ctx.fillStyle = "#1a1813"; ctx.fillRect(0, 0, 600, 600);
       ctx.fillStyle = "#e8e0cf";
       for (const p of pts) {
-        // Przy c→1 piasek wędruje do linii węzłowych siedmioramiennej gwiazdy; przy c→0 leży losowo.
+        // Przy c→1 piasek wędruje do linii węzłowych siedmioramiennej gwiazdy; przy c→0 leży losowo. Każde ziarno dogania swój cel (lerp), więc ruch jest ciągły.
         const star = 0.55 + 0.35 * Math.abs(Math.cos(3.5 * p.a));
-        const r = (p.r * (1 - c) + star * c) * 270;
-        const x = 300 + Math.cos(p.a) * r + (1 - c) * (p.j - 0.5) * 30;
-        const y = 300 + Math.sin(p.a) * r + (1 - c) * (p.j - 0.5) * 30;
-        ctx.fillRect(x, y, 1.6, 1.6);
+        const r = (p.r * (1 - cSmooth) + star * cSmooth) * 270;
+        const tx = 300 + Math.cos(p.a) * r + (1 - cSmooth) * (p.j - 0.5) * 30;
+        const ty = 300 + Math.sin(p.a) * r + (1 - cSmooth) * (p.j - 0.5) * 30;
+        p.x += (tx - p.x) * 0.12; p.y += (ty - p.y) * 0.12;
+        ctx.fillRect(p.x, p.y, 1.6, 1.6);
       }
-      status.textContent = hz ? `${hz.toFixed(0)} Hz · ${c > 0.9 ? "siedem ramion" : c > 0.5 ? "blisko" : "piasek nie słucha"}` : "cisza";
+      status.textContent = hz ? `${hz.toFixed(1)} Hz · ${c > 0.9 ? "siedem ramion" : c > 0.5 ? "blisko" : "piasek nie słucha"}` : "cisza";
       if (c > 0.9 && !finished) { hold++; if (hold > 25) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: ton znaleziony.`); } } else hold = 0;
       requestAnimationFrame(draw);
     }
@@ -569,10 +571,10 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const ac = new AudioContext(); const src = ac.createMediaStreamSource(stream); const an = ac.createAnalyser(); an.fftSize = 4096; src.connect(an);
-        const buf = new Float32Array(an.fftSize);
+        const buf = new Float32Array(new ArrayBuffer(an.fftSize * 4));
         const smooth = new PitchSmoother(7);
         micBtn.disabled = true; micBtn.textContent = "Mikrofon słucha";
-        setInterval(() => { an.getFloatTimeDomainData(buf); const p = smooth.push(detectPitch(buf, ac.sampleRate)); if (p) hz = p; }, 60);
+        setInterval(() => { an.getFloatTimeDomainData(buf); const p = smooth.push(detectPitch(buf, ac.sampleRate)); hz = p; }, 50);
       } catch { toast("Bez mikrofonu. Użyj suwaka."); }
     });
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
