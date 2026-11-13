@@ -130,8 +130,8 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 
 /* Nawigacja: wstecz = cicho, w lewo; dalej = główny, w prawo; „ciałem” = coś ekstra, w piasku z poświatą. */
 button.back { padding-left: 0.6rem; }
-button.body, .btn.body { background: var(--sand); color: #1e1a14; border-color: var(--sand); box-shadow: 0 0 16px rgba(217,132,58,0.35); font-weight: 500; }
-button.body:hover, .btn.body:hover { box-shadow: 0 0 22px rgba(217,132,58,0.55); }
+button.body, .btn.body { background: var(--ink); color: var(--bg); border-color: var(--sand); box-shadow: 0 0 0 1px var(--sand), 0 0 14px rgba(201,168,106,0.28); }
+button.body:hover, .btn.body:hover { box-shadow: 0 0 0 1px var(--sand), 0 0 20px rgba(201,168,106,0.45); }
 /* Odsłona po geście: sterowanie znika, ciepło przechodzi przez ekran, tekst przyjeżdża na środek. */
 .hide-out { transition: opacity 0.45s, transform 0.45s; opacity: 0 !important; transform: translateY(6px); pointer-events: none; }
 .glow.soft { background: radial-gradient(circle at var(--cx) var(--cy), rgba(255,156,74,0.7) 0, rgba(217,132,58,0.45) 22%, rgba(14,13,11,0) 62%); }
