@@ -27,7 +27,7 @@ export function topbar(app: App, active: string): HTMLElement {
   for (const [hash, name] of [["#/mapa", "Mapa"], ["#/wiadomosci", unread ? `Listy (${unread})` : "Listy"], ["#/zeszyt", "Zeszyt"], ["#/akta", "Akta"]]) {
     nav.append(h("button", { class: (active === hash ? "" : "ghost") + (hash === "#/wiadomosci" && unread ? " badge" : ""), onclick: () => go(hash), "aria-current": active === hash ? "page" : "false" }, name));
   }
-  return h("header", { class: "topbar" }, h("a", { class: "brand", href: "#/" }, app.cfg.title), nav);
+  return h("header", { class: "topbar" }, h("a", { class: "skip-link", href: "#tresc" }, "Do treści"), h("a", { class: "brand", href: "#/" }, app.cfg.title), nav);
 }
 
 /** Datownik: miasto żyje, zanim cokolwiek klikniesz. Data, pogoda, Wisła, wschód. Dane dochodzą, gdy są; bez nich zostaje data. */
@@ -97,7 +97,7 @@ export function viewMap(app: App): HTMLElement {
   for (const g of app.map.gates) {
     const st = app.gateStatus(g.n);
     const c = app.caseForGate(g.n);
-    list.append(h("div", { class: "gate-row", "data-status": st, role: "button", tabindex: "0", onclick: () => go(`#/brama/${g.n}`) },
+    list.append(h("div", { class: "gate-row", "data-status": st, role: "button", tabindex: "0", onclick: () => go(`#/brama/${g.n}`), onkeydown: (e: Event) => { if ((e as KeyboardEvent).key === "Enter" || (e as KeyboardEvent).key === " ") { e.preventDefault(); go(`#/brama/${g.n}`); } } },
       h("span", { class: "n" }, String(g.n)),
       h("span", { class: "t" }, g.name, h("small", {}, `żywioł: ${g.element}${c && c.title.toLowerCase() !== g.element ? " · " + c.title : ""}`)),
       h("span", { class: "s" }, st === "locked" && c ? lockedWhy(app, c) : st === "solved" && app.awaitingGesture(g.n) ? "czeka na gest" : statusLabel(st))));
@@ -122,7 +122,7 @@ export function viewMap(app: App): HTMLElement {
       const il = h("div", { class: "gates-list" });
       for (const i of items) {
         const done = app.state.interludesDone.includes(i.id);
-        il.append(h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) },
+        il.append(h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`), onkeydown: (e: Event) => { if ((e as KeyboardEvent).key === "Enter" || (e as KeyboardEvent).key === " ") { e.preventDefault(); go(`#/miedzy/${i.id}`); } } },
           h("span", { class: "ico" }, icon(i.type)), h("span", { class: "t" }, i.title, h("small", {}, hint[i.type] ?? "")), h("span", { class: "s" }, done ? "przebyte" : "")));
       }
       wrap.append(h("p", { class: "faint", style: "margin:0.9rem 0 0.4rem" }, lv), il);

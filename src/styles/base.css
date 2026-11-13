@@ -102,3 +102,8 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 @keyframes glow-in { from { clip-path: circle(0 at var(--cx) var(--cy)); opacity: 1; } to { clip-path: circle(160% at var(--cx) var(--cy)); opacity: 1; } }
 @keyframes glow-out { from { opacity: 1; } to { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .glow { animation: none; opacity: 0.9; } }
+
+/* Dostępność: widoczny fokus z klawiatury, link „do treści”. */
+:focus-visible { outline: 2px solid var(--sand); outline-offset: 2px; }
+.skip-link { position: absolute; left: -999px; top: 0; background: var(--ink); color: var(--bg); padding: 0.5rem 0.8rem; z-index: 20; }
+.skip-link:focus { left: var(--gutter); }

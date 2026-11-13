@@ -24,7 +24,7 @@ function route() {
   else if (hash.startsWith("#/wejscie")) view = viewOnboarding(app);
   else if (!app.state.onboarded && !app.state.solvedCases.length && !app.state.testMode && (hash === "#/" || hash === "")) view = viewOnboarding(app);
   else view = viewIntro(app);
-  root.replaceChildren(view);
+  view.id = "tresc"; view.setAttribute("tabindex", "-1"); root.replaceChildren(view);
   window.scrollTo({ top: 0 });
 }
 addEventListener("hashchange", route);
