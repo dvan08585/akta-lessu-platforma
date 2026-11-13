@@ -11,6 +11,8 @@ export interface Interlude {
   id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace" | "steps" | "duet"; after?: number; gate?: number; title: string; level?: string;
   secret?: string[]; steps?: number;
   cycles?: number; inhale?: number; exhale?: number;
+  /** Instrukcja osobnym głosem (didaskalia), oddzielona od prozy w intro. */
+  cue?: string;
   audio?: string; q?: string; options?: string[]; answer?: number; seconds?: number;
   lines?: string[];
   intro?: string; person?: string; questions?: { q: string; a: string }[]; lie?: number; reveal?: string; wrong?: string;
@@ -49,7 +51,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   }
 
   function renderTalk() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const asked = new Set<number>();
     const log = h("div", { class: "talk-log" });
     const qs = h("div", { class: "talk-qs" });
@@ -81,7 +83,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Dudnienie różnicowe: dwa tony w słuchawkach, 18 Hz powstaje w głowie. */
   function renderBeat() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const audio = h("audio", { controls: true, preload: "none", src: import.meta.env.BASE_URL + it.audio! }) as HTMLAudioElement;
     // Wibracja w rytmie 18 Hz (Android; iOS Safari nie ma Vibration API): 28 ms + 28 ms ≈ 18 Hz
     let vib: number | undefined;
@@ -124,7 +126,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Zimno: trzymać telefon nieruchomo. Akcelerometr mierzy drżenie rąk; każde drgnięcie cofa pasek. */
   function renderStill() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const total = it.seconds ?? 30;
     const bar = h("div", { class: "still-bar" }, h("i"));
     const fill = bar.firstElementChild as HTMLElement;
@@ -166,7 +168,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Woda: oddech w tempie 5/5 (ok. 6 oddechów na minutę). Tafla gładzi się, gdy wydech jest równy. Mikrofon opcjonalny; zapas: palec na ekranie przy wydechu. */
   function renderBreath() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const cycles = it.cycles ?? 10, tIn = (it.inhale ?? 5) * 1000, tOut = (it.exhale ?? 5) * 1000;
     const canvas = h("canvas", { class: "plate water", width: "600", height: "600", "aria-label": "Tafla wody w krypcie" }) as HTMLCanvasElement;
     const phaseEl = h("p", { class: "breath-phase" }, "…");
@@ -242,7 +244,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Ogień: czerwień przed kamerą. Zapas: wybór koloru. */
   function renderFire() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const video = h("video", { playsinline: true, muted: true, class: "cam" }) as HTMLVideoElement;
     const probe = h("canvas", { width: "32", height: "24", style: "display:none" }) as HTMLCanvasElement;
     const stone = h("div", { class: "stone" }, h("i"));
@@ -264,7 +266,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Ciemność: tekst pojawia się, gdy kamera widzi ciemność (względem kalibracji). Zapas: przytrzymaj „ciemno”. */
   function renderDark() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const video = h("video", { playsinline: true, muted: true, class: "cam", style: "display:none" }) as HTMLVideoElement;
     const probe = h("canvas", { width: "32", height: "24", style: "display:none" }) as HTMLCanvasElement;
     const page = h("article", { class: "doc hand darkpage" });
@@ -290,7 +292,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Ziemia: telefon płasko, dwadzieścia kroków. Żyroskop: przechył sypie less na cegłę. Zapas: trzymanie przycisku. */
   function renderEarth() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const total = it.steps ?? 20;
     const canvas = h("canvas", { class: "plate corridor", width: "600", height: "300", "aria-label": "Korytarz i less" }) as HTMLCanvasElement;
     const status = h("p", { class: "mono muted" }, `0 / ${total} kroków`);
@@ -334,7 +336,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Widmo: spektrogram nagrania rysowany na żywo; obraz ukryty w częstotliwościach, których ucho nie złoży. */
   function renderSpectro() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const audio = h("audio", { controls: true, preload: "auto", crossorigin: "anonymous", src: import.meta.env.BASE_URL + it.audio! }) as HTMLAudioElement;
     const canvas = h("canvas", { class: "spectro", width: "720", height: "260", "aria-label": "Spektrogram nagrania" }) as HTMLCanvasElement;
     const ctx = canvas.getContext("2d")!;
@@ -359,7 +361,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Kompas-zawieszka: GPS + magnetometr. Grzeje, gdy telefon celuje w najbliższą bramę. Tylko na miejscu. */
   function renderCompass() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const pend = h("div", { class: "pendant big", "data-heat": "0" }, h("i"));
     const status = h("p", { class: "mono muted" }, "GPS: …");
     const start = h("button", { class: "primary" }, "Wyjmij zawieszkę");
@@ -398,7 +400,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Gwizd: czysty ton wysoko (700–3000 Hz) utrzymany 3 s. Nucenie (poniżej 500 Hz) nie liczy się. */
   function renderWhistle() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const status = h("p", { class: "mono muted" }, "cisza");
     const bar = h("div", { class: "still-bar" }, h("i")); const fill = bar.firstElementChild as HTMLElement;
     const micBtn = h("button", { class: "primary" }, "Gwizdnij");
@@ -426,7 +428,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Siedem palców: multi-touch, siedem punktów heptagramu dotkniętych jednocześnie przez 3 s. */
   function renderTouch7() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const canvas = h("canvas", { class: "plate hept", width: "600", height: "600", "aria-label": "Heptagram z siedmioma punktami" }) as HTMLCanvasElement;
     const status = h("p", { class: "mono muted" }, "0 / 7 palców");
     const verdict = h("div");
@@ -454,7 +456,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Marek trzyma: przycisk trzymany N sekund. Puszczenie = od nowa. Nic się nie dzieje. */
   function renderHold() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const total = it.seconds ?? 90;
     const btn = h("button", { class: "primary hold-btn" }, "Trzymaj");
     const status = h("p", { class: "mono muted" }, `0 / ${total} s`);
@@ -469,7 +471,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Lustro: tekst w odbiciu, do przeczytania w lustrze. Zero technologii. */
   function renderMirror() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const page = h("article", { class: "doc hand mirror" }, h("h4", {}, "Kartka w odbiciu"));
     it.secret!.forEach((t) => page.append(h("p", {}, t)));
     sec.append(page);
@@ -483,7 +485,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Nie podnoś palca: labirynt z trzema rozgałęzieniami, ekran ciemnieje z postępem. Puszczenie albo zła odnoga = powrót. */
   function renderTrace() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const canvas = h("canvas", { class: "plate corridor trace", width: "600", height: "600", "aria-label": "Korytarz" }) as HTMLCanvasElement;
     const status = h("p", { class: "mono muted" }, "Opatowska");
     const verdict = h("div");
@@ -523,7 +525,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Kroki: licznik z akcelerometru (szczyty przyspieszenia), zapisywany między dniami. Ostatnie 200 kroków ciemniej. */
   function renderSteps() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const total = it.steps ?? 1200;
     const bar = h("div", { class: "still-bar" }, h("i")); const fill = bar.firstElementChild as HTMLElement;
     const status = h("p", { class: "mono muted" }, `${app.state.steps ?? 0} / ${total} kroków`);
@@ -544,7 +546,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Dwa głosy: widmo (FFT 8192), dwie rodziny harmonicznych, warunek kwinty 3:2. Solo: telefon gra drugi głos z głośnika. */
   function renderDuet() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const canvas = h("canvas", { class: "plate", width: "600", height: "600", "aria-label": "Płyta z piaskiem, dwa głosy" }) as HTMLCanvasElement;
     const status = h("p", { class: "mono muted" }, "cisza");
     const micBtn = h("button", { class: "primary" }, "Włącz mikrofon");
@@ -593,7 +595,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   }
 
   function renderPlate() {
-    sec.append(h("p", { class: "quote" }, it.intro!));
+    sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const canvas = h("canvas", { class: "plate", width: "600", height: "600", "aria-label": "Płyta z piaskiem" }) as HTMLCanvasElement;
     const status = h("p", { class: "mono muted" }, "cisza");
     const slider = h("input", { type: "range", min: "80", max: "400", value: "120", "aria-label": "Ton (suwak zapasowy)" }) as HTMLInputElement;

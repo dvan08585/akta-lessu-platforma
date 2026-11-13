@@ -65,15 +65,16 @@ export function renderMap(ctx: MapCtx): HTMLElement {
     gate.addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Enter") go(`#/brama/${g.n}`); });
     svg.append(gate);
   }
-  // Aneta i Amor
+  // Aneta i Amor: kropka na szybie z ciemną obwódką (szyb przechodzi za nią), etykieta obok, nie nad linią.
   const at = map.gates.find((g) => g.n === ch.gate) ?? map.gates[2];
-  const ay = ch.underground ? at.depth - 40 : at.peak - 2;
-  svg.append(s("circle", { cx: String(at.x), cy: String(ay), r: "4", class: "aneta" }));
-  svg.append(s("text", { x: String(at.x), y: String(ay - 8), class: "marker-label" }, "Aneta"));
+  const ay = ch.underground ? at.depth - 48 : at.peak - 4;
+  const side = at.x > 560 ? -1 : 1; // przy prawej krawędzi etykieta po lewej
+  svg.append(s("circle", { cx: String(at.x), cy: String(ay), r: "7", class: "aneta", stroke: "var(--bg)", "stroke-width": "4" }));
+  svg.append(s("text", { x: String(at.x + side * 14), y: String(ay + 5), class: "marker-label", style: `text-anchor:${side > 0 ? "start" : "end"}` }, "Aneta"));
   if (ch.amor) {
-    svg.append(s("circle", { cx: String(at.x + 12), cy: String(ch.underground ? ay : ay + 1), r: "2.5", class: "amor" }));
+    svg.append(s("circle", { cx: String(at.x - side * 12), cy: String(ay + 6), r: "4", class: "amor", stroke: "var(--bg)", "stroke-width": "3" }));
   } else if (ch.n > 0) {
-    svg.append(s("text", { x: String(at.x + 14), y: String(ground - 6), class: "marker-label", style: "text-anchor:start" }, "Amor nie schodzi"));
+    svg.append(s("text", { x: String(at.x + side * 14), y: String(ay + 24), class: "marker-label", style: `text-anchor:${side > 0 ? "start" : "end"}` }, "Amor nie schodzi"));
   }
   wrap.append(svg);
 

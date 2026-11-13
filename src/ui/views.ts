@@ -1,6 +1,7 @@
 import { h, go, toast } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import { interludesFor } from "./interludes";
+import { icon } from "./icons";
 import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import { pickDaily, dayKey } from "../engine/daily";
 import { track } from "../engine/track";
@@ -114,7 +115,7 @@ export function viewMap(app: App): HTMLElement {
     const amorDone = amor.filter((i) => app.state.interludesDone.includes(i.id)).length;
     const nextAmor = amor.find((i) => !app.state.interludesDone.includes(i.id)) ?? amor[amor.length - 1];
     if (amor.length) wrap.append(h("div", { class: "gates-list" }, h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": amorDone === amor.length ? "solved" : "open", onclick: () => go(`#/miedzy/${nextAmor.id}`) },
-      h("span", { class: "t" }, "Amor", h("small", {}, `${amor.length === 1 ? "jedno spotkanie" : amor.length < 5 ? amor.length + " spotkania" : amor.length + " spotkań"} · pies`)), h("span", { class: "s" }, amorDone ? `${amorDone}/${amor.length}` : ""))));
+      h("span", { class: "ico" }, icon("amor")), h("span", { class: "t" }, "Amor", h("small", {}, `${amor.length === 1 ? "jedno spotkanie" : amor.length < 5 ? amor.length + " spotkania" : amor.length + " spotkań"} · pies`)), h("span", { class: "s" }, amorDone ? `${amorDone}/${amor.length}` : ""))));
     for (const lv of LEVELS) {
       const items = inter.filter((i) => i.type !== "amor" && (i.level ?? "średnio") === lv);
       if (!items.length) continue;
@@ -122,7 +123,7 @@ export function viewMap(app: App): HTMLElement {
       for (const i of items) {
         const done = app.state.interludesDone.includes(i.id);
         il.append(h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) },
-          h("span", { class: "t" }, i.title, h("small", {}, hint[i.type] ?? "")), h("span", { class: "s" }, done ? "przebyte" : "")));
+          h("span", { class: "ico" }, icon(i.type)), h("span", { class: "t" }, i.title, h("small", {}, hint[i.type] ?? "")), h("span", { class: "s" }, done ? "przebyte" : "")));
       }
       wrap.append(h("p", { class: "faint", style: "margin:0.9rem 0 0.4rem" }, lv), il);
     }

@@ -89,6 +89,21 @@ Ceglany portal kościoła ma bruzdy. Przewodnicy mówią: rycerze ostrzyli miecz
 <!-- cases/01-staromiejskie.json docs[4].paragraphs[2] -->
 Skarpa północna, za murem: tam był sondaż S-3. Tam zasyp kończy się na 6,1 metra. Tam nikt nie zszedł niżej.
 
+<!-- cases/01-staromiejskie.json docs[5].source -->
+Tylko o świcie. Zapis Berbecia z grudnia 1287, odczytany przez jego potomka w archiwum. Czytelny od wschodu słońca przez godzinę.
+
+<!-- cases/01-staromiejskie.json docs[5].paragraphs[0] -->
+Stałem na wale od północy. Mróz. Trzystu poszło za nią pod ziemię o zmroku, liczyłem pochodnie. Potem ziemia pod Starym Wzgórzem drżała sama, długo, i cichła, i drżała.
+
+<!-- cases/01-staromiejskie.json docs[5].paragraphs[1] -->
+O świcie biały gołąb nad zgliszczami. Nie z naszego grodu, bo nasze siedziały w gołębniku, liczyłem rano i brakowało jednego, tego, który u niej.
+
+<!-- cases/01-staromiejskie.json docs[5].paragraphs[2] -->
+Kazałem sypać. Belki, kamień, ziemia, w każde wejście, które znaliśmy. Sypaliśmy do południa. Nie wiedzieliśmy, że ona zamknęła wcześniej. Sypaliśmy na zamknięte.
+
+<!-- cases/01-staromiejskie.json docs[5].paragraphs[3] -->
+Zapisuję, żeby ktoś kiedyś przeczytał o świcie, bo o świcie się to stało, a w dzień nikt nie uwierzy.
+
 <!-- cases/01-staromiejskie.json questions[0].text -->
 Wdowa po Sędziwoju miała w 1260 roku ___ lata, więc za wały wyszła, mając około ___.
 
@@ -127,9 +142,6 @@ Halina, córka Piotra z Krępy, wzięła z gołębnika białego gołębia, wypro
 
 <!-- cases/01-staromiejskie.json solution[2] -->
 Zasyp obrońców sięga sześciu metrów. Poniżej less jest nienaruszony, a korytarz biegnie dalej w dół. Nikt z 1959 roku tam nie zszedł.
-
-<!-- cases/01-staromiejskie.json solution[3] -->
-Siedemset pięćdziesiąt trzy lata później do Sandomierza przyjechała geolożka.
 
 
 ## SPRAWA 2: Dzwon Piotr (02-miejskie.json)
@@ -208,6 +220,18 @@ Mur odpowiada później niż dzwon. O ułamek. To, co czujesz w dłoni po tym, j
 
 <!-- cases/02-miejskie.json docs[4].paragraphs[2] -->
 Pod tobą, 470 metrów korytarzy trasy turystycznej. Pod trasą: to, do czego kapituła stroiła ton dolny.
+
+<!-- cases/02-miejskie.json docs[5].source -->
+Tylko w południe. Notatka z marginesu wydruku, odczytana przy świetle dnia, między dwunastą a pierwszą.
+
+<!-- cases/02-miejskie.json docs[5].paragraphs[0] -->
+Dwanaście uderzeń. Liczyłam. Przy dziewiątym pies położył uszy. Przy dwunastym ja.
+
+<!-- cases/02-miejskie.json docs[5].paragraphs[1] -->
+Dominanta nie wraca do tła przez czterdzieści minut. Dwanaście razy dziennie przez trzysta pięćdziesiąt lat. Ktoś to policzył wcześniej niż ja: to jest w rachunku ludwisarza, w tej jedenastej grzywnie srebra, której nikt nie umiał wytłumaczyć.
+
+<!-- cases/02-miejskie.json docs[5].paragraphs[2] -->
+Jeśli to czytasz w południe, posłuchaj. Nie dzwonu. Tego po dzwonie.
 
 <!-- cases/02-miejskie.json questions[0].text -->
 Za wrota płacono grzywnę i ___ skojców od sztuki, grzywna liczy ___ skojce, razem za wrota ___ grzywien i dwadzieścia dwa skojce: wrót było siedmioro.
@@ -847,7 +871,7 @@ Nos przy szparze okna. Jabłka, które leżą za długo. Rzeka. I to trzecie, od
 Rozmowa: pani Wanda
 
 <!-- interludia[1].intro -->
-Hotel Pod Ciżemką, recepcja, wieczór. Pani Wanda otworzyła drzwi, zanim zapukałeś, bo stała za nimi i czekała. Masz pięć pytań. Jedna z jej odpowiedzi jest kłamstwem. Które?
+Hotel Pod Ciżemką, recepcja, wieczór. Pani Wanda otworzyła drzwi, zanim zapukałeś, bo stała za nimi i czekała.
 
 <!-- interludia[1].questions[0].q -->
 Kto mieszkał w pokoju numer siedem przede mną?
@@ -901,7 +925,7 @@ Siada przy jej nodze. Ucho prawe w dół. Ona tego nie słyszy. Jeszcze. Czeka, 
 Rozmowa: Łutowicz
 
 <!-- interludia[3].intro -->
-Pracownia jubilerska na Opatowskiej. Lupa na czole, lampa nisko. Łutowicz nie podaje ręki: ma ją zajętą. Kciuk pociera opuszkę palca, raz za razem, jakby sprawdzał powierzchnię, której nie ma. Pięć pytań. Jedna odpowiedź jest kłamstwem.
+Pracownia jubilerska na Opatowskiej. Lupa na czole, lampa nisko. Łutowicz nie podaje ręki: ma ją zajętą. Kciuk pociera opuszkę palca, raz za razem, jakby sprawdzał powierzchnię, której nie ma.
 
 <!-- interludia[3].questions[0].q -->
 Oprawia pan krzemień pasiasty?
@@ -943,7 +967,7 @@ Profesor dzwonił do niego trzy razy w ostatnim tygodniu życia. Jest to w rejes
 Płyta Chladniego
 
 <!-- interludia[4].intro -->
-Klasztor św. Jakuba, cela Anzelma. Na stole metalowa płyta, na niej piasek. Anzelm nie tłumaczy. Pokazuje. „Sandomierz stoi na rezonatorze. Znajdź ton.” Nuć do telefonu, aż piasek ułoży się w siedem ramion. Jeśli nie masz mikrofonu, użyj suwaka.
+Klasztor św. Jakuba, cela Anzelma. Na stole metalowa płyta, na niej piasek. Anzelm nie tłumaczy. Pokazuje. „Sandomierz stoi na rezonatorze. Znajdź ton.”
 
 <!-- interludia[4].reveal -->
 Siedem ramion. G, ton główny dzwonu Piotra. Anzelm kiwa głową. „Pięćset milionów lat kwarcu pod lessem. Ludzie budują nad tym katedry i nazywają to wiarą. To fizyka.” A potem, ciszej: „Ton dolny też jest. Tego nie zanucisz. Tego się nie nuci. To się nosi.”
@@ -964,7 +988,7 @@ Kładzie się na ciepłym kamieniu. Kościelny mówi, że nie wolno. Amor nie zn
 Rozmowa: brat Anzelm
 
 <!-- interludia[6].intro -->
-Klasztor św. Jakuba, refektarz, zimno jak w kościele, bo to jest kościół. Anzelm nalewa herbatę z termosu, dwa kubki, jeden bez ucha. Mówi, jakby każde zdanie czytał z kartki, której nie ma. Pięć pytań. Jedna odpowiedź jest kłamstwem.
+Klasztor św. Jakuba, refektarz, zimno jak w kościele, bo to jest kościół. Anzelm nalewa herbatę z termosu, dwa kubki, jeden bez ucha. Mówi, jakby każde zdanie czytał z kartki, której nie ma.
 
 <!-- interludia[6].questions[0].q -->
 Co zginęło w tym kościele w 1260 roku?
@@ -1030,7 +1054,7 @@ Ona kuca. Ręka za uchem, tam, gdzie sierść najgęstsza. „Zostań.” Zostaj
 Rozmowa: Berbeć senior
 
 <!-- interludia[9].intro -->
-Archiwum miejskie, pokój na zapleczu. Berbeć prostuje krawędź teczki, która już jest prosta. Potem drugą. Nie patrzy na ciebie, patrzy na krawędzie. Pięć pytań. Jedna odpowiedź jest kłamstwem.
+Archiwum miejskie, pokój na zapleczu. Berbeć prostuje krawędź teczki, która już jest prosta. Potem drugą. Nie patrzy na ciebie, patrzy na krawędzie.
 
 <!-- interludia[9].questions[0].q -->
 Od kiedy Berbeciowie są w Sandomierzu?
@@ -1084,7 +1108,7 @@ Drapie. Łapami, mokrymi, w białą ścianę. Dziecko woła: piesek, chodź. Nie
 Rozmowa: komisarz Zieliński
 
 <!-- interludia[11].intro -->
-Restauracja hotelowa, rano, kawa w białej filiżance, którą komisarz obraca uchem w lewo, zanim się napije. Teczka na stole, zamknięta. Pięć pytań. Komisarz nie kłamie. Ale jedna odpowiedź jest nieprawdą, bo komisarz przemilcza.
+Restauracja hotelowa, rano, kawa w białej filiżance, którą komisarz obraca uchem w lewo, zanim się napije. Teczka na stole, zamknięta.
 
 <!-- interludia[11].questions[0].q -->
 Dlaczego cofnął pan zlecenie poprzedniemu biegłemu?
@@ -1126,7 +1150,7 @@ Zieliński obraca filiżankę. „To była prawda. Ja nie kłamię, proszę pana
 Ton dolny
 
 <!-- interludia[12].intro -->
-Anzelm odkłada smyczek. „Tego się nie nuci. To się nosi.” Załóż słuchawki, obie. Lewe ucho dostanie 250 Hz, prawe trochę więcej. Przez pierwsze dwadzieścia sekund różnica to cztery herce: usłyszysz powolne falowanie, cztery razy na sekundę. Potem osiem. Potem osiemnaście, tyle, ile ma dron pod Rynkiem: falowanie zmienia się w drżenie, prawie niesłyszalne. W trakcie wyjmij jedną słuchawkę. Falowanie zniknie, bo nie ma go gdzie złożyć. Jeśli nie znika, w ustawieniach telefonu wyłącz „audio mono”.
+Anzelm odkłada smyczek. „Tego się nie nuci. To się nosi.”
 
 <!-- interludia[12].reveal -->
 Cztery na sekundę słychać wyraźnie. Osiem jeszcze. Osiemnaście to już tylko drżenie na granicy, i właśnie tam mieszka dron pod Sandomierzem: nie w dźwięku, w drżeniu. Żadne z uszu nie słyszy różnicy. Powstaje dopiero w tobie, między nimi. Wyjmij jedną słuchawkę i jej nie ma. Aneta nie słyszała drona uszami. Słyszała go tym, czym ty go teraz słyszysz.
@@ -1135,7 +1159,7 @@ Cztery na sekundę słychać wyraźnie. Osiem jeszcze. Osiemnaście to już tylk
 Zimno
 
 <!-- interludia[13].intro -->
-Piwnica pod zamkiem. O dwa stopnie zimniej niż obok. Weź telefon w obie dłonie i trzymaj go nieruchomo. Zupełnie. Pasek rośnie, dopóki ręce nie drżą. Przy trzydziestu trzech stopniach drżenie jest silne. Przy trzydziestu jeden ustaje, i to jest zły znak.
+Piwnica pod zamkiem. O dwa stopnie zimniej niż obok. Przy trzydziestu trzech stopniach drżenie jest silne. Przy trzydziestu jeden ustaje, i to jest zły znak.
 
 <!-- interludia[13].reveal -->
 Trzydzieści sekund. Ręce zaczęły drżeć wcześniej, niż myślałeś, bo ciało nie umie trzymać ciepła bez ruchu. Ten, kto leży pod lessem, nie ma wyboru. Trzęsie się, dopóki może. Potem przestaje. Marek trzyma. Czeka.
@@ -1144,7 +1168,7 @@ Trzydzieści sekund. Ręce zaczęły drżeć wcześniej, niż myślałeś, bo ci
 Woda
 
 <!-- interludia[14].intro -->
-Krypta pod katedrą. Czterdzieści dwa centymetry wody, cieplejszej, niż powinna. Tafla drży, bo ty drżysz. Anzelm: „Oddychaj tak, jak oddycha woda, kiedy nikt jej nie rusza.” Pięć sekund wdech nosem, pięć sekund wydech. Dziesięć razy. Jeśli pozwolisz na mikrofon, tafla usłyszy twój wydech. Jeśli nie, trzymaj palec na ekranie, kiedy wydychasz.
+Krypta pod katedrą. Czterdzieści dwa centymetry wody, cieplejszej, niż powinna. Tafla drży, bo ty drżysz. Anzelm: „Oddychaj tak, jak oddycha woda, kiedy nikt jej nie rusza.”
 
 <!-- interludia[14].reveal -->
 Sto sekund. Tafla jest gładka i widać dno: spoiny posadzki, przez które przychodzi ciepło. Nic nie zrobiłeś. Oddychałeś wolniej, niż oddychasz zwykle, i to wystarczyło, żeby woda przestała drżeć. Zapamiętaj to tempo. Będzie potrzebne niżej.
@@ -1153,7 +1177,7 @@ Sto sekund. Tafla jest gładka i widać dno: spoiny posadzki, przez które przyc
 Ogień
 
 <!-- interludia[15].intro -->
-Halina natarła kamień krwią. Nie musi być twoja. Skieruj kamerę na coś czerwonego: jabłko, szalik, własną dłoń pod światło lampy. Kamień odpowiada na czerwień, nie na ciebie.
+Halina natarła kamień krwią. Nie musi być twoja. Kamień odpowiada na czerwień, nie na ciebie.
 
 <!-- interludia[15].reveal -->
 Pasy krzemienia rozjaśniły się na sekundę. Nie dlatego, że to była krew. Dlatego, że kamień nie odróżnia. Nacisk i czerwień, od milionów lat, pod ziemią, w ciemności. Halina wiedziała tyle samo co ty: że coś się stanie. Nie wiedziała co.
@@ -1162,7 +1186,7 @@ Pasy krzemienia rozjaśniły się na sekundę. Nie dlatego, że to była krew. D
 Ciemność
 
 <!-- interludia[16].intro -->
-Collegium. Punkt szósty nie reaguje na pomiary. Kartka z notatnika profesora, której nie było w aktach, czyta się tylko wtedy, kiedy nie widzisz nic innego. Zakryj kamerę dłonią albo zgaś światło. Litery przyjdą, kiedy będzie ciemno.
+Collegium. Punkt szósty nie reaguje na pomiary. Kartka z notatnika profesora, której nie było w aktach, czyta się tylko wtedy, kiedy nie widzisz nic innego.
 
 <!-- interludia[16].reveal -->
 Kiedy wróciło światło, kartki już nie było. Zapamiętałeś trzy zdania. Tyle wystarczy. Profesor nie pisał dla tych, którzy patrzą. Pisał dla tych, którzy potrafią przestać.
@@ -1171,10 +1195,91 @@ Kiedy wróciło światło, kartki już nie było. Zapamiętałeś trzy zdania. T
 Ziemia
 
 <!-- interludia[17].intro -->
-Korytarz pod Żmigrodem. Less sypie się z łuku przy każdym kroku. Trzymaj telefon płasko, jak tacę z wodą, i idź: dwadzieścia kroków do muru. Przechylisz, less się zsunie na cegłę i trzeba będzie wracać. Nie tędy, mówił Berbeć. Tędy, ale równo.
+Korytarz pod Żmigrodem. Less sypie się z łuku przy każdym kroku. Nie tędy, mówił Berbeć. Tędy, ale równo.
 
 <!-- interludia[17].reveal -->
 Dwadzieścia kroków. Less na butach, nie na cegle. Mur stoi, cegła wysunięta o centymetr jest ciepła, i nic nie zrobiłeś. Ziemia nie wymaga odwagi. Wymaga, żeby nie drgnąć.
+
+<!-- interludia[18].title -->
+Widmo
+
+<!-- interludia[18].intro -->
+Berbeć zostawił w archiwum nagranie bez opisu. Dzwon, cztery uderzenia, nic więcej. Anzelm: „Nie słuchaj. Patrz.”
+
+<!-- interludia[18].reveal -->
+Siedmiobok, zapisany w częstotliwościach od trzech do siedmiu tysięcy herców, tam, gdzie dzwon już nie sięga. Ktoś, kto to nagrał, wiedział, że ucho tego nie złoży, a oko tak. Synestezja nie jest chorobą. Jest sposobem czytania.
+
+<!-- interludia[19].title -->
+Kompas
+
+<!-- interludia[19].intro -->
+Tak chodziła Aneta: kompas geologiczny, notatnik, pies.
+
+<!-- interludia[19].reveal -->
+Zawieszka pulsuje. Stoisz zwrócony w stronę wzgórza, pod którym jest brama. Nie widać jej. Nie słychać. Kamień na szyi wie, a ty wiesz, bo kamień wie. Tak chodziła Aneta: kompas, notatnik, pies, pięć wzgórz, które odpowiadają, i dwa, które milczą.
+
+<!-- interludia[20].title -->
+Gwizd
+
+<!-- interludia[20].intro -->
+Anzelm: „Głos ma za dużo w sobie. Kości rezonują na czysty ton.” Nucenie nie wystarczy.
+
+<!-- interludia[20].reveal -->
+Czysty ton. Bez składowych, bez ciała, sam kształt. Piasek na płycie Anzelma nie układa się w siedmiobok od głosu, bo głos jest zbyt bogaty. Od gwizdu tak. Halina nie umiała gwizdać. Ktoś w jej rodzinie musiał.
+
+<!-- interludia[21].title -->
+Siedem punktów
+
+<!-- interludia[21].intro -->
+Heptagram ma siedem punktów nacisku. Jedna dłoń ma pięć palców. System odpowiada na parę, nie na jednego.
+
+<!-- interludia[21].reveal -->
+Siedem punktów pod siedmioma palcami dwóch ludzi. Helena była sama i zamurowała. Halina była sama i została. Ty nie jesteś. To nie jest metafora, to jest liczba palców.
+
+<!-- interludia[22].title -->
+Marek trzyma
+
+<!-- interludia[22].intro -->
+Pod ziemią. Droga zablokowana. Nie można jej wynieść. Można trzymać. Nic się nie wydarzy. To jest cała scena.
+
+<!-- interludia[22].reveal -->
+Trzymałeś. Nic się nie wydarzyło, i to było wszystko, co dało się zrobić. Amor gdzieś nad wami drapie skarpę. Dzieci na sankach. Ktoś kopie od góry. Ty trzymasz.
+
+<!-- interludia[23].title -->
+Lustro
+
+<!-- interludia[23].intro -->
+Kartka z notatnika profesora, przepisana w odbiciu. Profesor pisał tak, kiedy nie chciał, żeby ktoś czytał mu przez ramię.
+
+<!-- interludia[23].reveal -->
+Wzgórze Salve Regina: archeolodzy spierali się o nie przez dekady, a Florek w 2003 roku napisał, że to mit. Profesor wiedział. Ósmego punktu nie ma. Siedem wystarczy.
+
+<!-- interludia[24].title -->
+Nie podnoś palca
+
+<!-- interludia[24].intro -->
+Korytarz z Opatowskiej na południe. Trzy rozgałęzienia. Powietrze rzednie z każdym metrem.
+
+<!-- interludia[24].reveal -->
+Opatowska, pod Wzgórzem Miejskim, na południe, na zachód. Trzy odnogi, których nie wybrałeś. Ciemność, w której nie puściłeś. To jest ta droga. Reszta jest w książce.
+
+<!-- interludia[25].title -->
+Tysiąc dwieście kroków
+
+<!-- interludia[25].intro -->
+Korytarz z Opatowskiej do komnaty ma około kilometra. Tysiąc dwieście kroków. Ostatnie dwieście idzie się z zatrzymanym oddechem, bo powietrze rzednie.
+
+<!-- interludia[25].reveal -->
+Tysiąc dwieście. Tyle kroków dzieli piwnicę na Opatowskiej od komnaty pod Wzgórzem Świętopawłowskim. Przeszedłeś to po własnym mieszkaniu, po swoim mieście, i nikt tego nie widział. Aneta szła dwie godziny. Tobie zajęło to tyle, ile zajęło.
+
+<!-- interludia[26].title -->
+Dwa głosy
+
+<!-- interludia[26].intro -->
+Anzelm kładzie na płycie drugą garść piasku. „Jeden ton daje jeden wzór. Dwa tony w kwincie dają wzór, którego jeden człowiek nie zrobi.”
+
+<!-- interludia[26].reveal -->
+Dwa głosy, trzy do dwóch. Płyta rozpoznała oba, chociaż mikrofon dostał jeden sygnał. Rozdzieliła je tak, jak Aneta rozdziela warstwy w rdzeniu: po tym, co się powtarza. Helena nuciła sama. Halina nuciła sama. Wy nie.
 
 
 ## MIKRO-AKTA (mikroakta.json)
@@ -1472,6 +1577,993 @@ To, co w nim jest: nikt w rodzinie nie powiedział, co
 
 <!-- mikroakta[13].options[3] -->
 Nic, to zabobon
+
+<!-- mikroakta[14].title -->
+Łupki
+
+<!-- mikroakta[14].doc -->
+Góry Pieprzowe: łupki kambryjskie, pięćset milionów lat. Pod butami trzeszczą jak pieprz w młynku. Stąd nazwa. Babcia Helena: „stoisz na najstarszej ziemi w tym kraju, dziecko”.
+
+<!-- mikroakta[14].q -->
+Dlaczego Pieprzowe?
+
+<!-- mikroakta[14].options[0] -->
+Od koloru
+
+<!-- mikroakta[14].options[1] -->
+Od dźwięku łupków pod stopami
+
+<!-- mikroakta[14].options[2] -->
+Od przyprawy, którą tu uprawiano
+
+<!-- mikroakta[14].options[3] -->
+Od nazwiska
+
+<!-- mikroakta[15].title -->
+Dzika róża
+
+<!-- mikroakta[15].doc -->
+Przy ścieżce na Pieprzówki rosną dzikie róże, ostatnie kwitną w październiku. Podobno kiedyś było ich mnóstwo. Ktoś je policzył w 1958: tysiąc dwieście krzewów. Dziś kilkadziesiąt.
+
+<!-- mikroakta[15].q -->
+Co się stało z różami?
+
+<!-- mikroakta[15].options[0] -->
+Wymarzły
+
+<!-- mikroakta[15].options[1] -->
+Nikt nie wie; w aktach jest tylko liczba z 1958 i liczba z dziś
+
+<!-- mikroakta[15].options[2] -->
+Zjadły je sarny
+
+<!-- mikroakta[15].options[3] -->
+Wycięto pod parking
+
+<!-- mikroakta[16].title -->
+Kaufland, Biedronka, apteka
+
+<!-- mikroakta[16].doc -->
+Obwodnica Sandomierza wygląda jak każda obwodnica w Polsce. Między hurtowniami domy ludzi, którzy mieszkali tu, zanim ulica stała się obwodnicą. Nic z tego nie przypomina miasta na wzgórzach.
+
+<!-- mikroakta[16].q -->
+Gdzie zaczyna się Sandomierz?
+
+<!-- mikroakta[16].options[0] -->
+Na obwodnicy
+
+<!-- mikroakta[16].options[1] -->
+Tam, gdzie kończą się sady, a zaczynają jabłonie przy drodze
+
+<!-- mikroakta[16].options[2] -->
+Przy Bramie Opatowskiej
+
+<!-- mikroakta[16].options[3] -->
+Na Rynku
+
+<!-- mikroakta[17].title -->
+Pokój numer siedem
+
+<!-- mikroakta[17].doc -->
+Hotel Pod Ciżemką: dziewięć pokoi na górze, restauracja na dole, kamienica Węgra Lazarczyka z XVI wieku. Pani Wanda otwiera drzwi, zanim ktoś zapuka.
+
+<!-- mikroakta[17].q -->
+Skąd pani Wanda wie, że ktoś idzie?
+
+<!-- mikroakta[17].options[0] -->
+Ma kamerę
+
+<!-- mikroakta[17].options[1] -->
+Nie śpi i słyszy schody
+
+<!-- mikroakta[17].options[2] -->
+Zgaduje
+
+<!-- mikroakta[17].options[3] -->
+Pies ją uprzedza
+
+<!-- mikroakta[18].title -->
+Trzy metry muru
+
+<!-- mikroakta[18].doc -->
+Brama Opatowska, XIV wiek, Kazimierz Wielki. Mury grube na trzy metry. Na górze punkt widokowy, 69 tysięcy biletów rocznie. W środku kiedyś karcer.
+
+<!-- mikroakta[18].q -->
+Co dziś zastępuje karcer?
+
+<!-- mikroakta[18].options[0] -->
+Sklep z pamiątkami
+
+<!-- mikroakta[18].options[1] -->
+Punkt widokowy
+
+<!-- mikroakta[18].options[2] -->
+Archiwum
+
+<!-- mikroakta[18].options[3] -->
+Nic
+
+<!-- mikroakta[19].title -->
+Ucho Igielne, raz jeszcze
+
+<!-- mikroakta[19].doc -->
+Furta Dominikańska: wąska szczelina w murze obronnym. Przewodnik: „kto przejdzie, temu odpuszczone”. Aneta przeszła bokiem, z plecakiem w ręce. Amor nie chciał.
+
+<!-- mikroakta[19].q -->
+Dlaczego pies nie chciał przejść?
+
+<!-- mikroakta[19].options[0] -->
+Bo był za gruby
+
+<!-- mikroakta[19].options[1] -->
+Bo nie lubi ciasnych miejsc
+
+<!-- mikroakta[19].options[2] -->
+Bo za murem jest w dół
+
+<!-- mikroakta[19].options[3] -->
+Nie wiadomo; Amor nie tłumaczy
+
+<!-- mikroakta[20].title -->
+Studnia bez wody
+
+<!-- mikroakta[20].doc -->
+Na Rynku stoi drewniana studnia z kołowrotkiem i gontowym daszkiem. Atrapa: pod nią nie ma wody. Pod nią jest piaskowiec, pod piaskowcem korytarze, pod korytarzami głębiej.
+
+<!-- mikroakta[20].q -->
+Co jest pod studnią?
+
+<!-- mikroakta[20].options[0] -->
+Woda
+
+<!-- mikroakta[20].options[1] -->
+Piaskowiec i korytarze
+
+<!-- mikroakta[20].options[2] -->
+Skarb
+
+<!-- mikroakta[20].options[3] -->
+Beton
+
+<!-- mikroakta[21].title -->
+Dziewięć pokoi
+
+<!-- mikroakta[21].doc -->
+Profesor mieszkał w siódemce dwa tygodnie, płacił gotówką z góry, nie jadał śniadań. Schodził do piwnicy po słoiki kompotu. Pani Wanda mówi, że po kompot Heleny.
+
+<!-- mikroakta[21].q -->
+Co w tym nie gra?
+
+<!-- mikroakta[21].options[0] -->
+Nic
+
+<!-- mikroakta[21].options[1] -->
+Helena nie żyje od dwudziestu lat, a kompot stoi w jej piwnicy trzy domy dalej, nie w hotelu
+
+<!-- mikroakta[21].options[2] -->
+Profesor nie lubił kompotu
+
+<!-- mikroakta[21].options[3] -->
+Piwnica hotelu jest zamknięta
+
+<!-- mikroakta[22].title -->
+Czterdziestu dziewięciu
+
+<!-- mikroakta[22].doc -->
+Kościół św. Jakuba, 1260: przeor Sadok i czterdziestu dziewięciu braci śpiewało Salve Regina, gdy wyważano drzwi. Dominikanie śpiewają to samo co wieczór, od siedmiuset lat.
+
+<!-- mikroakta[22].q -->
+Dlaczego śpiewają dalej?
+
+<!-- mikroakta[22].options[0] -->
+Z pobożności
+
+<!-- mikroakta[22].options[1] -->
+Z pamięci
+
+<!-- mikroakta[22].options[2] -->
+Bo tak każe reguła
+
+<!-- mikroakta[22].options[3] -->
+Dla turystów
+
+<!-- mikroakta[23].title -->
+Cegła nie chce się palić
+
+<!-- mikroakta[23].doc -->
+W 1260 roku drewniane miasto spłonęło. Kościół św. Jakuba, ceglany, stał dalej, osmolony. Ludzie myśleli, że cegła ich uratuje. Drzwi były z drewna.
+
+<!-- mikroakta[23].q -->
+Co uratowało Halinę?
+
+<!-- mikroakta[23].options[0] -->
+Cegła
+
+<!-- mikroakta[23].options[1] -->
+Drzwi
+
+<!-- mikroakta[23].options[2] -->
+Piwnica pod kościołem
+
+<!-- mikroakta[23].options[3] -->
+Ojciec
+
+<!-- mikroakta[24].title -->
+Gołębnik
+
+<!-- mikroakta[24].doc -->
+Inwentarz nowego grodu, styczeń 1288: gołębi do posłania było dwanaście, jest jedenaście. Jeden biały ubył w noc, gdy wdowa wyszła. Rano wrócił. Kasztelan kazał to zapisać.
+
+<!-- mikroakta[24].q -->
+Po co kasztelan kazał zapisać gołębia?
+
+<!-- mikroakta[24].options[0] -->
+Bo liczył inwentarz
+
+<!-- mikroakta[24].options[1] -->
+Żeby ktoś kiedyś zrozumiał, skąd przyszedł znak
+
+<!-- mikroakta[24].options[2] -->
+Bo gołąb był drogi
+
+<!-- mikroakta[24].options[3] -->
+Z nudów
+
+<!-- mikroakta[25].title -->
+Zasyp 6,1 m
+
+<!-- mikroakta[25].doc -->
+Protokół Saramy, 1959: zasyp celowy od 2,4 do 6,1 m, belki dębowe z końca XIII w. Poniżej less nienaruszony, korytarz biegnie dalej w dół. Sondaż przerwano: słabe powietrze.
+
+<!-- mikroakta[25].q -->
+Co przerwało badania w 1959?
+
+<!-- mikroakta[25].options[0] -->
+Pieniądze
+
+<!-- mikroakta[25].options[1] -->
+Powietrze
+
+<!-- mikroakta[25].options[2] -->
+Zima
+
+<!-- mikroakta[25].options[3] -->
+Milicja
+
+<!-- mikroakta[26].title -->
+Krzemień pasiasty
+
+<!-- mikroakta[26].doc -->
+Kamień z pasami kwarcu i krzemienia, jak żyły pod skórą. Pod naciskiem daje iskrę. Oprawiany w skórę albo srebro na zacisk, nigdy wiercony. Spinki Stańczyka są z niego.
+
+<!-- mikroakta[26].q -->
+Dlaczego nie wiercić?
+
+<!-- mikroakta[26].options[0] -->
+Bo jest twardy
+
+<!-- mikroakta[26].options[1] -->
+Bo pęka wzdłuż jasnych żył i traci to, co w nim jest
+
+<!-- mikroakta[26].options[2] -->
+Bo jest drogi
+
+<!-- mikroakta[26].options[3] -->
+Bo tak każe moda
+
+<!-- mikroakta[27].title -->
+Siedmiobok w skale
+
+<!-- mikroakta[27].doc -->
+Nacięcia na ścianach korytarza: siedem kresek, siedem ramion. Głębokość rycia, której nie osiągnie żadne znane narzędzie. Jednooki tłumacz w 1287: „nie nasze”.
+
+<!-- mikroakta[27].q -->
+Czyje pismo?
+
+<!-- mikroakta[27].options[0] -->
+Tatarskie
+
+<!-- mikroakta[27].options[1] -->
+Polskie
+
+<!-- mikroakta[27].options[2] -->
+Niczyje, które znają
+
+<!-- mikroakta[27].options[3] -->
+Łacińskie
+
+<!-- mikroakta[28].title -->
+Piotr z Krępy
+
+<!-- mikroakta[28].doc -->
+Kasztelan Sandomierza, 1260. Uwierzył w słowo Tatarów, otworzył wrota. Ścięli go przed bramą, na oczach jego ludzi. Jego córka miała trzy lata.
+
+<!-- mikroakta[28].q -->
+Czego nauczył miasto?
+
+<!-- mikroakta[28].options[0] -->
+Negocjować
+
+<!-- mikroakta[28].options[1] -->
+Nie otwierać wrót na obietnice
+
+<!-- mikroakta[28].options[2] -->
+Budować z cegły
+
+<!-- mikroakta[28].options[3] -->
+Uciekać
+
+<!-- mikroakta[29].title -->
+Teleboga
+
+<!-- mikroakta[29].doc -->
+Grudzień 1287, chan Teleboga za Wisłą, setki ognisk. Oddział oblężniczy na Starym Wzgórzu, przy zgliszczach św. Jakuba. Nowy gród trzymał, bo nikt już nie otwierał wrót.
+
+<!-- mikroakta[29].q -->
+Ile trzymałby gród?
+
+<!-- mikroakta[29].options[0] -->
+Rok
+
+<!-- mikroakta[29].options[1] -->
+Tydzień, może dwa
+
+<!-- mikroakta[29].options[2] -->
+Do wiosny
+
+<!-- mikroakta[29].options[3] -->
+Wiecznie
+
+<!-- mikroakta[30].title -->
+Kożuch
+
+<!-- mikroakta[30].doc -->
+Halina stała na wałach w kożuchu męża, za dużym. Jedyne, co z niego zostało. Konie wróciły bez jeźdźców, bez siodeł. Inwentarz: „kożuch oddany wdowie, nie zwrócony”.
+
+<!-- mikroakta[30].q -->
+Dlaczego inwentarz liczy kożuchy?
+
+<!-- mikroakta[30].options[0] -->
+Bo gród był biedny
+
+<!-- mikroakta[30].options[1] -->
+Bo w inwentarzu liczy się wszystko, i dzięki temu wiemy, kto wyszedł
+
+<!-- mikroakta[30].options[2] -->
+Bo kożuchy kradziono
+
+<!-- mikroakta[30].options[3] -->
+Nie liczy
+
+<!-- mikroakta[31].title -->
+Biały na białym, część druga
+
+<!-- mikroakta[31].doc -->
+Less jest biały. Śnieg jest biały. Pierwszy śnieg na lessie znika, zanim dotknie ziemi, a potem zostaje. Z góry nie widać, gdzie kończy się jedno, a zaczyna drugie.
+
+<!-- mikroakta[31].q -->
+Kiedy przychodzi pierwszy śnieg w Sandomierzu?
+
+<!-- mikroakta[31].options[0] -->
+We wrześniu
+
+<!-- mikroakta[31].options[1] -->
+W listopadzie, zwykle mokry
+
+<!-- mikroakta[31].options[2] -->
+W styczniu
+
+<!-- mikroakta[31].options[3] -->
+Nigdy
+
+<!-- mikroakta[32].title -->
+Dwadzieścia lat
+
+<!-- mikroakta[32].doc -->
+Aneta była w Sandomierzu ostatni raz na pogrzebie babci Heleny. Miała siedemnaście lat i czarną sukienkę pożyczoną od matki, za dużą w ramionach. Matka sprzedała kamienicę trzy miesiące później.
+
+<!-- mikroakta[32].q -->
+Co zabrała matka?
+
+<!-- mikroakta[32].options[0] -->
+Wszystko
+
+<!-- mikroakta[32].options[1] -->
+Tylko to, co zmieściło się w samochodzie
+
+<!-- mikroakta[32].options[2] -->
+Nic
+
+<!-- mikroakta[32].options[3] -->
+Słoiki
+
+<!-- mikroakta[33].title -->
+Nie wracaj
+
+<!-- mikroakta[33].doc -->
+Kartka pismem matki: „Nie wracaj do Sandomierza”. Litery pochylone w lewo, długopis wgnieciony za mocno. Aneta wróciła cztery miesiące po jej śmierci, z robotą jako wymówką.
+
+<!-- mikroakta[33].q -->
+Co jest wymówką, a co powodem?
+
+<!-- mikroakta[33].options[0] -->
+Robota to powód
+
+<!-- mikroakta[33].options[1] -->
+Robota to wymówka, powód jest w piwnicy na Opatowskiej
+
+<!-- mikroakta[33].options[2] -->
+Nie ma powodu
+
+<!-- mikroakta[33].options[3] -->
+Pies
+
+<!-- mikroakta[34].title -->
+Sto dwadzieścia trzy dni
+
+<!-- mikroakta[34].doc -->
+Cztery miesiące od śmierci matki. Aneta nie liczyła. Dni liczyły się same. Głos matki zniknął z pamięci pierwszy, przed twarzą, przed zapachem.
+
+<!-- mikroakta[34].q -->
+Co zostaje najdłużej?
+
+<!-- mikroakta[34].options[0] -->
+Głos
+
+<!-- mikroakta[34].options[1] -->
+Twarz
+
+<!-- mikroakta[34].options[2] -->
+Pismo
+
+<!-- mikroakta[34].options[3] -->
+Zapach
+
+<!-- mikroakta[35].title -->
+Witamina Jazz
+
+<!-- mikroakta[35].doc -->
+Festiwal na Rynku w październiku: scena, kable po bruku, food trucki, kawa z papieru. Hałas dobry, gęsty, przykrywający. W niedzielę po festiwalu zostają prostokątne ślady po stojakach.
+
+<!-- mikroakta[35].q -->
+Co przykrywał hałas festiwalu?
+
+<!-- mikroakta[35].options[0] -->
+Nic
+
+<!-- mikroakta[35].options[1] -->
+Zejście pod Ratusz
+
+<!-- mikroakta[35].options[2] -->
+Dzwon
+
+<!-- mikroakta[35].options[3] -->
+Psa
+
+<!-- mikroakta[36].title -->
+Lapidarium
+
+<!-- mikroakta[36].doc -->
+Pod zewnętrznymi schodami Ratusza metalowe drzwi obok lapidarium. Za nimi schody kamienne w górę, do Ratusza, i w dół, na trasę turystyczną. Klucz ma Krzysztof Maj.
+
+<!-- mikroakta[36].q -->
+Dokąd prowadzą schody w dół?
+
+<!-- mikroakta[36].options[0] -->
+Do piwnicy Ratusza
+
+<!-- mikroakta[36].options[1] -->
+Na trasę turystyczną i dalej
+
+<!-- mikroakta[36].options[2] -->
+Do kanałów
+
+<!-- mikroakta[36].options[3] -->
+Do archiwum
+
+<!-- mikroakta[37].title -->
+470 metrów
+
+<!-- mikroakta[37].doc -->
+Podziemna Trasa Turystyczna: 470 metrów, 34 komory, kilka metrów pod ziemią. Technicy policji przeszli ją całą. „Nic niezwykłego.” Profesor rysował tunele głębsze.
+
+<!-- mikroakta[37].q -->
+Co policja sprawdziła, a czego nie?
+
+<!-- mikroakta[37].options[0] -->
+Wszystko
+
+<!-- mikroakta[37].options[1] -->
+Trasę; szczelina za zawaleniem jest dwadzieścia metrów dalej i głębiej
+
+<!-- mikroakta[37].options[2] -->
+Nic
+
+<!-- mikroakta[37].options[3] -->
+Tylko bilety
+
+<!-- mikroakta[38].title -->
+4,1 ppm
+
+<!-- mikroakta[38].doc -->
+Miernik siarkowodoru przy kracie: 4,1 ppm, gradient rosnący. Próg bezpieczeństwa zawodowego piętnaście. Maska z filtrem zamówiona w Kielcach, dostawa poniedziałek.
+
+<!-- mikroakta[38].q -->
+Dlaczego Aneta zeszła bez maski?
+
+<!-- mikroakta[38].options[0] -->
+Z odwagi
+
+<!-- mikroakta[38].options[1] -->
+Z kalkulacji: czas pod ziemią jest krótki, ciało daje sygnały
+
+<!-- mikroakta[38].options[2] -->
+Zapomniała
+
+<!-- mikroakta[38].options[3] -->
+Nie wiedziała o gazie
+
+<!-- mikroakta[39].title -->
+Zawieszka pod ziemią
+
+<!-- mikroakta[39].doc -->
+Na powierzchni ciepła, z pulsem, który rósł tydzień po tygodniu. Pod ziemią zimna, zastygła. Ciepło szło gdzieś w piaskowiec, w wilgoć, w głębokość. Dwadzieścia gramów, które nie odpowiadały na nic.
+
+<!-- mikroakta[39].q -->
+Co dzieje się z zawieszką pod ziemią?
+
+<!-- mikroakta[39].options[0] -->
+Grzeje mocniej
+
+<!-- mikroakta[39].options[1] -->
+Zamiera
+
+<!-- mikroakta[39].options[2] -->
+Świeci
+
+<!-- mikroakta[39].options[3] -->
+Pęka
+
+<!-- mikroakta[40].title -->
+Pies schodził pierwszy
+
+<!-- mikroakta[40].doc -->
+Od pierwszych dni w Sandomierzu Amor schodził pierwszy, nos przy posadzce, ogon nisko. Tygodnie pod miastem, korytarz za korytarzem. Aż stanął na bruku przy Ratuszu i nie poszedł.
+
+<!-- mikroakta[40].q -->
+Czym była odmowa Amora?
+
+<!-- mikroakta[40].options[0] -->
+Strachem
+
+<!-- mikroakta[40].options[1] -->
+Zmęczeniem
+
+<!-- mikroakta[40].options[2] -->
+Pewnością
+
+<!-- mikroakta[40].options[3] -->
+Chorobą
+
+<!-- mikroakta[41].title -->
+Klucz Heleny
+
+<!-- mikroakta[41].doc -->
+Klucz babci, zawinięty w płótno lniane, ciasno, z węzłem. W lewej kieszeni kurtki. Do czego pasuje, Aneta dowiedziała się dopiero pod ziemią.
+
+<!-- mikroakta[41].q -->
+Dlaczego w płótnie?
+
+<!-- mikroakta[41].options[0] -->
+Żeby nie brzęczał
+
+<!-- mikroakta[41].options[1] -->
+Żeby nie dotykać metalu
+
+<!-- mikroakta[41].options[2] -->
+Bo tak zostawiła Helena
+
+<!-- mikroakta[41].options[3] -->
+Z przesądu
+
+<!-- mikroakta[42].title -->
+Keylogger, część druga
+
+<!-- mikroakta[42].doc -->
+Ktoś zainstalował na laptopie geologa program czytający każdy klawisz. Raport o korytarzach leży na skompromitowanym dysku. Aneta nie otworzy laptopa. Pisze w zeszycie.
+
+<!-- mikroakta[42].q -->
+Kto mógł to zainstalować?
+
+<!-- mikroakta[42].options[0] -->
+Pani Wanda
+
+<!-- mikroakta[42].options[1] -->
+Ktoś, kto miał dostęp do pokoju, i wiedział, czego szukać
+
+<!-- mikroakta[42].options[2] -->
+Policja
+
+<!-- mikroakta[42].options[3] -->
+Nikt, to wirus
+
+<!-- mikroakta[43].title -->
+Rtęć
+
+<!-- mikroakta[43].doc -->
+Toksykologia: rtęć, w małych dawkach, długo, w czymś, co profesor pił codziennie. Ktoś miał dostęp do jego kuchni w Krakowie. Analiza trwa tygodnie, pogrzeb czeka.
+
+<!-- mikroakta[43].q -->
+Co zdradza sposób podania?
+
+<!-- mikroakta[43].options[0] -->
+Pośpiech
+
+<!-- mikroakta[43].options[1] -->
+Kogoś z dostępem, cierpliwego, bywającego
+
+<!-- mikroakta[43].options[2] -->
+Przypadek
+
+<!-- mikroakta[43].options[3] -->
+Samobójstwo
+
+<!-- mikroakta[44].title -->
+Sufragania
+
+<!-- mikroakta[44].doc -->
+Marek Berbeć pracuje w sufraganii przy katedrze. Archiwum kościelne. Prostuje krawędzie dokumentów jak ojciec. Od trzech dni wie coś, czego nie powiedział.
+
+<!-- mikroakta[44].q -->
+Co znaczy „prostowanie” w tej rodzinie?
+
+<!-- mikroakta[44].options[0] -->
+Nawyk
+
+<!-- mikroakta[44].options[1] -->
+Siedemset lat pilnowania, żeby coś leżało równo i nikt tego nie ruszał
+
+<!-- mikroakta[44].options[2] -->
+Zawód
+
+<!-- mikroakta[44].options[3] -->
+Nerwy
+
+<!-- mikroakta[45].title -->
+Dwa słowa, część druga
+
+<!-- mikroakta[45].doc -->
+Stańczyk wita się dwoma słowami i żegna dwoma. Spinki z krzemienia pasiastego, szlif siedmioboczny. Pies warknął na niego z trzydziestu metrów.
+
+<!-- mikroakta[45].q -->
+Co czuł pies z trzydziestu metrów?
+
+<!-- mikroakta[45].options[0] -->
+Wino
+
+<!-- mikroakta[45].options[1] -->
+Coś, czego nie zna z żadnego człowieka
+
+<!-- mikroakta[45].options[2] -->
+Krzemień
+
+<!-- mikroakta[45].options[3] -->
+Strach
+
+<!-- mikroakta[46].title -->
+Fundacja
+
+<!-- mikroakta[46].doc -->
+Fundacja Sandomierska Memoria: kupuje kamienice, partneruje festiwalom, odnawia spinki herbowe w muzeum. Zarząd jednoosobowy. Program edukacyjny z biegłymi spoza miasta.
+
+<!-- mikroakta[46].q -->
+Po co Fundacji biegli spoza miasta?
+
+<!-- mikroakta[46].options[0] -->
+Bo miejscowi są drodzy
+
+<!-- mikroakta[46].options[1] -->
+Bo miejscowi wiedzą, dla kogo pracują
+
+<!-- mikroakta[46].options[2] -->
+Bo tak każe statut
+
+<!-- mikroakta[46].options[3] -->
+Bo są lepsi
+
+<!-- mikroakta[47].title -->
+Kamienica na Opatowskiej
+
+<!-- mikroakta[47].doc -->
+Helena mieszkała na Opatowskiej. Piwnica ze słoikami, suszarnia, wojna z sąsiadką z dołu o miejsce. Po jej śmierci córka sprzedała kamienicę. Kupiła spółka. Spółka należy do Fundacji.
+
+<!-- mikroakta[47].q -->
+Ile czasu minęło od śmierci do sprzedaży?
+
+<!-- mikroakta[47].options[0] -->
+Rok
+
+<!-- mikroakta[47].options[1] -->
+Trzy miesiące
+
+<!-- mikroakta[47].options[2] -->
+Dziesięć lat
+
+<!-- mikroakta[47].options[3] -->
+Tydzień
+
+<!-- mikroakta[48].title -->
+Paragraf siódmy
+
+<!-- mikroakta[48].doc -->
+Akt sprzedaży kamienicy: kupujący zobowiązuje się nie zmieniać przeznaczenia piwnic ani nie udostępniać ich bez zgody zarządu Fundacji. Notariusz zauważył, że to nietypowe.
+
+<!-- mikroakta[48].q -->
+Czego naprawdę dotyczy umowa?
+
+<!-- mikroakta[48].options[0] -->
+Dachu
+
+<!-- mikroakta[48].options[1] -->
+Piwnic
+
+<!-- mikroakta[48].options[2] -->
+Czynszu
+
+<!-- mikroakta[48].options[3] -->
+Mieszkań
+
+<!-- mikroakta[49].title -->
+Pilnikarz z Biecza
+
+<!-- mikroakta[49].doc -->
+Zapis z XIV wieku: pilnikarz sprowadzony z Biecza przez Kazimierza Wielkiego, do roboty w kamieniu. Kamień „ciepły mimo szesnastu lat w skarbcu bez ognia”.
+
+<!-- mikroakta[49].q -->
+Co jest dziwne w tym zapisie?
+
+<!-- mikroakta[49].options[0] -->
+Biecz
+
+<!-- mikroakta[49].options[1] -->
+Ciepły kamień po szesnastu latach
+
+<!-- mikroakta[49].options[2] -->
+Pilnikarz
+
+<!-- mikroakta[49].options[3] -->
+Skarbiec
+
+<!-- mikroakta[50].title -->
+Cymatics
+
+<!-- mikroakta[50].doc -->
+Płyta metalowa, piasek, smyczek po krawędzi. Piasek układa się w kształt zależny od tonu. Chladni, XVIII wiek. Anzelm pokazuje, nie tłumaczy.
+
+<!-- mikroakta[50].q -->
+Co pokazuje piasek?
+
+<!-- mikroakta[50].options[0] -->
+Dźwięk
+
+<!-- mikroakta[50].options[1] -->
+Miejsca, gdzie płyta nie drga
+
+<!-- mikroakta[50].options[2] -->
+Wiatr
+
+<!-- mikroakta[50].options[3] -->
+Smyczek
+
+<!-- mikroakta[51].title -->
+Rezonator
+
+<!-- mikroakta[51].doc -->
+„Sandomierz stoi na rezonatorze. Pięćset milionów lat kwarcu pod lessem. Ludzie budują nad tym katedry i nazywają wiarą. To fizyka.” Anzelm modli się dalej.
+
+<!-- mikroakta[51].q -->
+Czy fizyka przeszkadza Anzelmowi w modlitwie?
+
+<!-- mikroakta[51].options[0] -->
+Tak
+
+<!-- mikroakta[51].options[1] -->
+Nie, jedno drugiemu nie przeszkadza
+
+<!-- mikroakta[51].options[2] -->
+Tylko w niedzielę
+
+<!-- mikroakta[51].options[3] -->
+Nie wiadomo
+
+<!-- mikroakta[52].title -->
+Kwarc pod naciskiem
+
+<!-- mikroakta[52].doc -->
+Kwarc ściskany daje napięcie. Piezoelektryczność. Od milionów lat, pod ziemią, w ciemności. Halina uderzyła krzemieniem o krawędź otworu z całej siły i kamień odpowiedział błyskiem.
+
+<!-- mikroakta[52].q -->
+Co odpowiedziało Halinie?
+
+<!-- mikroakta[52].options[0] -->
+Bóg
+
+<!-- mikroakta[52].options[1] -->
+Fizyka kwarcu
+
+<!-- mikroakta[52].options[2] -->
+Matka
+
+<!-- mikroakta[52].options[3] -->
+Nic
+
+<!-- mikroakta[53].title -->
+Obelisk
+
+<!-- mikroakta[53].doc -->
+Komnata pod ziemią: obelisk z żyłkami krzemienia na cokole o siedmiu bokach. Nad nim owalny otwór w sklepieniu, w górę, w metry skały. Tamtędy wyleciał gołąb.
+
+<!-- mikroakta[53].q -->
+Dokąd prowadzi otwór?
+
+<!-- mikroakta[53].options[0] -->
+Na Rynek
+
+<!-- mikroakta[53].options[1] -->
+Na powierzchnię, gdzieś nad Starym Wzgórzem
+
+<!-- mikroakta[53].options[2] -->
+Do rzeki
+
+<!-- mikroakta[53].options[3] -->
+Nigdzie
+
+<!-- mikroakta[54].title -->
+Kot z białą łatą
+
+<!-- mikroakta[54].doc -->
+Ostatni obraz Haliny: kot, mały, bury, z białą łatą na piersi. Ojciec przyniósł go z targu. Halina włożyła mu palec do ucha, a ojciec się śmiał. Śmiechu nie pamięta. Wie, że był głośny, bo kot podskoczył.
+
+<!-- mikroakta[54].q -->
+Skąd Halina wie, że śmiech był głośny?
+
+<!-- mikroakta[54].options[0] -->
+Pamięta
+
+<!-- mikroakta[54].options[1] -->
+Bo kot podskoczył
+
+<!-- mikroakta[54].options[2] -->
+Matka mówiła
+
+<!-- mikroakta[54].options[3] -->
+Nie wie
+
+<!-- mikroakta[55].title -->
+Amor, biała plamka
+
+<!-- mikroakta[55].doc -->
+Cocker, trzynaście kilogramów, biała plamka na piersi. Jak kot Haliny. Nikt tego nie zauważył. Amor nie zna Haliny. Halina nie znała Amora.
+
+<!-- mikroakta[55].q -->
+Co łączy psa z kotem sprzed siedmiuset lat?
+
+<!-- mikroakta[55].options[0] -->
+Nic
+
+<!-- mikroakta[55].options[1] -->
+Biała plamka na piersi, którą zauważa tylko ten, kto czyta uważnie
+
+<!-- mikroakta[55].options[2] -->
+Imię
+
+<!-- mikroakta[55].options[3] -->
+Właściciel
+
+<!-- mikroakta[56].title -->
+Materia pomiędzy
+
+<!-- mikroakta[56].doc -->
+Less nie był pyłem. Less był materią, która pamięta. Jak skóra okładki, jak wosk na pieczęci, jak zapach jabłek w piwnicy. Materia pomiędzy.
+
+<!-- mikroakta[56].q -->
+Pomiędzy czym a czym?
+
+<!-- mikroakta[56].options[0] -->
+Niebem a ziemią
+
+<!-- mikroakta[56].options[1] -->
+Tym, co można zmierzyć, a tym, na co nie ma aparatury
+
+<!-- mikroakta[56].options[2] -->
+Miastem a rzeką
+
+<!-- mikroakta[56].options[3] -->
+Dniem a nocą
+
+<!-- mikroakta[57].title -->
+Barka
+
+<!-- mikroakta[57].doc -->
+Z rzeki dochodził dźwięk barki: niski, motorowy, z drżeniem, które miało barwę granatową i kształt podłużny. Woda niosła dźwięk inaczej niż powietrze: głębiej, z pogłosem w kościach stóp.
+
+<!-- mikroakta[57].q -->
+Co słyszy geolożka po trzeciej bramie?
+
+<!-- mikroakta[57].options[0] -->
+To samo co wszyscy
+
+<!-- mikroakta[57].options[1] -->
+Barwę dźwięku
+
+<!-- mikroakta[57].options[2] -->
+Nic
+
+<!-- mikroakta[57].options[3] -->
+Tylko dzwon
+
+<!-- mikroakta[58].title -->
+Jedno słowo
+
+<!-- mikroakta[58].doc -->
+Rozdział dwudziesty pierwszy kończy się jednym słowem powiedzianym cicho na Rynku, z Amorem przy nodze, z lessem na butach.
+
+<!-- mikroakta[58].q -->
+Jakie to słowo?
+
+<!-- mikroakta[58].options[0] -->
+Wracam
+
+<!-- mikroakta[58].options[1] -->
+Słyszę
+
+<!-- mikroakta[58].options[2] -->
+Boję się
+
+<!-- mikroakta[58].options[3] -->
+Mamo
+
+<!-- mikroakta[59].title -->
+Sandomierskie jabłka
+
+<!-- mikroakta[59].doc -->
+Babcia Helena mówiła „jabłka sandomierskie” jak o osobnym państwie, z własną ziemią i własnym pyłem, który wchodzi w skórę i nie zmywa się do końca.
+
+<!-- mikroakta[59].q -->
+Co nie zmywa się do końca?
+
+<!-- mikroakta[59].options[0] -->
+Sok
+
+<!-- mikroakta[59].options[1] -->
+Pył
+
+<!-- mikroakta[59].options[2] -->
+Zapach
+
+<!-- mikroakta[59].options[3] -->
+Wstyd
+
+<!-- mikroakta[60].title -->
+Siedem złotych, raz jeszcze
+
+<!-- mikroakta[60].doc -->
+Kasa na Pieprzówkach: kobieta w polarze, która nie podnosi wzroku od telefonu. Tablica wyblakła od słońca, mapa bez dolnego rogu. Luneta na słupku obrócona w stronę miasta.
+
+<!-- mikroakta[60].q -->
+Czego brakuje na mapie szlaków?
+
+<!-- mikroakta[60].options[0] -->
+Legendy
+
+<!-- mikroakta[60].options[1] -->
+Dolnego rogu
+
+<!-- mikroakta[60].options[2] -->
+Rzeki
+
+<!-- mikroakta[60].options[3] -->
+Miasta
 
 
 ## NAGRODY (rewards.json)
