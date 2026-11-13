@@ -27,27 +27,32 @@ export function icon(type: string): SVGSVGElement {
   svg.append(path); return svg;
 }
 
-/** Krzemień pasiasty: siedmiobok z nieregularnymi pasami krzemienia i kwarcu (feTurbulence + displacement). Pasy jaśnieją od ciepła przez data-heat na rodzicu. */
-export function flint(size = 96): SVGSVGElement {
-  const NS = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(NS, "svg");
-  svg.setAttribute("viewBox", "-50 -50 100 100"); svg.setAttribute("width", String(size)); svg.setAttribute("height", String(size)); svg.setAttribute("class", "flint"); svg.setAttribute("aria-hidden", "true");
-  const id = "fl" + Math.random().toString(36).slice(2, 7);
-  const pts = Array.from({ length: 7 }, (_, i) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 7; return `${(Math.cos(a) * 46).toFixed(1)},${(Math.sin(a) * 46).toFixed(1)}`; }).join(" ");
-  svg.innerHTML = `
-    <defs>
-      <clipPath id="${id}c"><polygon points="${pts}"/></clipPath>
-      <filter id="${id}f" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter>
-      <radialGradient id="${id}g" cx="34%" cy="36%" r="80%"><stop offset="0" stop-color="#ffb066"/><stop offset="0.5" stop-color="#d9843a"/><stop offset="1" stop-color="#7a1f1f" stop-opacity="0"/></radialGradient>
-    </defs>
-    <g clip-path="url(#${id}c)">
-      <rect x="-60" y="-60" width="120" height="120" fill="#3a3630"/>
-      <g filter="url(#${id}f)" class="bands">
-        ${Array.from({ length: 30 }, (_, i) => 4 + i * 2.6).reverse().map((r, i) => `<circle cx="-16" cy="-12" r="${r.toFixed(1)}" fill="none" stroke="${["#cdbf9f", "#5b5449", "#b8a98a", "#4a443b"][i % 4]}" stroke-width="${[1.1, 1.5, 0.8, 1.6][i % 4]}" opacity="${i % 4 === 2 ? 0.8 : 1}"/>`).join("")}
-        <circle cx="-16" cy="-12" r="2" fill="#e8e0cf"/>
-      </g>
-      <rect x="-60" y="-60" width="120" height="120" fill="url(#${id}g)" class="heat"/>
-    </g>
-    <polygon points="${pts}" fill="none" stroke="#a39a86" stroke-width="1.2"/>`;
-  return svg;
+/**
+ * Krzemień pasiasty. Pasy to coraz bardziej przesunięte elipsy: po jednej stronie zbite i cienkie, po drugiej szerokie,
+ * kontur zdeformowany szumem jak słoje. Rysowany RAZ jako obraz (filtr liczony jeden raz), ciepło to osobna, tania warstwa
+ * nad obrazem (opacity), więc pulsowanie nie kosztuje przeliczania filtra.
+ */
+export function flint(size = 96, seed = 7): HTMLElement {
+  const pts = Array.from({ length: 7 }, (_, i) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 7; return [Math.cos(a) * 46, Math.sin(a) * 46] as const; });
+  const poly = pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+  const clip = pts.map(([x, y]) => `${(50 + x).toFixed(1)}% ${(50 + y).toFixed(1)}%`).join(", ");
+  const tones = ["#d6c8a6", "#4e473d", "#b9a98a", "#3b3630", "#8f8470"];
+  const widths = [1.2, 1.8, 0.9, 2.2, 0.7];
+  // ogniska pasów: start blisko lewego górnego rogu, każdy kolejny pierścień przesuwa się w prawo-dół i rośnie szybciej w poziomie
+  const rings = Array.from({ length: 34 }, (_, i) => {
+    const t = i / 33; const cx = -20 + t * 30, cy = -16 + t * 22; const rx = 3 + i * 2.9 + t * t * 20, ry = 3 + i * 2.1 + t * 6;
+    const k = i % 5; const w = widths[k] * (0.6 + t * 0.9); // cieńsze w środku (zbite), grubsze na zewnątrz (rozszerzone)
+    return `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="none" stroke="${tones[k]}" stroke-width="${w.toFixed(2)}" transform="rotate(-18 ${cx.toFixed(1)} ${cy.toFixed(1)})"/>`;
+  }).reverse().join("");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100" width="${size * 3}" height="${size * 3}">
+    <defs><clipPath id="c"><polygon points="${poly}"/></clipPath>
+      <filter id="f" x="-30%" y="-30%" width="160%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="0.022 0.03" numOctaves="3" seed="${seed}"/><feDisplacementMap in="SourceGraphic" scale="11" xChannelSelector="R" yChannelSelector="G"/></filter></defs>
+    <g clip-path="url(#c)"><rect x="-60" y="-60" width="120" height="120" fill="#3a3630"/><g filter="url(#f)">${rings}<ellipse cx="-20" cy="-16" rx="2.4" ry="1.8" fill="#eee6d2"/></g></g>
+    <polygon points="${poly}" fill="none" stroke="#a39a86" stroke-width="1.1"/></svg>`;
+  const img = document.createElement("img");
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg); img.width = size; img.height = size; img.alt = ""; img.className = "flint-img"; img.decoding = "async";
+  const heat = document.createElement("i"); heat.className = "flint-heat"; heat.style.clipPath = `polygon(${clip})`;
+  const wrap = document.createElement("span"); wrap.className = "flint"; wrap.style.width = size + "px"; wrap.style.height = size + "px";
+  wrap.append(img, heat);
+  return wrap;
 }

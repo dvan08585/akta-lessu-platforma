@@ -8,7 +8,7 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-#less { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.55; }
+#less { position: fixed; inset: 0; width: 100% !important; height: 100% !important; pointer-events: none; z-index: 0; opacity: 0.55; }
 #app { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter) 6rem; }
 a { color: var(--ink); }
 h1, h2, h3 { font-weight: 400; letter-spacing: 0.02em; line-height: 1.2; margin: 0 0 0.6em; }
@@ -109,13 +109,15 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .skip-link { position: absolute; left: -999px; top: 0; background: var(--ink); color: var(--bg); padding: 0.5rem 0.8rem; z-index: 20; }
 .skip-link:focus { left: var(--gutter); }
 
-/* Kamień: siedmiobok z pasami krzemienia; ciepło = poświata od środka, pasy jasne rozgrzewają się. */
-.pendant .flint { display: block; }
-.pendant .flint .heat { opacity: 0; transition: opacity 0.5s; mix-blend-mode: screen; }
-.pendant[data-heat="1"] .flint .heat { opacity: 0.18; }
-.pendant[data-heat="2"] .flint .heat { opacity: 0.4; }
-.pendant[data-heat="3"] .flint .heat { opacity: 0.7; }
-.pendant[data-heat="4"] .flint .heat { opacity: 1; animation: flint-pulse 1.2s infinite; }
+/* Kamień: obraz rysowany raz; ciepło = osobna warstwa (tylko opacity), więc pulsowanie jest tanie. */
+.flint { position: relative; display: block; }
+.flint-img { display: block; width: 100%; height: 100%; }
+.pendant .flint-heat, .flint-heat { position: absolute; inset: 0; width: 100% !important; height: 100% !important; border-radius: 0; box-shadow: none; animation: none; opacity: 0; transition: opacity 0.5s; mix-blend-mode: screen; pointer-events: none;
+  background: radial-gradient(circle at 32% 34%, rgba(255,176,102,0.95) 0, rgba(217,132,58,0.8) 45%, rgba(122,31,31,0) 85%); }
+.pendant[data-heat="1"] .flint-heat { opacity: 0.18; }
+.pendant[data-heat="2"] .flint-heat { opacity: 0.4; }
+.pendant[data-heat="3"] .flint-heat { opacity: 0.7; }
+.pendant[data-heat="4"] .flint-heat { opacity: 1; animation: flint-pulse 1.2s infinite; }
 @keyframes flint-pulse { 50% { opacity: 0.6; } }
-.pendant.big .flint { filter: drop-shadow(0 0 0 transparent); transition: filter 0.6s; }
+.pendant.big .flint { transition: filter 0.6s; }
 .pendant.big[data-heat="3"] .flint, .pendant.big[data-heat="4"] .flint { filter: drop-shadow(0 0 18px rgba(255,156,74,0.55)); }
