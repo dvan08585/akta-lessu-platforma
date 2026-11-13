@@ -140,7 +140,7 @@ button.body:hover, .btn.body:hover { box-shadow: 0 0 22px rgba(217,132,58,0.55);
 @media (prefers-reduced-motion: reduce) { .spark { display: none; } .hide-out { transition: none; } }
 /* Pieczątka na mikro-aktach i „następne jutro”. */
 .daily { position: relative; }
-.stamp { position: absolute; right: 1rem; top: 2.6rem; transform: rotate(-12deg); padding: 0.2rem 0.6rem; border: 2px solid #7a1f1f; color: #7a1f1f; border-radius: 3px; font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.85; mix-blend-mode: multiply; pointer-events: none; animation: stamp-in 0.35s cubic-bezier(.2,1.4,.4,1) both; }
+.stamp { position: absolute; right: 1rem; bottom: 0.9rem; transform: rotate(-12deg); padding: 0.2rem 0.6rem; border: 2px solid #7a1f1f; color: #7a1f1f; border-radius: 3px; font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.85; mix-blend-mode: multiply; pointer-events: none; animation: stamp-in 0.35s cubic-bezier(.2,1.4,.4,1) both; }
 .stamp.cold { border-color: #5a5a5a; color: #5a5a5a; }
 @keyframes stamp-in { from { transform: rotate(-12deg) scale(1.8); opacity: 0; } to { transform: rotate(-12deg) scale(1); opacity: 0.85; } }
 .next-daily { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin: 0.4rem 0 0; }
