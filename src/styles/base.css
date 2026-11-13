@@ -95,7 +95,8 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .epigraph { font-style: italic; }
 
 /* Instrukcja w wejściu: inny głos niż proza. Mniejsza, rozstrzelona, bez ciężaru literackiego. */
-.onboard .cue { font-size: 0.92rem; letter-spacing: 0.08em; color: var(--ink-dim); margin: 0; text-align: center; min-height: 3em; }
+/* W wejściu instrukcja jest wycentrowana nad kamieniem: bez kreski z boku, stała wysokość liczona na dwie linie, tekst w pionie na środku. */
+.onboard .cue { font-size: 0.92rem; letter-spacing: 0.08em; color: var(--ink-dim); margin: 0; padding: 0; border: 0; text-align: center; min-height: 3em; display: flex; align-items: center; justify-content: center; max-width: 22rem; }
 /* Ciepło z kamienia rozlewa się na ekran i gaśnie. */
 .glow { position: fixed; inset: 0; z-index: 9; pointer-events: none; background: radial-gradient(circle at var(--cx) var(--cy), rgba(255,156,74,0.95) 0, rgba(217,132,58,0.85) 18%, rgba(14,13,11,0.98) 60%); animation: glow-in 1.4s ease-out both; }
 .glow.out { animation: glow-out 1s ease-in both; }
