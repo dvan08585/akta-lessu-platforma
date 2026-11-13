@@ -92,3 +92,9 @@ select { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px 
 .doc.mirror p, .doc.mirror h4 { transform: scaleX(-1); display: block; }
 .hold-btn { min-width: 60%; min-height: 64px; touch-action: none; user-select: none; -webkit-user-select: none; }
 .plate.hept, .plate.trace { touch-action: none; border-radius: var(--radius); }
+.next-step { margin: 2.2rem 0; padding: 1.2rem 1.1rem; border: 1px solid var(--sand); border-radius: var(--radius); background: var(--bg-2); }
+.next-step h3 { color: var(--sand); }
+.reward { margin: 2.2rem 0; }
+.reward .doc { margin-top: 1rem; }
+.share { margin: 2.2rem 0 1rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+.cam { max-height: 180px; object-fit: cover; }

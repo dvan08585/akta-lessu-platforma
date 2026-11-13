@@ -413,33 +413,49 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   function renderSolution(tries: number) {
     if (!solvedAlready) track("case_solved", { gate: c.gate, tries });
     if (c.gate === 5 && !app.state.sawFooter) { app.state.sawFooter = true; save(app.state); }
+    const gestureId = GESTURE_OF[c.gate];
+    const gestureDoneNow = !gestureId || app.state.interludesDone.includes(gestureId) || app.state.testMode;
+
+    // 1. Rozwiązanie: proza.
     const sol = h("div", { class: "solution fade-in" });
     for (const p of c.solution) sol.append(h("p", {}, p));
-    const gestureId = GESTURE_OF[c.gate];
-    if (gestureId && !app.state.interludesDone.includes(gestureId) && !app.state.testMode) {
-      sol.append(h("p", { class: "gesture-call" }, "Brama rozpoznana. Żeby ją przejść, potrzebne jest ciało, nie papier. ", h("a", { href: `#/miedzy/${gestureId}` }, "Przejdź bramę →")));
-    }
-    const build = async () => {
-      const hk = app.passed() >= 6 ? await halfKey(app.state.seed) : undefined;
-      const readings = await Promise.all(app.solvedGates().filter((g) => !app.silent.includes(g) && g !== 7).map((g) => readingToken(app.state.seed, g)));
-      return shareCard({ solved: app.solvedGates(), unstable: app.state.unstableGates, silent: app.silent.filter((g) => !app.state.readings[String(g)]), attempts: tries, streak: app.state.streak.days, url: app.cfg.share.url, hashtag: app.cfg.share.hashtag, caseN: c.n, halfKey: hk, readings });
-    };
-    const pre = h("pre", {}, "…");
-    build().then((card) => (pre.textContent = card));
-    const share = h("div", { class: "share" }, h("h3", {}, "Zostaw ślad"), pre,
-      h("div", { class: "verdict" },
-        h("button", { class: "primary", onclick: async () => { track("share", { gate: c.gate }); const r = await shareText(await build()); toast(r === "shared" ? "Udostępniono." : r === "copied" ? "Skopiowano do schowka." : "Nie udało się. Zaznacz i skopiuj."); } }, "Udostępnij"),
-        h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")));
-    solutionBox.replaceChildren(sol, share);
     if (c.pair) for (const p of c.pair.finale) sol.append(h("p", { class: "finale" }, p));
+
+    // 2. Jedna rzecz do zrobienia: brama rozpoznana papierem, przebyta dopiero ciałem.
+    const next = h("div", { class: "next-step" });
+    if (!gestureDoneNow) {
+      next.append(h("h3", {}, "Brama rozpoznana"), h("p", { class: "muted" }, "Dokumenty się zgadzają. Żeby przejść bramę, potrzebne jest ciało, nie papier."),
+        h("div", { class: "verdict" }, h("a", { class: "btn primary", href: `#/miedzy/${gestureId}` }, "Przejdź bramę ciałem"), h("button", { class: "ghost", onclick: () => go("#/mapa") }, "Później")));
+    } else {
+      next.append(h("h3", {}, "Brama przebyta"), h("p", { class: "muted" }, "Dokumenty i ciało. Zostaw ślad."));
+    }
+
+    // 3. Nagroda za przyciskiem, nie od razu.
+    const rewardBox = h("div", { class: "reward" });
     if (c.reward) {
       const r = app.rewards[c.reward.file];
       if (r) {
-        const art = h("article", { class: "doc hand" }, h("h4", {}, r.title), h("div", { class: "src" }, r.note));
+        const art = h("article", { class: "doc hand", style: "display:none" }, h("h4", {}, r.title), h("div", { class: "src" }, r.note));
         for (const p of r.paragraphs) art.append(h("p", {}, p));
-        solutionBox.append(h("h3", {}, "Nagroda: tekst"), art);
+        const open = h("button", { onclick: () => { art.style.display = ""; open.remove(); art.scrollIntoView({ behavior: "smooth", block: "start" }); } }, `Odbierz: ${c.reward.title}`);
+        rewardBox.append(h("h3", {}, "Nagroda"), open, art);
       }
     }
+
+    // 4. Udostępnianie tylko wtedy, gdy karta mówi prawdę (brama przebyta).
+    const shareBox = h("div", { class: "share" });
+    if (gestureDoneNow) {
+      const build = async () => {
+        const hk = app.passed() >= 6 ? await halfKey(app.state.seed) : undefined;
+        const readings = await Promise.all(app.solvedGates().filter((g) => !app.silent.includes(g) && g !== 7).map((g) => readingToken(app.state.seed, g)));
+        return shareCard({ solved: app.solvedGates(), unstable: app.state.unstableGates, silent: app.silent.filter((g) => !app.state.readings[String(g)]), attempts: tries, streak: app.state.streak.days, url: app.cfg.share.url, hashtag: app.cfg.share.hashtag, caseN: c.n, halfKey: hk, readings });
+      };
+      const pre = h("pre", {}, "…"); build().then((card) => (pre.textContent = card));
+      shareBox.append(h("h3", {}, "Zostaw ślad"), pre, h("div", { class: "verdict" },
+        h("button", { class: "primary", onclick: async () => { track("share", { gate: c.gate }); const r = await shareText(await build()); toast(r === "shared" ? "Udostępniono." : r === "copied" ? "Skopiowano do schowka." : "Nie udało się. Zaznacz i skopiuj."); } }, "Udostępnij"),
+        h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")));
+    }
+    solutionBox.replaceChildren(sol, next, rewardBox, shareBox);
     if (!solvedAlready) app.addNote(`Brama ${c.gate} rozpoznana: ${c.title}.`, `próby: ${tries}`);
     sol.scrollIntoView({ behavior: "smooth", block: "start" });
   }
