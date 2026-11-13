@@ -5,7 +5,7 @@ import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import { pickDaily, dayKey } from "../engine/daily";
 import { track } from "../engine/track";
 import { sendEvent, fetchStats, fetchRejestr, sendHum } from "../engine/wspolny";
-import { isDawn, nextDawnLabel } from "../engine/sun";
+import { isDawn, nextDawnLabel, sunrise } from "../engine/sun";
 import { fetchPogoda } from "../engine/pogoda";
 import { due, pending, unreadCount, ensureInbox, schedule } from "../engine/messages";
 import type { App } from "../app";
@@ -29,6 +29,17 @@ export function topbar(app: App, active: string): HTMLElement {
   return h("header", { class: "topbar" }, h("a", { class: "brand", href: "#/" }, app.cfg.title), nav);
 }
 
+/** Datownik: miasto żyje, zanim cokolwiek klikniesz. Data, pogoda, Wisła, wschód. Dane dochodzą, gdy są; bez nich zostaje data. */
+export function dateline(): HTMLElement {
+  const now = new Date();
+  const date = now.toLocaleDateString("pl-PL", { weekday: "long", day: "numeric", month: "long" });
+  const sr = sunrise(now).toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+  const el = h("p", { class: "faint dateline" }, `Sandomierz · ${date} · wschód ${sr}`);
+  fetchPogoda().then((w) => { if (w) el.textContent += ` · ${w.tempC.toFixed(0)}°C${w.snowing ? ", śnieg" : ""}`; });
+  fetchWisla().then((w) => { if (w.live) el.textContent += ` · Wisła ${w.cm} cm`; });
+  return el;
+}
+
 export function viewIntro(app: App): HTMLElement {
   const solved = app.state.solvedCases.length;
   const letter = h("article", { class: "doc mono letter" },
@@ -41,7 +52,7 @@ export function viewIntro(app: App): HTMLElement {
     h("p", {}, "kom. Zieliński"),
     h("div", { class: "footer" }, "Przekazano przez: Program edukacyjny „Sandomierz Pod Spodem”. Partner: Fundacja Sandomierska Memoria."));
   return h("section", { class: "intro fade-in" },
-    h("p", { class: "faint" }, "Sandomierz · siedem wzgórz · pod nimi"),
+    dateline(),
     h("h1", {}, "Akta Lessu"),
     h("p", { class: "quote" }, "Less nie był pyłem. Less był materią, która pamięta. ", h("em", {}, "Jak skóra okładki, jak wosk na pieczęci, jak zapach jabłek w piwnicy.")),
     solved ? null : letter,

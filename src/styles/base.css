@@ -81,3 +81,4 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .onboard .holdzone { padding: 1.5rem; border: 1px dashed var(--ink-faint); border-radius: 50%; touch-action: none; user-select: none; -webkit-user-select: none; cursor: pointer; margin: 0 auto; }
 .onboard .pendant.big { margin: 0; }
 .onboard .pendant.big i { width: 72px; height: 72px; }
+.dateline { letter-spacing: 0.06em; }

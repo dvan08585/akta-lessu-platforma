@@ -24,7 +24,7 @@
 </style>
 </head>
 <body>
-<div id="top">Sandomierz · siedem wzgórz · pod nimi</div>
+<div id="top"></div>
 <div id="map"></div>
 <div id="hud">
   <button id="follow">Idź za mną</button>
@@ -45,6 +45,7 @@ const GATES = [
   { n: 3, name: "Miejskie", el: "dźwięk", lat: 50.6815, lon: 21.7460 },
   { n: 6, name: "Collegium", el: "ciemność", lat: 50.6792, lon: 21.7478 },
 ];
+document.getElementById("top").textContent = "Sandomierz · " + new Date().toLocaleDateString("pl-PL", { weekday: "long", day: "numeric", month: "long" });
 const map = new maplibregl.Map({
   container: "map",
   style: "https://tiles.openfreemap.org/styles/liberty",
