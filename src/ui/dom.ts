@@ -22,3 +22,6 @@ export function toast(msg: string): void {
   setTimeout(() => t.remove(), Math.min(9000, 2600 + msg.length * 30));
 }
 export function go(hash: string): void { if (location.hash === hash) dispatchEvent(new HashChangeEvent("hashchange")); else location.hash = hash; }
+/** Przyciski nawigacji: „wstecz” zawsze cichy ze strzałką w lewo, „dalej” zawsze główny ze strzałką w prawo. Jeden język na całej stronie. */
+export function back(label = "Wróć do mapy", to = "#/mapa"): HTMLButtonElement { return h("button", { class: "ghost back", onclick: () => go(to) }, `← ${label}`); }
+export function next(label: string, to: string, cls = "primary"): HTMLButtonElement { return h("button", { class: `${cls} next`, onclick: () => go(to) }, `${label} →`); }

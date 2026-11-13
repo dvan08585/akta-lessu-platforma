@@ -5,7 +5,7 @@
 .doc p { margin: 0 0 0.7em; }
 .doc.mono { font-family: var(--font-mono); font-size: 0.86rem; line-height: 1.5; }
 .doc.hand { font-style: italic; }
-.doc.chronicle p:first-of-type { font-variant: small-caps; letter-spacing: 0.02em; }
+.doc.chronicle p:first-of-type::first-letter { font-size: 1.6em; line-height: 1; float: left; padding: 0.1em 0.2em 0 0; color: #5a4a32; }
 .doc .redact { background: #1e1a14; color: #1e1a14; }
 .doc-nav { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
 .doc-nav button { padding: 0.35rem 0.7rem; min-height: 36px; font-size: 0.82rem; }

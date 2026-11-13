@@ -87,10 +87,16 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .onboard .line { font-size: 1.35rem; line-height: 1.5; margin: 0; }
 .onboard .skip { position: absolute; right: 0; top: 1rem; font-size: 0.8rem; }
 .onboard button.big { font-size: 1.05rem; padding: 0.9rem 1.4rem; }
-.onboard .holdzone { padding: 1.5rem; border: 1px dashed var(--ink-faint); border-radius: 50%; touch-action: none; user-select: none; -webkit-user-select: none; cursor: pointer; margin: 0 auto; }
+.onboard .holdzone { -webkit-touch-callout: none; padding: 1.5rem; border: 1px dashed var(--ink-faint); border-radius: 50%; touch-action: none; user-select: none; -webkit-user-select: none; cursor: pointer; margin: 0 auto; }
 .onboard .pendant.big { margin: 0; }
 .onboard .pendant.big i { width: 72px; height: 72px; }
-.dateline { letter-spacing: 0.06em; }
+/* Datownik: miasto żyje. Rząd krótkich odczytów z ikonami w piasku, nie zdanie. */
+.dateline { display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; align-items: center; font-size: 0.8rem; letter-spacing: 0.06em; color: var(--ink-dim); margin: 0 0 1rem; }
+.dateline .dl { display: inline-flex; align-items: center; gap: 0.35rem; white-space: nowrap; }
+.dateline .dl.date { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.72rem; color: var(--ink-faint); }
+.dateline svg { width: 16px; height: 16px; color: var(--sand); flex: none; }
+.dateline .dl.live { animation: dl-in 0.6s ease-out both; }
+@keyframes dl-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
 .kicker { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 0.4rem; }
 .epigraph { font-style: italic; }
 
@@ -110,8 +116,8 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .skip-link:focus { left: var(--gutter); }
 
 /* Kamień: obraz rysowany raz; ciepło = osobna warstwa (tylko opacity), więc pulsowanie jest tanie. */
-.flint { position: relative; display: block; }
-.flint-img { display: block; width: 100%; height: 100%; }
+.flint { position: relative; display: block; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; }
+.flint-img { display: block; width: 100%; height: 100%; pointer-events: none; -webkit-touch-callout: none; -webkit-user-drag: none; }
 .pendant .flint-heat, .flint-heat { position: absolute; inset: 0; width: 100% !important; height: 100% !important; border-radius: 0; box-shadow: none; animation: none; opacity: 0; transition: opacity 0.5s; mix-blend-mode: screen; pointer-events: none;
   background: radial-gradient(circle at 32% 34%, rgba(255,176,102,0.95) 0, rgba(217,132,58,0.8) 45%, rgba(122,31,31,0) 85%); }
 .pendant[data-heat="1"] .flint-heat { opacity: 0.18; }
@@ -121,3 +127,31 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 @keyframes flint-pulse { 50% { opacity: 0.6; } }
 .pendant.big .flint { transition: filter 0.6s; }
 .pendant.big[data-heat="3"] .flint, .pendant.big[data-heat="4"] .flint { filter: drop-shadow(0 0 18px rgba(255,156,74,0.55)); }
+
+/* Nawigacja: wstecz = cicho, w lewo; dalej = główny, w prawo; „ciałem” = coś ekstra, w piasku z poświatą. */
+button.back { padding-left: 0.6rem; }
+button.body, .btn.body { background: var(--sand); color: #1e1a14; border-color: var(--sand); box-shadow: 0 0 16px rgba(217,132,58,0.35); font-weight: 500; }
+button.body:hover, .btn.body:hover { box-shadow: 0 0 22px rgba(217,132,58,0.55); }
+/* Odsłona po geście: sterowanie znika, ciepło przechodzi przez ekran, tekst przyjeżdża na środek. */
+.hide-out { transition: opacity 0.45s, transform 0.45s; opacity: 0 !important; transform: translateY(6px); pointer-events: none; }
+.glow.soft { background: radial-gradient(circle at var(--cx) var(--cy), rgba(255,156,74,0.7) 0, rgba(217,132,58,0.45) 22%, rgba(14,13,11,0) 62%); }
+.spark { position: fixed; width: 3px; height: 3px; border-radius: 50%; background: var(--sand); pointer-events: none; z-index: 10; animation: spark 1.6s ease-out forwards; }
+@keyframes spark { from { opacity: 0.9; transform: translate(0, 0) scale(1); } to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.2); } }
+@media (prefers-reduced-motion: reduce) { .spark { display: none; } .hide-out { transition: none; } }
+/* Pieczątka na mikro-aktach i „następne jutro”. */
+.daily { position: relative; }
+.stamp { position: absolute; right: 1rem; top: 2.6rem; transform: rotate(-12deg); padding: 0.2rem 0.6rem; border: 2px solid #7a1f1f; color: #7a1f1f; border-radius: 3px; font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.85; mix-blend-mode: multiply; pointer-events: none; animation: stamp-in 0.35s cubic-bezier(.2,1.4,.4,1) both; }
+.stamp.cold { border-color: #5a5a5a; color: #5a5a5a; }
+@keyframes stamp-in { from { transform: rotate(-12deg) scale(1.8); opacity: 0; } to { transform: rotate(-12deg) scale(1); opacity: 0.85; } }
+.next-daily { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin: 0.4rem 0 0; }
+.next-daily::before { content: ""; width: 1.6rem; height: 1px; background: var(--ink-faint); }
+/* Listy: coś się dzieje w toku, nie zwykły akapit. */
+.pending { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.5rem; padding: 0.7rem 0.9rem; border: 1px dashed var(--line); border-radius: var(--radius); color: var(--ink-dim); font-size: 0.9rem; }
+.pending .dots { display: inline-flex; gap: 3px; flex: none; }
+.pending .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--sand); animation: dot 1.4s infinite; }
+.pending .dots i:nth-child(2) { animation-delay: 0.2s; } .pending .dots i:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dot { 0%, 60%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
+.letter-card .reply-row { margin-top: 0.8rem; padding-top: 0.6rem; border-top: 1px dotted rgba(60,40,20,0.35); }
+.letter-card .reply-row .lbl { font-family: var(--font-serif); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: #6b5a40; margin: 0 0 0.4rem; }
+.letter-card .reply-row button { font-family: var(--font-serif); font-size: 0.9rem; border: 1px solid rgba(60,40,20,0.35); color: #2a2318; background: rgba(255,255,255,0.35); margin: 0 0.4rem 0.4rem 0; }
+.letter-card .reply-row button:hover { border-color: #2a2318; }

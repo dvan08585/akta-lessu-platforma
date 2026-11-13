@@ -78,6 +78,8 @@ export interface SaveState {
   leftSeventhEmpty: boolean;
   /** Przerywniki między sprawami, które gracz już przeszedł. */
   interludesDone: string[];
+  /** Rozmowy: liczba nietrafionych wskazań i blokada (ms) po trzech. */
+  talkTries?: Record<string, { n: number; until: number }>;
   /** Mikro-akta: data -> czy trafione. */
   daily: Record<string, boolean>;
   /** Czy gracz zostawił e-mail (my go nie znamy, tylko fakt). */

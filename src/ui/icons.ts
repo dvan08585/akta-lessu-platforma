@@ -1,6 +1,10 @@
 /** Ikony typów przerywników: proste linie w palecie, identyczne na każdym telefonie (bez emoji). 24×24, stroke currentColor. */
 const P: Record<string, string> = {
-  amor: "M4 14c0-4 3-7 7-7h2c4 0 7 3 7 7v3H4zM8 10v-3M16 10v-3",                       // uszy psa
+  amor: "M12 21c-3.3 0-5.5-1.8-5.5-4 0-2.6 2.6-5 5.5-5s5.5 2.4 5.5 5c0 2.2-2.2 4-5.5 4zM6 11a1.7 1.7 0 1 0 0-3.4A1.7 1.7 0 0 0 6 11zM10 8a1.7 1.7 0 1 0 0-3.4A1.7 1.7 0 0 0 10 8zM14 8a1.7 1.7 0 1 0 0-3.4A1.7 1.7 0 0 0 14 8zM18 11a1.7 1.7 0 1 0 0-3.4A1.7 1.7 0 0 0 18 11z", // łapa psa
+  sunrise: "M3 18h18M7 14a5 5 0 0 1 10 0M12 4v4M5 9l1.5 1.5M19 9l-1.5 1.5",               // wschód
+  temp: "M10 5a2 2 0 0 1 4 0v8.5a3.5 3.5 0 1 1-4 0zM12 9v6",                             // termometr
+  river: "M3 10c3-3 6-3 9 0s6 3 9 0M3 16c3-3 6-3 9 0s6 3 9 0",                            // rzeka
+  stamp: "M12 3l2.6 5.4 6 .8-4.3 4.2 1 5.9-5.3-2.8-5.3 2.8 1-5.9L3.6 9.2l6-.8z",
   talk: "M4 5h16v10H9l-5 4z",                                                           // dymek
   plate: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12h8M12 8v8",                           // płyta
   beat: "M3 12h3l2-5 3 10 3-8 2 3h5",                                                    // fala
@@ -50,7 +54,7 @@ export function flint(size = 96, seed = 7): HTMLElement {
     <g clip-path="url(#c)"><rect x="-60" y="-60" width="120" height="120" fill="#3a3630"/><g filter="url(#f)">${rings}<ellipse cx="-20" cy="-16" rx="2.4" ry="1.8" fill="#eee6d2"/></g></g>
     <polygon points="${poly}" fill="none" stroke="#a39a86" stroke-width="1.1"/></svg>`;
   const img = document.createElement("img");
-  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg); img.width = size; img.height = size; img.alt = ""; img.className = "flint-img"; img.decoding = "async";
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg); img.width = size; img.height = size; img.alt = ""; img.className = "flint-img"; img.decoding = "async"; img.draggable = false;
   const heat = document.createElement("i"); heat.className = "flint-heat"; heat.style.clipPath = `polygon(${clip})`;
   const wrap = document.createElement("span"); wrap.className = "flint"; wrap.style.width = size + "px"; wrap.style.height = size + "px";
   wrap.append(img, heat);

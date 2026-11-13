@@ -54,7 +54,7 @@
         "Wilgotność posadzki przy XI: 71%. Przy V, po drugiej stronie nawy: 44%. Grzejniki są przy V.",
         "Wody gruntowe w Sandomierzu o tej porze roku: 9–10°C.",
         "Zawieszka: ciepło przesuwa się w dół. Nie na zewnątrz, nie w górę.",
-        "Nie szukałam swojego miesiąca. Oczy same."
+        "Nie szukałam swojego miesiąca. Wzrok sam tam poszedł."
       ]
     },
     {
@@ -80,7 +80,7 @@
       "monthLines": [
         "Styczeń: śnieg na lessie, biały na białym. Nie zobaczysz, gdzie kończy się ziemia.",
         "Luty: lód na Wiśle trzyma cztery dni. Ty uwierzysz piątego.",
-        "Marzec: roztopy. Woda nie przychodzi z góry. Przychodzi spod.",
+        "Marzec: roztopy. Woda nie przychodzi z góry. Przychodzi od spodu.",
         "Kwiecień: najwyższy stan rzeki. Nikt nie patrzy, co jest niżej.",
         "Maj: ogrzewanie wyłączone, posadzka ciepła. Kościelny powie, że od słońca.",
         "Czerwiec: jabłka jeszcze zielone. Zdążysz je zobaczyć dojrzałe. Prawdopodobnie.",
@@ -91,7 +91,7 @@
         "Listopad: Święto Młodego Wina. Wino jest młode. Krew też.",
         "Grudzień: Tatarzy przychodzą w grudniu. Zawsze przychodzą w grudniu."
       ],
-      "monthClosing": "A potem oczy same lądują na listopadzie."
+      "monthClosing": "A potem wzrok i tak wraca do listopada."
     },
     {
       "id": "q1",
@@ -199,7 +199,7 @@
     },
     {
       "id": "q5",
-      "text": "Woda w kryptach przychodzi od ___, jest cieplejsza o ___ stopni i zbiera się pod obrazem ___.",
+      "text": "Woda w kryptach przychodzi od ___, jest cieplejsza o ___ stopni i zbiera się pod obrazem z napisem ___.",
       "options": [],
       "answer": -1,
       "kind": "fill",
@@ -210,9 +210,9 @@
         "pięć",
         "dwa",
         "dziesięć",
-        "listopadem",
-        "kwietniem",
-        "majem",
+        "listopad",
+        "kwiecień",
+        "maj",
         "trzynastym",
         "ogrzewania",
         "Wisły"
@@ -220,7 +220,7 @@
       "answerWords": [
         "spodu",
         "pięć",
-        "listopadem"
+        "listopad"
       ],
       "hint": "Protokół, zeszyt, wodowskaz."
     }

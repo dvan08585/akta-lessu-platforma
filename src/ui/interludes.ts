@@ -1,4 +1,4 @@
-import { h, go, toast } from "./dom";
+import { h, go, toast, back, next } from "./dom";
 import { topbar } from "./views";
 import type { App } from "../app";
 import { save } from "../engine/state";
@@ -34,11 +34,38 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   const sec = h("section", { class: "fade-in interlude" }, topbar(app, "#/mapa"));
   if (!found) { sec.append(h("p", {}, "Nie ma takiego przerywnika.")); return sec; }
   const it: Interlude = found;
-  if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} ${plural(it.after ?? 0, "przebytej bramie", "przebytych bramach", "przebytych bramach")}.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
+  if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} ${plural(it.after ?? 0, "przebytej bramie", "przebytych bramach", "przebytych bramach")}.`), back("Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   sec.append(h("p", { class: "faint" }, `Między sprawami${it.level ? " · " + it.level : ""}`), h("h2", {}, it.title));
   if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else if (it.type === "whistle") renderWhistle(); else if (it.type === "touch7") renderTouch7(); else if (it.type === "hold") renderHold(); else if (it.type === "mirror") renderMirror(); else if (it.type === "trace") renderTrace(); else if (it.type === "steps") renderSteps(); else if (it.type === "duet") renderDuet(); else renderPlate();
   return sec;
+
+  /**
+   * Odsłona po geście albo poprawnej odpowiedzi, jedna dla wszystkich przerywników:
+   * sterowanie (przyciski, suwaki, wybory) odpływa, ciepło przechodzi przez ekran jak przy zawieszce, iskry lessu,
+   * a tekst przyjeżdża na środek ekranu z jednym przyciskiem „dalej". Brama przebyta prowadzi do swojej bramy.
+   */
+  function reveal(verdict: HTMLElement, note: string, extra: HTMLElement[] = []) {
+    sec.querySelectorAll<HTMLElement>("button, input, select, label, .opts, .verdict, .q, .row, .talk-qs, p.mono, .breath-phase").forEach((el) => {
+      if (el.closest(".topbar") || verdict.contains(el)) return; el.classList.add("hide-out");
+    });
+    setTimeout(() => sec.querySelectorAll<HTMLElement>(".hide-out").forEach((el) => (el.style.display = "none")), 500);
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduced) {
+      const glow = h("div", { class: "glow soft" }); glow.style.setProperty("--cx", "50%"); glow.style.setProperty("--cy", "55%"); document.body.append(glow);
+      setTimeout(() => glow.classList.add("out"), 900); setTimeout(() => glow.remove(), 1900);
+      for (let i = 0; i < 14; i++) {
+        const sp = h("i", { class: "spark" }); const a = Math.random() * Math.PI * 2, r = 80 + Math.random() * 160;
+        sp.style.left = "50%"; sp.style.top = "55%"; sp.style.setProperty("--dx", `${Math.cos(a) * r}px`); sp.style.setProperty("--dy", `${Math.sin(a) * r - 60}px`); sp.style.animationDelay = `${Math.random() * 0.4}s`;
+        document.body.append(sp); setTimeout(() => sp.remove(), 2200);
+      }
+    }
+    try { navigator.vibrate?.([60, 80, 160]); } catch { /* */ }
+    const sol = h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!));
+    const to = it.gate !== undefined ? `#/brama/${it.gate}` : "#/mapa";
+    setTimeout(() => { verdict.replaceChildren(sol, ...extra, h("div", { class: "verdict" }, next(it.gate !== undefined ? "Wróć do bramy" : "Ruszaj dalej", to))); sol.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }); }, reduced ? 0 : 700);
+    finish(note);
+  }
 
   function finish(note: string) {
     if (!app.state.interludesDone.includes(it.id)) { app.state.interludesDone.push(it.id); app.addNote(note, it.gate !== undefined ? `brama ${it.gate} przebyta` : "między sprawami"); save(app.state); if (it.gate !== undefined) { toast(`Brama ${it.gate} przebyta. Ciałem.`); sendEvent(app.cfg.backendUrl, app.state, { type: "gesture", gate: it.gate }); } }
@@ -47,7 +74,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   function renderAmor() {
     const art = h("div", { class: "amor-text" });
     it.lines!.forEach((l, i) => { const p = h("p", { style: `animation-delay:${i * 1.2}s` }, l); art.append(p); });
-    sec.append(art, h("button", { onclick: () => { finish(`${it.title}.`); go("#/mapa"); } }, "Wróć do mapy"));
+    sec.append(art, h("div", { class: "verdict" }, next("Ruszaj dalej", "#/mapa")));
     finish(`${it.title}.`);
   }
 
@@ -57,6 +84,14 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const log = h("div", { class: "talk-log" });
     const qs = h("div", { class: "talk-qs" });
     const verdict = h("div");
+    const tries = (app.state.talkTries ??= {}); const tr = (tries[it.id] ??= { n: 0, until: 0 });
+    const LOCK_H = 12;
+    if (done) {
+      // Rozpoznane: cała rozmowa do ponownego przeczytania, kłamstwo zaznaczone.
+      it.questions!.forEach((q, i) => log.append(h("p", { class: "you" }, q.q), h("p", { class: i === it.lie ? "them lie" : "them" }, h("strong", {}, it.person + ": "), q.a)));
+      sec.append(log, h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
+      return;
+    }
     it.questions!.forEach((q, i) => {
       const b = h("button", { class: "ghost" }, q.q);
       b.addEventListener("click", () => {
@@ -68,15 +103,28 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       qs.append(b);
     });
     sec.append(log, qs, verdict);
-    if (done) renderPick();
+    if (tr.until > Date.now()) { renderLocked(); }
+    function renderLocked() {
+      const hrs = Math.max(1, Math.ceil((tr.until - Date.now()) / 3600000));
+      qs.replaceChildren(h("p", { class: "muted" }, `${it.person} nie ma dziś więcej czasu. Trzy razy wskazane na ślepo to nie rozmowa. Wróć za ${hrs} ${plural(hrs, "godzinę", "godziny", "godzin")}, przeczytaj rozmowę jeszcze raz.`), h("div", { class: "verdict" }, back()));
+    }
     function renderPick() {
-      qs.replaceChildren(h("p", { class: "muted" }, "Które zdanie było kłamstwem?"));
+      if (tr.until > Date.now()) { renderLocked(); return; }
+      if (tr.until && tr.until <= Date.now()) { tr.n = 0; tr.until = 0; }
+      qs.replaceChildren(h("p", { class: "muted" }, `Które zdanie było kłamstwem? ${tr.n ? `Została ${plural(3 - tr.n, "jedna próba", "dwie próby", "próby")}.` : "Masz trzy próby."}`));
       it.questions!.forEach((q, i) => {
         qs.append(h("button", { onclick: () => {
           sendEvent(app.cfg.backendUrl, app.state, { type: "choice", id: it.id, option: i });
-          if (i === it.lie) { verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!))); finish(`${it.title}: kłamstwo rozpoznane.`); qs.replaceChildren(h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy"));
-            fetchStats(app.cfg.backendUrl).then((st) => { const c = st?.choices[it.id]; if (!c) return; const total = Object.values(c).reduce((a, b) => a + b, 0); if (total < 5) return; const mine = c[String(i)] ?? 0; verdict.append(h("p", { class: "faint" }, `${Math.round((mine / total) * 100)}% biegłych wskazało to samo zdanie. ${total} rozmów.`)); }); }
-          else toast(it.wrong!);
+          if (i === it.lie) {
+            tr.n = 0; tr.until = 0; save(app.state);
+            log.querySelectorAll(".them")[i]?.classList.add("lie");
+            reveal(verdict, `${it.title}: kłamstwo rozpoznane.`);
+            fetchStats(app.cfg.backendUrl).then((st) => { const c = st?.choices[it.id]; if (!c) return; const total = Object.values(c).reduce((a, b) => a + b, 0); if (total < 5) return; const mine = c[String(i)] ?? 0; setTimeout(() => verdict.append(h("p", { class: "faint" }, `${Math.round((mine / total) * 100)}% biegłych wskazało to samo zdanie. ${total} rozmów.`)), 1200); });
+          } else {
+            tr.n += 1;
+            if (tr.n >= 3) { tr.until = Date.now() + LOCK_H * 3600000; save(app.state); renderLocked(); }
+            else { save(app.state); toast(it.wrong!); renderPick(); }
+          }
         } }, `Odpowiedź ${i + 1}`));
       });
     }
@@ -118,11 +166,11 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const btn = h("button", { class: "primary" }, "Odpowiedz");
     btn.addEventListener("click", () => {
       const el = sec.querySelector<HTMLInputElement>('input[name="beat"]:checked'); if (!el) { toast("Najpierw posłuchaj."); return; }
-      if (Number(el.value) === it.answer) { verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: usłyszane.`); }
+      if (Number(el.value) === it.answer) { reveal(verdict, `${it.title}: usłyszane.`); }
       else toast("Posłuchaj jeszcze raz. Obie słuchawki.");
     });
     sec.append(h("div", { class: "q daily" }, h("div", { class: "qt" }, it.q!), opts), btn, verdict);
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Zimno: trzymać telefon nieruchomo. Akcelerometr mierzy drżenie rąk; każde drgnięcie cofa pasek. */
@@ -148,7 +196,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       if (jitter > base * 2.5 + 0.08) { held = Math.max(0, held - 1.5); temp.textContent = "Drżysz. 33°C."; }
       else { held += 0.1; temp.textContent = `${(36.6 - (held / total) * 5.6).toFixed(1).replace(".", ",")}°C`; }
       fill.style.width = `${Math.min(100, (held / total) * 100)}%`; status.textContent = `${held.toFixed(0)} s`;
-      if (held >= total && !finished) { finished = true; running = false; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: wytrzymane.`); return; }
+      if (held >= total && !finished) { finished = true; running = false; reveal(verdict, `${it.title}: wytrzymane.`); return; }
       setTimeout(tick, 100);
     }
     start.addEventListener("click", async () => {
@@ -164,7 +212,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     });
     // zapas bez czujnika: puszczenie przycisku = drgnięcie
     start.addEventListener("pointerdown", () => { jitter = 0; });
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Woda: oddech w tempie 5/5 (ok. 6 oddechów na minutę). Tafla gładzi się, gdy wydech jest równy. Mikrofon opcjonalny; zapas: palec na ekranie przy wydechu. */
@@ -174,12 +222,13 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const canvas = h("canvas", { class: "plate water", width: "600", height: "600", "aria-label": "Tafla wody w krypcie" }) as HTMLCanvasElement;
     const phaseEl = h("p", { class: "breath-phase" }, "…");
     const count = h("p", { class: "mono muted" }, `0 / ${cycles}`);
-    const micBtn = h("button", {}, "Pozwól tafli słuchać");
+    const micBtn = h("button", {}, "Tafla bez mikrofonu");
     const start = h("button", { class: "primary" }, "Zacznij");
+    const ear = h("p", { class: "mono muted ear" }, "tafla: nie słucha");
     const verdict = h("div");
-    sec.append(canvas, phaseEl, count, h("div", { class: "verdict" }, start, micBtn), h("p", { class: "faint", style: "margin-top:0.8rem" }, "Nic nie jest nagrywane ani wysyłane: dźwięk liczy się w telefonie i znika."), verdict);
+    sec.append(canvas, phaseEl, count, ear, h("div", { class: "verdict" }, start, micBtn), h("p", { class: "faint", style: "margin-top:0.8rem" }, "Przy wydechu tafla słucha mikrofonu albo czuje palec. Nic nie jest nagrywane ani wysyłane: dźwięk liczy się w telefonie i znika."), verdict);
     const ctx = canvas.getContext("2d")!;
-    let running = false, finished = done, done_cycles = 0, calm = 0, touching = false, mic: AnalyserNode | null = null, micBuf: Float32Array<ArrayBuffer> | null = null, baseline = 0.004;
+    let running = false, finished = done, done_cycles = 0, calm = 0, touching = false, mic: AnalyserNode | null = null, micBuf: Float32Array<ArrayBuffer> | null = null, baseline = 0.004, level = 0, noMic = false;
     canvas.addEventListener("pointerdown", () => { touching = true; }); addEventListener("pointerup", () => { touching = false; });
     const rms = () => { if (!mic || !micBuf) return null; mic.getFloatTimeDomainData(micBuf); let s = 0; for (let i = 0; i < micBuf.length; i++) s += micBuf[i] * micBuf[i]; return Math.sqrt(s / micBuf.length); };
     let t0 = 0;
@@ -187,7 +236,11 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       const period = tIn + tOut; const elapsed = running ? now - t0 : 0; const cyc = Math.floor(elapsed / period); const ph = elapsed % period; const inhale = ph < tIn;
       const target = inhale ? ph / tIn : 1 - (ph - tIn) / tOut; // 0..1 "pełność płuc"
       // ocena wydechu: mikrofon (szum wydechu powyżej tła) albo dotyk
-      if (running && !inhale) { const r = rms(); const ok = r !== null ? r > baseline * 1.6 : touching; calm += ok ? 0.012 : -0.006; }
+      // wydech: szum nad ciszą (wygładzony, próg 1,35× tła) ALBO palec na tafli. Wskaźnik mówi, co tafla czuje.
+      const lv = rms(); if (lv !== null) level = level * 0.7 + lv * 0.3;
+      const heard = lv !== null && level > baseline * 1.35;
+      if (running) ear.textContent = touching ? "tafla: czuje palec" : heard ? (inhale ? "tafla: słyszy (to wdech, cicho)" : "tafla: słyszy wydech") : mic ? "tafla: słucha" : "tafla: bez mikrofonu, połóż palec przy wydechu";
+      if (running && !inhale) { const ok = heard || touching; calm += ok ? 0.012 : -0.006; }
       calm = Math.max(0, Math.min(1, calm));
       if (running && cyc > done_cycles) { done_cycles = cyc; count.textContent = `${Math.min(cyc, cycles)} / ${cycles}`; }
       phaseEl.textContent = !running ? "…" : inhale ? "wdech" : "wydech";
@@ -208,24 +261,32 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       if (running && cyc >= cycles && !finished) {
         running = false;
         // Liczy się oddech, nie czas: tafla musi być gładka. Bez wydechu (mikrofon) albo palca na tafli przy wydechu „calm" nie urośnie.
-        if (calm >= 0.7) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("p", { class: "faint" }, "Dlaczego to działa: ", h("a", { href: "#/o-ciele" }, "co robi z tobą ta gra")), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: dziesięć oddechów.`); }
+        if (calm >= 0.7) { finished = true; reveal(verdict, `${it.title}: dziesięć oddechów.`, [h("p", { class: "faint" }, "Dlaczego to działa: ", h("a", { href: "#/o-ciele" }, "co robi z tobą ta gra"))]); }
         else { calm = 0; done_cycles = 0; count.textContent = `0 / ${cycles}`; start.disabled = false; start.textContent = "Jeszcze raz"; toast("Tafla drży. Oddychałeś z nią, czy tylko czekałeś? Wydech ma być słyszalny albo palec na tafli."); }
       }
       requestAnimationFrame(draw);
     }
     requestAnimationFrame(draw);
-    start.addEventListener("click", () => { if (running) return; running = true; t0 = performance.now(); calm = 0; done_cycles = 0; start.disabled = true; start.textContent = "Oddychaj"; });
-    micBtn.addEventListener("click", async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const ac = new AudioContext(); const src = ac.createMediaStreamSource(stream); mic = ac.createAnalyser(); mic.fftSize = 2048; src.connect(mic); micBuf = new Float32Array(new ArrayBuffer(mic.fftSize * 4));
-        micBtn.disabled = true; micBtn.textContent = "Tafla słucha. Kalibruję ciszę…";
-        // kalibracja: 2,5 s ciszy = poziom zero (badania: progi absolutne zawodzą między telefonami)
-        const samples: number[] = []; const iv = setInterval(() => { const r = rms(); if (r !== null) samples.push(r); }, 100);
-        setTimeout(() => { clearInterval(iv); samples.sort((a, b) => a - b); baseline = Math.max(0.002, samples[Math.floor(samples.length / 2)] || 0.004); micBtn.textContent = "Tafla słucha"; }, 2500);
-      } catch { toast("Bez mikrofonu: trzymaj palec na tafli, kiedy wydychasz."); }
+    const begin = () => { running = true; t0 = performance.now(); calm = 0; done_cycles = 0; start.disabled = true; start.textContent = "Oddychaj"; };
+    // Mikrofon prosi się sam przy starcie (jedno dotknięcie, nie dwa). Odmowa = tafla czuje palec.
+    start.addEventListener("click", async () => {
+      if (running) return;
+      if (!mic && !noMic) {
+        start.disabled = true; start.textContent = "Tafla nasłuchuje ciszy…";
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+          const ac = new AudioContext(); if (ac.state === "suspended") await ac.resume();
+          const src = ac.createMediaStreamSource(stream); mic = ac.createAnalyser(); mic.fftSize = 2048; src.connect(mic); micBuf = new Float32Array(new ArrayBuffer(mic.fftSize * 4));
+          // kalibracja: 2 s ciszy = poziom zero (progi absolutne zawodzą między telefonami)
+          const samples: number[] = []; await new Promise<void>((res) => { const iv = setInterval(() => { const r = rms(); if (r !== null) samples.push(r); }, 100); setTimeout(() => { clearInterval(iv); res(); }, 2000); });
+          samples.sort((a, b) => a - b); baseline = Math.max(0.0015, samples[Math.floor(samples.length / 2)] || 0.004);
+          ear.textContent = "tafla: słucha"; micBtn.style.display = "none";
+        } catch { noMic = true; ear.textContent = "tafla: bez mikrofonu, połóż palec przy wydechu"; toast("Bez mikrofonu: trzymaj palec na tafli, kiedy wydychasz."); }
+      }
+      begin();
     });
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    micBtn.addEventListener("click", () => { noMic = true; mic = null; ear.textContent = "tafla: bez mikrofonu, połóż palec przy wydechu"; micBtn.style.display = "none"; if (!running) begin(); });
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Kamera jako czujnik: mała klatka, średnia koloru i jasności, nic nie opuszcza telefonu. */
@@ -255,14 +316,14 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const verdict = h("div");
     sec.append(video, probe, stone, status, h("div", { class: "verdict" }, camBtn, h("label", { class: "faint", style: "display:inline-flex;align-items:center;gap:.4rem" }, "albo kolor", pick)), verdict);
     let heat = 0, finished = done;
-    const bump = (ok: boolean) => { heat = Math.max(0, Math.min(1, heat + (ok ? 0.06 : -0.03))); (stone.firstElementChild as HTMLElement).style.opacity = String(heat); status.textContent = heat > 0.95 ? "kamień: pulsuje" : heat > 0.5 ? "kamień: ciepły" : "kamień: zimny"; if (heat >= 1 && !finished) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: kamień odpowiedział.`); try { navigator.vibrate?.(200); } catch { /* */ } } };
+    const bump = (ok: boolean) => { heat = Math.max(0, Math.min(1, heat + (ok ? 0.06 : -0.03))); (stone.firstElementChild as HTMLElement).style.opacity = String(heat); status.textContent = heat > 0.95 ? "kamień: pulsuje" : heat > 0.5 ? "kamień: ciepły" : "kamień: zimny"; if (heat >= 1 && !finished) { finished = true; reveal(verdict, `${it.title}: kamień odpowiedział.`); try { navigator.vibrate?.(200); } catch { /* */ } } };
     camBtn.addEventListener("click", async () => {
       if (!(await openCamera(video))) { toast("Bez kamery: wybierz kolor poniżej."); return; }
       camBtn.disabled = true; camBtn.textContent = "Kamień patrzy"; video.style.display = "block";
       setInterval(() => { const f = sampleFrame(video, probe); if (f) bump(f.red > 0.35); }, 120);
     });
     pick.addEventListener("input", () => { const v = pick.value; const r = parseInt(v.slice(1, 3), 16), g = parseInt(v.slice(3, 5), 16), b = parseInt(v.slice(5, 7), 16); const ok = r > 120 && r > g * 1.6 && r > b * 1.6; for (let i = 0; i < 20; i++) bump(ok); });
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Ciemność: tekst pojawia się, gdy kamera widzi ciemność (względem kalibracji). Zapas: przytrzymaj „ciemno”. */
@@ -279,7 +340,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const verdict = h("div");
     sec.append(video, probe, page, status, h("div", { class: "verdict" }, camBtn, hold), verdict);
     let dark = 0, baseline = 0.5, finished = done, holding = false;
-    const step = (isDark: boolean) => { dark = Math.max(0, Math.min(1, dark + (isDark ? 0.03 : -0.05))); lines.forEach((l, i) => (l.style.opacity = String(Math.max(0, Math.min(1, dark * 3 - i))))); page.style.background = `rgb(${241 - dark * 200},${235 - dark * 200},${221 - dark * 190})`; page.style.color = dark > 0.5 ? "#e8e0cf" : "#1e1a14"; if (dark >= 1 && !finished) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: przeczytane w ciemności.`); } };
+    const step = (isDark: boolean) => { dark = Math.max(0, Math.min(1, dark + (isDark ? 0.03 : -0.05))); lines.forEach((l, i) => (l.style.opacity = String(Math.max(0, Math.min(1, dark * 3 - i))))); page.style.background = `rgb(${241 - dark * 200},${235 - dark * 200},${221 - dark * 190})`; page.style.color = dark > 0.5 ? "#e8e0cf" : "#1e1a14"; if (dark >= 1 && !finished) { finished = true; reveal(verdict, `${it.title}: przeczytane w ciemności.`); } };
     camBtn.addEventListener("click", async () => {
       if (!(await openCamera(video))) { toast("Bez kamery: przytrzymaj „ciemno”."); return; }
       camBtn.disabled = true; camBtn.textContent = "Kalibruję światło…";
@@ -319,7 +380,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       ctx.fillStyle = "#e8e0cf"; ctx.globalAlpha = 0.9; ctx.fillRect(520, 150 - spill * 40, 60, spill * 40); ctx.globalAlpha = 1;
       // pozycja
       const px = 30 + (steps / total) * 470; ctx.beginPath(); ctx.arc(px, 225, 5, 0, Math.PI * 2); ctx.fillStyle = "#c9a86a"; ctx.fill();
-      if (steps >= total && !finished) { finished = true; running = false; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: dwadzieścia kroków.`); }
+      if (steps >= total && !finished) { finished = true; running = false; reveal(verdict, `${it.title}: dwadzieścia kroków.`); }
       requestAnimationFrame(draw);
     }
     requestAnimationFrame(draw);
@@ -332,7 +393,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       running = true; start.textContent = "Trzymaj równo"; lastStep = performance.now();
       start.addEventListener("pointerdown", () => { holding = true; }); addEventListener("pointerup", () => { holding = false; });
     });
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Widmo: spektrogram nagrania rysowany na żywo; obraz ukryty w częstotliwościach, których ucho nie złoży. */
@@ -344,27 +405,30 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     ctx.fillStyle = "#0e0d0b"; ctx.fillRect(0, 0, 720, 260);
     sec.append(audio, canvas, h("p", { class: "faint" }, "Oś pozioma: czas, 26 sekund. Oś pionowa: częstotliwość, 0 do 8 kHz, niskie na dole. Jasność: głośność."));
     let ac: AudioContext | null = null, an: AnalyserNode | null = null, data: Uint8Array<ArrayBuffer> | null = null;
+    audio.addEventListener("seeked", () => { if (audio.currentTime < 0.3) { ctx.fillStyle = "#0e0d0b"; ctx.fillRect(0, 0, 720, 260); } });
     audio.addEventListener("play", () => {
       if (!ac) { ac = new AudioContext(); const src = ac.createMediaElementSource(audio); an = ac.createAnalyser(); an.fftSize = 2048; an.smoothingTimeConstant = 0.2; src.connect(an); an.connect(ac.destination); data = new Uint8Array(new ArrayBuffer(an.frequencyBinCount)); }
       if (ac.state === "suspended") ac.resume();
+      if (audio.currentTime < 0.3) { ctx.fillStyle = "#0e0d0b"; ctx.fillRect(0, 0, 720, 260); }
+      // Kolumna rysowana kryjąco (nie półprzezroczyście), więc kolejne odsłuchy nie rozjaśniają obrazu do białego.
       const draw = () => { if (audio.paused || !an || !data || !ac) return; an.getByteFrequencyData(data); const x = Math.floor((audio.currentTime / 26) * 720); const binHz = ac.sampleRate / an.fftSize; const maxBin = Math.floor(8000 / binHz);
-        for (let b = 0; b < maxBin; b++) { const v = data[b] / 255; const y = 260 - Math.floor((b / maxBin) * 260); ctx.fillStyle = `rgba(232,224,207,${Math.pow(v, 1.6)})`; ctx.fillRect(x, y - 1, 2, 2); }
+        for (let b = 0; b < maxBin; b++) { const v = Math.pow(data[b] / 255, 1.6); const y = 260 - Math.floor((b / maxBin) * 260); const l = Math.round(14 + v * 218); ctx.fillStyle = `rgb(${l},${Math.round(l * 0.97)},${Math.round(l * 0.9)})`; ctx.fillRect(x, y - 1, 2, 2); }
         requestAnimationFrame(draw); };
       requestAnimationFrame(draw);
     });
     const opts = h("div", { class: "opts", role: "radiogroup" });
     it.options!.forEach((o, i) => opts.append(h("label", {}, h("input", { type: "radio", name: "spectro", value: String(i) }), o)));
     const verdict = h("div"); const btn = h("button", { class: "primary" }, "Odpowiedz");
-    btn.addEventListener("click", () => { const el = sec.querySelector<HTMLInputElement>('input[name="spectro"]:checked'); if (!el) { toast("Najpierw patrz."); return; } if (Number(el.value) === it.answer) { verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: zobaczone.`); } else toast("Patrz wyżej. Ponad dzwonem."); });
+    btn.addEventListener("click", () => { const el = sec.querySelector<HTMLInputElement>('input[name="spectro"]:checked'); if (!el) { toast("Najpierw patrz."); return; } if (Number(el.value) === it.answer) { reveal(verdict, `${it.title}: zobaczone.`); } else toast("Patrz wyżej. Ponad dzwonem."); });
     sec.append(h("div", { class: "q daily" }, h("div", { class: "qt" }, it.q!), opts), btn, verdict);
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Kompas-zawieszka: GPS + magnetometr. Grzeje, gdy telefon celuje w najbliższą bramę. Tylko na miejscu. */
   function renderCompass() {
     sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const pend = h("div", { class: "pendant big", "data-heat": "0" }, flint(96));
-    const status = h("p", { class: "mono muted" }, "GPS: …");
+    const status = h("p", { class: "mono muted" }, "GPS: czeka, aż wyjmiesz zawieszkę");
     const start = h("button", { class: "primary" }, "Wyjmij zawieszkę");
     const verdict = h("div");
     sec.append(pend, status, h("div", { class: "verdict" }, start), verdict);
@@ -373,7 +437,14 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const bearing = (a: { lat: number; lon: number }, b: { lat: number; lon: number }) => { const y = Math.sin(toRad(b.lon - a.lon)) * Math.cos(toRad(b.lat)); const x = Math.cos(toRad(a.lat)) * Math.sin(toRad(b.lat)) - Math.sin(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.cos(toRad(b.lon - a.lon)); return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360; };
     const dist = (a: { lat: number; lon: number }, b: { lat: number; lon: number }) => { const R = 6371000; const dLat = toRad(b.lat - a.lat), dLon = toRad(b.lon - a.lon); const s1 = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLon / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(s1)); };
     const onOrient = (e: DeviceOrientationEvent & { webkitCompassHeading?: number }) => { if (typeof e.webkitCompassHeading === "number") heading = e.webkitCompassHeading; else if (e.absolute && e.alpha !== null) heading = (360 - e.alpha) % 360; };
+    let ticks = 0;
     function tick() {
+      ticks++;
+      if (!pos || heading === null) {
+        const gps = pos ? "GPS: jest" : ticks > 60 ? "GPS: brak sygnału. Wyjdź spod dachu, włącz lokalizację dla przeglądarki." : "GPS: szukam…";
+        const cmp = heading !== null ? "kompas: jest" : ticks > 20 ? "kompas: cisza. Obróć telefon ósemką, żeby obudzić magnetometr." : "kompas: czekam na obrót";
+        status.textContent = `${gps} · ${cmp}`;
+      }
       if (pos && heading !== null) {
         const gates = app.map.gates.filter((g) => g.lat && g.lon).map((g) => ({ g, d: dist(pos!, { lat: g.lat!, lon: g.lon! }), b: bearing(pos!, { lat: g.lat!, lon: g.lon! }) })).sort((a, b) => a.d - b.d);
         const near = gates[0]; const diff = Math.abs(((heading - near.b + 540) % 360) - 180);
@@ -382,7 +453,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         status.textContent = `najbliżej: ${near.g.name}, ${near.d.toFixed(0)} m · kierunek ${near.b.toFixed(0)}° · ty ${heading.toFixed(0)}°`;
         if (near.d > 1500 && !app.state.testMode) status.textContent += " · jesteś daleko od Sandomierza";
         hot = heat === 4 && (near.d <= 1500 || app.state.testMode) ? hot + 1 : 0;
-        if (hot > 12 && !finished) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: ${near.g.name}.`); try { navigator.vibrate?.(300); } catch { /* */ } }
+        if (hot > 12 && !finished) { finished = true; reveal(verdict, `${it.title}: ${near.g.name}.`); try { navigator.vibrate?.(300); } catch { /* */ } }
       }
       setTimeout(tick, 250);
     }
@@ -393,10 +464,10 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         addEventListener("deviceorientationabsolute" in window ? "deviceorientationabsolute" : "deviceorientation", onOrient as EventListener);
       } catch { toast("Bez kompasu zawieszka nie wie, gdzie patrzysz."); }
       if (!navigator.geolocation) { status.textContent = "GPS: brak"; return; }
-      navigator.geolocation.watchPosition((p) => { pos = { lat: p.coords.latitude, lon: p.coords.longitude }; }, () => { status.textContent = "GPS: odmowa. Zawieszka milczy bez miejsca."; }, { enableHighAccuracy: true, maximumAge: 2000 });
+      navigator.geolocation.watchPosition((p) => { pos = { lat: p.coords.latitude, lon: p.coords.longitude }; }, (err) => { status.textContent = err.code === 1 ? "GPS: odmowa. Zawieszka milczy bez miejsca. Włącz lokalizację dla tej strony w ustawieniach telefonu." : "GPS: brak sygnału. Wyjdź spod dachu i poczekaj chwilę."; }, { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 });
       start.disabled = true; start.textContent = "Obracaj się powoli"; tick();
     });
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Gwizd: czysty ton wysoko (700–3000 Hz) utrzymany 3 s. Nucenie (poniżej 500 Hz) nie liczy się. */
@@ -420,11 +491,11 @@ export function viewInterlude(app: App, id: string): HTMLElement {
           else if (hz && hz < 500) { held = Math.max(0, held - 0.2); status.textContent = `${hz.toFixed(0)} Hz · to głos, nie gwizd`; }
           else { held = Math.max(0, held - 0.05); status.textContent = hz ? `${hz.toFixed(0)} Hz` : "cisza"; }
           fill.style.width = `${Math.min(100, (held / 3) * 100)}%`;
-          if (held >= 3 && !finished) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: czysty ton.`); }
+          if (held >= 3 && !finished) { finished = true; reveal(verdict, `${it.title}: czysty ton.`); }
         }, 100);
       } catch { toast("Bez mikrofonu nie da się gwizdać do telefonu. Wróć, kiedy będziesz mógł."); }
     });
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Siedem palców: multi-touch, siedem punktów heptagramu dotkniętych jednocześnie przez 3 s. */
@@ -448,11 +519,11 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       pts.forEach((p, i) => { ctx.beginPath(); ctx.arc(p.x, p.y, 34, 0, Math.PI * 2); ctx.fillStyle = covered[i] ? "#c9a86a" : "#2a2620"; ctx.fill(); ctx.strokeStyle = "#e8e0cf"; ctx.lineWidth = 1.5; ctx.stroke(); });
       const n = covered.filter(Boolean).length; status.textContent = `${n} / 7 palców`;
       held = n === 7 ? held + 1 / 60 : 0;
-      if (held >= 3 && !finished) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: siedem palców.`); try { navigator.vibrate?.(300); } catch { /* */ } }
+      if (held >= 3 && !finished) { finished = true; reveal(verdict, `${it.title}: siedem palców.`); try { navigator.vibrate?.(300); } catch { /* */ } }
       requestAnimationFrame(draw);
     }
     draw();
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Marek trzyma: przycisk trzymany N sekund. Puszczenie = od nowa. Nic się nie dzieje. */
@@ -465,9 +536,9 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     sec.append(h("div", { class: "verdict" }, btn), status, verdict);
     let t0 = 0, iv: number | undefined, finished = done;
     const stop = () => { if (iv) clearInterval(iv); iv = undefined; if (!finished) { status.textContent = `0 / ${total} s. Puściłeś.`; btn.textContent = "Trzymaj"; } };
-    btn.addEventListener("pointerdown", (e) => { e.preventDefault(); t0 = Date.now(); btn.textContent = "…"; iv = window.setInterval(() => { const sec_ = (Date.now() - t0) / 1000; status.textContent = `${sec_.toFixed(0)} / ${total} s`; if (sec_ >= total && !finished) { finished = true; clearInterval(iv); verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: ${total} sekund.`); } }, 250); });
+    btn.addEventListener("pointerdown", (e) => { e.preventDefault(); t0 = Date.now(); btn.textContent = "…"; iv = window.setInterval(() => { const sec_ = (Date.now() - t0) / 1000; status.textContent = `${sec_.toFixed(0)} / ${total} s`; if (sec_ >= total && !finished) { finished = true; clearInterval(iv); reveal(verdict, `${it.title}: ${total} sekund.`); } }, 250); });
     ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => btn.addEventListener(ev, stop));
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Lustro: tekst w odbiciu, do przeczytania w lustrze. Zero technologii. */
@@ -479,9 +550,9 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const opts = h("div", { class: "opts", role: "radiogroup" });
     it.options!.forEach((o, i) => opts.append(h("label", {}, h("input", { type: "radio", name: "mirror", value: String(i) }), o)));
     const verdict = h("div"); const btn = h("button", { class: "primary" }, "Odpowiedz");
-    btn.addEventListener("click", () => { const el = sec.querySelector<HTMLInputElement>('input[name="mirror"]:checked'); if (!el) { toast("Najpierw lustro."); return; } if (Number(el.value) === it.answer) { verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: przeczytane w odbiciu.`); } else toast("Lustro nie kłamie. Przeczytaj jeszcze raz."); });
+    btn.addEventListener("click", () => { const el = sec.querySelector<HTMLInputElement>('input[name="mirror"]:checked'); if (!el) { toast("Najpierw lustro."); return; } if (Number(el.value) === it.answer) { reveal(verdict, `${it.title}: przeczytane w odbiciu.`); } else toast("Lustro nie kłamie. Przeczytaj jeszcze raz."); });
     sec.append(h("div", { class: "q daily" }, h("div", { class: "qt" }, it.q!), opts), btn, verdict);
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Nie podnoś palca: labirynt z trzema rozgałęzieniami, ekran ciemnieje z postępem. Puszczenie albo zła odnoga = powrót. */
@@ -506,7 +577,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       let onPath = false;
       for (let i = Math.max(0, progress - 1); i < path.length - 1; i++) if (near(p.x, p.y, path[i], path[i + 1])) { onPath = true; if (i > progress) progress = i; }
       if (!onPath) { reset("Ściana. Wracasz na Opatowską."); return; }
-      if (Math.hypot(p.x - 540, p.y - 520) < 30 && !finished) { finished = true; tracing = false; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: komnata.`); }
+      if (Math.hypot(p.x - 540, p.y - 520) < 30 && !finished) { finished = true; tracing = false; reveal(verdict, `${it.title}: komnata.`); }
     });
     ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => canvas.addEventListener(ev, () => { if (tracing && !finished) reset("Puściłeś. Wracasz na Opatowską."); }));
     function draw() {
@@ -521,7 +592,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       requestAnimationFrame(draw);
     }
     draw();
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Kroki: licznik z akcelerometru (szczyty przyspieszenia), zapisywany między dniami. Ostatnie 200 kroków ciemniej. */
@@ -534,7 +605,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const verdict = h("div");
     sec.append(bar, status, h("div", { class: "verdict" }, start), verdict);
     let last = 0, lastStep = 0, finished = done || (app.state.steps ?? 0) >= total;
-    const update = () => { const n = app.state.steps ?? 0; fill.style.width = `${Math.min(100, (n / total) * 100)}%`; status.textContent = `${n} / ${total} kroków${n > total - 200 && n < total ? " · powietrze rzednie" : ""}`; document.body.style.filter = n > total - 200 && n < total ? `brightness(${1 - ((n - (total - 200)) / 200) * 0.6})` : ""; if (n >= total && !finished) { finished = true; document.body.style.filter = ""; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: dotarłeś.`); } };
+    const update = () => { const n = app.state.steps ?? 0; fill.style.width = `${Math.min(100, (n / total) * 100)}%`; status.textContent = `${n} / ${total} kroków${n > total - 200 && n < total ? " · powietrze rzednie" : ""}`; document.body.style.filter = n > total - 200 && n < total ? `brightness(${1 - ((n - (total - 200)) / 200) * 0.6})` : ""; if (n >= total && !finished) { finished = true; document.body.style.filter = ""; reveal(verdict, `${it.title}: dotarłeś.`); } };
     const onMotion = (e: DeviceMotionEvent) => { const a = e.accelerationIncludingGravity; if (!a) return; const mag = Math.sqrt((a.x ?? 0) ** 2 + (a.y ?? 0) ** 2 + (a.z ?? 0) ** 2); const now = Date.now(); if (last && mag - last > 1.6 && now - lastStep > 320) { lastStep = now; app.state.steps = (app.state.steps ?? 0) + 1; if (app.state.steps % 10 === 0) save(app.state); update(); } last = mag; };
     start.addEventListener("click", async () => {
       try { const DM = DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> }; if (DM.requestPermission) { const r = await DM.requestPermission(); if (r !== "granted") throw new Error("denied"); } addEventListener("devicemotion", onMotion); start.disabled = true; start.textContent = "Liczę kroki"; }
@@ -542,7 +613,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     });
     addEventListener("hashchange", () => { document.body.style.filter = ""; save(app.state); }, { once: true });
     update();
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   /** Dwa głosy: widmo (FFT 8192), dwie rodziny harmonicznych, warunek kwinty 3:2. Solo: telefon gra drugi głos z głośnika. */
@@ -572,7 +643,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       }
       status.textContent = res.f1 ? `${res.f1.toFixed(1)} Hz${res.f2 ? ` + ${res.f2.toFixed(1)} Hz · ${res.ratio!.toFixed(2)}` : " · jeden głos"}${res.fifth ? " · kwinta" : ""}` : "cisza";
       hold = res.fifth ? hold + 1 : Math.max(0, hold - 2);
-      if (hold > 180 && !finished) { finished = true; if (osc) { osc.stop(); osc = null; } verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: kwinta.`); try { navigator.vibrate?.(300); } catch { /* */ } }
+      if (hold > 180 && !finished) { finished = true; if (osc) { osc.stop(); osc = null; } reveal(verdict, `${it.title}: kwinta.`); try { navigator.vibrate?.(300); } catch { /* */ } }
       requestAnimationFrame(draw);
     }
     draw();
@@ -592,7 +663,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       osc = ac.createOscillator(); osc.type = "triangle"; osc.frequency.value = 294; const g = ac.createGain(); g.gain.value = 0.25; osc.connect(g).connect(ac.destination); osc.start();
       soloBtn.textContent = "Telefon nuci 294 Hz. Ty nuć niżej (G). Stop";
     });
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 
   function renderPlate() {
@@ -622,7 +693,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         ctx.fillRect(p.x, p.y, 1.6, 1.6);
       }
       status.textContent = hz ? `${hz.toFixed(1)} Hz · ${c > 0.9 ? "siedem ramion" : c > 0.5 ? "blisko" : "piasek nie słucha"}` : "cisza";
-      if (c > 0.9 && !finished) { hold++; if (hold > 25) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: ton znaleziony.`); } } else hold = 0;
+      if (c > 0.9 && !finished) { hold++; if (hold > 25) { finished = true; reveal(verdict, `${it.title}: ton znaleziony.`); } } else hold = 0;
       requestAnimationFrame(draw);
     }
     draw();
@@ -640,6 +711,6 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         setInterval(humTick, 30000);
       } catch { toast("Bez mikrofonu. Użyj suwaka."); }
     });
-    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));
+    if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
 }

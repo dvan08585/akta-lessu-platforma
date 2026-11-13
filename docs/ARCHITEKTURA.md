@@ -49,3 +49,16 @@ Kluczowe ustalenie każdej sprawy to zdanie z lukami i bank 12 słów, w tym fa�
 ## Miasto 3D (`public/miasto/`) i sceny (`public/sceny/`)
 Miasto: MapLibre GL (CDN) + kafelki wektorowe OpenFreeMap (OSM, bez klucza) + teren AWS Terrarium (bez klucza), budynki jako bryły w palecie gry, siedem bram jako znaczniki, GPS „idź za mną", kompas obraca mapę, zawieszka grzeje w stronę najbliższej bramy. Nieprzetestowane w tej sesji (CDN i kafelki zablokowane): pierwsza próba na telefonie. Jeśli bryły nie mają wysokości (braki w OSM), warstwa `akta-buildings` daje 9 m domyślnie.
 Sceny: Three.js + Spark (CDN) jako przeglądarka plików splat nagranych telefonem (Scaniverse/Polycam/Luma). Pliki w `public/sceny/`, lista w README tamże.
+
+## Czcionki dokumentów (jedna zasada, bez wyjątków)
+
+Każdy dokument w aktach ma `style`, a styl mówi, czym był napisany. Rzetelność: ten sam typ dokumentu zawsze w tej samej czcionce.
+
+| `style` | Co to jest | Czcionka | Przykłady |
+|---|---|---|---|
+| `chronicle` | odpisy kronik, przekłady z łaciny, zapisy kasztelańskie | szeryf (Cormorant), inicjał na początku | kronika 1288, zapiski Kazimierza |
+| `mono` | protokoły, wyciągi urzędowe, pomiary, faktury, rejestry, inwentarze | maszyna do pisania (Special Elite); nagłówek i źródło w szeryfie | protokół sejsmiczny, akt notarialny, rejestr Fundacji |
+| `hand` | notatki prywatne, listy, zapiski terenowe, karty „tylko na miejscu” | pismo odręczne (Caveat); nagłówek w szeryfie | notatnik prof. W., list Wandy, zapis Berbecia o świcie |
+| `plain` | druk: prasa, przewodnik, ulotka, strona z książki | szeryf, prosto | artykuł, wyciąg z przewodnika |
+
+Nagłówek (`h4`) i linia źródła (`.src`) są zawsze w szeryfie, w kapitalikach: to archiwista opisuje dokument, nie autor dokumentu.

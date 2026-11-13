@@ -1,4 +1,4 @@
-import { h, go, toast } from "./dom";
+import { h, go, toast, back, next } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import { interludesFor } from "./interludes";
 import { icon, flint } from "./icons";
@@ -35,9 +35,10 @@ export function dateline(): HTMLElement {
   const now = new Date();
   const date = now.toLocaleDateString("pl-PL", { weekday: "long", day: "numeric", month: "long" });
   const sr = sunrise(now).toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
-  const el = h("p", { class: "faint dateline" }, `Sandomierz · ${date} · wschód ${sr}`);
-  fetchPogoda().then((w) => { if (w) el.textContent += ` · ${w.tempC.toFixed(0)}°C${w.snowing ? ", śnieg" : ""}`; });
-  fetchWisla().then((w) => { if (w.live) el.textContent += ` · Wisła ${w.cm} cm`; });
+  const item = (type: string | null, text: string, cls = "") => h("span", { class: `dl ${cls}` }, type ? icon(type) : null, text);
+  const el = h("div", { class: "dateline", role: "group", "aria-label": "Sandomierz dziś" }, item(null, `Sandomierz · ${date}`, "date"), item("sunrise", `wschód ${sr}`));
+  fetchPogoda().then((w) => { if (w) el.append(item("temp", `${w.tempC.toFixed(0)}°C${w.snowing ? ", śnieg" : ""}`, "live")); });
+  fetchWisla().then((w) => { if (w.live) el.append(item("river", `Wisła ${w.cm} cm`, "live")); });
   return el;
 }
 
@@ -59,9 +60,9 @@ export function viewIntro(app: App): HTMLElement {
     solved ? null : letter,
     h("p", { class: "muted" }, solved ? "Śledztwo trwa. Mapa pokazuje tylko to, co już wiesz." : "Jesteś biegłym. Dostajesz akta. Siedem wzgórz, siedem wniosków. Twoja zawieszka reaguje na pięciu z nich. Na dwóch milczy: tam potrzebujesz odczytu od innego biegłego."),
     h("div", { class: "cta" },
-      h("button", { class: "primary", onclick: () => go(solved ? "#/mapa" : "#/brama/4") }, solved ? "Wróć do mapy" : "Przyjmij zlecenie"),
+      solved ? next("Do mapy", "#/mapa") : next("Przyjmij zlecenie", "#/brama/4"),
       h("button", { onclick: () => go("#/akta") }, "Mam kod")),
-    h("p", { class: "faint" }, "Do powieści „Siedem Bram Lessu”. Nic tutaj nie zdradza zakończenia."));
+    h("p", { class: "faint" }, "Dodatek do powieści „Siedem Bram Lessu”. Nic tutaj nie zdradza zakończenia."));
 }
 
 export function viewMap(app: App): HTMLElement {
@@ -153,18 +154,19 @@ export function viewGate(app: App, n: number): HTMLElement {
   if (!g) { sec.append(h("p", {}, "Nie ma takiej bramy.")); return sec; }
   const c = app.caseForGate(n);
   const st = app.gateStatus(n);
-  sec.append(h("p", { class: "faint" }, `Brama ${n} · ${g.name} · żywioł: ${g.element}`));
+  const head = () => h("p", { class: "kicker" }, `Brama ${n} · ${g.name} · żywioł: ${g.element}`);
   if (st === "silent" && c) {
+    sec.append(head());
     sec.append(h("h2", {}, "Zawieszka milczy."),
       h("p", { class: "muted" }, "Na tym wzgórzu twoja zawieszka nie reaguje. Nie dlatego, że nie ma tu bramy. U innego biegłego reaguje. Jego karta udostępnienia ma linię „odczyt” z tokenem zaczynającym się od cyfry tego wzgórza."),
       readingBox(app, n),
-      h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy"));
+      back());
     return sec;
   }
   if (!c) {
-    sec.append(h("h2", {}, g.silent ? "Zawieszka milczy." : "Status: nieznany"),
+    sec.append(head(), h("h2", {}, g.silent ? "Zawieszka milczy." : "Status: nieznany"),
       h("p", { class: "muted" }, g.silent ? "Na tym wzgórzu zawieszka nie reaguje. Nie dlatego, że nie ma tu bramy." : "Ta sprawa otworzy się później. Mapa jest psychograficzna, nie kartograficzna."),
-      h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy"));
+      back());
     return sec;
   }
   if (st === "locked") {
@@ -174,8 +176,8 @@ export function viewGate(app: App, n: number): HTMLElement {
       : rel && rel.getTime() > Date.now()
         ? `Te akta przyjdą ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}. Wcześniej otwiera je tylko kod z rozdziału ${c.requires.chapter}.`
         : `Ta sprawa wymaga rozdziału ${c.requires.chapter}.`;
-    sec.append(h("h2", {}, c.title), h("p", { class: "muted" }, need),
-      h("button", { onclick: () => go("#/akta") }, "Wpisz kod z książki"), " ", h("button", { onclick: () => go("#/mapa") }, "Mapa"));
+    sec.append(head(), h("h2", {}, c.title), h("p", { class: "muted" }, need),
+      h("div", { class: "verdict" }, next("Wpisz kod z książki", "#/akta"), back("Mapa")));
     return sec;
   }
   return viewCase(app, c, sec);
@@ -196,9 +198,11 @@ export function dailyBox(app: App): HTMLElement {
   const m = pickDaily(app.mikro);
   const key = dayKey();
   const done = app.state.daily[key];
-  const box = h("div", { class: "gatebox daily" }, h("h3", {}, "Mikro-akta na dziś"), h("article", { class: "doc hand" }, h("h4", {}, m.title), h("p", {}, m.doc)));
+  const doc = h("article", { class: "doc hand" }, h("h4", {}, m.title), h("p", {}, m.doc));
+  const box = h("div", { class: "gatebox daily" }, h("h3", {}, "Mikro-akta na dziś"), doc);
   if (done !== undefined) {
-    box.append(h("p", { class: done ? "muted" : "faint" }, done ? "Rozpoznane. Jutro następne." : "Nie dziś. Jutro następne."));
+    doc.append(h("span", { class: `stamp ${done ? "" : "cold"}`, "aria-label": done ? "rozpoznane" : "nie dziś" }, done ? "Rozpoznane" : "Nie dziś"));
+    box.append(h("p", { class: "next-daily" }, "Następne: jutro"));
     return box;
   }
   // Pytanie dopiero po dotknięciu: mapa nie ma wyglądać jak quiz.
@@ -243,7 +247,7 @@ function docEl(app: App, d: Doc): HTMLElement {
     return el;
   }
   if (d.requiresDawn && !isDawn() && !app.state.testMode) {
-    el.append(h("p", { class: "dawn-locked" }, `Litery są na papierze, ale czytelne tylko o świcie. Najbliższy wschód słońca nad Sandomierzem: ${nextDawnLabel()}. Masz godzinę od tej chwili.`));
+    el.append(h("p", { class: "dawn-locked" }, `Litery są na papierze, ale czytelne tylko o świcie: od wschodu słońca przez godzinę. Najbliższy wschód nad Sandomierzem: ${nextDawnLabel()}. Wróć wtedy, z telefonem.`));
     el.append(h("p", { class: "faint" }, "Berbeć zobaczył znak o świcie. W dzień nikt nie uwierzy."));
     return el;
   }
@@ -281,11 +285,13 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   const docBox = h("div");
   const show = (i: number) => {
     docBox.replaceChildren(docEl(app, docs[i]));
-    docNav.querySelectorAll("button").forEach((b, j) => b.setAttribute("aria-current", String(i === j)));
+    docNav.querySelectorAll("button:not(:disabled)").forEach((b, j) => b.setAttribute("aria-current", String(i === j)));
   };
-  docs.forEach((d, i) => docNav.append(h("button", { role: "tab", onclick: () => show(i) }, d.title.replace("Dokument ", ""))));
-  // Dokumenty „tylko na miejscu": zakładka jest, ale nieaktywna. Pokazuje, nie tłumaczy.
-  for (const d of c.docs.filter((d) => d.requiresPlace && !app.state.placeVisits.includes(d.requiresPlace!))) docNav.append(h("button", { role: "tab", disabled: true, title: "Tylko na miejscu, w Sandomierzu" }, d.title.replace("Dokument ", "")));
+  // Zakładki w kolejności akt. Dokument „tylko na miejscu" zostaje na swoim miejscu, ale nieaktywny: pokazuje, nie tłumaczy.
+  for (const d of c.docs) {
+    const i = docs.indexOf(d);
+    docNav.append(i >= 0 ? h("button", { role: "tab", onclick: () => show(i) }, d.title.replace("Dokument ", "")) : h("button", { role: "tab", disabled: true, title: "Tylko na miejscu, w Sandomierzu" }, d.title.replace("Dokument ", "")));
+  }
   show(0);
   sec.append(h("h3", {}, "Dokumenty"), docNav, docBox);
 
@@ -411,7 +417,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     const cover = h("div", { class: "less-cover" });
     const box = h("div", { class: "buried-wrap" }, art, cover);
     sec.append(h("h3", {}, "Status: niestabilna"), box, h("p", { class: "faint" }, "Ta brama zostanie w twojej karcie jako ▲. Na zawsze. Liczy się jako przebyta, ale droga do siódmej będzie dłuższa: tam zabraknie ci jednego oddechu i będziesz potrzebować dwóch osób."),
-      h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy"));
+      back());
     requestAnimationFrame(() => box.classList.add("go"));
   }
 
@@ -494,9 +500,9 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       const pre = h("pre", {}, "…"); build().then((card) => (pre.textContent = card));
       tail.append(pre, h("div", { class: "verdict" },
         h("button", { class: "primary", onclick: async () => { track("share", { gate: c.gate }); const r = await shareText(await build()); toast(r === "shared" ? "Udostępniono." : r === "copied" ? "Skopiowano do schowka." : "Nie udało się. Zaznacz i skopiuj."); } }, "Zostaw ślad"),
-        h("button", { class: "ghost", onclick: () => go("#/mapa") }, "Wróć do mapy")));
+        back()));
     } else {
-      tail.append(h("div", { class: "verdict" }, h("a", { class: "btn primary", href: `#/miedzy/${gestureId}` }, "Przejdź bramę ciałem"), h("button", { class: "ghost", onclick: () => go("#/mapa") }, "Później")));
+      tail.append(h("div", { class: "verdict" }, next("Przejdź bramę ciałem", `#/miedzy/${gestureId}`, "body"), back("Później")));
     }
     solutionBox.replaceChildren(sol, tail);
     if (!solvedAlready) app.addNote(`Brama ${c.gate} rozpoznana: ${c.title}.`, `próby: ${tries}`);
@@ -618,7 +624,7 @@ export function viewBody(app: App): HTMLElement {
       S("Weitzberg i Lundberg 2002, nucenie i tlenek azotu", "https://pubmed.ncbi.nlm.nih.gov/12119224/"),
       S("Garcia-Argibay i in. 2019, metaanaliza dudnień różnicowych", "https://pubmed.ncbi.nlm.nih.gov/30073406/"),
       S("Keltner i Haidt 2003, Approaching awe", "https://doi.org/10.1080/02699930302297")),
-    h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy"));
+    back());
   return sec;
 }
 
@@ -636,7 +642,7 @@ export function viewInbox(app: App): HTMLElement {
     if (m.reply) {
       const chosen = inbox.replies[m.id];
       if (chosen !== undefined) card.append(h("p", { class: "reply" }, "Ty: ", m.reply[chosen]));
-      else { const row = h("div", { class: "verdict" }); m.reply.forEach((r, i) => row.append(h("button", { class: "ghost", onclick: () => { inbox.replies[m.id] = i; inbox.read.push(m.id); app.addNote(`Odpowiedź do ${m.from}: ${r}`, "list"); sendEvent(app.cfg.backendUrl, app.state, { type: "reply", id: m.id, option: i }); save(app.state); go("#/wiadomosci"); } }, r))); card.append(row); }
+      else { const row = h("div", { class: "reply-row" }, h("p", { class: "lbl" }, "Odpisz jednym zdaniem")); m.reply.forEach((r, i) => row.append(h("button", { onclick: () => { inbox.replies[m.id] = i; inbox.read.push(m.id); app.addNote(`Odpowiedź do ${m.from}: ${r}`, "list"); sendEvent(app.cfg.backendUrl, app.state, { type: "reply", id: m.id, option: i }); save(app.state); go("#/wiadomosci"); } }, r))); card.append(row); }
     }
     sec.append(card);
     if (unread && !m.reply) inbox.read.push(m.id);
@@ -645,7 +651,7 @@ export function viewInbox(app: App): HTMLElement {
     const soon = waiting.sort((a, b) => inbox.scheduled[a.id] - inbox.scheduled[b.id])[0];
     const ms = inbox.scheduled[soon.id] - Date.now();
     const when = ms < 3600000 ? `za ${Math.max(1, Math.round(ms / 60000))} min` : `za ${Math.round(ms / 3600000)} h`;
-    sec.append(h("p", { class: "muted", style: "margin-top:1.5rem" }, `${soon.from} pisze. List przyjdzie ${when}. Ludzie w tym mieście nie odpowiadają od razu.`));
+    sec.append(h("div", { class: "pending", role: "status" }, h("span", { class: "dots", "aria-hidden": "true" }, h("i"), h("i"), h("i")), h("span", {}, `${soon.from} pisze. List przyjdzie ${when}. Ludzie w tym mieście nie odpowiadają od razu.`)));
   }
   save(app.state);
   return sec;
