@@ -650,14 +650,15 @@ export function viewInbox(app: App): HTMLElement {
   return sec;
 }
 
-/** Wejście: pierwsze 90 sekund. Bez czytania. Less, jedno zdanie, dzwon, gest. Dopiero potem list. Nic nie znika: kolejne elementy dochodzą pod spodem. */
+/** Wejście: pierwsze 90 sekund. Bez czytania. Less, jedno zdanie, dzwon, gest. Dopiero potem list. Nic nie znika, dopóki ciepło nie rozleje się na ekran. */
 export function viewOnboarding(app: App): HTMLElement {
   const sec = h("section", { class: "onboard" });
   const stage = h("div", { class: "stage" });
   const skip = h("button", { class: "ghost skip", onclick: () => finishOnboarding() }, "Pomiń");
   sec.append(stage, skip);
   let bell: HTMLAudioElement | null = null;
-  const line = (t: string) => h("p", { class: "line fade-in" }, t);
+  const line = (t: string) => h("p", { class: "line fade-in" }, t);           // proza
+  const cue = (t: string) => h("p", { class: "cue fade-in" }, t);             // instrukcja: inny głos, inny krój
   const add = (node: HTMLElement, delay = 0) => setTimeout(() => stage.append(node), delay);
   function finishOnboarding() { app.state.onboarded = true; save(app.state); if (bell) bell.pause(); go("#/"); }
 
@@ -670,13 +671,28 @@ export function viewOnboarding(app: App): HTMLElement {
     btn.remove();
     add(line("Sandomierz. Październik. Dzwon Piotr uderza dwanaście razy dziennie w coś, co odpowiada z dołu."));
     const pend = h("div", { class: "pendant big", "data-heat": "0" }, h("i"));
-    const txt = line("Zanim cokolwiek przeczytasz: połóż palec na kamieniu i nie puszczaj.");
+    const txt = cue("Połóż palec na kamieniu i nie puszczaj.");
     const hold = h("div", { class: "holdzone fade-in" }, pend);
     let t0 = 0, iv: number | undefined, done = false;
     const stop = () => { if (iv) clearInterval(iv); iv = undefined; if (!done) { pend.dataset.heat = "0"; txt.textContent = "Puściłeś. Jeszcze raz. Kamień grzeje się od dłoni, nie od pośpiechu."; } };
-    hold.addEventListener("pointerdown", (e) => { e.preventDefault(); t0 = Date.now(); txt.textContent = "Trzymaj."; iv = window.setInterval(() => { const sN = (Date.now() - t0) / 1000; pend.dataset.heat = String(sN < 1.2 ? 1 : sN < 2.4 ? 2 : sN < 3.6 ? 3 : 4); if (sN >= 5 && !done) { done = true; clearInterval(iv); txt.textContent = "Zawieszka. Ciepła. Od teraz jesteś w sieci."; add(line("Komisarz Zieliński potrzebuje biegłego z zakresu geologii. Nikt w mieście nie ma twoich kwalifikacji."), 1800); add(h("button", { class: "primary big fade-in", onclick: () => finishOnboarding() }, "Przyjmij zlecenie"), 2600); } }, 100); });
+    hold.addEventListener("pointerdown", (e) => {
+      e.preventDefault(); t0 = Date.now(); txt.textContent = "Trzymaj.";
+      iv = window.setInterval(() => {
+        const sN = (Date.now() - t0) / 1000; pend.dataset.heat = String(sN < 1.2 ? 1 : sN < 2.4 ? 2 : sN < 3.6 ? 3 : 4);
+        if (sN >= 5 && !done) {
+          done = true; clearInterval(iv);
+          // Ciepło rozlewa się z kamienia na cały ekran. Wszystko znika. Potem czysty ekran i zlecenie.
+          const r = pend.getBoundingClientRect(); const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+          const glow = h("div", { class: "glow", style: `--cx:${cx}px;--cy:${cy}px` });
+          document.body.append(glow);
+          setTimeout(() => { stage.replaceChildren(); stage.append(line("Zawieszka. Ciepła. Od teraz jesteś w sieci.")); }, 1100);
+          setTimeout(() => { glow.classList.add("out"); }, 2600);
+          setTimeout(() => { glow.remove(); stage.replaceChildren(); stage.append(line("Komisarz Zieliński potrzebuje biegłego z zakresu geologii. Nikt w mieście nie ma twoich kwalifikacji.")); }, 3600);
+          setTimeout(() => { stage.append(h("button", { class: "primary big fade-in", onclick: () => finishOnboarding() }, "Przyjmij zlecenie")); }, 4600);
+        }
+      }, 100);
+    });
     ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => hold.addEventListener(ev, stop));
-    // Tekst ma stałą wysokość (min-height), więc zmiana z dwóch linijek na „Trzymaj." nic nie przesuwa; kamień wycentrowany.
     add(h("div", { class: "holdwrap" }, txt, hold), 4200);
   });
   add(btn, 5600);

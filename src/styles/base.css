@@ -83,7 +83,7 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .onboard { min-height: 92dvh; display: flex; flex-direction: column; justify-content: center; position: relative; }
 .onboard .stage { display: flex; flex-direction: column; gap: 1.4rem; align-items: flex-start; max-width: 34rem; justify-content: flex-start; }
 .onboard .holdwrap { align-self: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; }
-.onboard .holdwrap .line { min-height: 4.4em; text-align: center; }
+
 .onboard .line { font-size: 1.35rem; line-height: 1.5; margin: 0; }
 .onboard .skip { position: absolute; right: 0; top: 1rem; font-size: 0.8rem; }
 .onboard button.big { font-size: 1.05rem; padding: 0.9rem 1.4rem; }
@@ -93,3 +93,12 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .dateline { letter-spacing: 0.06em; }
 .kicker { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 0.4rem; }
 .epigraph { font-style: italic; }
+
+/* Instrukcja w wejściu: inny głos niż proza. Mniejsza, rozstrzelona, bez ciężaru literackiego. */
+.onboard .cue { font-size: 0.92rem; letter-spacing: 0.08em; color: var(--ink-dim); margin: 0; text-align: center; min-height: 3em; }
+/* Ciepło z kamienia rozlewa się na ekran i gaśnie. */
+.glow { position: fixed; inset: 0; z-index: 9; pointer-events: none; background: radial-gradient(circle at var(--cx) var(--cy), rgba(255,156,74,0.95) 0, rgba(217,132,58,0.85) 18%, rgba(14,13,11,0.98) 60%); animation: glow-in 1.4s ease-out both; }
+.glow.out { animation: glow-out 1s ease-in both; }
+@keyframes glow-in { from { clip-path: circle(0 at var(--cx) var(--cy)); opacity: 1; } to { clip-path: circle(160% at var(--cx) var(--cy)); opacity: 1; } }
+@keyframes glow-out { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .glow { animation: none; opacity: 0.9; } }
