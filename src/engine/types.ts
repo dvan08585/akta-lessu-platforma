@@ -84,6 +84,8 @@ export interface SaveState {
   subscribed: boolean;
   /** Tryb testowy autora: bez kolejności, bez kalendarza, bez milczenia. */
   testMode: boolean;
+  /** Czy gracz przeszedł wejście (pierwsze 90 sekund). */
+  onboarded?: boolean;
   /** Kroki zliczone akcelerometrem (przerywnik „kroki"), między dniami. */
   steps?: number;
   /** Wiadomości od postaci: zaplanowane (id -> czas), przeczytane, odpowiedzi. */

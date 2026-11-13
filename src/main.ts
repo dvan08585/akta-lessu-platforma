@@ -1,6 +1,6 @@
 import { App } from "./app";
 import { startLess } from "./ui/less";
-import { viewIntro, viewMap, viewGate, viewNotebook, viewAkta, viewBody, viewInbox } from "./ui/views";
+import { viewIntro, viewMap, viewGate, viewNotebook, viewAkta, viewBody, viewInbox, viewOnboarding } from "./ui/views";
 import { viewInterlude } from "./ui/interludes";
 import { installAnalytics } from "./engine/track";
 
@@ -21,6 +21,8 @@ function route() {
   else if (hash.startsWith("#/akta")) view = viewAkta(app);
   else if (hash.startsWith("#/o-ciele")) view = viewBody(app);
   else if (hash.startsWith("#/wiadomosci")) view = viewInbox(app);
+  else if (hash.startsWith("#/wejscie")) view = viewOnboarding(app);
+  else if (!app.state.onboarded && !app.state.solvedCases.length && !app.state.testMode && (hash === "#/" || hash === "")) view = viewOnboarding(app);
   else view = viewIntro(app);
   root.replaceChildren(view);
   window.scrollTo({ top: 0 });

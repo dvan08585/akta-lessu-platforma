@@ -598,3 +598,41 @@ export function viewInbox(app: App): HTMLElement {
   save(app.state);
   return sec;
 }
+
+/** Wejście: pierwsze 90 sekund. Bez czytania. Less, jedno zdanie, dzwon, gest. Dopiero potem list. */
+export function viewOnboarding(app: App): HTMLElement {
+  const sec = h("section", { class: "onboard" });
+  const stage = h("div", { class: "stage" });
+  const skip = h("button", { class: "ghost skip", onclick: () => finishOnboarding() }, "Pomiń");
+  sec.append(stage, skip);
+  let bell: HTMLAudioElement | null = null;
+  const show = (nodes: (HTMLElement | string)[], delay = 0) => { setTimeout(() => { stage.replaceChildren(...nodes.map((n) => (typeof n === "string" ? h("p", { class: "line fade-in" }, n) : n))); }, delay); };
+  function finishOnboarding() { app.state.onboarded = true; save(app.state); if (bell) { bell.pause(); } go("#/"); }
+
+  // 1. jedno zdanie
+  show(["Halina pamięta rzeź."]);
+  // 2. drugie, po oddechu
+  show(["Halina pamięta rzeź.", "Siedemset pięćdziesiąt trzy lata później do Sandomierza przyjechała geolożka."], 2600);
+  // 3. dotknij, żeby usłyszeć
+  setTimeout(() => {
+    const btn = h("button", { class: "primary big" }, "Dotknij, żeby usłyszeć miasto");
+    btn.addEventListener("click", () => {
+      bell = new Audio(import.meta.env.BASE_URL + "audio/dzwon-piotr.mp3"); bell.volume = 0.7; bell.play().catch(() => { /* bez dźwięku też przejdzie */ });
+      try { navigator.vibrate?.([120, 880, 120, 880, 120]); } catch { /* */ }
+      show(["Sandomierz. Październik. Dzwon Piotr uderza dwanaście razy dziennie w coś, co odpowiada z dołu."]);
+      // 4. gest: trzymaj
+      setTimeout(() => {
+        const pend = h("div", { class: "pendant big", "data-heat": "0" }, h("i"));
+        const txt = h("p", { class: "line" }, "Zanim cokolwiek przeczytasz: połóż palec na kamieniu i nie puszczaj.");
+        const hold = h("div", { class: "holdzone" }, pend);
+        let t0 = 0, iv: number | undefined, done = false;
+        const stop = () => { if (iv) clearInterval(iv); iv = undefined; if (!done) { pend.dataset.heat = "0"; txt.textContent = "Puściłeś. Jeszcze raz. Kamień grzeje się od dłoni, nie od pośpiechu."; } };
+        hold.addEventListener("pointerdown", (e) => { e.preventDefault(); t0 = Date.now(); txt.textContent = "Trzymaj."; iv = window.setInterval(() => { const s = (Date.now() - t0) / 1000; const heat = s < 1.2 ? 1 : s < 2.4 ? 2 : s < 3.6 ? 3 : 4; pend.dataset.heat = String(heat); if (s >= 5 && !done) { done = true; clearInterval(iv); txt.textContent = "Zawieszka. Ciepła. Od teraz jesteś w sieci."; setTimeout(() => { show([h("p", { class: "line fade-in" }, "Komisarz Zieliński potrzebuje biegłego z zakresu geologii. Nikt w mieście nie ma twoich kwalifikacji."), h("button", { class: "primary big fade-in", onclick: () => finishOnboarding() }, "Przyjmij zlecenie")]); }, 1800); } }, 100); });
+        ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => hold.addEventListener(ev, stop));
+        show([txt, hold]);
+      }, 4200);
+    });
+    show(["Halina pamięta rzeź.", "Siedemset pięćdziesiąt trzy lata później do Sandomierza przyjechała geolożka.", btn]);
+  }, 5600);
+  return sec;
+}
