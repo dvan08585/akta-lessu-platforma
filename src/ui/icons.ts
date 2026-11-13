@@ -38,13 +38,13 @@ export function flint(size = 96): SVGSVGElement {
     <defs>
       <clipPath id="${id}c"><polygon points="${pts}"/></clipPath>
       <filter id="${id}f" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter>
-      <radialGradient id="${id}g" cx="40%" cy="40%" r="70%"><stop offset="0" stop-color="#ffb066"/><stop offset="0.5" stop-color="#d9843a"/><stop offset="1" stop-color="#7a1f1f" stop-opacity="0"/></radialGradient>
+      <radialGradient id="${id}g" cx="34%" cy="36%" r="80%"><stop offset="0" stop-color="#ffb066"/><stop offset="0.5" stop-color="#d9843a"/><stop offset="1" stop-color="#7a1f1f" stop-opacity="0"/></radialGradient>
     </defs>
     <g clip-path="url(#${id}c)">
       <rect x="-60" y="-60" width="120" height="120" fill="#3a3630"/>
       <g filter="url(#${id}f)" class="bands">
-        ${[44, 38, 33, 28, 23, 18, 13, 8].map((r, i) => `<circle cx="-6" cy="-4" r="${r}" fill="none" stroke="${i % 2 ? "#cdbf9f" : "#5b5449"}" stroke-width="${i % 2 ? 2.4 : 3.2}"/>`).join("")}
-        <circle cx="-6" cy="-4" r="3" fill="#e8e0cf"/>
+        ${Array.from({ length: 15 }, (_, i) => 8 + i * 5.2).reverse().map((r, i) => `<circle cx="-16" cy="-12" r="${r.toFixed(1)}" fill="none" stroke="${i % 2 ? "#cdbf9f" : "#5b5449"}" stroke-width="${i % 2 ? 2.2 : 3.0}"/>`).join("")}
+        <circle cx="-16" cy="-12" r="3" fill="#e8e0cf"/>
       </g>
       <rect x="-60" y="-60" width="120" height="120" fill="url(#${id}g)" class="heat"/>
     </g>
