@@ -5,6 +5,7 @@ import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 import { detectDuet } from "../engine/duet";
 import { sendEvent, fetchStats, sendHum } from "../engine/wspolny";
+import { plural } from "./views";
 
 export interface Interlude {
   id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace" | "steps" | "duet"; after?: number; gate?: number; title: string; level?: string;
@@ -30,7 +31,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   const sec = h("section", { class: "fade-in interlude" }, topbar(app, "#/mapa"));
   if (!found) { sec.append(h("p", {}, "Nie ma takiego przerywnika.")); return sec; }
   const it: Interlude = found;
-  if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} przebytych bramach.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
+  if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} ${plural(it.after ?? 0, "przebytej bramie", "przebytych bramach", "przebytych bramach")}.`), h("button", { onclick: () => go("#/mapa") }, "Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   sec.append(h("p", { class: "faint" }, `Między sprawami${it.level ? " · " + it.level : ""}`), h("h2", {}, it.title));
   if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else if (it.type === "whistle") renderWhistle(); else if (it.type === "touch7") renderTouch7(); else if (it.type === "hold") renderHold(); else if (it.type === "mirror") renderMirror(); else if (it.type === "trace") renderTrace(); else if (it.type === "steps") renderSteps(); else if (it.type === "duet") renderDuet(); else renderPlate();

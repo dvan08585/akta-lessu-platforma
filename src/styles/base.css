@@ -88,3 +88,5 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .onboard .pendant.big { margin: 0; }
 .onboard .pendant.big i { width: 72px; height: 72px; }
 .dateline { letter-spacing: 0.06em; }
+.kicker { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.4rem; }
+.epigraph { font-style: italic; }

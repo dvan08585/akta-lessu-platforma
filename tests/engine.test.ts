@@ -192,3 +192,14 @@ describe("dwa głosy: analiza widma", () => {
   it("tercja to dwa głosy, ale nie kwinta", () => { const r = detectDuet(spectrum([196, 247]), binHz); expect(r.f2).not.toBeNull(); expect(r.fifth).toBe(false); });
   it("cisza", () => { expect(detectDuet(new Float32Array(N / 2).fill(-100), binHz).f1).toBeNull(); });
 });
+
+import { plural } from "../src/ui/views";
+describe("odmiana", () => {
+  it("po 1 bramie, po 2 bramach, 5 bram, 22 bramy", () => {
+    expect(plural(1, "bramie", "bramach", "bramach")).toBe("bramie");
+    expect(plural(2, "brama", "bramy", "bram")).toBe("bramy");
+    expect(plural(5, "brama", "bramy", "bram")).toBe("bram");
+    expect(plural(12, "brama", "bramy", "bram")).toBe("bram");
+    expect(plural(22, "brama", "bramy", "bram")).toBe("bramy");
+  });
+});

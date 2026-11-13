@@ -120,9 +120,16 @@ export function viewMap(app: App): HTMLElement {
   return sec;
 }
 
+/** Polska liczba mnoga: 1 brama, 2–4 bramy, 5+ bram; po 1 bramie, po 2 bramach. */
+export function plural(n: number, one: string, few: string, many: string): string {
+  const m10 = n % 10, m100 = n % 100;
+  if (n === 1) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+}
 function lockedWhy(app: App, c: CaseData): string {
   const need = c.requires.solvedCases ?? 0;
-  if (app.passed() < need) return `po ${need} bramach`;
+  if (app.passed() < need) return `po ${need} ${plural(need, "bramie", "bramach", "bramach")}`;
   const rel = c.requires.release ? releaseDate(app.cfg, c.requires.release) : null;
   if (rel && rel.getTime() > Date.now()) return `od ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "short" })} lub kod`;
   return "kod z książki";
@@ -151,7 +158,7 @@ export function viewGate(app: App, n: number): HTMLElement {
   if (st === "locked") {
     const rel = c.requires.release ? releaseDate(app.cfg, c.requires.release) : null;
     const need = c.requires.solvedCases !== undefined && app.passed() < c.requires.solvedCases
-      ? `Ta sprawa otwiera się po ${c.requires.solvedCases} przebytych bramach. Masz ${app.passed()}.`
+      ? `Ta sprawa otwiera się po ${c.requires.solvedCases} ${plural(c.requires.solvedCases, "przebytej bramie", "przebytych bramach", "przebytych bramach")}. Masz ${app.passed()}.`
       : rel && rel.getTime() > Date.now()
         ? `Te akta przyjdą ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}. Wcześniej otwiera je tylko kod z rozdziału ${c.requires.chapter}.`
         : `Ta sprawa wymaga rozdziału ${c.requires.chapter}.`;
@@ -244,7 +251,12 @@ const MONTHS = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "l
 export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   const solvedAlready = app.state.solvedCases.includes(c.n);
   const unstable = app.state.unstableGates.includes(c.gate);
-  sec.append(h("h2", {}, c.title), h("p", { class: "muted" }, c.subtitle), h("p", { class: "faint" }, c.epigraph));
+  // Nadtytuł (brama i wzgórze) + tytuł + motto. Podtytuł sprawy nie powtarza wzgórza: zostaje tylko to, czego nie ma w nadtytule.
+  const g = app.map.gates.find((x) => x.n === c.gate);
+  const sub = c.subtitle.split(" · ").filter((part) => !(g && (part.includes(g.name.replace("Wzgórze ", "")) || part.startsWith("żywioł")))).join(" · ");
+  sec.append(h("p", { class: "kicker" }, `Brama ${c.gate} · ${g?.name ?? ""} · żywioł: ${g?.element ?? ""}`), h("h2", {}, c.title));
+  if (sub) sec.append(h("p", { class: "muted" }, sub));
+  sec.append(h("p", { class: "faint epigraph" }, c.epigraph));
 
   // Dokumenty: nawigacja zakładkami, jeden na ekran (telefon).
   const docs = visibleDocs(app, c);
