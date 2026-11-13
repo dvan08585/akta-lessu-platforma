@@ -336,7 +336,7 @@ Wody gruntowe w Sandomierzu o tej porze roku: 9–10°C.
 Zawieszka: ciepło przesuwa się w dół. Nie na zewnątrz, nie w górę.
 
 <!-- cases/03-katedralne.json docs[3].paragraphs[3] -->
-Nie szukałam swojego miesiąca. Oczy same.
+Nie szukałam swojego miesiąca. Wzrok sam tam poszedł.
 
 <!-- cases/03-katedralne.json docs[4].source -->
 Tylko na miejscu: nawa katedry, przy obrazie XI. Zeskanowany kod.
@@ -360,7 +360,7 @@ Styczeń: śnieg na lessie, biały na białym. Nie zobaczysz, gdzie kończy się
 Luty: lód na Wiśle trzyma cztery dni. Ty uwierzysz piątego.
 
 <!-- cases/03-katedralne.json questions[0].monthLines[2] -->
-Marzec: roztopy. Woda nie przychodzi z góry. Przychodzi spod.
+Marzec: roztopy. Woda nie przychodzi z góry. Przychodzi od spodu.
 
 <!-- cases/03-katedralne.json questions[0].monthLines[3] -->
 Kwiecień: najwyższy stan rzeki. Nikt nie patrzy, co jest niżej.
@@ -390,7 +390,7 @@ Listopad: Święto Młodego Wina. Wino jest młode. Krew też.
 Grudzień: Tatarzy przychodzą w grudniu. Zawsze przychodzą w grudniu.
 
 <!-- cases/03-katedralne.json questions[0].monthClosing -->
-A potem oczy same lądują na listopadzie.
+A potem wzrok i tak wraca do listopada.
 
 <!-- cases/03-katedralne.json questions[1].text -->
 W dniu zalania Wisła stała na ___ cm przy majowej średniej ___ cm: krypt nie zalewa ___.
@@ -417,7 +417,7 @@ Zalania odnotowano w maju, wrześniu i ___; to majowe, przy ___ cm, najwyraźnie
 Wodowskaz: które miesiące. Protokół: który stan.
 
 <!-- cases/03-katedralne.json questions[5].text -->
-Woda w kryptach przychodzi od ___, jest cieplejsza o ___ stopni i zbiera się pod obrazem ___.
+Woda w kryptach przychodzi od ___, jest cieplejsza o ___ stopni i zbiera się pod obrazem z napisem ___.
 
 <!-- cases/03-katedralne.json questions[5].hint -->
 Protokół, zeszyt, wodowskaz.
@@ -1207,7 +1207,7 @@ Widmo
 Berbeć zostawił w archiwum nagranie bez opisu. Dzwon, cztery uderzenia, nic więcej. Anzelm: „Nie słuchaj. Patrz.”
 
 <!-- interludia[18].reveal -->
-Siedmiobok, zapisany w częstotliwościach od trzech do siedmiu tysięcy herców, tam, gdzie dzwon już nie sięga. Ktoś, kto to nagrał, wiedział, że ucho tego nie złoży, a oko tak. Synestezja nie jest chorobą. Jest sposobem czytania.
+Siedmiobok, zapisany w częstotliwościach między dwoma a ośmioma tysiącami herców, tam, gdzie dzwon już nie sięga. Ktoś, kto to nagrał, wiedział, że ucho tego nie złoży, a oko tak. Synestezja nie jest chorobą. Jest sposobem czytania.
 
 <!-- interludia[19].title -->
 Kompas

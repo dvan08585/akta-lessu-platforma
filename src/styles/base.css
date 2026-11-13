@@ -8,7 +8,7 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-#less { position: fixed; inset: 0; width: 100% !important; height: 100% !important; pointer-events: none; z-index: 0; opacity: 0.55; }
+#less { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.55; }
 #app { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter) 6rem; }
 a { color: var(--ink); }
 h1, h2, h3 { font-weight: 400; letter-spacing: 0.02em; line-height: 1.2; margin: 0 0 0.6em; }
@@ -56,14 +56,6 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .pendant {
   display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--ink-dim);
 }
-.pendant i {
-  width: 10px; height: 10px; border-radius: 50%; display: inline-block;
-  background: var(--cold); box-shadow: 0 0 0 0 transparent; transition: background 0.6s, box-shadow 0.6s;
-}
-.pendant[data-heat="1"] i { background: #6f7a7a; }
-.pendant[data-heat="2"] i { background: #a7773f; box-shadow: 0 0 8px rgba(217,132,58,0.4); }
-.pendant[data-heat="3"] i { background: var(--warm); box-shadow: 0 0 14px rgba(217,132,58,0.7); }
-.pendant[data-heat="4"] i { background: #ff9c4a; box-shadow: 0 0 22px rgba(255,156,74,0.9); animation: pulse 1.2s infinite; }
 @keyframes pulse { 50% { box-shadow: 0 0 6px rgba(255,156,74,0.5); } }
 
 /* Jeden rodzaj pudełka (.card / .gatebox / .next-step dzielą styl); .accent = jedno na ekran, to, co trzeba zrobić. */
@@ -89,7 +81,6 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .onboard button.big { font-size: 1.05rem; padding: 0.9rem 1.4rem; }
 .onboard .holdzone { -webkit-touch-callout: none; padding: 1.5rem; border: 1px dashed var(--ink-faint); border-radius: 50%; touch-action: none; user-select: none; -webkit-user-select: none; cursor: pointer; margin: 0 auto; }
 .onboard .pendant.big { margin: 0; }
-.onboard .pendant.big i { width: 72px; height: 72px; }
 /* Datownik: miasto żyje. Rząd krótkich odczytów z ikonami w piasku, nie zdanie. */
 .dateline { display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; align-items: center; font-size: 0.8rem; letter-spacing: 0.06em; color: var(--ink-dim); margin: 0 0 1rem; }
 .dateline .dl { display: inline-flex; align-items: center; gap: 0.35rem; white-space: nowrap; }
@@ -118,7 +109,7 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 /* Kamień: obraz rysowany raz; ciepło = osobna warstwa (tylko opacity), więc pulsowanie jest tanie. */
 .flint { position: relative; display: block; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; }
 .flint-img { display: block; width: 100%; height: 100%; pointer-events: none; -webkit-touch-callout: none; -webkit-user-drag: none; }
-.pendant .flint-heat, .flint-heat { position: absolute; inset: 0; width: 100% !important; height: 100% !important; border-radius: 0; box-shadow: none; animation: none; opacity: 0; transition: opacity 0.5s; mix-blend-mode: screen; pointer-events: none;
+.flint-heat { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 0; box-shadow: none; animation: none; opacity: 0; transition: opacity 0.5s; mix-blend-mode: screen; pointer-events: none;
   background: radial-gradient(circle at 32% 34%, rgba(255,176,102,0.95) 0, rgba(217,132,58,0.8) 45%, rgba(122,31,31,0) 85%); }
 .pendant[data-heat="1"] .flint-heat { opacity: 0.18; }
 .pendant[data-heat="2"] .flint-heat { opacity: 0.4; }

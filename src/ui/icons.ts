@@ -36,6 +36,9 @@ export function icon(type: string): SVGSVGElement {
  * kontur zdeformowany szumem jak słoje. Rysowany RAZ jako obraz (filtr liczony jeden raz), ciepło to osobna, tania warstwa
  * nad obrazem (opacity), więc pulsowanie nie kosztuje przeliczania filtra.
  */
+/** Ziarno krzemienia z ziarna gracza: każdy ma swój kamień, zawsze ten sam. */
+export function flintSeed(playerSeed: string): number { let x = 0; for (const ch of playerSeed) x = (x * 31 + ch.charCodeAt(0)) >>> 0; return 1 + (x % 97); }
+
 export function flint(size = 96, seed = 7): HTMLElement {
   const pts = Array.from({ length: 7 }, (_, i) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 7; return [Math.cos(a) * 46, Math.sin(a) * 46] as const; });
   const poly = pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
@@ -44,9 +47,9 @@ export function flint(size = 96, seed = 7): HTMLElement {
   const widths = [1.2, 1.8, 0.9, 2.2, 0.7];
   // ogniska pasów: start blisko lewego górnego rogu, każdy kolejny pierścień przesuwa się w prawo-dół i rośnie szybciej w poziomie
   const rings = Array.from({ length: 34 }, (_, i) => {
-    const t = i / 33; const cx = -20 + t * 30, cy = -16 + t * 22; const rx = 3 + i * 2.9 + t * t * 20, ry = 3 + i * 2.1 + t * 6;
+    const t = i / 33; const cx = -20 + t * 30, cy = -16 + t * 22 + (seed % 7) - 3; const rx = 3 + i * 2.9 + t * t * 20, ry = 3 + i * 2.1 + t * 6;
     const k = i % 5; const w = widths[k] * (0.6 + t * 0.9); // cieńsze w środku (zbite), grubsze na zewnątrz (rozszerzone)
-    return `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="none" stroke="${tones[k]}" stroke-width="${w.toFixed(2)}" transform="rotate(-18 ${cx.toFixed(1)} ${cy.toFixed(1)})"/>`;
+    return `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="none" stroke="${tones[k]}" stroke-width="${w.toFixed(2)}" transform="rotate(${-18 + (seed % 11) - 5} ${cx.toFixed(1)} ${cy.toFixed(1)})"/>`;
   }).reverse().join("");
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100" width="${size * 3}" height="${size * 3}">
     <defs><clipPath id="c"><polygon points="${poly}"/></clipPath>

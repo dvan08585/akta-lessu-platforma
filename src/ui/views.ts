@@ -1,7 +1,7 @@
 import { h, go, toast, back, next } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import { interludesFor } from "./interludes";
-import { icon, flint } from "./icons";
+import { icon, flint, flintSeed } from "./icons";
 import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import { pickDaily, dayKey } from "../engine/daily";
 import { track } from "../engine/track";
@@ -17,8 +17,8 @@ import { shareCard, shareText } from "../engine/share";
 import { codeMatches, unlockDate, placeFromUrl, releaseDate } from "../engine/unlock";
 import { exportCode, importCode, save, reset } from "../engine/state";
 
-export function pendant(heat: 0 | 1 | 2 | 3 | 4, label?: string): HTMLElement {
-  return h("span", { class: "pendant", "data-heat": String(heat), "aria-live": "polite" }, h("i"), label ?? `zawieszka: ${heatLabel[heat]}`);
+export function pendant(heat: 0 | 1 | 2 | 3 | 4, label?: string, seed = 7): HTMLElement {
+  return h("span", { class: "pendant", "data-heat": String(heat), "aria-live": "polite" }, flint(30, seed), label ?? `zawieszka: ${heatLabel[heat]}`);
 }
 
 export function topbar(app: App, active: string): HTMLElement {
@@ -357,7 +357,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   });
   sec.append(h("h3", {}, "Ustal"), grid);
 
-  const pend = pendant(0);
+  const fs = flintSeed(app.state.seed); const pend = pendant(0, undefined, fs);
   const verdictText = h("p", { class: "verdict-text muted", "aria-live": "polite" });
   const result = h("div", { class: "verdict" }, pend);
   const btn = h("button", { class: "primary" }, "Sprawdź zawieszką") as HTMLButtonElement;
@@ -374,7 +374,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     recordAttempt(app.state, c, v);
     save(app.state);
     const cold = c.gate === 5; // Brama Zamkowa: żywioł zimno. Zawieszka ziębi zamiast grzać.
-    pend.replaceWith(pendant(v.heat, cold ? `zawieszka: ${["zimna", "zimniejsza", "lodowata", "parzy zimnem", "zamarza"][v.heat]}` : undefined));
+    pend.replaceWith(pendant(v.heat, cold ? `zawieszka: ${["zimna", "zimniejsza", "lodowata", "parzy zimnem", "zamarza"][v.heat]}` : undefined, fs));
     if (v.solved) { verdictText.textContent = ""; grid.querySelectorAll(".q").forEach((el) => el.classList.add("ok")); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
     else {
       const tries = (app.state.attempts[c.id] ?? []).length;
@@ -387,7 +387,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     }
   });
   sec.append(result, verdictText, btn, solutionBox);
-  if (solvedAlready) { pend.replaceWith(pendant(4)); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
+  if (solvedAlready) { pend.replaceWith(pendant(4, undefined, fs)); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
   return sec;
 
   function renderDecision() {
@@ -677,7 +677,7 @@ export function viewOnboarding(app: App): HTMLElement {
     try { navigator.vibrate?.([120, 880, 120, 880, 120]); } catch { /* */ }
     btn.remove();
     add(line("Sandomierz. Październik. Dzwon Piotr uderza dwanaście razy dziennie w coś, co odpowiada z dołu."));
-    const pend = h("div", { class: "pendant big", "data-heat": "0" }, flint(104));
+    const pend = h("div", { class: "pendant big", "data-heat": "0" }, flint(104, flintSeed(app.state.seed)));
     const txt = cue("Połóż palec na kamieniu i nie puszczaj.");
     const hold = h("div", { class: "holdzone fade-in" }, pend);
     let t0 = 0, iv: number | undefined, done = false;

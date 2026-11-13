@@ -6,7 +6,7 @@ import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 import { detectDuet } from "../engine/duet";
 import { sendEvent, fetchStats, sendHum } from "../engine/wspolny";
 import { plural } from "./views";
-import { flint } from "./icons";
+import { flint, flintSeed } from "./icons";
 
 export interface Interlude {
   id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace" | "steps" | "duet"; after?: number; gate?: number; title: string; level?: string;
@@ -427,7 +427,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   /** Kompas-zawieszka: GPS + magnetometr. Grzeje, gdy telefon celuje w najbliższą bramę. Tylko na miejscu. */
   function renderCompass() {
     sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
-    const pend = h("div", { class: "pendant big", "data-heat": "0" }, flint(96));
+    const pend = h("div", { class: "pendant big", "data-heat": "0" }, flint(96, flintSeed(app.state.seed)));
     const status = h("p", { class: "mono muted" }, "GPS: czeka, aż wyjmiesz zawieszkę");
     const start = h("button", { class: "primary" }, "Wyjmij zawieszkę");
     const verdict = h("div");
