@@ -26,3 +26,28 @@ export function icon(type: string): SVGSVGElement {
   path.setAttribute("d", P[type] ?? P.plate); path.setAttribute("fill", "none"); path.setAttribute("stroke", "currentColor"); path.setAttribute("stroke-width", "1.5"); path.setAttribute("stroke-linecap", "round"); path.setAttribute("stroke-linejoin", "round");
   svg.append(path); return svg;
 }
+
+/** Krzemień pasiasty: siedmiobok z nieregularnymi pasami krzemienia i kwarcu (feTurbulence + displacement). Pasy jaśnieją od ciepła przez data-heat na rodzicu. */
+export function flint(size = 96): SVGSVGElement {
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", "-50 -50 100 100"); svg.setAttribute("width", String(size)); svg.setAttribute("height", String(size)); svg.setAttribute("class", "flint"); svg.setAttribute("aria-hidden", "true");
+  const id = "fl" + Math.random().toString(36).slice(2, 7);
+  const pts = Array.from({ length: 7 }, (_, i) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 7; return `${(Math.cos(a) * 46).toFixed(1)},${(Math.sin(a) * 46).toFixed(1)}`; }).join(" ");
+  svg.innerHTML = `
+    <defs>
+      <clipPath id="${id}c"><polygon points="${pts}"/></clipPath>
+      <filter id="${id}f" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter>
+      <radialGradient id="${id}g" cx="40%" cy="40%" r="70%"><stop offset="0" stop-color="#ffb066"/><stop offset="0.5" stop-color="#d9843a"/><stop offset="1" stop-color="#7a1f1f" stop-opacity="0"/></radialGradient>
+    </defs>
+    <g clip-path="url(#${id}c)">
+      <rect x="-60" y="-60" width="120" height="120" fill="#3a3630"/>
+      <g filter="url(#${id}f)" class="bands">
+        ${[44, 38, 33, 28, 23, 18, 13, 8].map((r, i) => `<circle cx="-6" cy="-4" r="${r}" fill="none" stroke="${i % 2 ? "#cdbf9f" : "#5b5449"}" stroke-width="${i % 2 ? 2.4 : 3.2}"/>`).join("")}
+        <circle cx="-6" cy="-4" r="3" fill="#e8e0cf"/>
+      </g>
+      <rect x="-60" y="-60" width="120" height="120" fill="url(#${id}g)" class="heat"/>
+    </g>
+    <polygon points="${pts}" fill="none" stroke="#a39a86" stroke-width="1.2"/>`;
+  return svg;
+}

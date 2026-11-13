@@ -1,7 +1,7 @@
 import { h, go, toast } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import { interludesFor } from "./interludes";
-import { icon } from "./icons";
+import { icon, flint } from "./icons";
 import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import { pickDaily, dayKey } from "../engine/daily";
 import { track } from "../engine/track";
@@ -671,7 +671,7 @@ export function viewOnboarding(app: App): HTMLElement {
     try { navigator.vibrate?.([120, 880, 120, 880, 120]); } catch { /* */ }
     btn.remove();
     add(line("Sandomierz. Październik. Dzwon Piotr uderza dwanaście razy dziennie w coś, co odpowiada z dołu."));
-    const pend = h("div", { class: "pendant big", "data-heat": "0" }, h("i"));
+    const pend = h("div", { class: "pendant big", "data-heat": "0" }, flint(104));
     const txt = cue("Połóż palec na kamieniu i nie puszczaj.");
     const hold = h("div", { class: "holdzone fade-in" }, pend);
     let t0 = 0, iv: number | undefined, done = false;
