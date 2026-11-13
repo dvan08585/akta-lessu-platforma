@@ -651,7 +651,8 @@ export function viewOnboarding(app: App): HTMLElement {
     const stop = () => { if (iv) clearInterval(iv); iv = undefined; if (!done) { pend.dataset.heat = "0"; txt.textContent = "Puściłeś. Jeszcze raz. Kamień grzeje się od dłoni, nie od pośpiechu."; } };
     hold.addEventListener("pointerdown", (e) => { e.preventDefault(); t0 = Date.now(); txt.textContent = "Trzymaj."; iv = window.setInterval(() => { const sN = (Date.now() - t0) / 1000; pend.dataset.heat = String(sN < 1.2 ? 1 : sN < 2.4 ? 2 : sN < 3.6 ? 3 : 4); if (sN >= 5 && !done) { done = true; clearInterval(iv); txt.textContent = "Zawieszka. Ciepła. Od teraz jesteś w sieci."; add(line("Komisarz Zieliński potrzebuje biegłego z zakresu geologii. Nikt w mieście nie ma twoich kwalifikacji."), 1800); add(h("button", { class: "primary big fade-in", onclick: () => finishOnboarding() }, "Przyjmij zlecenie"), 2600); } }, 100); });
     ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => hold.addEventListener(ev, stop));
-    add(txt, 4200); add(hold, 4300);
+    // Tekst ma stałą wysokość (min-height), więc zmiana z dwóch linijek na „Trzymaj." nic nie przesuwa; kamień wycentrowany.
+    add(h("div", { class: "holdwrap" }, txt, hold), 4200);
   });
   add(btn, 5600);
   return sec;
