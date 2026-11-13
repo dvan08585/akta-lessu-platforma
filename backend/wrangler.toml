@@ -1,0 +1,15 @@
+name = "akta-lessu-wspolny"
+main = "src/index.ts"
+compatibility_date = "2025-10-01"
+
+# Jeden Durable Object trzyma liczniki atomowo (KV gubi równoczesne inkrementy). Plan darmowy Workers obsługuje DO.
+[[durable_objects.bindings]]
+name = "STATS"
+class_name = "Stats"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Stats"]
+
+[vars]
+ALLOWED_ORIGIN = "https://dvan08585.github.io"

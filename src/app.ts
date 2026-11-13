@@ -20,7 +20,7 @@ import { schedule, type MessageRule } from "./engine/messages";
 import type { Mikro } from "./engine/daily";
 import { silentHills } from "./engine/pair";
 
-export interface Config extends TimeConfig { testCodeHash?: string; doneCodeHash?: string; title: string; share: { url: string; hashtag: string }; footer: string; bookUrl: string; newsletter: { action: string; fieldName: string; method: string }; analyticsDomain: string }
+export interface Config extends TimeConfig { testCodeHash?: string; doneCodeHash?: string; backendUrl: string; title: string; share: { url: string; hashtag: string }; footer: string; bookUrl: string; newsletter: { action: string; fieldName: string; method: string }; analyticsDomain: string }
 export type Reward = { title: string; note: string; paragraphs: string[] };
 
 export class App {

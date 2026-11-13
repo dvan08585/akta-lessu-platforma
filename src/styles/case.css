@@ -98,3 +98,4 @@ select { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px 
 .reward .doc { margin-top: 1rem; }
 .share { margin: 2.2rem 0 1rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
 .cam { max-height: 180px; object-fit: cover; }
+.community .mono { margin: 0.15rem 0; letter-spacing: 0.05em; }

@@ -4,6 +4,7 @@ import type { App } from "../app";
 import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 import { detectDuet } from "../engine/duet";
+import { sendEvent, fetchStats, sendHum } from "../engine/wspolny";
 
 export interface Interlude {
   id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace" | "steps" | "duet"; after?: number; gate?: number; title: string; level?: string;
@@ -36,7 +37,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   return sec;
 
   function finish(note: string) {
-    if (!app.state.interludesDone.includes(it.id)) { app.state.interludesDone.push(it.id); app.addNote(note, it.gate !== undefined ? `brama ${it.gate} przebyta` : "między sprawami"); save(app.state); if (it.gate !== undefined) toast(`Brama ${it.gate} przebyta. Ciałem.`); }
+    if (!app.state.interludesDone.includes(it.id)) { app.state.interludesDone.push(it.id); app.addNote(note, it.gate !== undefined ? `brama ${it.gate} przebyta` : "między sprawami"); save(app.state); if (it.gate !== undefined) { toast(`Brama ${it.gate} przebyta. Ciałem.`); sendEvent(app.cfg.backendUrl, app.state, { type: "gesture", gate: it.gate }); } }
   }
 
   function renderAmor() {
@@ -68,7 +69,9 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       qs.replaceChildren(h("p", { class: "muted" }, "Które zdanie było kłamstwem?"));
       it.questions!.forEach((q, i) => {
         qs.append(h("button", { onclick: () => {
-          if (i === it.lie) { verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!))); finish(`${it.title}: kłamstwo rozpoznane.`); qs.replaceChildren(h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); }
+          sendEvent(app.cfg.backendUrl, app.state, { type: "choice", id: it.id, option: i });
+          if (i === it.lie) { verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!))); finish(`${it.title}: kłamstwo rozpoznane.`); qs.replaceChildren(h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy"));
+            fetchStats(app.cfg.backendUrl).then((st) => { const c = st?.choices[it.id]; if (!c) return; const total = Object.values(c).reduce((a, b) => a + b, 0); if (total < 5) return; const mine = c[String(i)] ?? 0; verdict.append(h("p", { class: "faint" }, `${Math.round((mine / total) * 100)}% biegłych wskazało to samo zdanie. ${total} rozmów.`)); }); }
           else toast(it.wrong!);
         } }, `Odpowiedź ${i + 1}`));
       });
@@ -627,6 +630,9 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         const smooth = new PitchSmoother(7);
         micBtn.disabled = true; micBtn.textContent = "Mikrofon słucha";
         setInterval(() => { an.getFloatTimeDomainData(buf); const p = smooth.push(detectPitch(buf, ac.sampleRate)); hz = p; }, 50);
+        // Nucenie razem: co 30 s meldunek „nucę teraz"; w dniu premiery o 12:00 strona pokaże, ilu naraz
+        const humTick = async () => { if (hz) { const n = await sendHum(app.cfg.backendUrl, app.state); if (n !== null && n > 1) status.title = `nuci teraz ${n} osób`; } };
+        setInterval(humTick, 30000);
       } catch { toast("Bez mikrofonu. Użyj suwaka."); }
     });
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)));

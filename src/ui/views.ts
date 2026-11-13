@@ -4,6 +4,7 @@ import { interludesFor } from "./interludes";
 import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import { pickDaily, dayKey } from "../engine/daily";
 import { track } from "../engine/track";
+import { sendEvent, fetchStats, fetchRejestr, sendHum } from "../engine/wspolny";
 import { isDawn, nextDawnLabel } from "../engine/sun";
 import { fetchPogoda } from "../engine/pogoda";
 import { due, pending, unreadCount, ensureInbox, schedule } from "../engine/messages";
@@ -60,12 +61,21 @@ export function viewMap(app: App): HTMLElement {
   sec.append(wisla);
   if (isSnowSeason()) sec.classList.add("snow");
   fetchPogoda().then((w) => { if (!w) return; const line = h("p", { class: "faint pogoda" }, `Sandomierz teraz: ${w.tempC.toFixed(0)}°C${w.snowing ? ". Pada śnieg. Na Pimpo Limpo są sanki." : "."}`); wisla.after(line); if (w.snowing) sec.classList.add("sanki"); });
-  // Rejestr na żywo (dzień premiery): plik public/live/rejestr.json podmieniany ręcznie
-  fetch(import.meta.env.BASE_URL + "live/rejestr.json", { cache: "no-store" }).then((r) => r.json()).then((j: { active?: boolean; header?: string; lines?: string[]; updatedAt?: string }) => {
-    if (!j.active || !j.lines) return;
+  // Rejestr na żywo (dzień premiery): najpierw backend, potem plik public/live/rejestr.json jako zapas
+  const showLive = (j: { active?: boolean; header?: string; lines?: string[]; updatedAt?: string } | null) => {
+    if (!j || !j.active || !j.lines) return false;
     const box = h("div", { class: "gatebox live" }, h("h3", {}, j.header ?? "Rejestr na żywo"), h("div", { class: "mono" }, ...j.lines.map((l) => h("p", {}, l))), h("p", { class: "faint" }, `Ostatnia zmiana: ${j.updatedAt ?? "—"}. Rejestr zmienia się co godzinę.`));
+    wisla.after(box); return true;
+  };
+  fetchRejestr(app.cfg.backendUrl).then((j) => { if (!showLive(j)) fetch(import.meta.env.BASE_URL + "live/rejestr.json", { cache: "no-store" }).then((r) => r.json()).then(showLive).catch(() => { /* cisza */ }); });
+  // Społeczność: nikt nie ma pełnej mapy sam, ale razem mają
+  fetchStats(app.cfg.backendUrl).then((st) => {
+    if (!st) return;
+    const rows = [1, 2, 3, 4, 5, 6, 7].map((n) => { const g = st.gates[String(n)] ?? { solved: 0, gesture: 0 }; return h("p", { class: "mono" }, `${n}  ${"●".repeat(Math.min(10, Math.round((g.gesture / Math.max(1, st.players)) * 10)))}${"○".repeat(10 - Math.min(10, Math.round((g.gesture / Math.max(1, st.players)) * 10)))}  ${g.gesture} przebyło`); });
+    const seventh = st.seventh.total ? ` Siódmą pozycję zostawiło pustą ${Math.round((st.seventh.empty / st.seventh.total) * 100)}% z ${st.seventh.total}.` : "";
+    const box = h("div", { class: "gatebox community" }, h("h3", {}, "Społeczność"), h("p", { class: "muted" }, `${st.players} biegłych. Nikt nie ma pełnej mapy sam.${seventh}`), ...rows);
     wisla.after(box);
-  }).catch(() => { /* brak pliku: cisza */ });
+  });
   sec.append(renderMap({
     map: app.map, chapters: app.chapters, state: app.state,
     isUnlocked: (n) => app.isUnlocked(n), gateStatus: (n) => app.gateStatus(n),
@@ -400,7 +410,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     const no = h("button", { class: "primary" }, p.no);
     const box = h("div", { class: "pair" }, reg, h("p", { class: "quote" }, p.registerQuestion), h("div", { class: "verdict" }, no, yes));
     yes.addEventListener("click", () => { toast(p.yesRefused); yes.classList.add("shake"); });
-    no.addEventListener("click", () => { app.state.leftSeventhEmpty = true; markSolved(); app.addNote("Siódma pozycja: pusta. Zostawiona.", "finał"); box.remove(); renderSolution(1); });
+    no.addEventListener("click", () => { app.state.leftSeventhEmpty = true; sendEvent(app.cfg.backendUrl, app.state, { type: "seventh_empty" }); markSolved(); app.addNote("Siódma pozycja: pusta. Zostawiona.", "finał"); box.remove(); renderSolution(1); });
     sec.insertBefore(box, solutionBox);
   }
 
@@ -411,7 +421,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   }
 
   function renderSolution(tries: number) {
-    if (!solvedAlready) track("case_solved", { gate: c.gate, tries });
+    if (!solvedAlready) { track("case_solved", { gate: c.gate, tries }); sendEvent(app.cfg.backendUrl, app.state, { type: "solved", gate: c.gate }); }
     if (c.gate === 5 && !app.state.sawFooter) { app.state.sawFooter = true; save(app.state); }
     const gestureId = GESTURE_OF[c.gate];
     const gestureDoneNow = !gestureId || app.state.interludesDone.includes(gestureId) || app.state.testMode;
@@ -599,7 +609,7 @@ export function viewInbox(app: App): HTMLElement {
     if (m.reply) {
       const chosen = inbox.replies[m.id];
       if (chosen !== undefined) card.append(h("p", { class: "reply" }, "Ty: ", m.reply[chosen]));
-      else { const row = h("div", { class: "verdict" }); m.reply.forEach((r, i) => row.append(h("button", { class: "ghost", onclick: () => { inbox.replies[m.id] = i; inbox.read.push(m.id); app.addNote(`Odpowiedź do ${m.from}: ${r}`, "list"); save(app.state); go("#/wiadomosci"); } }, r))); card.append(row); }
+      else { const row = h("div", { class: "verdict" }); m.reply.forEach((r, i) => row.append(h("button", { class: "ghost", onclick: () => { inbox.replies[m.id] = i; inbox.read.push(m.id); app.addNote(`Odpowiedź do ${m.from}: ${r}`, "list"); sendEvent(app.cfg.backendUrl, app.state, { type: "reply", id: m.id, option: i }); save(app.state); go("#/wiadomosci"); } }, r))); card.append(row); }
     }
     sec.append(card);
     if (unread && !m.reply) inbox.read.push(m.id);
@@ -615,40 +625,34 @@ export function viewInbox(app: App): HTMLElement {
   return sec;
 }
 
-/** Wejście: pierwsze 90 sekund. Bez czytania. Less, jedno zdanie, dzwon, gest. Dopiero potem list. */
+/** Wejście: pierwsze 90 sekund. Bez czytania. Less, jedno zdanie, dzwon, gest. Dopiero potem list. Nic nie znika: kolejne elementy dochodzą pod spodem. */
 export function viewOnboarding(app: App): HTMLElement {
   const sec = h("section", { class: "onboard" });
   const stage = h("div", { class: "stage" });
   const skip = h("button", { class: "ghost skip", onclick: () => finishOnboarding() }, "Pomiń");
   sec.append(stage, skip);
   let bell: HTMLAudioElement | null = null;
-  const show = (nodes: (HTMLElement | string)[], delay = 0) => { setTimeout(() => { stage.replaceChildren(...nodes.map((n) => (typeof n === "string" ? h("p", { class: "line fade-in" }, n) : n))); }, delay); };
-  function finishOnboarding() { app.state.onboarded = true; save(app.state); if (bell) { bell.pause(); } go("#/"); }
+  const line = (t: string) => h("p", { class: "line fade-in" }, t);
+  const add = (node: HTMLElement, delay = 0) => setTimeout(() => stage.append(node), delay);
+  function finishOnboarding() { app.state.onboarded = true; save(app.state); if (bell) bell.pause(); go("#/"); }
 
-  // 1. jedno zdanie
-  show(["Halina pamięta rzeź."]);
-  // 2. drugie, po oddechu
-  show(["Halina pamięta rzeź.", "Siedemset pięćdziesiąt trzy lata później do Sandomierza przyjechała geolożka."], 2600);
-  // 3. dotknij, żeby usłyszeć
-  setTimeout(() => {
-    const btn = h("button", { class: "primary big" }, "Dotknij, żeby usłyszeć miasto");
-    btn.addEventListener("click", () => {
-      bell = new Audio(import.meta.env.BASE_URL + "audio/dzwon-piotr.mp3"); bell.volume = 0.7; bell.play().catch(() => { /* bez dźwięku też przejdzie */ });
-      try { navigator.vibrate?.([120, 880, 120, 880, 120]); } catch { /* */ }
-      show(["Sandomierz. Październik. Dzwon Piotr uderza dwanaście razy dziennie w coś, co odpowiada z dołu."]);
-      // 4. gest: trzymaj
-      setTimeout(() => {
-        const pend = h("div", { class: "pendant big", "data-heat": "0" }, h("i"));
-        const txt = h("p", { class: "line" }, "Zanim cokolwiek przeczytasz: połóż palec na kamieniu i nie puszczaj.");
-        const hold = h("div", { class: "holdzone" }, pend);
-        let t0 = 0, iv: number | undefined, done = false;
-        const stop = () => { if (iv) clearInterval(iv); iv = undefined; if (!done) { pend.dataset.heat = "0"; txt.textContent = "Puściłeś. Jeszcze raz. Kamień grzeje się od dłoni, nie od pośpiechu."; } };
-        hold.addEventListener("pointerdown", (e) => { e.preventDefault(); t0 = Date.now(); txt.textContent = "Trzymaj."; iv = window.setInterval(() => { const s = (Date.now() - t0) / 1000; const heat = s < 1.2 ? 1 : s < 2.4 ? 2 : s < 3.6 ? 3 : 4; pend.dataset.heat = String(heat); if (s >= 5 && !done) { done = true; clearInterval(iv); txt.textContent = "Zawieszka. Ciepła. Od teraz jesteś w sieci."; setTimeout(() => { show([h("p", { class: "line fade-in" }, "Komisarz Zieliński potrzebuje biegłego z zakresu geologii. Nikt w mieście nie ma twoich kwalifikacji."), h("button", { class: "primary big fade-in", onclick: () => finishOnboarding() }, "Przyjmij zlecenie")]); }, 1800); } }, 100); });
-        ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => hold.addEventListener(ev, stop));
-        show([txt, hold]);
-      }, 4200);
-    });
-    show(["Halina pamięta rzeź.", "Siedemset pięćdziesiąt trzy lata później do Sandomierza przyjechała geolożka.", btn]);
-  }, 5600);
+  add(line("Halina pamięta rzeź."));
+  add(line("Siedemset pięćdziesiąt trzy lata później do Sandomierza przyjechała geolożka."), 2600);
+  const btn = h("button", { class: "primary big fade-in" }, "Dotknij, żeby usłyszeć miasto");
+  btn.addEventListener("click", () => {
+    bell = new Audio(import.meta.env.BASE_URL + "audio/dzwon-piotr.mp3"); bell.volume = 0.7; bell.play().catch(() => { /* bez dźwięku też przejdzie */ });
+    try { navigator.vibrate?.([120, 880, 120, 880, 120]); } catch { /* */ }
+    btn.remove();
+    add(line("Sandomierz. Październik. Dzwon Piotr uderza dwanaście razy dziennie w coś, co odpowiada z dołu."));
+    const pend = h("div", { class: "pendant big", "data-heat": "0" }, h("i"));
+    const txt = line("Zanim cokolwiek przeczytasz: połóż palec na kamieniu i nie puszczaj.");
+    const hold = h("div", { class: "holdzone fade-in" }, pend);
+    let t0 = 0, iv: number | undefined, done = false;
+    const stop = () => { if (iv) clearInterval(iv); iv = undefined; if (!done) { pend.dataset.heat = "0"; txt.textContent = "Puściłeś. Jeszcze raz. Kamień grzeje się od dłoni, nie od pośpiechu."; } };
+    hold.addEventListener("pointerdown", (e) => { e.preventDefault(); t0 = Date.now(); txt.textContent = "Trzymaj."; iv = window.setInterval(() => { const sN = (Date.now() - t0) / 1000; pend.dataset.heat = String(sN < 1.2 ? 1 : sN < 2.4 ? 2 : sN < 3.6 ? 3 : 4); if (sN >= 5 && !done) { done = true; clearInterval(iv); txt.textContent = "Zawieszka. Ciepła. Od teraz jesteś w sieci."; add(line("Komisarz Zieliński potrzebuje biegłego z zakresu geologii. Nikt w mieście nie ma twoich kwalifikacji."), 1800); add(h("button", { class: "primary big fade-in", onclick: () => finishOnboarding() }, "Przyjmij zlecenie"), 2600); } }, 100); });
+    ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => hold.addEventListener(ev, stop));
+    add(txt, 4200); add(hold, 4300);
+  });
+  add(btn, 5600);
   return sec;
 }

@@ -1,0 +1,7 @@
+{
+  "name": "akta-lessu-wspolny",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "wrangler dev", "deploy": "wrangler deploy", "secret": "wrangler secret put ADMIN_TOKEN" },
+  "devDependencies": { "wrangler": "^3.90.0", "@cloudflare/workers-types": "^4.20241022.0", "typescript": "^5.6.0" }
+}
