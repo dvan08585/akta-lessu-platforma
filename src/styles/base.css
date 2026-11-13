@@ -66,7 +66,13 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 @keyframes pulse { 50% { box-shadow: 0 0 6px rgba(255,156,74,0.5); } }
 
 .card { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.1rem; margin-bottom: 1rem; }
-.toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 0.6rem 1rem; border-radius: var(--radius); font-size: 0.9rem; z-index: 10; }
+/* Dymek: karteczka z akt, nie przycisk. Papier, piaskowa krawędź po lewej, lekki cień, wsuwa się od dołu. */
+.toast { position: fixed; left: 50%; bottom: 1.6rem; transform: translateX(-50%); width: min(92vw, 30rem);
+  background: #f1ebdd; color: #1e1a14; border-left: 4px solid var(--sand); border-radius: 3px;
+  padding: 0.75rem 1rem 0.75rem 0.9rem; font-size: 0.95rem; line-height: 1.45; z-index: 10;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.45), 0 1px 0 rgba(0,0,0,0.3); animation: toast-in 0.25s ease both; }
+.toast::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 15% 20%, rgba(120,90,40,0.12), transparent 55%); }
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .fade-in { animation: fade 0.8s ease both; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
