@@ -682,14 +682,14 @@ export function viewOnboarding(app: App): HTMLElement {
         const sN = (Date.now() - t0) / 1000; pend.dataset.heat = String(sN < 1.2 ? 1 : sN < 2.4 ? 2 : sN < 3.6 ? 3 : 4);
         if (sN >= 5 && !done) {
           done = true; clearInterval(iv);
-          // Ciepło rozlewa się z kamienia na cały ekran. Wszystko znika. Potem czysty ekran i zlecenie.
+          // Najpierw zdanie, czytelne przez dwie sekundy przy pulsującym kamieniu. Potem ciepło rozlewa się z kamienia na cały ekran i zabiera wszystko. Potem czysty ekran i zlecenie.
+          txt.replaceWith(line("Zawieszka. Ciepła. Od teraz jesteś w sieci."));
           const r = pend.getBoundingClientRect(); const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
           const glow = h("div", { class: "glow", style: `--cx:${cx}px;--cy:${cy}px` });
-          document.body.append(glow);
-          setTimeout(() => { stage.replaceChildren(); stage.append(line("Zawieszka. Ciepła. Od teraz jesteś w sieci.")); }, 1100);
-          setTimeout(() => { glow.classList.add("out"); }, 2600);
-          setTimeout(() => { glow.remove(); stage.replaceChildren(); stage.append(line("Komisarz Zieliński potrzebuje biegłego z zakresu geologii. Nikt w mieście nie ma twoich kwalifikacji.")); }, 3600);
-          setTimeout(() => { stage.append(h("button", { class: "primary big fade-in", onclick: () => finishOnboarding() }, "Przyjmij zlecenie")); }, 4600);
+          setTimeout(() => { document.body.append(glow); }, 2200);
+          setTimeout(() => { stage.replaceChildren(); glow.classList.add("out"); }, 3700);
+          setTimeout(() => { glow.remove(); stage.append(line("Komisarz Zieliński potrzebuje biegłego z zakresu geologii. Nikt w mieście nie ma twoich kwalifikacji.")); }, 4700);
+          setTimeout(() => { stage.append(h("button", { class: "primary big fade-in", onclick: () => finishOnboarding() }, "Przyjmij zlecenie")); }, 5700);
         }
       }, 100);
     });
