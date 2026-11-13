@@ -5,7 +5,7 @@
   --bg-3: #221f19;
   --ink: #e8e0cf;        /* less na czarnym */
   --ink-dim: #a39a86;
-  --ink-faint: #6b6355;
+  --ink-faint: #857c6c;
   --sand: #c9a86a;       /* piaskowiec kredowy */
   --flint: #4b4d52;      /* krzemień pasiasty */
   --blood: #7a1f1f;      /* krew na kamieniu */
@@ -28,12 +28,13 @@
     --bg-3: #dcd3c2;
     --ink: #1c1a16;
     --ink-dim: #4d4639;
-    --ink-faint: #8a816f;
+    --ink-faint: #6e6655;
+    --sand: #8a6a2a;
     --line: rgba(28, 26, 22, 0.14);
   }
 }
 :root[data-theme="light"] {
   --bg: #f1ece1; --bg-2: #e7e0d2; --bg-3: #dcd3c2;
-  --ink: #1c1a16; --ink-dim: #4d4639; --ink-faint: #8a816f;
+  --ink: #1c1a16; --ink-dim: #4d4639; --ink-faint: #6e6655; --sand: #8a6a2a;
   --line: rgba(28, 26, 22, 0.14);
 }

@@ -35,8 +35,9 @@ input[type="text"] {
   font: inherit; color: var(--ink); background: var(--bg-2);
   border: 1px solid var(--line); border-radius: var(--radius);
   padding: 0.6rem 0.8rem; width: 100%; min-height: 44px;
-  text-transform: uppercase; letter-spacing: 0.12em;
+  text-transform: uppercase; letter-spacing: 0.08em;
 }
+a.btn { text-decoration: none; display: inline-flex; align-items: center; }
 input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--sand); }
 
 .topbar {
@@ -45,7 +46,7 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 }
 .topbar .brand { letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.8rem; color: var(--ink-dim); text-decoration: none; }
 .topbar nav { display: flex; gap: 0.5rem; }
-.topbar nav button { padding: 0.4rem 0.7rem; min-height: 36px; font-size: 0.85rem; }
+.topbar nav button { padding: 0.4rem 0.7rem; min-height: 44px; font-size: 0.85rem; }
 
 .intro { min-height: 80dvh; display: flex; flex-direction: column; justify-content: center; gap: 1.5rem; }
 .intro .quote { font-size: 1.25rem; line-height: 1.5; max-width: 34rem; }
@@ -65,7 +66,9 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .pendant[data-heat="4"] i { background: #ff9c4a; box-shadow: 0 0 22px rgba(255,156,74,0.9); animation: pulse 1.2s infinite; }
 @keyframes pulse { 50% { box-shadow: 0 0 6px rgba(255,156,74,0.5); } }
 
-.card { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.1rem; margin-bottom: 1rem; }
+/* Jeden rodzaj pudełka (.card / .gatebox / .next-step dzielą styl); .accent = jedno na ekran, to, co trzeba zrobić. */
+.card, .gatebox, .next-step { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.1rem; margin: 1.2rem 0; }
+.accent, .next-step { border-color: var(--sand); }
 /* Dymek: karteczka z akt, nie przycisk. Papier, piaskowa krawędź po lewej, lekki cień, wsuwa się od dołu. */
 .toast { position: fixed; left: 50%; bottom: 1.6rem; transform: translateX(-50%); width: min(92vw, 30rem);
   background: #f1ebdd; color: #1e1a14; border-left: 4px solid var(--sand); border-radius: 3px;
@@ -88,5 +91,5 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .onboard .pendant.big { margin: 0; }
 .onboard .pendant.big i { width: 72px; height: 72px; }
 .dateline { letter-spacing: 0.06em; }
-.kicker { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.4rem; }
+.kicker { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 0.4rem; }
 .epigraph { font-style: italic; }

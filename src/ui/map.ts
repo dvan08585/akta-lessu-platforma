@@ -35,9 +35,13 @@ export function renderMap(ctx: MapCtx): HTMLElement {
   svg.append(s("text", { x: "788", y: "20", "text-anchor": "end", style: "font-size:10px;fill:var(--ink-faint);letter-spacing:0.14em" }, "SKARPA · WSCHÓD"));
   // Nazwy wzgórz i wysokości
   map.gates.forEach((g, i) => {
-    const dy = i % 2 ? -26 : -14;
-    svg.append(s("text", { x: String(g.x), y: String(g.peak + dy), "text-anchor": "middle" }, g.name));
-    if (g.elev) svg.append(s("text", { x: String(g.x), y: String(g.peak + dy + 12), "text-anchor": "middle", style: "font-size:10px;fill:var(--ink-faint)" }, `${g.elev} m${g.elevSource?.startsWith("szacunek") ? "?" : ""}`));
+    const dy = i % 2 ? -40 : -16;
+    const short = g.name.replace("Wzgórze ", "");
+    // skrajne etykiety kotwiczone do środka rysunku, żeby nie wychodziły poza krawędź telefonu
+    const anchor = i === 0 ? "start" : i === map.gates.length - 1 ? "end" : "middle";
+    const lx = i === 0 ? g.x - 40 : i === map.gates.length - 1 ? g.x + 30 : g.x;
+    svg.append(s("text", { x: String(lx), y: String(g.peak + dy), "text-anchor": anchor }, short));
+    if (g.elev) svg.append(s("text", { x: String(lx), y: String(g.peak + dy + 16), "text-anchor": anchor, style: "font-size:14px;fill:var(--ink-faint)" }, `${g.elev} m`));
   });
 
   // Korytarze (ujawniają się rozdziałem)
@@ -53,9 +57,10 @@ export function renderMap(ctx: MapCtx): HTMLElement {
     const seen = status === "open" || status === "solved" || status === "unstable";
     svg.append(s("line", { x1: String(g.x), y1: String(ground), x2: String(g.x), y2: String(g.depth - 14), class: `corridor ${seen ? "known" : ""}` }));
     const gate = s("g", { class: `gate ${status}`, transform: `translate(${g.x} ${g.depth})`, tabindex: "0", role: "button", "aria-label": `Brama ${g.n}: ${g.name}, ${statusLabel(status)}` });
-    gate.append(s("circle", { r: "16" }));
-    gate.append(s("polygon", { points: hept(11) }));
-    gate.append(s("text", { y: "32" }, String(g.n)));
+    gate.append(s("rect", { class: "hit", x: "-28", y: "-28", width: "56", height: "56" }));
+    gate.append(s("circle", { r: "22" }));
+    gate.append(s("polygon", { points: hept(15) }));
+    gate.append(s("text", { y: "42" }, String(g.n)));
     gate.addEventListener("click", () => go(`#/brama/${g.n}`));
     gate.addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Enter") go(`#/brama/${g.n}`); });
     svg.append(gate);
@@ -78,9 +83,7 @@ export function renderMap(ctx: MapCtx): HTMLElement {
   const label = h("span", { class: "label" }, cursorLabel(ch));
   slider.addEventListener("input", () => { const n = Number(slider.value); label.textContent = cursorLabel(chapters[n]); ctx.onCursor(n); });
   const sliderRow = h("div", { class: "chapter-slider" }, h("span", { class: "faint" }, "Jestem po:"), slider, label);
-  const box = h("div", {}, wrap, sliderRow);
-  if (max < chapters.length - 1) box.append(h("p", { class: "faint" }, `Mapa pokazuje tylko to, co Aneta już wie. Dalsze rozdziały otwiera kod z książki albo data.`));
-  return box;
+  return h("div", {}, wrap, sliderRow);
 }
 
 function cursorLabel(c: Chapter): string { return c.n === 0 ? "Prolog" : `R.${c.n} · ${c.title}`; }
@@ -90,7 +93,7 @@ function maxReadable(ctx: MapCtx): number {
   return m;
 }
 export function statusLabel(st: GateStatus): string {
-  return ({ locked: "nieznana", open: "otwarta do śledztwa", solved: "rozpoznana", unstable: "niestabilna", silent: "zawieszka milczy" } as const)[st];
+  return ({ locked: "nieznana", open: "otwarta", solved: "przebyta", unstable: "niestabilna", silent: "milczy" } as const)[st];
 }
 export function hept(r: number): string {
   return Array.from({ length: 7 }, (_, i) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 7; return `${(Math.cos(a) * r).toFixed(2)},${(Math.sin(a) * r).toFixed(2)}`; }).join(" ");

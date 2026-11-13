@@ -1,5 +1,5 @@
 {
-  "viewBox": "0 0 800 560",
+  "viewBox": "0 0 800 490",
   "layers": [
     {
       "id": "less",
@@ -17,7 +17,7 @@
       "id": "deep",
       "label": "to, co nie ma nazwy",
       "y": 430,
-      "h": 130
+      "h": 60
     }
   ],
   "gates": [

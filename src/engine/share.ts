@@ -1,12 +1,11 @@
 /** Karta do udostępnienia bez spoilerów: siedem wzgórz, zapalone bramy, próby, seria. */
-export function shareCard(opts: { solved: number[]; unstable?: number[]; attempts: number; streak: number; url: string; hashtag: string; caseN?: number; halfKey?: string; readings?: string[]; silent?: number[] }): string {
-  const row = [1, 2, 3, 4, 5, 6, 7].map((n) => (opts.unstable?.includes(n) ? "▲" : opts.solved.includes(n) ? "●" : opts.silent?.includes(n) ? "·" : "○")).join(" ");
-  const head = opts.caseN ? `Akta Lessu · Brama ${opts.caseN}/7` : `Akta Lessu · ${opts.solved.length}/7`;
+export function shareCard(opts: { solved: number[]; unstable?: number[]; attempts: number; streak?: number; url: string; hashtag: string; caseN?: number; passed?: number; halfKey?: string; readings?: string[]; silent?: number[] }): string {
+  const row = [1, 2, 3, 4, 5, 6, 7].map((n) => (opts.unstable?.includes(n) ? "▲" : opts.solved.includes(n) ? "●" : opts.silent?.includes(n) ? "◌" : "○")).join(" ");
+  const passed = opts.passed ?? opts.solved.length;
+  const head = `Akta Lessu · ${passed}/7`;
   const tries = opts.attempts === 1 ? "za pierwszym razem" : `${opts.attempts} próby`;
-  const streak = opts.streak > 1 ? ` · seria ${opts.streak} dni` : "";
-  const key = opts.halfKey ? `\nklucz: ${opts.halfKey}` : "";
-  const rd = opts.readings?.length ? `\nodczyt: ${opts.readings.join(" ")}` : "";
-  return `${head}\n${row}\n${tries}${streak}${rd}${key}\n${opts.hashtag} ${opts.url}`;
+  const tokens = [opts.readings?.length ? `odczyt: ${opts.readings.join(" ")}` : "", opts.halfKey ? `klucz: ${opts.halfKey}` : ""].filter(Boolean).join("\n");
+  return `${head}\n${row}\n${tries}\n${opts.hashtag} ${opts.url}${tokens ? "\n\n" + tokens : ""}`;
 }
 
 export async function shareText(text: string): Promise<"shared" | "copied" | "failed"> {

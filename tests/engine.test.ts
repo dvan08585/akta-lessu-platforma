@@ -48,10 +48,11 @@ describe("sprawa: zawieszka", () => {
 
 describe("karta do udostępnienia", () => {
   it("nie zawiera rozwiązania, tylko siedem wzgórz", () => {
-    const card = shareCard({ solved: [4], attempts: 1, streak: 3, url: "u", hashtag: "#A", caseN: 1 });
+    const card = shareCard({ solved: [4], attempts: 1, url: "u", hashtag: "#A", passed: 1, readings: ["4abc123"] });
     expect(card).toContain("○ ○ ○ ● ○ ○ ○");
+    expect(card).toContain("Akta Lessu · 1/7");
     expect(card).toContain("za pierwszym razem");
-    expect(card).toContain("seria 3 dni");
+    expect(card.indexOf("odczyt:")).toBeGreaterThan(card.indexOf("#A"));
   });
 });
 

@@ -65,11 +65,11 @@ export function viewIntro(app: App): HTMLElement {
 
 export function viewMap(app: App): HTMLElement {
   const sec = h("section", { class: "fade-in" }, topbar(app, "#/mapa"));
-  sec.append(h("h2", {}, "Siedem wzgórz, jeden przekrój"), h("p", { class: "faint" }, "Przekrój z zachodu na wschód wzdłuż Wisły. Wysokości z danych; znak zapytania = szacunek do sprawdzenia w terenie. Głębokość bram jest fabularna."));
-  if (app.silent.length) sec.append(h("p", { class: "faint" }, `Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. Mapa jest psychograficzna: każdy biegły ma inną. Pełna istnieje tylko między ludźmi.`));
+  sec.append(h("h2", { class: "sr-only" }, "Mapa"));
   const wisla = h("p", { class: "faint wisla" }, "Wisła: …");
   fetchWisla().then((w) => { const mean = monthlyMean(); const diff = w.cm - mean; wisla.textContent = `Wisła, wodowskaz Sandomierz: ${w.cm} cm${w.live ? "" : " (średnia miesięczna, API nie odpowiada)"}. ${diff < -40 ? "Nisko. Krypty zalewa przy niskiej wodzie." : diff > 40 ? "Wysoko. Nikt nie patrzy, co jest niżej." : "Jak zwykle o tej porze."}` + (isSnowSeason() ? " Śnieg na lessie." : ""); });
-  sec.append(wisla);
+  const legend = h("p", { class: "faint" }, app.silent.length ? `Zachód po lewej, Wisła na dole. Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}: tam potrzebny jest cudzy odczyt.` : "Zachód po lewej, Wisła na dole.");
+  sec.append(legend, wisla);
   if (isSnowSeason()) sec.classList.add("snow");
   fetchPogoda().then((w) => { if (!w) return; const line = h("p", { class: "faint pogoda" }, `Sandomierz teraz: ${w.tempC.toFixed(0)}°C${w.snowing ? ". Pada śnieg. Na Pimpo Limpo są sanki." : "."}`); wisla.after(line); if (w.snowing) sec.classList.add("sanki"); });
   // Rejestr na żywo (dzień premiery): najpierw backend, potem plik public/live/rejestr.json jako zapas
@@ -98,24 +98,35 @@ export function viewMap(app: App): HTMLElement {
     const c = app.caseForGate(g.n);
     list.append(h("div", { class: "gate-row", "data-status": st, role: "button", tabindex: "0", onclick: () => go(`#/brama/${g.n}`) },
       h("span", { class: "n" }, String(g.n)),
-      h("span", { class: "t" }, g.name, h("small", {}, `żywioł: ${g.element}${c ? " · " + c.title : ""}`)),
-      h("span", { class: "s" }, st === "locked" && c ? lockedWhy(app, c) : st === "solved" && app.awaitingGesture(g.n) ? "rozpoznana, czeka na gest" : st === "solved" ? "przebyta" : statusLabel(st))));
+      h("span", { class: "t" }, g.name, h("small", {}, `żywioł: ${g.element}${c && c.title.toLowerCase() !== g.element ? " · " + c.title : ""}`)),
+      h("span", { class: "s" }, st === "locked" && c ? lockedWhy(app, c) : st === "solved" && app.awaitingGesture(g.n) ? "czeka na gest" : statusLabel(st))));
   }
   sec.append(app.state.sawFooter ? h("h3", {}, "Rejestr statusów — ", h("a", { href: import.meta.env.BASE_URL + "fundacja/", style: "color:var(--blood)" }, "Fundacja Sandomierska Memoria")) : h("h3", {}, "Rejestr statusów"), list);
-  if (app.state.solvedCases.length >= 2 && !app.state.notebook.some((n) => n.meta === "kod")) {
-    sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Zapisz postęp"), h("p", { class: "muted" }, "Dwie bramy za tobą. Przeglądarka na telefonie potrafi zapomnieć stronę po tygodniu. W Zeszycie jest kod wznowienia: skopiuj go raz, do notatek."), h("div", { class: "verdict" }, h("button", { onclick: () => go("#/zeszyt") }, "Pokaż kod"), h("button", { class: "ghost", onclick: () => { app.addNote("Przypomnienie o kodzie wznowienia zamknięte.", "kod"); go("#/mapa"); } }, "Mam już"))));
-  }
   sec.append(dailyBox(app));
   if (app.state.solvedCases.length >= 3) { const nb = newsletterBox(app, "Trzy bramy za tobą. Kolejne akta przyjdą w terminie z kalendarza; jeśli zostawisz adres, dostaniesz je pierwszego dnia, razem z dokumentem, którego nie ma na stronie."); if (nb) sec.append(nb); }
   const inter = interludesFor(app);
   if (inter.length) {
-    const il = h("div", { class: "gates-list" });
-    for (const i of inter) {
-      const done = app.state.interludesDone.includes(i.id);
-      il.append(h("div", { class: "gate-row", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) },
-        h("span", { class: "n" }, ({ amor: "♦", talk: "„”", beat: "∿", still: "❄", breath: "≈", fire: "✶", dark: "●", earth: "▬", spectro: "▤", compass: "✧", whistle: "♪", touch7: "✋", hold: "▮", mirror: "◐", trace: "⌇", steps: "⇢", duet: "♪♪", plate: "◎" } as Record<string, string>)[i.type]), h("span", { class: "t" }, i.title, h("small", {}, (({ amor: "pies", talk: "rozmowa, jedno kłamstwo", beat: "słuchawki albo oczy", still: "nieruchomo, 30 sekund", breath: "dziesięć oddechów", fire: "kamera i coś czerwonego", dark: "kamera i ciemność", earth: "telefon płasko, 20 kroków", spectro: "patrz, nie słuchaj", compass: "GPS i kompas, tylko w Sandomierzu", whistle: "mikrofon, czysty ton", touch7: "dwie osoby, siedem palców", hold: "palec, 90 sekund", mirror: "lustro", trace: "palec bez odrywania", steps: "akcelerometr, 1200 kroków, między dniami", duet: "dwa głosy w kwincie albo telefon za drugi", plate: "mikrofon albo suwak" } as Record<string, string>)[i.type]) + (i.level ? " · " + i.level : ""))), h("span", { class: "s" }, done ? "przeszedłeś" : "czeka")));
+    // Grupy po poziomie; Amor zwinięty do jednego wiersza (link do pierwszego nieprzeczytanego); bez ikon; status tylko dla przebytych.
+    const LEVELS = ["wejście", "średnio", "dla wytrwałych", "we dwoje", "na miejscu"];
+    const hint: Record<string, string> = { talk: "rozmowa, jedno kłamstwo", beat: "słuchawki", still: "nieruchomo, 30 sekund", breath: "dziesięć oddechów", fire: "kamera i coś czerwonego", dark: "kamera i ciemność", earth: "telefon płasko, 20 kroków", spectro: "patrz, nie słuchaj", compass: "GPS i kompas", whistle: "czysty ton", touch7: "siedem palców", hold: "90 sekund", mirror: "lustro", trace: "palec bez odrywania", steps: "1200 kroków", duet: "kwinta", plate: "nucenie" };
+    const wrap = h("div", { class: "interludes-group" }, h("h3", {}, "Między sprawami"));
+    const amor = inter.filter((i) => i.type === "amor");
+    const amorDone = amor.filter((i) => app.state.interludesDone.includes(i.id)).length;
+    const nextAmor = amor.find((i) => !app.state.interludesDone.includes(i.id)) ?? amor[amor.length - 1];
+    if (amor.length) wrap.append(h("div", { class: "gates-list" }, h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": amorDone === amor.length ? "solved" : "open", onclick: () => go(`#/miedzy/${nextAmor.id}`) },
+      h("span", { class: "t" }, "Amor", h("small", {}, `${amor.length === 1 ? "jedno spotkanie" : amor.length < 5 ? amor.length + " spotkania" : amor.length + " spotkań"} · pies`)), h("span", { class: "s" }, amorDone ? `${amorDone}/${amor.length}` : ""))));
+    for (const lv of LEVELS) {
+      const items = inter.filter((i) => i.type !== "amor" && (i.level ?? "średnio") === lv);
+      if (!items.length) continue;
+      const il = h("div", { class: "gates-list" });
+      for (const i of items) {
+        const done = app.state.interludesDone.includes(i.id);
+        il.append(h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) },
+          h("span", { class: "t" }, i.title, h("small", {}, hint[i.type] ?? "")), h("span", { class: "s" }, done ? "przebyte" : "")));
+      }
+      wrap.append(h("p", { class: "faint", style: "margin:0.9rem 0 0.4rem" }, lv), il);
     }
-    sec.append(h("h3", {}, "Między sprawami"), il);
+    sec.append(wrap);
   }
   return sec;
 }
@@ -174,7 +185,7 @@ export function newsletterBox(app: App, why: string): HTMLElement | null {
   const nl = app.cfg.newsletter;
   if (!nl.action || app.state.subscribed) return null;
   const input = h("input", { type: "email", name: nl.fieldName, placeholder: "twój e-mail", required: true, "aria-label": "E-mail", style: "text-transform:none;letter-spacing:0" }) as HTMLInputElement;
-  const form = h("form", { action: nl.action, method: nl.method, target: "_blank", class: "row" }, input, h("button", { class: "primary", type: "submit" }, "Zapisz"));
+  const form = h("form", { action: nl.action, method: nl.method, target: "_blank", class: "row" }, input, h("button", { type: "submit" }, "Zapisz"));
   form.addEventListener("submit", () => { app.state.subscribed = true; save(app.state); track("signup"); toast("Dziękuję. Akta przyjdą pocztą."); });
   return h("div", { class: "gatebox newsletter" }, h("h3", {}, "Akta pocztą"), h("p", { class: "muted" }, why), form, h("p", { class: "faint" }, "Jeden list na nową sprawę. Zero reklam. Wypisanie jednym kliknięciem."));
 }
@@ -189,21 +200,26 @@ export function dailyBox(app: App): HTMLElement {
     box.append(h("p", { class: done ? "muted" : "faint" }, done ? "Rozpoznane. Jutro następne." : "Nie dziś. Jutro następne."));
     return box;
   }
-  const opts = h("div", { class: "opts", role: "radiogroup" });
-  m.options.forEach((o, i) => { const inp = h("input", { type: "radio", name: "daily", value: String(i) }); opts.append(h("label", {}, inp, o)); });
-  const btn = h("button", { class: "primary" }, "Sprawdź");
-  btn.addEventListener("click", () => {
-    const el = box.querySelector<HTMLInputElement>('input[name="daily"]:checked'); if (!el) { toast("Wybierz odpowiedź."); return; }
-    const ok = Number(el.value) === m.answer; app.state.daily[key] = ok; save(app.state); track("daily", { ok: ok ? 1 : 0 });
-    box.replaceWith(dailyBox(app)); toast(ok ? "Zawieszka ciepła." : "Zawieszka zimna. Jutro następne.");
+  // Pytanie dopiero po dotknięciu: mapa nie ma wyglądać jak quiz.
+  const ask = h("button", { class: "ghost" }, "Ustal");
+  ask.addEventListener("click", () => {
+    const opts = h("div", { class: "opts", role: "radiogroup" });
+    m.options.forEach((o, i) => { const inp = h("input", { type: "radio", name: "daily", value: String(i) }); opts.append(h("label", {}, inp, o)); });
+    const btn = h("button", { class: "primary" }, "Sprawdź");
+    btn.addEventListener("click", () => {
+      const el = box.querySelector<HTMLInputElement>('input[name="daily"]:checked'); if (!el) { toast("Wybierz odpowiedź."); return; }
+      const ok = Number(el.value) === m.answer; app.state.daily[key] = ok; save(app.state); track("daily", { ok: ok ? 1 : 0 });
+      box.replaceWith(dailyBox(app)); toast(ok ? "Zawieszka ciepła." : "Zawieszka zimna. Jutro następne.");
+    });
+    ask.replaceWith(h("div", { class: "q" }, h("div", { class: "qt" }, m.q), opts), btn);
   });
-  box.append(h("div", { class: "q" }, h("div", { class: "qt" }, m.q), opts), btn);
+  box.append(ask);
   return box;
 }
 
 export function readingBox(app: App, hill?: number): HTMLElement {
-  const input = h("input", { type: "text", placeholder: hill ? `ODCZYT ${hill}…` : "ODCZYT Z CUDZEJ KARTY", "aria-label": "Odczyt cudzej zawieszki", style: "text-transform:none;letter-spacing:0.1em" }) as HTMLInputElement;
-  const btn = h("button", { class: "primary" }, "Przyjmij odczyt");
+  const input = h("input", { type: "text", placeholder: "ODCZYT", "aria-label": "Odczyt cudzej zawieszki", style: "text-transform:none;letter-spacing:0.1em" }) as HTMLInputElement;
+  const btn = h("button", {}, "Przyjmij");
   btn.addEventListener("click", async () => {
     const r = parseReading(input.value);
     if (!r || !(await verifyCheck(r.token))) { toast("To nie jest odczyt zawieszki. Siedem znaków, cyfra wzgórza na początku."); return; }
@@ -254,8 +270,8 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   // Nadtytuł (brama i wzgórze) + tytuł + motto. Podtytuł sprawy nie powtarza wzgórza: zostaje tylko to, czego nie ma w nadtytule.
   const g = app.map.gates.find((x) => x.n === c.gate);
   const sub = c.subtitle.split(" · ").filter((part) => !(g && (part.includes(g.name.replace("Wzgórze ", "")) || part.startsWith("żywioł")))).join(" · ");
-  sec.append(h("p", { class: "kicker" }, `Brama ${c.gate} · ${g?.name ?? ""} · żywioł: ${g?.element ?? ""}`), h("h2", {}, c.title));
-  if (sub) sec.append(h("p", { class: "muted" }, sub));
+  sec.append(h("p", { class: "kicker" }, `Brama ${c.gate} · ${g?.name ?? ""}`), h("h2", {}, c.title));
+  sec.append(h("p", { class: "muted" }, [g ? `żywioł: ${g.element}` : "", sub].filter(Boolean).join(" · ")));
   sec.append(h("p", { class: "faint epigraph" }, c.epigraph));
 
   // Dokumenty: nawigacja zakładkami, jeden na ekran (telefon).
@@ -267,10 +283,10 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     docNav.querySelectorAll("button").forEach((b, j) => b.setAttribute("aria-current", String(i === j)));
   };
   docs.forEach((d, i) => docNav.append(h("button", { role: "tab", onclick: () => show(i) }, d.title.replace("Dokument ", ""))));
+  // Dokumenty „tylko na miejscu": zakładka jest, ale nieaktywna. Pokazuje, nie tłumaczy.
+  for (const d of c.docs.filter((d) => d.requiresPlace && !app.state.placeVisits.includes(d.requiresPlace!))) docNav.append(h("button", { role: "tab", disabled: true, title: "Tylko na miejscu, w Sandomierzu" }, d.title.replace("Dokument ", "")));
   show(0);
   sec.append(h("h3", {}, "Dokumenty"), docNav, docBox);
-  const hiddenCount = c.docs.length - docs.length;
-  if (hiddenCount) sec.append(h("p", { class: "faint" }, `${hiddenCount} ${hiddenCount === 1 ? "dokument jest dostępny" : "dokumenty są dostępne"} tylko na miejscu, w Sandomierzu.`));
 
   const solutionBox = h("div");
   if (unstable) { renderBuried(); return sec; }
@@ -315,7 +331,8 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
         hidden.value = String(encodeFill(q.bank!, chosen.map((w) => w ?? "")));
       };
       q.bank.forEach((w) => bank.append(h("button", { type: "button", onclick: () => { const k = chosen.indexOf(null); if (k >= 0) { chosen[k] = w; render(); } } }, w)));
-      block.replaceChildren(h("div", { class: "qt" }, `${qi + 1}.`), sentence, bank, hidden);
+      sentence.prepend(h("span", { class: "qn" }, `${qi + 1}. `));
+      block.replaceChildren(sentence, bank, hidden);
       // przywróć zapis
       if (saved[qi] > 0) { let v = saved[qi]; const N = q.bank.length + 1; for (let k = 0; k < nSlots; k++) { const i = v % N; v = Math.floor(v / N); chosen[k] = i ? q.bank[i - 1] : null; } }
       render();
@@ -454,63 +471,59 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     for (const p of c.solution) sol.append(h("p", {}, p));
     if (c.pair) for (const p of c.pair.finale) sol.append(h("p", { class: "finale" }, p));
 
-    // 2. Jedna rzecz do zrobienia: brama rozpoznana papierem, przebyta dopiero ciałem.
-    const next = h("div", { class: "next-step" });
-    if (!gestureDoneNow) {
-      next.append(h("h3", {}, "Brama rozpoznana"), h("p", { class: "muted" }, "Dokumenty się zgadzają. Żeby przejść bramę, potrzebne jest ciało, nie papier."),
-        h("div", { class: "verdict" }, h("a", { class: "btn primary", href: `#/miedzy/${gestureId}` }, "Przejdź bramę ciałem"), h("button", { class: "ghost", onclick: () => go("#/mapa") }, "Później")));
-    } else {
-      next.append(h("h3", {}, "Brama przebyta"), h("p", { class: "muted" }, "Dokumenty i ciało. Zostaw ślad."));
-    }
-
-    // 3. Nagroda za przyciskiem, nie od razu.
-    const rewardBox = h("div", { class: "reward" });
+    // 2. Jeden blok: stan bramy, nagroda jako link tekstowy, karta (tylko gdy prawdziwa), dwa przyciski.
+    const tail = h("div", { class: "next-step" });
+    tail.append(h("p", { class: "kicker" }, gestureDoneNow ? "Brama przebyta" : "Brama rozpoznana"));
+    if (!gestureDoneNow) tail.append(h("p", { class: "muted" }, "Dokumenty się zgadzają. Żeby przejść bramę, potrzebne jest ciało, nie papier."));
     if (c.reward) {
       const r = app.rewards[c.reward.file];
       if (r) {
         const art = h("article", { class: "doc hand", style: "display:none" }, h("h4", {}, r.title), h("div", { class: "src" }, r.note));
         for (const p of r.paragraphs) art.append(h("p", {}, p));
-        const open = h("button", { onclick: () => { art.style.display = ""; open.remove(); art.scrollIntoView({ behavior: "smooth", block: "start" }); } }, `Odbierz: ${c.reward.title}`);
-        rewardBox.append(h("h3", {}, "Nagroda"), open, art);
+        const open = h("a", { href: "#", class: "reward-link", onclick: (e: Event) => { e.preventDefault(); art.style.display = ""; open.remove(); } }, r.title);
+        tail.append(h("p", { class: "muted" }, "Nagroda: ", open), art);
       }
     }
-
-    // 4. Udostępnianie tylko wtedy, gdy karta mówi prawdę (brama przebyta).
-    const shareBox = h("div", { class: "share" });
     if (gestureDoneNow) {
       const build = async () => {
         const hk = app.passed() >= 6 ? await halfKey(app.state.seed) : undefined;
         const readings = await Promise.all(app.solvedGates().filter((g) => !app.silent.includes(g) && g !== 7).map((g) => readingToken(app.state.seed, g)));
-        return shareCard({ solved: app.solvedGates(), unstable: app.state.unstableGates, silent: app.silent.filter((g) => !app.state.readings[String(g)]), attempts: tries, streak: app.state.streak.days, url: app.cfg.share.url, hashtag: app.cfg.share.hashtag, caseN: c.n, halfKey: hk, readings });
+        return shareCard({ solved: app.solvedGates(), unstable: app.state.unstableGates, silent: app.silent.filter((g) => !app.state.readings[String(g)]), attempts: tries, streak: 0, url: app.cfg.share.url, hashtag: app.cfg.share.hashtag, passed: app.passed(), halfKey: hk, readings });
       };
       const pre = h("pre", {}, "…"); build().then((card) => (pre.textContent = card));
-      shareBox.append(h("h3", {}, "Zostaw ślad"), pre, h("div", { class: "verdict" },
-        h("button", { class: "primary", onclick: async () => { track("share", { gate: c.gate }); const r = await shareText(await build()); toast(r === "shared" ? "Udostępniono." : r === "copied" ? "Skopiowano do schowka." : "Nie udało się. Zaznacz i skopiuj."); } }, "Udostępnij"),
-        h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")));
+      tail.append(pre, h("div", { class: "verdict" },
+        h("button", { class: "primary", onclick: async () => { track("share", { gate: c.gate }); const r = await shareText(await build()); toast(r === "shared" ? "Udostępniono." : r === "copied" ? "Skopiowano do schowka." : "Nie udało się. Zaznacz i skopiuj."); } }, "Zostaw ślad"),
+        h("button", { class: "ghost", onclick: () => go("#/mapa") }, "Wróć do mapy")));
+    } else {
+      tail.append(h("div", { class: "verdict" }, h("a", { class: "btn primary", href: `#/miedzy/${gestureId}` }, "Przejdź bramę ciałem"), h("button", { class: "ghost", onclick: () => go("#/mapa") }, "Później")));
     }
-    solutionBox.replaceChildren(sol, next, rewardBox, shareBox);
+    solutionBox.replaceChildren(sol, tail);
     if (!solvedAlready) app.addNote(`Brama ${c.gate} rozpoznana: ${c.title}.`, `próby: ${tries}`);
     sol.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
 
 export function viewNotebook(app: App): HTMLElement {
-  const sec = h("section", { class: "fade-in notebook" }, topbar(app, "#/zeszyt"), h("h2", {}, "Zeszyt"));
-  sec.append(h("p", { class: "muted" }, `Rozpoznane bramy: ${app.state.solvedCases.length}/7${app.state.unstableGates.length ? ` · niestabilne: ${app.state.unstableGates.join(", ")}` : ""} · seria: ${app.state.streak.days} ${app.state.streak.days === 1 ? "dzień" : "dni"}`));
+  const sec = h("section", { class: "fade-in notebook" }, topbar(app, "#/zeszyt"), h("h2", { class: "sr-only" }, "Zeszyt"));
+  sec.append(h("p", { class: "muted" }, `Przebyte bramy: ${app.passed()}/7${app.state.unstableGates.length ? ` · niestabilne: ${app.state.unstableGates.join(", ")}` : ""}`));
   if (!app.state.notebook.length) sec.append(h("p", { class: "faint" }, "Pusty. Geolożka szukała nazwy."));
   for (const e of [...app.state.notebook].reverse()) {
     sec.append(h("div", { class: "entry" }, h("div", { class: "meta" }, `${new Date(e.at).toLocaleString("pl-PL")} · ${e.meta}`), h("div", {}, e.text)));
   }
   const code = exportCode(app.state);
-  sec.append(h("h3", {}, "Kod wznowienia"), h("p", { class: "muted" }, "To jest twój postęp zapisany w tekście. Na iPhonie przeglądarka kasuje pamięć strony po siedmiu dniach bez wejścia; z tym kodem nic nie ginie. Skopiuj go do notatek albo wyślij sobie."), h("pre", { class: "mono", style: "white-space:pre-wrap;word-break:break-all" }, code),
-    h("button", { class: "primary", onclick: async () => { try { await navigator.clipboard.writeText(code); toast("Skopiowano kod wznowienia."); } catch { toast("Zaznacz i skopiuj ręcznie."); } } }, "Skopiuj kod"));
+  const pre = h("pre", { class: "mono", style: "white-space:pre-wrap;word-break:break-all;display:none" }, code);
+  const inp2 = h("input", { type: "text", placeholder: "KOD", "aria-label": "Kod wznowienia", style: "text-transform:none;letter-spacing:0" }) as HTMLInputElement;
+  const b2 = h("button", { class: "ghost", onclick: () => { const st = importCode(inp2.value); if (!st) { toast("Nieprawidłowy kod."); return; } Object.assign(app.state, st); save(app.state); toast("Wznowiono."); go("#/mapa"); } }, "Wznów");
+  sec.append(h("h3", {}, "Kod wznowienia"), h("p", { class: "muted" }, "Przeglądarka może zapomnieć tę stronę. Kod nie."),
+    h("div", { class: "verdict" }, h("button", { class: "primary", onclick: async () => { try { await navigator.clipboard.writeText(code); toast("Skopiowano kod wznowienia."); } catch { pre.style.display = ""; toast("Zaznacz i skopiuj ręcznie."); } } }, "Skopiuj kod")), pre,
+    h("p", { class: "faint", style: "margin-top:1.4rem" }, "Masz kod z innego urządzenia?"), h("div", { class: "row" }, inp2, b2));
   return sec;
 }
 
 export function viewAkta(app: App): HTMLElement {
-  const sec = h("section", { class: "fade-in" }, topbar(app, "#/akta"), h("h2", {}, "Akta"));
+  const sec = h("section", { class: "fade-in" }, topbar(app, "#/akta"), h("h2", { class: "sr-only" }, "Akta"));
   // Klucz 1: kod z książki
-  const input = h("input", { type: "text", placeholder: "KOD Z KOŃCA ROZDZIAŁU", "aria-label": "Kod z książki", autocomplete: "off", autocapitalize: "characters" }) as HTMLInputElement;
+  const input = h("input", { type: "text", placeholder: "KOD", "aria-label": "Kod z książki", autocomplete: "off", autocapitalize: "characters" }) as HTMLInputElement;
   const btn = h("button", { class: "primary" }, "Otwórz");
   btn.addEventListener("click", async () => {
     const val = input.value.trim(); if (!val) return;
@@ -549,42 +562,32 @@ export function viewAkta(app: App): HTMLElement {
   if (next) {
     const d = unlockDate(app.cfg, next.n);
     box2.append(h("p", { class: "muted" }, d ? `${next.n === 0 ? "Prolog" : "Rozdział " + next.n} otworzy się sam: ${d.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}.` : `Rozdział ${next.n} nie otwiera się czasem. Tylko kodem.`));
-    const cd = h("div", { class: "countdown" }); box2.append(cd);
-    const tick = () => { if (!d) return; const ms = d.getTime() - Date.now(); if (ms <= 0) { cd.textContent = "Otwarte."; return; } const dd = Math.floor(ms / 86400000), hh = Math.floor((ms % 86400000) / 3600000), mm = Math.floor((ms % 3600000) / 60000); cd.textContent = `za ${dd} dni ${hh} h ${mm} min`; };
-    tick(); setInterval(tick, 30000);
   } else box2.append(h("p", { class: "muted" }, "Wszystko, co można otworzyć czasem, jest otwarte."));
-  box2.append(h("p", { class: "faint" }, `Premiera: ${new Date(app.cfg.premiereDate).toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}. W dniu premiery rejestr statusów zmienia się co godzinę.`));
   sec.append(box2);
 
   // Klucz 3: miejsce
   const qr = placeFromUrl(location.search);
-  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz trzeci: miejsce"), h("p", { class: "muted" }, qr ? `Jesteś przy punkcie „${qr}”. Zapisano w zeszycie.` : "Kody QR w Sandomierzu otwierają dokumenty, których nie ma w trybie domowym. Zeskanuj je na miejscu."),
-    h("p", { class: "faint" }, `Odwiedzone punkty: ${app.state.placeVisits.length ? app.state.placeVisits.join(", ") : "brak"}`)));
-
-  { const nb = newsletterBox(app, "Nowe sprawy przychodzą co dwa tygodnie. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
-
-  sec.append(h("p", { class: "faint" }, h("a", { href: "#/o-ciele" }, "Co robi z tobą ta gra: oddech, nucenie, dudnienie, bezruch, źródła.")));
-
-  // Miasto 3D i sceny z telefonu
-  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Miasto"), h("p", { class: "muted" }, "Sandomierz w trzech wymiarach z otwartych danych: siedem wzgórz z prawdziwą rzeźbą terenu, kamienice jako bryły, bramy pod wzgórzami. Z GPS i kompasem idziesz po mieście, a zawieszka grzeje w stronę bramy."),
-    h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "miasto/" }, "Otwórz miasto"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "sceny/?plik=rynek.splat" }, "Scena z Rynku"))));
-
-  // Znacznik AR (strona książki pod kamerą)
-  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Znacznik w książce"), h("p", { class: "muted" }, "Na końcu każdego rozdziału jest siedmiobok w czarnej ramce. Skieruj na niego kamerę: nad stroną uniesie się przekrój z tą jedną bramą. Bez aplikacji."),
-    h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "ar/" }, "Otwórz kamerę"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "ar/druk.html", target: "_blank" }, "Znaczniki do druku"))));
+  const box3 = h("div", { class: "gatebox" }, h("h3", {}, "Klucz trzeci: miejsce"), h("p", { class: "muted" }, qr ? `Jesteś przy punkcie „${qr}”. Zapisano w zeszycie.` : "Kody QR w Sandomierzu otwierają dokumenty, których nie ma w trybie domowym."));
+  if (app.state.placeVisits.length) box3.append(h("p", { class: "faint" }, `Odwiedzone punkty: ${app.state.placeVisits.join(", ")}`));
+  sec.append(box3);
 
   // Klucz czwarty: mapa 5/7
   const silentTxt = app.silent.length ? `Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. ` : "";
   const have = Object.keys(app.state.readings).map(Number);
-  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz czwarty: mapa 5/7"),
-    h("p", { class: "muted" }, `${silentTxt}Nikt nie ma pełnej mapy sam. Odczyty w kartach innych biegłych otwierają to, co u ciebie milczy.${have.length ? ` Masz odczyty: ${have.join(", ")}.` : ""}`),
+  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz czwarty: odczyt"),
+    h("p", { class: "muted" }, `${silentTxt}Nikt nie ma pełnej mapy sam. Odczyty z kart innych biegłych otwierają to, co u ciebie milczy.${have.length ? ` Masz odczyty: ${have.join(", ")}.` : ""}`),
     readingBox(app)));
 
-  // Wznowienie
-  const inp2 = h("input", { type: "text", placeholder: "KOD WZNOWIENIA", "aria-label": "Kod wznowienia", style: "text-transform:none;letter-spacing:0" }) as HTMLInputElement;
-  const b2 = h("button", { onclick: () => { const st = importCode(inp2.value); if (!st) { toast("Nieprawidłowy kod."); return; } Object.assign(app.state, st); save(app.state); toast("Wznowiono."); go("#/mapa"); } }, "Wznów");
-  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Wznowienie na innym urządzeniu"), h("div", { class: "row" }, inp2, b2)));
-  sec.append(h("p", {}, h("button", { class: "ghost", onclick: () => { if (confirm("Wyczyścić cały postęp na tym urządzeniu?")) { reset(); location.reload(); } } }, "Zacznij od nowa")));
+  { const nb = newsletterBox(app, "Nowe sprawy przychodzą co dwa tygodnie. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
+
+  // Narzędzia
+  sec.append(h("h3", {}, "Narzędzia"),
+    h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Miasto w trzech wymiarach z otwartych danych: siedem wzgórz z rzeźbą terenu, kamienice jako bryły, bramy pod wzgórzami. Z GPS i kompasem zawieszka grzeje w stronę bramy."),
+      h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "miasto/" }, "Miasto"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "sceny/?plik=rynek.splat" }, "Scena z Rynku"))),
+    h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Siedmiobok na końcu rozdziału pod kamerą: nad stroną unosi się przekrój z tą jedną bramą. Bez aplikacji."),
+      h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "ar/" }, "Kamera"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "ar/druk.html", target: "_blank" }, "Znaczniki do druku"))),
+    h("p", { class: "faint" }, h("a", { href: "#/o-ciele" }, "Co robi z tobą ta gra: oddech, nucenie, dudnienie, bezruch, źródła.")));
+  sec.append(h("p", { style: "margin-top:2rem" }, h("button", { class: "ghost", onclick: () => { if (confirm("Wyczyścić cały postęp na tym urządzeniu?")) { reset(); location.reload(); } } }, "Zacznij od nowa")));
   return sec;
 }
 
@@ -622,7 +625,7 @@ export function viewBody(app: App): HTMLElement {
 export function viewInbox(app: App): HTMLElement {
   schedule(app.state, app.messages); save(app.state);
   const inbox = ensureInbox(app.state);
-  const sec = h("section", { class: "fade-in inbox" }, topbar(app, "#/wiadomosci"), h("h2", {}, "Listy"));
+  const sec = h("section", { class: "fade-in inbox" }, topbar(app, "#/wiadomosci"), h("h2", { class: "sr-only" }, "Listy"));
   const arrived = due(app.state, app.messages).reverse();
   const waiting = pending(app.state, app.messages);
   if (!arrived.length && !waiting.length) sec.append(h("p", { class: "faint" }, "Nikt jeszcze nie napisał. Ludzie w Sandomierzu piszą po tym, co zrobisz, nie przed."));
@@ -641,8 +644,7 @@ export function viewInbox(app: App): HTMLElement {
     const soon = waiting.sort((a, b) => inbox.scheduled[a.id] - inbox.scheduled[b.id])[0];
     const ms = inbox.scheduled[soon.id] - Date.now();
     const when = ms < 3600000 ? `za ${Math.max(1, Math.round(ms / 60000))} min` : `za ${Math.round(ms / 3600000)} h`;
-    sec.append(h("div", { class: "gatebox" }, h("p", { class: "muted" }, `${soon.from} pisze. List przyjdzie ${when}. Ludzie w tym mieście nie odpowiadają od razu.`),
-      h("button", { class: "ghost", onclick: () => { inbox.scheduled[soon.id] = Date.now(); save(app.state); go("#/wiadomosci"); } }, "Nie chcę czekać")));
+    sec.append(h("p", { class: "muted", style: "margin-top:1.5rem" }, `${soon.from} pisze. List przyjdzie ${when}. Ludzie w tym mieście nie odpowiadają od razu.`));
   }
   save(app.state);
   return sec;

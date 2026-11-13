@@ -87,15 +87,16 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     let vib: number | undefined;
     audio.addEventListener("play", () => { try { vib = window.setInterval(() => navigator.vibrate?.(Array(10).fill(28)), 600); } catch { /* */ } });
     audio.addEventListener("pause", () => { if (vib) clearInterval(vib); try { navigator.vibrate?.(0); } catch { /* */ } });
-    sec.append(h("div", { class: "card" }, audio, h("p", { class: "faint" }, "Słuchawki na obu uszach. Głośnik telefonu tego nie odda: nie dlatego, że jest słaby, tylko dlatego, że to powstaje dopiero między uszami.")));
+    sec.append(h("div", { class: "card" }, audio));
     // Bez słuchawek: zobaczysz. Dwie fale (200 i 218 Hz) i ich suma, zwolnione 400 razy, żeby dudnienie 18 Hz było widoczne jako powolny oddech amplitudy. Bez migania.
     const wave = h("canvas", { class: "wave", width: "600", height: "180", "aria-label": "Dwie fale i dudnienie" }) as HTMLCanvasElement;
-    sec.append(wave, h("p", { class: "faint" }, "Góra: lewe ucho, 250 Hz. Środek: prawe, 268 Hz. Dół: 18 Hz różnicy, to, co powstaje między nimi. Bez słuchawek zobaczysz, nie usłyszysz."));
+    wave.setAttribute("aria-label", "Góra: lewe ucho, 250 Hz. Środek: prawe, 268 Hz. Dół: 18 Hz różnicy."); sec.append(wave);
     const wctx = wave.getContext("2d")!;
     const drawWave = (now: number) => {
       const t = now / 400000; // zwolnienie
-      wctx.fillStyle = "#171511"; wctx.fillRect(0, 0, 600, 180);
-      const rows: [number, number, string][] = [[250, 30, "#a39a86"], [268, 90, "#a39a86"], [0, 150, "#c9a86a"]];
+      const cs = getComputedStyle(document.documentElement); const bg = cs.getPropertyValue("--bg-2").trim() || "#171511", dim = cs.getPropertyValue("--ink-dim").trim() || "#a39a86", sand = cs.getPropertyValue("--sand").trim() || "#c9a86a";
+      wctx.fillStyle = bg; wctx.fillRect(0, 0, 600, 180);
+      const rows: [number, number, string][] = [[250, 30, dim], [268, 90, dim], [0, 150, sand]];
       for (const [f, y, col] of rows) {
         wctx.beginPath(); wctx.strokeStyle = col; wctx.lineWidth = 1.5;
         for (let x = 0; x <= 600; x += 2) {
@@ -173,7 +174,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const micBtn = h("button", {}, "Pozwól tafli słuchać");
     const start = h("button", { class: "primary" }, "Zacznij");
     const verdict = h("div");
-    sec.append(canvas, phaseEl, count, h("div", { class: "verdict" }, start, micBtn), h("p", { class: "faint" }, "Nic nie jest nagrywane ani wysyłane: dźwięk liczy się w telefonie i znika."), verdict);
+    sec.append(canvas, phaseEl, count, h("div", { class: "verdict" }, start, micBtn), h("p", { class: "faint", style: "margin-top:0.8rem" }, "Nic nie jest nagrywane ani wysyłane: dźwięk liczy się w telefonie i znika."), verdict);
     const ctx = canvas.getContext("2d")!;
     let running = false, finished = done, done_cycles = 0, calm = 0, touching = false, mic: AnalyserNode | null = null, micBuf: Float32Array<ArrayBuffer> | null = null, baseline = 0.004;
     canvas.addEventListener("pointerdown", () => { touching = true; }); addEventListener("pointerup", () => { touching = false; });
@@ -249,7 +250,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const camBtn = h("button", { class: "primary" }, "Pokaż kamieniowi");
     const pick = h("input", { type: "color", value: "#5a7d95", "aria-label": "Zapas: wybierz kolor" }) as HTMLInputElement;
     const verdict = h("div");
-    sec.append(video, probe, stone, status, h("div", { class: "verdict" }, camBtn, h("span", { class: "faint" }, "albo kolor:"), pick), verdict);
+    sec.append(video, probe, stone, status, h("div", { class: "verdict" }, camBtn, h("label", { class: "faint", style: "display:inline-flex;align-items:center;gap:.4rem" }, "albo kolor", pick)), verdict);
     let heat = 0, finished = done;
     const bump = (ok: boolean) => { heat = Math.max(0, Math.min(1, heat + (ok ? 0.06 : -0.03))); (stone.firstElementChild as HTMLElement).style.opacity = String(heat); status.textContent = heat > 0.95 ? "kamień: pulsuje" : heat > 0.5 ? "kamień: ciepły" : "kamień: zimny"; if (heat >= 1 && !finished) { finished = true; verdict.replaceChildren(h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!)), h("button", { onclick: () => go("#/mapa") }, "Wróć do mapy")); finish(`${it.title}: kamień odpowiedział.`); try { navigator.vibrate?.(200); } catch { /* */ } } };
     camBtn.addEventListener("click", async () => {
@@ -598,7 +599,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const slider = h("input", { type: "range", min: "80", max: "400", value: "120", "aria-label": "Ton (suwak zapasowy)" }) as HTMLInputElement;
     const micBtn = h("button", { class: "primary" }, "Włącz mikrofon");
     const verdict = h("div");
-    sec.append(canvas, status, h("div", { class: "verdict" }, micBtn, h("span", { class: "faint" }, "albo suwak:")), slider, verdict);
+    sec.append(canvas, status, h("div", { class: "verdict" }, micBtn), h("p", { class: "faint", style: "margin:0.2rem 0" }, "albo suwak:"), slider, verdict);
     const ctx = canvas.getContext("2d")!;
     const N = 1400; const pts = Array.from({ length: N }, () => { const a = Math.random() * Math.PI * 2, r = Math.random(); return { a, r, j: Math.random(), x: 300 + Math.cos(a) * r * 270, y: 300 + Math.sin(a) * r * 270 }; });
     let hz: number | null = null, hold = 0, finished = done, cSmooth = 0;
