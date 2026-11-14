@@ -25,3 +25,12 @@ export function go(hash: string): void { if (location.hash === hash) dispatchEve
 /** Przyciski nawigacji: „wstecz” zawsze cichy ze strzałką w lewo, „dalej” zawsze główny ze strzałką w prawo. Jeden język na całej stronie. */
 export function back(label = "Wróć do mapy", to = "#/mapa"): HTMLButtonElement { return h("button", { class: "ghost back", onclick: () => go(to) }, `← ${label}`); }
 export function next(label: string, to: string, cls = "primary"): HTMLButtonElement { return h("button", { class: `${cls} next`, onclick: () => go(to) }, `${label} →`); }
+
+/** Cykl życia widoku: każdy renderer rejestruje sprzątanie (strumienie, czujniki, pętle), router woła je przed podmianą ekranu. */
+const leaveFns: (() => void)[] = [];
+export function onLeave(fn: () => void): void { leaveFns.push(fn); }
+export function leaveView(): void { const fns = leaveFns.splice(0); for (const fn of fns) { try { fn(); } catch { /* sprzątanie nie może zepsuć nawigacji */ } } }
+/** Strumień z kamery/mikrofonu, który gaśnie przy wyjściu z widoku (dioda kamery nie świeci po opuszczeniu ekranu). */
+export async function grabMedia(c: MediaStreamConstraints): Promise<MediaStream> { const s = await navigator.mediaDevices.getUserMedia(c); onLeave(() => s.getTracks().forEach((t) => t.stop())); return s; }
+/** Nasłuch czujnika zdejmowany przy wyjściu. */
+export function listen(name: string, fn: EventListener, opts?: AddEventListenerOptions): void { addEventListener(name, fn, opts); onLeave(() => removeEventListener(name, fn, opts)); }

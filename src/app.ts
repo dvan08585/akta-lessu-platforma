@@ -17,6 +17,7 @@ import interludesJson from "./content/interludia.json";
 import mikroJson from "./content/mikroakta.json";
 import messagesJson from "./content/wiadomosci.json";
 import { schedule, type MessageRule } from "./engine/messages";
+import { unseal, sealKeyFromCode } from "./engine/seal";
 import type { Mikro } from "./engine/daily";
 import { silentHills } from "./engine/pair";
 
@@ -39,18 +40,53 @@ export class App {
   ready: Promise<void>;
 
   constructor() {
+    this.restoreUnsealed();
     touchStreak(this.state);
     const qr = placeFromUrl(location.search);
     if (qr && !this.state.placeVisits.includes(qr)) { this.state.placeVisits.push(qr); this.addNote(`Punkt w Sandomierzu: ${qr}.`, "klucz: miejsce"); }
     schedule(this.state, this.messages);
     save(this.state);
-    this.ready = silentHills(this.state.seed).then((h) => { this.silent = h; });
+    this.ready = silentHills(this.state.seed).then((h) => { this.silent = h; this.archiveFallback(); });
   }
-  /** Milczy u tego gracza i nie ma jeszcze odczytu od kogoś innego. */
+  /** Milczy u tego gracza i nie ma jeszcze odczytu od kogoś innego. Nie blokuje sprawy: odbiera jej „pełny" status i dokument-dopełnienie. */
   isSilentFor(n: number): boolean { return !this.state.testMode && this.silent.includes(n) && !this.state.readings[String(n)]; }
+  /** Partner awaryjny: 72 h po rozpoznaniu sprawy na milczącym wzgórzu odczyt przychodzi „z archiwum" (list), żeby nikt nie został sam przy 30 graczach w sezonie. */
+  archiveFallback(): void {
+    for (const g of this.silent) {
+      if (this.state.readings[String(g)]) continue;
+      const c = this.caseForGate(g); if (!c || !this.state.solvedCases.includes(c.n)) continue;
+      const when = [...this.state.attempts[c.id] ?? []].reverse().find((a) => a.correct === a.total)?.at ?? 0;
+      if (when && Date.now() - when > 72 * 3600000) { this.state.readings[String(g)] = "archiwum"; this.addNote(`Odczyt wzgórza ${g} z archiwum Fundacji: nikt nie przyszedł, ktoś zostawił.`, "mapa 5/7"); }
+    }
+  }
   isUnlocked(n: number): boolean { const ch = this.chapters.find((c) => c.n === n); return ch ? isChapterUnlocked(this.state, this.cfg, ch, this.now()) : false; }
   nextLocked(): Chapter | null { return nextLockedChapter(this.state, this.cfg, this.chapters, this.now()); }
   caseForGate(n: number): CaseData | undefined { return this.cases.find((c) => c.gate === n); }
+  /**
+   * Odpieczętowanie sprawy. Klucz: z kodu rozdziału (wpisany przez gracza), z pamięci telefonu (raz odpieczętowane zostaje),
+   * albo z public/live/klucze.json (publikowany w dniu premiery sprawy). Zwraca true, gdy treść jest dostępna.
+   */
+  async unsealCase(n: number, code?: string): Promise<boolean> {
+    const idx = this.cases.findIndex((c) => c.n === n); const c = this.cases[idx];
+    if (!c || !c.sealed) return true;
+    const cacheKey = `akta-lessu:akta:${n}`;
+    try { const cached = localStorage.getItem(cacheKey); if (cached) { this.cases[idx] = JSON.parse(cached) as CaseData; return true; } } catch { /* */ }
+    const keys: string[] = [];
+    if (code) keys.push(await sealKeyFromCode(code));
+    for (const f of ["live/klucze.json", "live/klucze.dev.json"]) { // dev: plik lokalny poza repo; prod: publikowany w dniu premiery sprawy
+      try { const pub = await fetch(import.meta.env.BASE_URL + f, { cache: "no-store" }).then((r) => (r.ok ? r.json() : {})) as Record<string, string>; if (pub[String(n)]) keys.push(pub[String(n)]); } catch { /* */ }
+    }
+    if (!keys.length) return false;
+    let payload: { iv: string; ct: string } | null = null;
+    try { payload = await fetch(import.meta.env.BASE_URL + `akta/sprawa-${n}.json`).then((r) => (r.ok ? r.json() : null)); } catch { /* */ }
+    if (!payload) return false;
+    for (const k of keys) { const full = await unseal(payload, k); if (full) { this.cases[idx] = full; try { localStorage.setItem(cacheKey, JSON.stringify(full)); } catch { /* */ } return true; } }
+    return false;
+  }
+  /** Przy starcie: sprawy już odpieczętowane na tym telefonie wracają z pamięci. */
+  restoreUnsealed(): void {
+    this.cases.forEach((c, i) => { if (c.sealed) { try { const cached = localStorage.getItem(`akta-lessu:akta:${c.n}`); if (cached) this.cases[i] = JSON.parse(cached) as CaseData; } catch { /* */ } } });
+  }
   gateOfCase = (n: number): number | undefined => this.cases.find((c) => c.n === n)?.gate;
   passed(): number { return passedCount(this.state, this.gateOfCase); }
   /** Brama rozpoznana dedukcją, ale jeszcze nie przebyta gestem. */
@@ -60,7 +96,6 @@ export class App {
     const c = this.caseForGate(n);
     if (this.state.unstableGates.includes(n)) return "unstable";
     if (c && this.state.solvedCases.includes(c.n)) return "solved";
-    if (this.isSilentFor(n)) return "silent";
     if (c && this.state.testMode) return "open";
     if (c && caseAvailable(this.state, c, (k) => this.isUnlocked(k), (k) => isReleased(this.cfg, k, this.now()), this.gateOfCase)) return "open";
     if (!c && g?.silent) return "silent";

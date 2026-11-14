@@ -2,7 +2,7 @@
   "title": "Akta Lessu",
   "premiereDate": "2027-10-15T00:00:00+02:00",
   "timeline": {
-    "note": "Daty odblokowania czasowego liczone względem premiery (dni, ujemne = przed premierą). Rozdział 21 = dzień premiery = sprawa 7.",
+    "note": "Daty odblokowania rozdziałów kodem czasu (dni względem premiery). Nie pokazywane w UI: jedyny kalendarz, który widzi gracz, to releases.",
     "chapterOffsets": {
       "0": -60,
       "1": -53,
@@ -22,12 +22,13 @@
   "footer": "Program edukacyjny „Sandomierz Pod Spodem”. Partner: Fundacja Sandomierska Memoria. Kopia dla biegłego.",
   "bookUrl": "",
   "releases": {
-    "note": "Daty publikacji spraw (klucz czasu). Kod z książki do rozdziału z pola requires.chapter omija kalendarz. Sprawa 7: dzień premiery.",
-    "2": "2026-11-26T18:00:00+01:00",
-    "3": "2026-12-10T18:00:00+01:00",
-    "4": "2027-01-07T18:00:00+01:00",
-    "5": "2027-01-21T18:00:00+01:00",
-    "6": "2027-02-04T18:00:00+01:00"
+    "note": "Jeden kalendarz: sprawy jako odcinki tygodniowe PO premierze książki (wzorzec Dispatch). Sprawa 1 to publiczny prolog. Sprawa 7: Noc Siedmiu Bram (trzeci weekend listopada). Kod z książki do rozdziału z requires.chapter omija kalendarz. Daty do przeliczenia, gdy wydawca poda datę premiery.",
+    "2": "2027-10-22T18:00:00+02:00",
+    "3": "2027-10-29T18:00:00+02:00",
+    "4": "2027-11-05T18:00:00+01:00",
+    "5": "2027-11-12T18:00:00+01:00",
+    "6": "2027-11-19T18:00:00+01:00",
+    "7": "2027-11-20T12:00:00+01:00"
   },
   "newsletter": {
     "note": "Formularz zapisu: action = adres z MailerLite/Buttondown/ConvertKit (POST). Puste = formularz ukryty. fieldName = nazwa pola e-mail u dostawcy.",

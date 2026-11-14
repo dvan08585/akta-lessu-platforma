@@ -46,6 +46,8 @@ export interface CaseData {
   /** deduction (domyślnie) · decision: jedna decyzja, zła = brama niestabilna · pair: wymaga połowy klucza drugiej osoby */
   type?: CaseType;
   requires: { chapter?: number; solvedCases?: number; release?: string };
+  /** Treść zapieczętowana: w bundlu tylko nagłówek; dokumenty przychodzą z public/akta po odpieczętowaniu. */
+  sealed?: boolean;
   docs: Doc[]; questions: Question[];
   solution: string[]; reward?: { kind: "text"; title: string; file: string };
   decision?: { prompt: string; open: string; leave: string; buried: string[]; correct: "open" | "leave" };

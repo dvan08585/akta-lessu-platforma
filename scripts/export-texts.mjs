@@ -1,12 +1,14 @@
 // Eksport wszystkich tekstów gry do jednego pliku Markdown do redakcji: docs/TEKSTY_DO_REDAKCJI.md
 // Użycie: node scripts/export-texts.mjs        (import z powrotem: node scripts/import-texts.mjs docs/TEKSTY_DO_REDAKCJI.md)
-import { readFileSync, writeFileSync, readdirSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
+// Sprawy zapieczętowane: jawna treść leży w content-prywatne/cases (poza gitem), w src/content/cases tylko nagłówek.
+const casePath = (f) => (existsSync("content-prywatne/cases/" + f) ? "content-prywatne/cases/" + f : "src/content/cases/" + f);
 const out = [];
 const H = (t) => out.push("\n## " + t + "\n");
 const F = (ref, text) => out.push(`<!-- ${ref} -->\n${text}\n`);
 out.push("# AKTA LESSU — TEKSTY DO REDAKCJI\n\nKażdy fragment ma nad sobą komentarz z adresem pola. Zmieniaj tylko tekst pod komentarzem, nie komentarz. Potem: `node scripts/import-texts.mjs docs/TEKSTY_DO_REDAKCJI.md`.\n");
 for (const f of readdirSync("src/content/cases").sort()) {
-  const c = JSON.parse(readFileSync("src/content/cases/" + f, "utf8"));
+  const c = JSON.parse(readFileSync(casePath(f), "utf8"));
   H(`SPRAWA ${c.n}: ${c.title} (${f})`);
   F(`cases/${f} title`, c.title); F(`cases/${f} subtitle`, c.subtitle); F(`cases/${f} epigraph`, c.epigraph);
   c.docs.forEach((d, i) => { F(`cases/${f} docs[${i}].source`, d.source); d.paragraphs.forEach((p, j) => F(`cases/${f} docs[${i}].paragraphs[${j}]`, p)); });

@@ -30,7 +30,7 @@ Zasada całego dokumentu: **hity mają jedną nową rzecz zrobioną perfekcyjnie
 - **Gest jako bramka progresji jest fikcją:** każdy gest ma zapas „trzymaj przycisk”. Działa jako rytuał (i to dobrze), nie jako weryfikacja.
 - **Katalog zamiast dramaturgii:** 27 przerywników, 18 typów, na mapie lista 20 wierszy posortowana etykietami trudności jak menu minigier. Sześć gestów bram nie ma krzywej narastania. Pierwszy gest gry (brama 4) wymaga kamery i czerwonego przedmiotu, czyli najwyższego progu.
 - **Zasoby nie są sprzątane:** kamera i mikrofon zostają włączone po wyjściu z przerywnika, pętle rysowania żyją dalej. Dioda kamery świeci po opuszczeniu widoku. To problem baterii i zaufania.
-- **Nazwisko Łutowicz.** Cezary Łutowicz to żyjący złotnik, pierwszy, który użył krzemienia pasiastego w biżuterii, Honorowy Obywatel Sandomierza, współautor Festiwalu Krzemienia. Postać w grze nazywa się Łutowicz i jest jubilerem na Opatowskiej. Ryzyko wizerunkowe wysokie, prawne umiarkowane (art. 23 k.c.), a przy okazji to najbardziej naturalny partner i fundator nagrody. Decyzja do podjęcia natychmiast: zgoda pisemna i cameo, albo zmiana nazwiska.
+- **Nazwisko Jaromin.** Cezary Jaromin to żyjący złotnik, pierwszy, który użył krzemienia pasiastego w biżuterii, Honorowy Obywatel Sandomierza, współautor Festiwalu Krzemienia. Postać w grze nazywa się Jaromin i jest jubilerem na Opatowskiej. Ryzyko wizerunkowe wysokie, prawne umiarkowane (art. 23 k.c.), a przy okazji to najbardziej naturalny partner i fundator nagrody. Decyzja do podjęcia natychmiast: zgoda pisemna i cameo, albo zmiana nazwiska.
 
 ---
 
@@ -173,7 +173,7 @@ Rzeź dominikanów u św. Jakuba: 2 lutego 1260. Najazd 1287: Telebuga wszedł w
 ### Trzy warianty nagród
 | Wariant | Co | Koszt | Uwagi |
 |---|---|---|---|
-| A „Kamień” (7 szt.) | zawieszka z krzemienia pasiastego w srebrze z sandomierskiej pracowni + egzemplarz z dedykacją | 3–11 tys. zł (400–1500 zł/szt., cennik do ustalenia) | mieści się w zwolnieniu do 2000 zł; wymaga partnera-jubilera (patrz Łutowicz) |
+| A „Kamień” (7 szt.) | zawieszka z krzemienia pasiastego w srebrze z sandomierskiej pracowni + egzemplarz z dedykacją | 3–11 tys. zł (400–1500 zł/szt., cennik do ustalenia) | mieści się w zwolnieniu do 2000 zł; wymaga partnera-jubilera (patrz Jaromin) |
 | B „Noc w Sandomierzu” (3 szt.) | dwie doby dla dwóch osób w weekend Święta Młodego Wina + Paszport Enoturysty + rola w jubensha na „Zamknięciu Bramy” | 700–1000 zł/pakiet + wydarzenie 3–8 tys. zł | barter z hotelem realny |
 | C „Rejestr biegłych” (dla wszystkich) | nazwisko lub pseudonim w drugim wydaniu + pieczęć + e-dyplom | ok. 0 zł + 2–3 zł/osobę | bez losowości, bez limitu, skaluje się |
 
@@ -231,7 +231,7 @@ Rekomendacja: **C dla wszystkich + A dla siedmiu najlepszych protokołów.** B j
 
 ## 9. Pierwsze pięć decyzji do podjęcia (tylko Ty)
 
-1. **Łutowicz:** zgoda i cameo, czy zmiana nazwiska. Od tego zależy też wariant nagrody A.
+1. **Jaromin:** zgoda i cameo, czy zmiana nazwiska. Od tego zależy też wariant nagrody A.
 2. **Gest jako rytuał, nie bramka.** Zgoda na zmianę `passed()`.
 3. **Mapa 5/7 dopełnia, nie blokuje.** Zgoda na zmianę zasady.
 4. **Lista przerywników schodzi z mapy.** Które z 20 zostają jako apokryfy (propozycja: rozmowy, widmo, kompas, lustro, świt, nucenie w południe), które idą do laboratorium (duet, gwizd, kroki, ślad), które znikają (trzy zdradzające akt III).

@@ -148,7 +148,7 @@ Zasada SCRAP na koniec: każda z tych rzeczy ma działać bez tłumaczenia, w pi
 
 ## B.5 Pięć pomysłów z innych regionów, których jeszcze nie mamy
 1. **Spacer nazotoki z zeszytem** sprzedawanym w CIT i w księgarni, pieczątki w lokalach (Toei: 20 tys. osób w 4 miesiące).
-2. **Wieczór jubensha „noc przed zbrodnią"**: 4–6 czytelników, tajne role (Wanda, Łutowicz, Berbeć, Anzelm, Stańczyk, Zieliński), prowadzący, dwie godziny w kawiarni. Bez technologii. Scenariusz do napisania z Twojego tekstu.
+2. **Wieczór jubensha „noc przed zbrodnią"**: 4–6 czytelników, tajne role (Wanda, Jaromin, Berbeć, Anzelm, Stańczyk, Zieliński), prowadzący, dwie godziny w kawiarni. Bez technologii. Scenariusz do napisania z Twojego tekstu.
 3. **Jawna trudność po koreańsku**: każdy przerywnik ma etykietę „wejście / średnio / dla wytrwałych", żeby nikt nie zaczął od najtrudniejszego sensora.
 4. **Chamber larp dla biblioteki**: 2 h, karty postaci, monolog wewnętrzny jako mechanika.
 5. **Wątek w czasie rzeczywistym**: wiadomości od postaci przez kilka dni między sprawami (Lifeline), z opcją „pomiń czekanie". Spoiwo dla mikro-akt.

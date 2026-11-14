@@ -58,9 +58,13 @@ describe("karta do udostępnienia", () => {
 
 describe("stan: kod wznowienia i seria", () => {
   it("eksport/import zachowuje postęp", () => {
-    const s = emptyState(); s.unlockedChapters = [0, 1]; s.solvedCases = [1]; s.chapterCursor = 1;
-    const back = importCode(exportCode(s))!;
+    const s = emptyState(); s.unlockedChapters = [0, 1]; s.solvedCases = [1]; s.chapterCursor = 1; s.interludesDone = ["ogien"]; s.placeVisits = ["katedra"]; s.onboarded = true;
+    s.inbox = { scheduled: { "w-wanda-1": 1800000000000 }, read: ["w-wanda-1"], replies: { "w-wanda-1": 2 } };
+    const code = exportCode(s); const back = importCode(code)!;
     expect(back.unlockedChapters).toEqual([0, 1]); expect(back.solvedCases).toEqual([1]); expect(back.chapterCursor).toBe(1);
+    expect(back.interludesDone).toEqual(["ogien"]); expect(back.placeVisits).toEqual(["katedra"]); expect(back.onboarded).toBe(true);
+    expect(back.inbox!.scheduled["w-wanda-1"]).toBe(1800000000000); expect(back.inbox!.replies["w-wanda-1"]).toBe(2);
+    expect(importCode(code.slice(0, -1) + "0")).toBeNull(); // literówka w sumie kontrolnej
   });
   it("seria rośnie dzień po dniu i wybacza jedną przerwę w tygodniu", () => {
     const s = emptyState();
@@ -79,17 +83,17 @@ describe("nowe typy spraw", () => {
     expect(evaluate(c, [11, 0]).solved).toBe(true);
   });
   it("karta zaznacza bramę niestabilną trójkątem i dodaje połowę klucza", () => {
-    const card = shareCard({ solved: [4, 3], unstable: [1], attempts: 2, streak: 0, url: "u", hashtag: "#A", halfKey: "abc1234" });
+    const card = shareCard({ solved: [4, 3], unstable: [1], attempts: 2, streak: 0, url: "u", hashtag: "#A", halfKey: "kabc123" });
     expect(card).toContain("▲ ○ ● ● ○ ○ ○");
-    expect(card).toContain("klucz: abc1234");
+    expect(card).toContain("klucz: kabc123");
   });
 });
 
-import { halfKey, verifyCheck, silentHills, readingToken, parseReading } from "../src/engine/pair";
+import { halfKey, verifyCheck, silentHills, readingToken, parseReading, looksLikeHalfKey } from "../src/engine/pair";
 describe("klucze między ludźmi", () => {
   it("połowa klucza ma sumę kontrolną, losowy hex jej nie ma", async () => {
     const k = await halfKey("seed-a");
-    expect(k).toMatch(/^[0-9a-f]{7}$/);
+    expect(k).toMatch(/^k[0-9a-f]{6}$/); expect(await verifyCheck(await readingToken("seed-a", 3))).toBe(true); expect(looksLikeHalfKey(await readingToken("seed-a", 3))).toBe(false); // odczyt wzgórza nie jest połową klucza
     expect(await verifyCheck(k)).toBe(true);
     expect(await verifyCheck("abcdef0")).toBe(false);
     expect(await halfKey("seed-a")).toBe(k);

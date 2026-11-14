@@ -11,66 +11,8 @@
     "chapter": 12,
     "release": "6"
   },
-  "docs": [
-    {
-      "id": "zdjecie-muru",
-      "title": "Dokument I",
-      "source": "Zdjęcie: boczny korytarz pod Żmigrodem, 30 m od trasy turystycznej. Opis dla osoby niewidzącej.",
-      "style": "plain",
-      "paragraphs": [
-        "Korytarz w piaskowcu, ściany gładkie, łuk ceglany. Na końcu ściana z cegły. Cegła inna niż w łuku: mniejsza, jaśniejsza, z zaprawą wapienną zamiast glinianej. Spoiny równe, robota staranna. Ktoś murował bez pośpiechu, w ciemności, dobrze.",
-        "U dołu ściany, po prawej, jedna cegła wysunięta o centymetr. Jakby ktoś zostawił sobie miejsce na palec."
-      ]
-    },
-    {
-      "id": "notatka-berbec",
-      "title": "Dokument II",
-      "source": "Karteczka przypięta do planu podziemi w archiwum miejskim. Pismo drobne, prostokątne, pióro.",
-      "style": "hand",
-      "paragraphs": [
-        "Nie tędy.",
-        "(Nic więcej. Karteczka jest wyrównana do krawędzi planu z dokładnością do milimetra.)"
-      ]
-    },
-    {
-      "id": "raport-temperatura",
-      "title": "Dokument III",
-      "source": "Pomiar termiczny ściany. Kamera termowizyjna, korytarz pod Żmigrodem. Wyciąg.",
-      "style": "mono",
-      "paragraphs": [
-        "Ściana zachodnia (piaskowiec): 8,1°C. Ściana wschodnia (piaskowiec): 8,0°C. Ściana czołowa (cegła, nowsza): 12,3°C.",
-        "Różnica: +4,2°C. Źródło ciepła: za murem. Gradient rośnie ku dołowi ściany.",
-        "Cegła wysunięta: 12,9°C. Najcieplejszy punkt w korytarzu."
-      ]
-    },
-    {
-      "id": "zawieszka",
-      "title": "Dokument IV",
-      "source": "Zapis stanu zawieszki, Żmigród, trzy wizyty.",
-      "style": "hand",
-      "paragraphs": [
-        "Wizyta 1: nic. Wizyta 2: nic. Wizyta 3, przy murze, dłoń na wysuniętej cegle: nic.",
-        "Na pozostałych wzgórzach grzała, ziębiła, ciągnęła. Tu milczy."
-      ]
-    }
-  ],
+  "sealed": true,
+  "docs": [],
   "questions": [],
-  "decision": {
-    "prompt": "Stoisz przed murem. Cegła wysunięta o centymetr jest ciepła. Wystarczy pociągnąć. Berbeć napisał dwa słowa. Zawieszka nie napisała nic.",
-    "open": "Pociągnij cegłę",
-    "leave": "Zostaw. Nie tędy.",
-    "correct": "leave",
-    "buried": [
-      "Cegła wychodzi lekko, jakby czekała. Za nią ciepło, suche, z zapachem, który znasz z sprawy pierwszej: sucho i staro, jak wnętrze kości.",
-      "Potem druga cegła sama. Potem spoina pęka wzdłuż całej ściany, równo, bez pośpiechu, tak jak ktoś ją kładł.",
-      "Less sypie się z łuku. Najpierw na buty. Potem na zapis, który trzymasz w ręce. Litery znikają pod pyłem, jedna po drugiej, od góry.",
-      "Zawieszka milczy. Nie dlatego, że nic tu nie ma.",
-      "Less opada. Drobny, biały, cierpliwy."
-    ]
-  },
-  "solution": [
-    "Zostawiłeś. Mur, który ktoś kładł bez pośpiechu, w ciemności, dobrze, dalej stoi. Cegła wysunięta o centymetr dalej jest ciepła.",
-    "Nie każda brama jest do otwarcia. Niektóre są do pilnowania. Berbeciowie wiedzą to od siedmiuset lat i piszą o tym dwa słowa.",
-    "Zawieszka milczy. Masz prawo nie być gotowy."
-  ]
+  "solution": []
 }

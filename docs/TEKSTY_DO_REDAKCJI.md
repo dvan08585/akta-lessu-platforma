@@ -579,7 +579,7 @@ Punkty 1, 6: brak pomiaru. Nie reaguje. Nie wiem, czy to brak, czy cisza.
 Notatnik prof. W., strona 16. Kopia. Pismo wyraźniejsze, atrament, data w nagłówku.
 
 <!-- cases/05-collegium.json docs[2].paragraphs[0] -->
-Sandomierz, 14 października. Dziś zszedłem na trasę turystyczną z Łutowiczem i Berbeciem. Pokazali mi komorę za kratą, 20 m za zawaleniem. Obelisk na cokole o siedmiu bokach. Otwór w sklepieniu. Wszystko, co opisywała Halina w kronice, potwierdzone.
+Sandomierz, 14 października. Dziś zszedłem na trasę turystyczną z Jarominem i Berbeciem. Pokazali mi komorę za kratą, 20 m za zawaleniem. Obelisk na cokole o siedmiu bokach. Otwór w sklepieniu. Wszystko, co opisywała Halina w kronice, potwierdzone.
 
 <!-- cases/05-collegium.json docs[2].paragraphs[1] -->
 Punkt 6 (Collegium) jest główny. Pod Collegium leży centrum systemu. Tam trzeba kopać. Wejście od strony dziedzińca, pod schodami zachodnimi.
@@ -922,10 +922,10 @@ Pod kostką coś niskiego. Nie dźwięk. Ciśnienie. Jak przed burzą, tylko od 
 Siada przy jej nodze. Ucho prawe w dół. Ona tego nie słyszy. Jeszcze. Czeka, aż usłyszy.
 
 <!-- interludia[3].title -->
-Rozmowa: Łutowicz
+Rozmowa: Jaromin
 
 <!-- interludia[3].intro -->
-Pracownia jubilerska na Opatowskiej. Lupa na czole, lampa nisko. Łutowicz nie podaje ręki: ma ją zajętą. Kciuk pociera opuszkę palca, raz za razem, jakby sprawdzał powierzchnię, której nie ma.
+Pracownia jubilerska na Opatowskiej. Lupa na czole, lampa nisko. Jaromin nie podaje ręki: ma ją zajętą. Kciuk pociera opuszkę palca, raz za razem, jakby sprawdzał powierzchnię, której nie ma.
 
 <!-- interludia[3].questions[0].q -->
 Oprawia pan krzemień pasiasty?
@@ -958,10 +958,10 @@ Dlaczego pan ciągle pociera kciukiem o palec?
 Nie zauważyłem. Nawyk. Pan ma swoje, ja mam swoje. Mój ojciec też tak robił, więc może to jest dziedziczne, jak nos. Niech pan nie pyta, co sprawdzam. Sam nie wiem.
 
 <!-- interludia[3].reveal -->
-Profesor dzwonił do niego trzy razy w ostatnim tygodniu życia. Jest to w rejestrze połączeń, o którym Łutowicz nie wie, że istnieje. Kłamie, bo profesor zostawił u niego coś pod ladą i kazał to komuś oddać. Jeszcze nie wie komu.
+Profesor dzwonił do niego trzy razy w ostatnim tygodniu życia. Jest to w rejestrze połączeń, o którym Jaromin nie wie, że istnieje. Kłamie, bo profesor zostawił u niego coś pod ladą i kazał to komuś oddać. Jeszcze nie wie komu.
 
 <!-- interludia[3].wrong -->
-Łutowicz podnosi lupę na czoło. „To akurat prawda. Zapytaj o coś innego.”
+Jaromin podnosi lupę na czoło. „To akurat prawda. Zapytaj o coś innego.”
 
 <!-- interludia[4].title -->
 Płyta Chladniego
@@ -1231,54 +1231,27 @@ Czysty ton. Bez składowych, bez ciała, sam kształt. Piasek na płycie Anzelma
 Siedem punktów
 
 <!-- interludia[21].intro -->
-Heptagram ma siedem punktów nacisku. Jedna dłoń ma pięć palców. System odpowiada na parę, nie na jednego.
+Anzelm kładzie dłoń na stole, palce rozstawione. „Pięć. Za mało na siedem bram." Patrzy na twoją drugą rękę, potem na drzwi.
 
 <!-- interludia[21].reveal -->
-Siedem punktów pod siedmioma palcami dwóch ludzi. Helena była sama i zamurowała. Halina była sama i została. Ty nie jesteś. To nie jest metafora, to jest liczba palców.
+Pięć palców dwojga ludzi na siedmiu punktach. Dwa zostały puste: to są te, na których milczy zawieszka. Jedna dłoń nie wystarczy. Ty nie jesteś sam. To nie jest metafora, to jest liczba palców.
 
 <!-- interludia[22].title -->
-Marek trzyma
-
-<!-- interludia[22].intro -->
-Pod ziemią. Droga zablokowana. Nie można jej wynieść. Można trzymać. Nic się nie wydarzy. To jest cała scena.
-
-<!-- interludia[22].reveal -->
-Trzymałeś. Nic się nie wydarzyło, i to było wszystko, co dało się zrobić. Amor gdzieś nad wami drapie skarpę. Dzieci na sankach. Ktoś kopie od góry. Ty trzymasz.
-
-<!-- interludia[23].title -->
 Lustro
 
-<!-- interludia[23].intro -->
+<!-- interludia[22].intro -->
 Kartka z notatnika profesora, przepisana w odbiciu. Profesor pisał tak, kiedy nie chciał, żeby ktoś czytał mu przez ramię.
 
-<!-- interludia[23].reveal -->
+<!-- interludia[22].reveal -->
 Wzgórze Salve Regina: archeolodzy spierali się o nie przez dekady, a Florek w 2003 roku napisał, że to mit. Profesor wiedział. Ósmego punktu nie ma. Siedem wystarczy.
 
-<!-- interludia[24].title -->
-Nie podnoś palca
-
-<!-- interludia[24].intro -->
-Korytarz z Opatowskiej na południe. Trzy rozgałęzienia. Powietrze rzednie z każdym metrem.
-
-<!-- interludia[24].reveal -->
-Opatowska, pod Wzgórzem Miejskim, na południe, na zachód. Trzy odnogi, których nie wybrałeś. Ciemność, w której nie puściłeś. To jest ta droga. Reszta jest w książce.
-
-<!-- interludia[25].title -->
-Tysiąc dwieście kroków
-
-<!-- interludia[25].intro -->
-Korytarz z Opatowskiej do komnaty ma około kilometra. Tysiąc dwieście kroków. Ostatnie dwieście idzie się z zatrzymanym oddechem, bo powietrze rzednie.
-
-<!-- interludia[25].reveal -->
-Tysiąc dwieście. Tyle kroków dzieli piwnicę na Opatowskiej od komnaty pod Wzgórzem Świętopawłowskim. Przeszedłeś to po własnym mieszkaniu, po swoim mieście, i nikt tego nie widział. Aneta szła dwie godziny. Tobie zajęło to tyle, ile zajęło.
-
-<!-- interludia[26].title -->
+<!-- interludia[23].title -->
 Dwa głosy
 
-<!-- interludia[26].intro -->
+<!-- interludia[23].intro -->
 Anzelm kładzie na płycie drugą garść piasku. „Jeden ton daje jeden wzór. Dwa tony w kwincie dają wzór, którego jeden człowiek nie zrobi.”
 
-<!-- interludia[26].reveal -->
+<!-- interludia[23].reveal -->
 Dwa głosy, trzy do dwóch. Płyta rozpoznała oba, chociaż mikrofon dostał jeden sygnał. Rozdzieliła je tak, jak Aneta rozdziela warstwy w rdzeniu: po tym, co się powtarza. Helena nuciła sama. Halina nuciła sama. Wy nie.
 
 

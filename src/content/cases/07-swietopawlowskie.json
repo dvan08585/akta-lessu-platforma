@@ -8,81 +8,11 @@
   "type": "pair",
   "requires": {
     "solvedCases": 6,
-    "chapter": 21
+    "chapter": 21,
+    "release": "7"
   },
-  "docs": [
-    {
-      "id": "rejestr",
-      "title": "Dokument I",
-      "source": "Rejestr statusów. Fundacja Sandomierska Memoria. Wydruk, data: dziś.",
-      "style": "mono",
-      "paragraphs": [
-        "1. Brama Pierwsza (Wzg. Żmigród) — status: rozpoznany przez biegłego",
-        "2. Brama Druga (Wzg. Katedralne) — status: rozpoznany przez biegłego",
-        "3. Brama Trzecia (Wzg. Miejskie) — status: rozpoznany przez biegłego",
-        "4. Brama Czwarta (Wzg. Staromiejskie) — status: rozpoznany przez biegłego",
-        "5. Brama Piąta (Wzg. Zamkowe) — status: rozpoznany przez biegłego",
-        "6. Brama Szósta (Wzg. Collegium) — status: rozpoznany przez biegłego",
-        "7. Brama Siódma (Wzg. Świętopawłowskie) — status: [puste]",
-        "Adnotacja: „Biegły dostarczy siódmy status do końca dnia. — S.”"
-      ]
-    },
-    {
-      "id": "pimpo-limpo",
-      "title": "Dokument II",
-      "source": "Zdjęcie: Pimpo Limpo, górka saneczkowa przy cmentarzu św. Pawła, pierwszy śnieg. Opis dla osoby niewidzącej.",
-      "style": "plain",
-      "paragraphs": [
-        "Lej wąwozu, biały. Dzieci na sankach, pięcioro, śmiech widać po otwartych ustach. Na skarpie czarny pies, cocker, trzynaście kilogramów, z białą plamką na piersi. Nie patrzy na dzieci. Patrzy w dół, w skarpę. Uszy do dołu.",
-        "Pod skarpą: Wąwóz Piszczele."
-      ]
-    },
-    {
-      "id": "tlen",
-      "title": "Dokument III",
-      "source": "Pomiar tlenu, korytarz w kierunku Wzgórza Świętopawłowskiego. Miernik osobisty, zapis co 50 m.",
-      "style": "mono",
-      "paragraphs": [
-        "0 m: 20,9%. 50 m: 20,4%. 100 m: 19,6%. 150 m: 18,7%. 200 m: 17,9%. 250 m: 16,8% (alarm). 300 m: miernik wyłączony przez użytkownika.",
-        "Uwaga: jedna osoba zużywa w spoczynku ok. 0,25 l tlenu na minutę. W korytarzu bez przepływu dwie osoby zużywają dwa razy więcej. Ale dwie osoby mogą się zmieniać przy ścianie, podtrzymywać, wrócić. Jedna nie."
-      ]
-    },
-    {
-      "id": "amor",
-      "title": "Dokument IV",
-      "source": "Zapis z zeszytu. Bez daty.",
-      "style": "hand",
-      "paragraphs": [
-        "Amor nie schodzi.",
-        "Pies, który schodził pierwszy przez cztery tygodnie, stoi na bruku i nie idzie. Nie boi się. Wie.",
-        "Nie można oddychać samemu w miejscu, które zabiera powietrze. Helena próbowała sama. Siedemset lat wcześniej Halina też była sama, i zamknęła, i została."
-      ]
-    }
-  ],
+  "sealed": true,
+  "docs": [],
   "questions": [],
-  "pair": {
-    "prompt": "Masz połowę klucza. Druga połowa jest w karcie udostępnienia kogoś, kto przebył sześć bram. Nie w rejestrze Fundacji. U człowieka. Poproś.",
-    "promptUnstable": "Pociągnąłeś cegłę. Brama, którą otworzyłeś, zabiera powietrze z tego korytarza. Jedna osoba nie wystarczy. Potrzebujesz dwóch połówek od dwóch różnych ludzi.",
-    "ask": "Nie mogę oddychać w pojedynkę. Sześć bram w Aktach Lessu za mną, do siódmej potrzebuję twojej połowy klucza. Moja:",
-    "refuse": "To twoja własna połowa. Sam ze sobą nie oddychasz.",
-    "register": "1. Brama Pierwsza (Wzg. Żmigród) — rozpoznana przez biegłego\n2. Brama Druga (Wzg. Katedralne) — rozpoznana przez biegłego\n3. Brama Trzecia (Wzg. Miejskie) — rozpoznana przez biegłego\n4. Brama Czwarta (Wzg. Staromiejskie) — rozpoznana przez biegłego\n5. Brama Piąta (Wzg. Zamkowe) — rozpoznana przez biegłego\n6. Brama Szósta (Wzg. Collegium) — rozpoznana przez biegłego\n7. Brama Siódma (Wzg. Świętopawłowskie) — [puste]\nAdnotacja: „Biegły dostarczy siódmy status do końca dnia. — S.”",
-    "registerQuestion": "Przeszliście. Wiesz, co jest pod Wzgórzem Świętopawłowskim. Fundacja czeka na siódmą pozycję do końca dnia. Wpisać?",
-    "yes": "Tak, wpisz",
-    "no": "Nie",
-    "yesRefused": "Zawieszka parzy. Ręka nie chce.",
-    "finale": [
-      "Fundacja czeka na siódmy status do końca dnia.",
-      "Nie dostanie go. Siódma pozycja zostaje pusta. Nikt nie wie, i to „nikt” jest jedyną rzeczą, której Fundacja nie potrafi kupić.",
-      "Less opadał na siedem wzgórz, na dachy i na drogi, na bramy otwarte i na bramy zamknięte, cierpliwy, biały, niczyj."
-    ]
-  },
-  "solution": [
-    "Dwie połowy. Dwa oddechy. Korytarz, w którym tlen spada z każdym krokiem, przeszliście we dwoje, zmieniając się przy ścianie.",
-    "Rejestr Fundacji ma sześć pozycji wypełnionych przez biegłego, który sądził, że pracuje dla komisarza. Siódmej nie dostaną, bo siódmej nie da się dostarczyć samemu, a Stańczyk zawsze jest sam."
-  ],
-  "reward": {
-    "kind": "text",
-    "title": "Siedem Bram Lessu",
-    "file": "premiera"
-  }
+  "solution": []
 }

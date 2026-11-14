@@ -22,7 +22,7 @@ Zasada jubensha: każdy jest winny czegoś małego, więc każdy ma powód, żeb
 - **Nigdy nie powiesz:** że szklanki w kredensie dzwonią w nocy od lat i że wiesz, od czego.
 - **Pytanie, które musisz zadać komuś:** „Kto był w kuchni profesora w Krakowie?” (nie wiesz, że to jest ważne; usłyszałaś to od komisarza).
 
-### Łutowicz, jubiler z Opatowskiej
+### Jaromin, jubiler z Opatowskiej
 - **Jawne:** oprawia kamienie, kciuk pociera o palec, 750 lat rodzinnego fachu. Profesor dzwonił do ciebie trzy razy w ostatnim tygodniu.
 - **Twoja strona:** rachunek za oprawę: „krzemień pasiasty, siedmiobok, srebro na zacisk, bez wiercenia, dla H.” Wziąłeś ją, bo to twoje pismo i twoja robota, a nie chcesz tłumaczyć policji, kim jest H.
 - **Nigdy nie powiesz:** że profesor zostawił u ciebie list i kazał go oddać „komuś, kto przyjedzie”.
@@ -77,7 +77,7 @@ Nie kłamiesz. Wybierasz, co mówisz. Obracasz filiżankę uchem w lewo. Trzymas
 8. **Notatnik:** sześć wyrwanych kartek, siedem nowych numerów stron. Jedna strona z atramentem i datą 14 X. Kalendarz uczelni: 14 X profesor w Krakowie, egzamin, trzy podpisy.
 
 ## 5. ROZWIĄZANIE (DM czyta, gdy głosowanie się skończy)
-„Sześć stron wzięło sześcioro ludzi, każdy z powodu, który uważał za dobry. Wanda chroniła hotel. Łutowicz chronił H. Berbeć chronił głębokość. Anzelm chronił słowo przed papierem. Marek chronił kogoś, kogo jeszcze nie umie nazwać. Siódmej strony nikt nie wziął. Siódmą stronę ktoś przyniósł. Napisaną ładniej niż wszystkie prawdziwe, z datą, w której profesor podpisywał egzamin sto pięćdziesiąt kilometrów stąd. Ta strona każe kopać pod Collegium. Nie kopcie. Jutro przyjeżdża do Sandomierza geolożka. Z psem. Nikt z was jej nie zna. Wszyscy będziecie udawać, że nie wiecie, kim jest.”
+„Sześć stron wzięło sześcioro ludzi, każdy z powodu, który uważał za dobry. Wanda chroniła hotel. Jaromin chronił H. Berbeć chronił głębokość. Anzelm chronił słowo przed papierem. Marek chronił kogoś, kogo jeszcze nie umie nazwać. Siódmej strony nikt nie wziął. Siódmą stronę ktoś przyniósł. Napisaną ładniej niż wszystkie prawdziwe, z datą, w której profesor podpisywał egzamin sto pięćdziesiąt kilometrów stąd. Ta strona każe kopać pod Collegium. Nie kopcie. Jutro przyjeżdża do Sandomierza geolożka. Z psem. Nikt z was jej nie zna. Wszyscy będziecie udawać, że nie wiecie, kim jest.”
 
 ## 6. DLA PROWADZĄCEGO: CO WOLNO, CZEGO NIE
 - Wolno: dodawać smaczki sandomierskie (Ucho Igielne, Pieprzówki, Martyrologium), zmieniać imiona graczy w role kobiece/męskie bez zmiany treści.

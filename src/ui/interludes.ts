@@ -1,4 +1,4 @@
-import { h, go, toast, back, next } from "./dom";
+import { h, go, toast, back, next, onLeave, grabMedia, listen } from "./dom";
 import { topbar } from "./views";
 import type { App } from "../app";
 import { save } from "../engine/state";
@@ -9,7 +9,7 @@ import { plural } from "./views";
 import { flint, flintSeed } from "./icons";
 
 export interface Interlude {
-  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace" | "steps" | "duet"; after?: number; gate?: number; title: string; level?: string;
+  id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace" | "steps" | "duet"; after?: number; gate?: number; title: string; level?: string; place?: "brama" | "rozmowa" | "apokryf" | "laboratorium";
   secret?: string[]; steps?: number;
   cycles?: number; inhale?: number; exhale?: number;
   /** Instrukcja osobnym głosem (didaskalia), oddzielona od prozy w intro. */
@@ -22,6 +22,7 @@ export interface Interlude {
 
 export function interludeAvailable(app: App, i: Interlude): boolean {
   if (app.state.testMode) return true;
+  if (i.place === "laboratorium") return false;
   if (i.gate !== undefined) { const c = app.caseForGate(i.gate); return !!c && (app.state.solvedCases.includes(c.n) || app.state.testMode); }
   return (i.after ?? 0) <= app.passed();
 }
@@ -36,7 +37,9 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   const it: Interlude = found;
   if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} ${plural(it.after ?? 0, "przebytej bramie", "przebytych bramach", "przebytych bramach")}.`), back("Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
-  sec.append(h("p", { class: "faint" }, `Między sprawami${it.level ? " · " + it.level : ""}`), h("h2", {}, it.title));
+  let alive = true; onLeave(() => { alive = false; });
+  const acs: AudioContext[] = []; onLeave(() => { for (const a of acs) a.close().catch(() => { /* */ }); });
+  sec.append(h("p", { class: "kicker" }, it.place === "apokryf" ? "Apokryf" : it.place === "rozmowa" ? "Rozmowa" : it.gate !== undefined ? `Brama ${it.gate} · ciałem` : "Między sprawami"), h("h2", {}, it.title));
   if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else if (it.type === "whistle") renderWhistle(); else if (it.type === "touch7") renderTouch7(); else if (it.type === "hold") renderHold(); else if (it.type === "mirror") renderMirror(); else if (it.type === "trace") renderTrace(); else if (it.type === "steps") renderSteps(); else if (it.type === "duet") renderDuet(); else renderPlate();
   return sec;
 
@@ -66,6 +69,8 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     setTimeout(() => { verdict.replaceChildren(sol, ...extra, h("div", { class: "verdict" }, next(it.gate !== undefined ? "Wróć do bramy" : "Ruszaj dalej", to))); sol.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }); }, reduced ? 0 : 700);
     finish(note);
   }
+
+  function newAC(): AudioContext { const a = new AudioContext(); acs.push(a); return a; }
 
   function finish(note: string) {
     if (!app.state.interludesDone.includes(it.id)) { app.state.interludesDone.push(it.id); app.addNote(note, it.gate !== undefined ? `brama ${it.gate} przebyta` : "między sprawami"); save(app.state); if (it.gate !== undefined) { toast(`Brama ${it.gate} przebyta. Ciałem.`); sendEvent(app.cfg.backendUrl, app.state, { type: "gesture", gate: it.gate }); } }
@@ -157,9 +162,9 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         }
         wctx.stroke();
       }
-      requestAnimationFrame(drawWave);
+      if (alive) requestAnimationFrame(drawWave);
     };
-    requestAnimationFrame(drawWave);
+    if (alive) requestAnimationFrame(drawWave);
     const opts = h("div", { class: "opts", role: "radiogroup" });
     it.options!.forEach((o, i) => opts.append(h("label", {}, h("input", { type: "radio", name: "beat", value: String(i) }), o)));
     const verdict = h("div");
@@ -192,18 +197,18 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     };
     function tick() {
       if (!running) return;
-      if (calibrating) { setTimeout(tick, 100); return; }
+      if (calibrating) { if (alive) setTimeout(tick, 100); return; }
       if (jitter > base * 2.5 + 0.08) { held = Math.max(0, held - 1.5); temp.textContent = "Drżysz. 33°C."; }
       else { held += 0.1; temp.textContent = `${(36.6 - (held / total) * 5.6).toFixed(1).replace(".", ",")}°C`; }
       fill.style.width = `${Math.min(100, (held / total) * 100)}%`; status.textContent = `${held.toFixed(0)} s`;
       if (held >= total && !finished) { finished = true; running = false; reveal(verdict, `${it.title}: wytrzymane.`); return; }
-      setTimeout(tick, 100);
+      if (alive) setTimeout(tick, 100);
     }
     start.addEventListener("click", async () => {
       try {
         const DM = DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> };
         if (DM.requestPermission) { const r = await DM.requestPermission(); if (r !== "granted") throw new Error("denied"); }
-        addEventListener("devicemotion", onMotion);
+        listen("devicemotion", onMotion as EventListener);
       } catch { toast("Bez czujnika ruchu: liczy się samo trzymanie przycisku."); }
       running = true; start.disabled = true; start.textContent = "Kalibruję…"; calibrating = true; calib = [];
       // 2 s kalibracji: mediana drgania TEJ ręki na TYM telefonie = poziom zero (progi absolutne zawodzą między urządzeniami)
@@ -229,7 +234,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     sec.append(canvas, phaseEl, count, ear, h("div", { class: "verdict" }, start, micBtn), h("p", { class: "faint", style: "margin-top:0.8rem" }, "Przy wydechu tafla słucha mikrofonu albo czuje palec. Nic nie jest nagrywane ani wysyłane: dźwięk liczy się w telefonie i znika."), verdict);
     const ctx = canvas.getContext("2d")!;
     let running = false, finished = done, done_cycles = 0, calm = 0, touching = false, mic: AnalyserNode | null = null, micBuf: Float32Array<ArrayBuffer> | null = null, baseline = 0.004, level = 0, noMic = false;
-    canvas.addEventListener("pointerdown", () => { touching = true; }); addEventListener("pointerup", () => { touching = false; });
+    canvas.addEventListener("pointerdown", () => { touching = true; }); listen("pointerup", () => { touching = false; });
     const rms = () => { if (!mic || !micBuf) return null; mic.getFloatTimeDomainData(micBuf); let s = 0; for (let i = 0; i < micBuf.length; i++) s += micBuf[i] * micBuf[i]; return Math.sqrt(s / micBuf.length); };
     let t0 = 0;
     function draw(now: number) {
@@ -264,9 +269,9 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         if (calm >= 0.7) { finished = true; reveal(verdict, `${it.title}: dziesięć oddechów.`, [h("p", { class: "faint" }, "Dlaczego to działa: ", h("a", { href: "#/o-ciele" }, "co robi z tobą ta gra"))]); }
         else { calm = 0; done_cycles = 0; count.textContent = `0 / ${cycles}`; start.disabled = false; start.textContent = "Jeszcze raz"; toast("Tafla drży. Oddychałeś z nią, czy tylko czekałeś? Wydech ma być słyszalny albo palec na tafli."); }
       }
-      requestAnimationFrame(draw);
+      if (alive) requestAnimationFrame(draw);
     }
-    requestAnimationFrame(draw);
+    if (alive) requestAnimationFrame(draw);
     const begin = () => { running = true; t0 = performance.now(); calm = 0; done_cycles = 0; start.disabled = true; start.textContent = "Oddychaj"; };
     // Mikrofon prosi się sam przy starcie (jedno dotknięcie, nie dwa). Odmowa = tafla czuje palec.
     start.addEventListener("click", async () => {
@@ -274,8 +279,8 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       if (!mic && !noMic) {
         start.disabled = true; start.textContent = "Tafla nasłuchuje ciszy…";
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-          const ac = new AudioContext(); if (ac.state === "suspended") await ac.resume();
+          const stream = await grabMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+          const ac = newAC(); if (ac.state === "suspended") await ac.resume();
           const src = ac.createMediaStreamSource(stream); mic = ac.createAnalyser(); mic.fftSize = 2048; src.connect(mic); micBuf = new Float32Array(new ArrayBuffer(mic.fftSize * 4));
           // kalibracja: 2 s ciszy = poziom zero (progi absolutne zawodzą między telefonami)
           const samples: number[] = []; await new Promise<void>((res) => { const iv = setInterval(() => { const r = rms(); if (r !== null) samples.push(r); }, 100); setTimeout(() => { clearInterval(iv); res(); }, 2000); });
@@ -292,7 +297,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   /** Kamera jako czujnik: mała klatka, średnia koloru i jasności, nic nie opuszcza telefonu. */
   async function openCamera(video: HTMLVideoElement): Promise<boolean> {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment", width: { ideal: 320 } }, audio: false });
+      const stream = await grabMedia({ video: { facingMode: "environment", width: { ideal: 320 } }, audio: false });
       video.srcObject = stream; await video.play(); return true;
     } catch { return false; }
   }
@@ -347,7 +352,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       const samples: number[] = []; const iv = setInterval(() => { const f = sampleFrame(video, probe); if (f) samples.push(f.lum); }, 100);
       setTimeout(() => { clearInterval(iv); samples.sort((a, b) => a - b); baseline = samples[Math.floor(samples.length / 2)] ?? 0.5; camBtn.textContent = "Kamera patrzy"; setInterval(() => { const f = sampleFrame(video, probe); if (f) { status.textContent = `światło: ${(f.lum * 100).toFixed(0)}%`; step(f.lum < Math.max(0.04, baseline * 0.3)); } }, 120); }, 2000);
     });
-    hold.addEventListener("pointerdown", () => { holding = true; }); addEventListener("pointerup", () => { holding = false; });
+    hold.addEventListener("pointerdown", () => { holding = true; }); listen("pointerup", () => { holding = false; });
     setInterval(() => { if (holding) step(true); }, 120);
     if (done) { lines.forEach((l) => (l.style.opacity = "1")); verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!))); }
   }
@@ -381,17 +386,17 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       // pozycja
       const px = 30 + (steps / total) * 470; ctx.beginPath(); ctx.arc(px, 225, 5, 0, Math.PI * 2); ctx.fillStyle = "#c9a86a"; ctx.fill();
       if (steps >= total && !finished) { finished = true; running = false; reveal(verdict, `${it.title}: dwadzieścia kroków.`); }
-      requestAnimationFrame(draw);
+      if (alive) requestAnimationFrame(draw);
     }
-    requestAnimationFrame(draw);
+    if (alive) requestAnimationFrame(draw);
     start.addEventListener("click", async () => {
       try {
         const DO = DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> };
         if (DO.requestPermission) { const r = await DO.requestPermission(); if (r !== "granted") throw new Error("denied"); }
-        addEventListener("deviceorientation", onOrient);
+        listen("deviceorientation", onOrient as EventListener);
       } catch { toast("Bez żyroskopu: trzymaj przycisk, żeby iść równo."); }
       running = true; start.textContent = "Trzymaj równo"; lastStep = performance.now();
-      start.addEventListener("pointerdown", () => { holding = true; }); addEventListener("pointerup", () => { holding = false; });
+      start.addEventListener("pointerdown", () => { holding = true; }); listen("pointerup", () => { holding = false; });
     });
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
@@ -407,14 +412,14 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     let ac: AudioContext | null = null, an: AnalyserNode | null = null, data: Uint8Array<ArrayBuffer> | null = null;
     audio.addEventListener("seeked", () => { if (audio.currentTime < 0.3) { ctx.fillStyle = "#0e0d0b"; ctx.fillRect(0, 0, 720, 260); } });
     audio.addEventListener("play", () => {
-      if (!ac) { ac = new AudioContext(); const src = ac.createMediaElementSource(audio); an = ac.createAnalyser(); an.fftSize = 2048; an.smoothingTimeConstant = 0.2; src.connect(an); an.connect(ac.destination); data = new Uint8Array(new ArrayBuffer(an.frequencyBinCount)); }
+      if (!ac) { ac = newAC(); const src = ac.createMediaElementSource(audio); an = ac.createAnalyser(); an.fftSize = 2048; an.smoothingTimeConstant = 0.2; src.connect(an); an.connect(ac.destination); data = new Uint8Array(new ArrayBuffer(an.frequencyBinCount)); }
       if (ac.state === "suspended") ac.resume();
       if (audio.currentTime < 0.3) { ctx.fillStyle = "#0e0d0b"; ctx.fillRect(0, 0, 720, 260); }
       // Kolumna rysowana kryjąco (nie półprzezroczyście), więc kolejne odsłuchy nie rozjaśniają obrazu do białego.
       const draw = () => { if (audio.paused || !an || !data || !ac) return; an.getByteFrequencyData(data); const x = Math.floor((audio.currentTime / 26) * 720); const binHz = ac.sampleRate / an.fftSize; const maxBin = Math.floor(8000 / binHz);
         for (let b = 0; b < maxBin; b++) { const v = Math.pow(data[b] / 255, 1.6); const y = 260 - Math.floor((b / maxBin) * 260); const l = Math.round(14 + v * 218); ctx.fillStyle = `rgb(${l},${Math.round(l * 0.97)},${Math.round(l * 0.9)})`; ctx.fillRect(x, y - 1, 2, 2); }
-        requestAnimationFrame(draw); };
-      requestAnimationFrame(draw);
+        if (alive) requestAnimationFrame(draw); };
+      if (alive) requestAnimationFrame(draw);
     });
     const opts = h("div", { class: "opts", role: "radiogroup" });
     it.options!.forEach((o, i) => opts.append(h("label", {}, h("input", { type: "radio", name: "spectro", value: String(i) }), o)));
@@ -455,13 +460,13 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         hot = heat === 4 && (near.d <= 1500 || app.state.testMode) ? hot + 1 : 0;
         if (hot > 12 && !finished) { finished = true; reveal(verdict, `${it.title}: ${near.g.name}.`); try { navigator.vibrate?.(300); } catch { /* */ } }
       }
-      setTimeout(tick, 250);
+      if (alive) setTimeout(tick, 250);
     }
     start.addEventListener("click", async () => {
       try {
         const DO = DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> };
         if (DO.requestPermission) { const r = await DO.requestPermission(); if (r !== "granted") throw new Error("denied"); }
-        addEventListener("deviceorientationabsolute" in window ? "deviceorientationabsolute" : "deviceorientation", onOrient as EventListener);
+        listen("deviceorientationabsolute" in window ? "deviceorientationabsolute" : "deviceorientation", onOrient as EventListener);
       } catch { toast("Bez kompasu zawieszka nie wie, gdzie patrzysz."); }
       if (!navigator.geolocation) { status.textContent = "GPS: brak"; return; }
       navigator.geolocation.watchPosition((p) => { pos = { lat: p.coords.latitude, lon: p.coords.longitude }; }, (err) => { status.textContent = err.code === 1 ? "GPS: odmowa. Zawieszka milczy bez miejsca. Włącz lokalizację dla tej strony w ustawieniach telefonu." : "GPS: brak sygnału. Wyjdź spod dachu i poczekaj chwilę."; }, { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 });
@@ -481,8 +486,8 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     let held = 0, finished = done;
     micBtn.addEventListener("click", async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const ac = new AudioContext(); const src = ac.createMediaStreamSource(stream); const an = ac.createAnalyser(); an.fftSize = 2048; src.connect(an);
+        const stream = await grabMedia({ audio: true });
+        const ac = newAC(); const src = ac.createMediaStreamSource(stream); const an = ac.createAnalyser(); an.fftSize = 2048; src.connect(an);
         const buf = new Float32Array(new ArrayBuffer(an.fftSize * 4)); const smooth = new PitchSmoother(5);
         micBtn.disabled = true; micBtn.textContent = "Słucham";
         setInterval(() => {
@@ -502,7 +507,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   function renderTouch7() {
     sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const canvas = h("canvas", { class: "plate hept", width: "600", height: "600", "aria-label": "Heptagram z siedmioma punktami" }) as HTMLCanvasElement;
-    const status = h("p", { class: "mono muted" }, "0 / 7 palców");
+    const status = h("p", { class: "mono muted" }, "0 / 5 palców na siedmiu punktach");
     const verdict = h("div");
     sec.append(canvas, status, verdict);
     const ctx = canvas.getContext("2d")!;
@@ -517,10 +522,11 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath(); ctx.strokeStyle = "#6b6355"; ctx.lineWidth = 2; ctx.stroke();
       const covered = pts.map((p) => [...touches.values()].some((t) => Math.hypot(t.x - p.x, t.y - p.y) < 60));
       pts.forEach((p, i) => { ctx.beginPath(); ctx.arc(p.x, p.y, 34, 0, Math.PI * 2); ctx.fillStyle = covered[i] ? "#c9a86a" : "#2a2620"; ctx.fill(); ctx.strokeStyle = "#e8e0cf"; ctx.lineWidth = 1.5; ctx.stroke(); });
-      const n = covered.filter(Boolean).length; status.textContent = `${n} / 7 palców`;
-      held = n === 7 ? held + 1 / 60 : 0;
+      const n = covered.filter(Boolean).length; status.textContent = `${n} / 5 palców na siedmiu punktach`;
+      // Telefon widzi najwyżej pięć dotknięć naraz (iPhone). Pięć palców dwojga ludzi na pięciu z siedmiu punktów przez trzy sekundy.
+      held = n >= 5 ? held + 1 / 60 : 0;
       if (held >= 3 && !finished) { finished = true; reveal(verdict, `${it.title}: siedem palców.`); try { navigator.vibrate?.(300); } catch { /* */ } }
-      requestAnimationFrame(draw);
+      if (alive) requestAnimationFrame(draw);
     }
     draw();
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
@@ -589,7 +595,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       ctx.fillStyle = "#c9a86a"; ctx.beginPath(); ctx.arc(60, 40, 14, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#7a1f1f"; ctx.beginPath(); ctx.arc(540, 520, 14, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = "#a39a86"; ctx.font = "13px Georgia"; ctx.fillText("Opatowska", 80, 44); ctx.fillText("komnata", 455, 560);
       ctx.fillStyle = `rgba(14,13,11,${dark})`; ctx.fillRect(0, 0, 600, 600);
-      requestAnimationFrame(draw);
+      if (alive) requestAnimationFrame(draw);
     }
     draw();
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
@@ -608,7 +614,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const update = () => { const n = app.state.steps ?? 0; fill.style.width = `${Math.min(100, (n / total) * 100)}%`; status.textContent = `${n} / ${total} kroków${n > total - 200 && n < total ? " · powietrze rzednie" : ""}`; document.body.style.filter = n > total - 200 && n < total ? `brightness(${1 - ((n - (total - 200)) / 200) * 0.6})` : ""; if (n >= total && !finished) { finished = true; document.body.style.filter = ""; reveal(verdict, `${it.title}: dotarłeś.`); } };
     const onMotion = (e: DeviceMotionEvent) => { const a = e.accelerationIncludingGravity; if (!a) return; const mag = Math.sqrt((a.x ?? 0) ** 2 + (a.y ?? 0) ** 2 + (a.z ?? 0) ** 2); const now = Date.now(); if (last && mag - last > 1.6 && now - lastStep > 320) { lastStep = now; app.state.steps = (app.state.steps ?? 0) + 1; if (app.state.steps % 10 === 0) save(app.state); update(); } last = mag; };
     start.addEventListener("click", async () => {
-      try { const DM = DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> }; if (DM.requestPermission) { const r = await DM.requestPermission(); if (r !== "granted") throw new Error("denied"); } addEventListener("devicemotion", onMotion); start.disabled = true; start.textContent = "Liczę kroki"; }
+      try { const DM = DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> }; if (DM.requestPermission) { const r = await DM.requestPermission(); if (r !== "granted") throw new Error("denied"); } listen("devicemotion", onMotion as EventListener); start.disabled = true; start.textContent = "Liczę kroki"; }
       catch { toast("Bez czujnika ruchu kroków nie policzę. Wróć na telefonie."); }
     });
     addEventListener("hashchange", () => { document.body.style.filter = ""; save(app.state); }, { once: true });
@@ -644,20 +650,20 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       status.textContent = res.f1 ? `${res.f1.toFixed(1)} Hz${res.f2 ? ` + ${res.f2.toFixed(1)} Hz · ${res.ratio!.toFixed(2)}` : " · jeden głos"}${res.fifth ? " · kwinta" : ""}` : "cisza";
       hold = res.fifth ? hold + 1 : Math.max(0, hold - 2);
       if (hold > 180 && !finished) { finished = true; if (osc) { osc.stop(); osc = null; } reveal(verdict, `${it.title}: kwinta.`); try { navigator.vibrate?.(300); } catch { /* */ } }
-      requestAnimationFrame(draw);
+      if (alive) requestAnimationFrame(draw);
     }
     draw();
     micBtn.addEventListener("click", async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-        ac = ac ?? new AudioContext(); const src = ac.createMediaStreamSource(stream); const an = ac.createAnalyser(); an.fftSize = 8192; an.smoothingTimeConstant = 0.6; src.connect(an);
+        const stream = await grabMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+        ac = ac ?? newAC(); const src = ac.createMediaStreamSource(stream); const an = ac.createAnalyser(); an.fftSize = 8192; an.smoothingTimeConstant = 0.6; src.connect(an);
         const spec = new Float32Array(new ArrayBuffer(an.frequencyBinCount * 4)); const binHz = ac.sampleRate / an.fftSize;
         micBtn.disabled = true; micBtn.textContent = "Płyta słucha";
         setInterval(() => { an.getFloatFrequencyData(spec); res = detectDuet(spec, binHz); }, 120);
       } catch { toast("Bez mikrofonu płyta nie usłyszy ani jednego głosu."); }
     });
     soloBtn.addEventListener("click", () => {
-      ac = ac ?? new AudioContext(); if (ac.state === "suspended") ac.resume();
+      ac = ac ?? newAC(); if (ac.state === "suspended") ac.resume();
       if (osc) { osc.stop(); osc = null; soloBtn.textContent = "Jestem sam: zanuć za mnie"; return; }
       // telefon nuci 294 Hz (D) z głośnika; ty nucisz 196 Hz (G) niżej. Mikrofon słyszy oba.
       osc = ac.createOscillator(); osc.type = "triangle"; osc.frequency.value = 294; const g = ac.createGain(); g.gain.value = 0.25; osc.connect(g).connect(ac.destination); osc.start();
@@ -694,14 +700,14 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       }
       status.textContent = hz ? `${hz.toFixed(1)} Hz · ${c > 0.9 ? "siedem ramion" : c > 0.5 ? "blisko" : "piasek nie słucha"}` : "cisza";
       if (c > 0.9 && !finished) { hold++; if (hold > 25) { finished = true; reveal(verdict, `${it.title}: ton znaleziony.`); } } else hold = 0;
-      requestAnimationFrame(draw);
+      if (alive) requestAnimationFrame(draw);
     }
     draw();
     slider.addEventListener("input", () => { hz = Number(slider.value); });
     micBtn.addEventListener("click", async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const ac = new AudioContext(); const src = ac.createMediaStreamSource(stream); const an = ac.createAnalyser(); an.fftSize = 4096; src.connect(an);
+        const stream = await grabMedia({ audio: true });
+        const ac = newAC(); const src = ac.createMediaStreamSource(stream); const an = ac.createAnalyser(); an.fftSize = 4096; src.connect(an);
         const buf = new Float32Array(new ArrayBuffer(an.fftSize * 4));
         const smooth = new PitchSmoother(7);
         micBtn.disabled = true; micBtn.textContent = "Mikrofon słucha";

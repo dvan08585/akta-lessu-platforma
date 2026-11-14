@@ -3,6 +3,7 @@ import { startLess } from "./ui/less";
 import { viewIntro, viewMap, viewGate, viewNotebook, viewAkta, viewBody, viewInbox, viewOnboarding } from "./ui/views";
 import { viewInterlude } from "./ui/interludes";
 import { installAnalytics } from "./engine/track";
+import { leaveView } from "./ui/dom";
 
 const app = new App();
 installAnalytics(app.cfg.analyticsDomain);
@@ -13,6 +14,7 @@ function route() {
   const hash = location.hash || "#/";
   const m = /^#\/brama\/(\d+)/.exec(hash);
   const mi = /^#\/miedzy\/([a-z0-9-]+)/.exec(hash);
+  leaveView(); // zgaś kamerę, mikrofon, czujniki i pętle poprzedniego widoku
   let view: HTMLElement;
   if (m) view = viewGate(app, Number(m[1]));
   else if (mi) view = viewInterlude(app, mi[1]);

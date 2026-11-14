@@ -9,7 +9,8 @@
       "Miasto pod kołami warkocze inaczej niż Warszawa. Kamień. Mokry. Pod kamieniem coś, co nie jest kamieniem.",
       "Nos przy szparze okna. Jabłka, które leżą za długo. Rzeka. I to trzecie, od dołu, którego ona jeszcze nie czuje."
     ],
-    "level": "wejście"
+    "level": "wejście",
+    "place": "apokryf"
   },
   {
     "id": "wanda",
@@ -44,7 +45,8 @@
     "reveal": "Szklanki w kredensie. Powiedziała, że nie dzwonią, i powiedziała, od czego dzwonią, w jednym zdaniu. Pani Wanda słyszy. Od lat. Dlatego otwiera drzwi, zanim ktoś zapuka: nie śpi.",
     "wrong": "Pani Wanda patrzy na ciebie dłużej, niż trzeba. „To była prawda, proszę pana.”",
     "level": "wejście",
-    "cue": "Masz pięć pytań. Jedna z jej odpowiedzi jest kłamstwem. Które?"
+    "cue": "Masz pięć pytań. Jedna z jej odpowiedzi jest kłamstwem. Które?",
+    "place": "rozmowa"
   },
   {
     "id": "amor-2",
@@ -56,15 +58,16 @@
       "Pod kostką coś niskiego. Nie dźwięk. Ciśnienie. Jak przed burzą, tylko od dołu.",
       "Siada przy jej nodze. Ucho prawe w dół. Ona tego nie słyszy. Jeszcze. Czeka, aż usłyszy."
     ],
-    "level": "wejście"
+    "level": "wejście",
+    "place": "apokryf"
   },
   {
-    "id": "lutowicz",
+    "id": "jaromin",
     "type": "talk",
     "after": 2,
-    "title": "Rozmowa: Łutowicz",
-    "intro": "Pracownia jubilerska na Opatowskiej. Lupa na czole, lampa nisko. Łutowicz nie podaje ręki: ma ją zajętą. Kciuk pociera opuszkę palca, raz za razem, jakby sprawdzał powierzchnię, której nie ma.",
-    "person": "Łutowicz",
+    "title": "Rozmowa: Jaromin",
+    "intro": "Pracownia jubilerska na Opatowskiej. Lupa na czole, lampa nisko. Jaromin nie podaje ręki: ma ją zajętą. Kciuk pociera opuszkę palca, raz za razem, jakby sprawdzał powierzchnię, której nie ma.",
+    "person": "Jaromin",
     "questions": [
       {
         "q": "Oprawia pan krzemień pasiasty?",
@@ -88,10 +91,11 @@
       }
     ],
     "lie": 1,
-    "reveal": "Profesor dzwonił do niego trzy razy w ostatnim tygodniu życia. Jest to w rejestrze połączeń, o którym Łutowicz nie wie, że istnieje. Kłamie, bo profesor zostawił u niego coś pod ladą i kazał to komuś oddać. Jeszcze nie wie komu.",
-    "wrong": "Łutowicz podnosi lupę na czoło. „To akurat prawda. Zapytaj o coś innego.”",
+    "reveal": "Profesor dzwonił do niego trzy razy w ostatnim tygodniu życia. Jest to w rejestrze połączeń, o którym Jaromin nie wie, że istnieje. Kłamie, bo profesor zostawił u niego coś pod ladą i kazał to komuś oddać. Jeszcze nie wie komu.",
+    "wrong": "Jaromin podnosi lupę na czoło. „To akurat prawda. Zapytaj o coś innego.”",
     "level": "średnio",
-    "cue": "Pięć pytań. Jedna odpowiedź jest kłamstwem."
+    "cue": "Pięć pytań. Jedna odpowiedź jest kłamstwem.",
+    "place": "rozmowa"
   },
   {
     "id": "plyta",
@@ -103,7 +107,8 @@
     "reveal": "Siedem ramion. G, ton główny dzwonu Piotra. Anzelm kiwa głową. „Pięćset milionów lat kwarcu pod lessem. Ludzie budują nad tym katedry i nazywają to wiarą. To fizyka.” A potem, ciszej: „Ton dolny też jest. Tego nie zanucisz. Tego się nie nuci. To się nosi.”",
     "gate": 3,
     "level": "średnio",
-    "cue": "Nuć do telefonu, aż piasek ułoży się w siedem ramion. Bez mikrofonu: suwak."
+    "cue": "Nuć do telefonu, aż piasek ułoży się w siedem ramion. Bez mikrofonu: suwak.",
+    "place": "brama"
   },
   {
     "id": "amor-3",
@@ -115,7 +120,8 @@
       "Ona stoi przed obrazem i nie szuka. Amor widzi, jak jej oczy szukają same.",
       "Kładzie się na ciepłym kamieniu. Kościelny mówi, że nie wolno. Amor nie zna tego słowa."
     ],
-    "level": "wejście"
+    "level": "wejście",
+    "place": "apokryf"
   },
   {
     "id": "anzelm",
@@ -150,7 +156,8 @@
     "reveal": "Buty. Pod habitem Anzelm ma buty z lessem w szwach, suchym, jasnym, takim, który nie wchodzi w skórę na powierzchni. Był na dole. Może nie raz. Reguła zabrania, a on pamięta za dobrze jak na kogoś, kto tylko słuchał.",
     "wrong": "Anzelm dolewa herbaty. „Prawda. Chociaż rozumiem, czemu pan pyta.”",
     "level": "średnio",
-    "cue": "Pięć pytań. Jedna odpowiedź jest kłamstwem."
+    "cue": "Pięć pytań. Jedna odpowiedź jest kłamstwem.",
+    "place": "rozmowa"
   },
   {
     "id": "amor-4",
@@ -162,7 +169,8 @@
       "Warczy. Nie planował. Warknięcie wyszło z miejsca, z którego wychodzą rzeczy, o które się nie pyta.",
       "Człowiek ze spinkami uśmiecha się. Do psa. Amor warczy drugi raz."
     ],
-    "level": "wejście"
+    "level": "wejście",
+    "place": "apokryf"
   },
   {
     "id": "amor-5",
@@ -174,7 +182,8 @@
       "Dziś stoi. Łapy na bruku, cztery, równo. Uszy do tyłu. Nie strach. Strach ma inny zapach.",
       "Ona kuca. Ręka za uchem, tam, gdzie sierść najgęstsza. „Zostań.” Zostaje. Patrzy w schody, po których znika."
     ],
-    "level": "wejście"
+    "level": "wejście",
+    "place": "apokryf"
   },
   {
     "id": "berbec",
@@ -209,7 +218,8 @@
     "reveal": "Pismo na karteczce jest drobne, prostokątne, wyrównane do krawędzi planu z dokładnością do milimetra. Nikt inny w tym mieście nie prostuje tak krawędzi. „Nie tędy” napisał Berbeć. Kłamie, bo powiedzieć, że wie, znaczyłoby powiedzieć, co jest za murem.",
     "wrong": "Berbeć prostuje krawędź. „To prawda. Pan pyta dalej.”",
     "level": "średnio",
-    "cue": "Pięć pytań. Jedna odpowiedź jest kłamstwem."
+    "cue": "Pięć pytań. Jedna odpowiedź jest kłamstwem.",
+    "place": "rozmowa"
   },
   {
     "id": "amor-6",
@@ -221,7 +231,8 @@
       "Skarpa. Pod skarpą coś, co oddycha wolniej niż wczoraj. Wolniej. Wolniej.",
       "Drapie. Łapami, mokrymi, w białą ścianę. Dziecko woła: piesek, chodź. Nie idzie."
     ],
-    "level": "wejście"
+    "level": "wejście",
+    "place": "apokryf"
   },
   {
     "id": "zielinski",
@@ -256,7 +267,8 @@
     "reveal": "„Nie widzę w tym problemu.” Widzi. Komisarz wie, kto płaci za koperty, bo faktura przeszła przez jego biurko, i wie, że biegły tego nie wie. Nie kłamie: pyta, czy pan widzi. Przemilcza, bo bez Fundacji nie ma archiwum, a bez archiwum nie ma akt. Zieliński gra na dwie strony i obie o tym wiedzą oprócz pana.",
     "wrong": "Zieliński obraca filiżankę. „To była prawda. Ja nie kłamię, proszę pana. Ja wybieram, co mówię.”",
     "level": "dla wytrwałych",
-    "cue": "Pięć pytań. Komisarz nie kłamie. Ale jedna odpowiedź jest nieprawdą, bo komisarz przemilcza."
+    "cue": "Pięć pytań. Komisarz nie kłamie. Ale jedna odpowiedź jest nieprawdą, bo komisarz przemilcza.",
+    "place": "rozmowa"
   },
   {
     "id": "ton-dolny",
@@ -275,7 +287,8 @@
     "answer": 1,
     "reveal": "Cztery na sekundę słychać wyraźnie. Osiem jeszcze. Osiemnaście to już tylko drżenie na granicy, i właśnie tam mieszka dron pod Sandomierzem: nie w dźwięku, w drżeniu. Żadne z uszu nie słyszy różnicy. Powstaje dopiero w tobie, między nimi. Wyjmij jedną słuchawkę i jej nie ma. Aneta nie słyszała drona uszami. Słyszała go tym, czym ty go teraz słyszysz.",
     "level": "średnio",
-    "cue": "Załóż obie słuchawki. Lewe ucho dostanie 250 Hz, prawe trochę więcej: najpierw 4 Hz różnicy, potem 8, potem 18, tyle, ile ma dron pod Rynkiem. W trakcie wyjmij jedną słuchawkę i posłuchaj. Bez słuchawek zobaczysz to, czego nie usłyszysz. Jeśli falowanie nie znika na jednej słuchawce, wyłącz w telefonie „audio mono”."
+    "cue": "Załóż obie słuchawki. Lewe ucho dostanie 250 Hz, prawe trochę więcej: najpierw 4 Hz różnicy, potem 8, potem 18, tyle, ile ma dron pod Rynkiem. W trakcie wyjmij jedną słuchawkę i posłuchaj. Bez słuchawek zobaczysz to, czego nie usłyszysz. Jeśli falowanie nie znika na jednej słuchawce, wyłącz w telefonie „audio mono”.",
+    "place": "apokryf"
   },
   {
     "id": "zimno",
@@ -286,7 +299,8 @@
     "reveal": "Trzydzieści sekund. Ręce zaczęły drżeć wcześniej, niż myślałeś, bo ciało nie umie trzymać ciepła bez ruchu. Ten, kto leży pod lessem, nie ma wyboru. Trzęsie się, dopóki może. Potem przestaje. Marek trzyma. Czeka.",
     "gate": 5,
     "level": "średnio",
-    "cue": "Weź telefon w obie dłonie i trzymaj nieruchomo. Pasek rośnie, dopóki ręce nie drżą."
+    "cue": "Weź telefon w obie dłonie i trzymaj nieruchomo. Pasek rośnie, dopóki ręce nie drżą.",
+    "place": "brama"
   },
   {
     "id": "woda",
@@ -299,7 +313,8 @@
     "reveal": "Sto sekund. Tafla jest gładka i widać dno: spoiny posadzki, przez które przychodzi ciepło. Nic nie zrobiłeś. Oddychałeś wolniej, niż oddychasz zwykle, i to wystarczyło, żeby woda przestała drżeć. Zapamiętaj to tempo. Będzie potrzebne niżej.",
     "gate": 2,
     "level": "wejście",
-    "cue": "Pięć sekund wdech nosem, pięć sekund wydech. Dziesięć razy. Jeśli pozwolisz na mikrofon, tafla usłyszy wydech. Jeśli nie, trzymaj palec na tafli, kiedy wydychasz."
+    "cue": "Pięć sekund wdech nosem, pięć sekund wydech. Dziesięć razy. Jeśli pozwolisz na mikrofon, tafla usłyszy wydech. Jeśli nie, trzymaj palec na tafli, kiedy wydychasz.",
+    "place": "brama"
   },
   {
     "id": "ogien",
@@ -309,7 +324,8 @@
     "reveal": "Pasy krzemienia rozjaśniły się na sekundę. Nie dlatego, że to była krew. Dlatego, że kamień nie odróżnia. Nacisk i czerwień, od milionów lat, pod ziemią, w ciemności. Halina wiedziała tyle samo co ty: że coś się stanie. Nie wiedziała co.",
     "gate": 4,
     "level": "wejście",
-    "cue": "Skieruj kamerę na coś czerwonego: jabłko, szalik, własną dłoń pod światło lampy."
+    "cue": "Skieruj kamerę na coś czerwonego: jabłko, szalik, własną dłoń pod światło lampy.",
+    "place": "brama"
   },
   {
     "id": "ciemnosc",
@@ -319,12 +335,13 @@
     "secret": [
       "Punkt 6. Nie mierzyć. Mierzenie jest tu rodzajem patrzenia, a to, co pod Collegium, reaguje na patrzenie tak, jak less reaguje na wodę: zamyka się.",
       "Mniej wiesz, więcej rozumiesz. Nie pisałem tego dla uczelni. Pisałem dla kogoś, kto przyjedzie i nie będzie chciał wiedzieć, a będzie musiał.",
-      "Kto nosi krzemień, ten jest w sieci. H. nosiła. Jej wnuczka nosi. Nie powiedziałem jej. Nie umiem."
+      "Kto nosi krzemień, ten jest w sieci. H. nosiła. Nie powiedziałem jej. Nie umiem."
     ],
     "reveal": "Kiedy wróciło światło, kartki już nie było. Zapamiętałeś trzy zdania. Tyle wystarczy. Profesor nie pisał dla tych, którzy patrzą. Pisał dla tych, którzy potrafią przestać.",
     "gate": 6,
     "level": "średnio",
-    "cue": "Zakryj kamerę dłonią albo zgaś światło. Litery przyjdą, kiedy będzie ciemno."
+    "cue": "Zakryj kamerę dłonią albo zgaś światło. Litery przyjdą, kiedy będzie ciemno.",
+    "place": "brama"
   },
   {
     "id": "ziemia",
@@ -335,7 +352,8 @@
     "reveal": "Dwadzieścia kroków. Less na butach, nie na cegle. Mur stoi, cegła wysunięta o centymetr jest ciepła, i nic nie zrobiłeś. Ziemia nie wymaga odwagi. Wymaga, żeby nie drgnąć.",
     "gate": 1,
     "level": "średnio",
-    "cue": "Trzymaj telefon płasko, jak tacę z wodą, i idź: dwadzieścia kroków do muru. Przechylisz, less zsunie się na cegłę i wracasz."
+    "cue": "Trzymaj telefon płasko, jak tacę z wodą, i idź: dwadzieścia kroków do muru. Przechylisz, less zsunie się na cegłę i wracasz.",
+    "place": "brama"
   },
   {
     "id": "widmo",
@@ -354,7 +372,8 @@
     ],
     "answer": 0,
     "reveal": "Siedmiobok, zapisany w częstotliwościach między dwoma a ośmioma tysiącami herców, tam, gdzie dzwon już nie sięga. Ktoś, kto to nagrał, wiedział, że ucho tego nie złoży, a oko tak. Synestezja nie jest chorobą. Jest sposobem czytania.",
-    "cue": "Włącz nagranie i patrz na widmo: czas płynie w prawo, wysokość to częstotliwość. Między trzynastą a dziewiętnastą sekundą, wysoko ponad dzwonem, ktoś coś narysował dźwiękiem."
+    "cue": "Włącz nagranie i patrz na widmo: czas płynie w prawo, wysokość to częstotliwość. Między trzynastą a dziewiętnastą sekundą, wysoko ponad dzwonem, ktoś coś narysował dźwiękiem.",
+    "place": "apokryf"
   },
   {
     "id": "kompas",
@@ -364,7 +383,8 @@
     "level": "na miejscu",
     "intro": "Tak chodziła Aneta: kompas geologiczny, notatnik, pies.",
     "reveal": "Zawieszka pulsuje. Stoisz zwrócony w stronę wzgórza, pod którym jest brama. Nie widać jej. Nie słychać. Kamień na szyi wie, a ty wiesz, bo kamień wie. Tak chodziła Aneta: kompas, notatnik, pies, pięć wzgórz, które odpowiadają, i dwa, które milczą.",
-    "cue": "Tylko w Sandomierzu. Stań na Rynku przy studni, trzymaj telefon płasko i obracaj się powoli. Zawieszka grzeje, kiedy celujesz w stronę najbliższej bramy. Współrzędne są przybliżone."
+    "cue": "Tylko w Sandomierzu. Stań na Rynku przy studni, trzymaj telefon płasko i obracaj się powoli. Zawieszka grzeje, kiedy celujesz w stronę najbliższej bramy. Współrzędne są przybliżone.",
+    "place": "apokryf"
   },
   {
     "id": "gwizd",
@@ -374,28 +394,19 @@
     "level": "dla wytrwałych",
     "intro": "Anzelm: „Głos ma za dużo w sobie. Kości rezonują na czysty ton.” Nucenie nie wystarczy.",
     "reveal": "Czysty ton. Bez składowych, bez ciała, sam kształt. Piasek na płycie Anzelma nie układa się w siedmiobok od głosu, bo głos jest zbyt bogaty. Od gwizdu tak. Halina nie umiała gwizdać. Ktoś w jej rodzinie musiał.",
-    "cue": "Gwizdnij do telefonu, równo, przez trzy sekundy. Jeśli nie umiesz: usta jak do „u”, język nisko, powietrze powoli."
+    "cue": "Gwizdnij do telefonu, równo, przez trzy sekundy. Jeśli nie umiesz: usta jak do „u”, język nisko, powietrze powoli.",
+    "place": "laboratorium"
   },
   {
     "id": "siedem-palcow",
     "type": "touch7",
-    "after": 4,
     "title": "Siedem punktów",
     "level": "we dwoje",
-    "intro": "Heptagram ma siedem punktów nacisku. Jedna dłoń ma pięć palców. System odpowiada na parę, nie na jednego.",
-    "reveal": "Siedem punktów pod siedmioma palcami dwóch ludzi. Helena była sama i zamurowała. Halina była sama i została. Ty nie jesteś. To nie jest metafora, to jest liczba palców.",
-    "cue": "Połóż telefon na stole. Potrzebujesz drugiej osoby: siedem palców na siedmiu punktach naraz, przez trzy sekundy."
-  },
-  {
-    "id": "marek-trzyma",
-    "type": "hold",
-    "after": 5,
-    "title": "Marek trzyma",
-    "level": "wejście",
-    "seconds": 90,
-    "intro": "Pod ziemią. Droga zablokowana. Nie można jej wynieść. Można trzymać. Nic się nie wydarzy. To jest cała scena.",
-    "reveal": "Trzymałeś. Nic się nie wydarzyło, i to było wszystko, co dało się zrobić. Amor gdzieś nad wami drapie skarpę. Dzieci na sankach. Ktoś kopie od góry. Ty trzymasz.",
-    "cue": "Połóż palec i nie puszczaj. Dziewięćdziesiąt sekund."
+    "intro": "Anzelm kładzie dłoń na stole, palce rozstawione. „Pięć. Za mało na siedem bram.\" Patrzy na twoją drugą rękę, potem na drzwi.",
+    "reveal": "Pięć palców dwojga ludzi na siedmiu punktach. Dwa zostały puste: to są te, na których milczy zawieszka. Jedna dłoń nie wystarczy. Ty nie jesteś sam. To nie jest metafora, to jest liczba palców.",
+    "cue": "Połóż telefon na stole. Potrzebujesz drugiej osoby: pięć palców dwojga ludzi na pięciu z siedmiu punktów naraz, przez trzy sekundy. Telefon nie zliczy więcej, i o to chodzi: zostają dwa puste punkty.",
+    "gate": 7,
+    "place": "brama"
   },
   {
     "id": "lustro",
@@ -406,7 +417,7 @@
     "intro": "Kartka z notatnika profesora, przepisana w odbiciu. Profesor pisał tak, kiedy nie chciał, żeby ktoś czytał mu przez ramię.",
     "secret": [
       "Siedem punktów. Nie szukać ósmego. Ósmy to mit Florka: Wzgórze Salve Regina, którego nie ma.",
-      "Klasa S, wariant K. S jak struktura. K jak krzemień. Nikomu.",
+      "Klasa S, wariant K. S jak struktura. Nikomu.",
       "Jeśli to czytasz w lustrze, to znaczy, że masz czas. Ja nie mam."
     ],
     "q": "Które wzgórze profesor nazywa mitem?",
@@ -418,28 +429,8 @@
     ],
     "answer": 1,
     "reveal": "Wzgórze Salve Regina: archeolodzy spierali się o nie przez dekady, a Florek w 2003 roku napisał, że to mit. Profesor wiedział. Ósmego punktu nie ma. Siedem wystarczy.",
-    "cue": "Podejdź do lustra. Albo włącz aparat z przodu i patrz na ekran w jego odbiciu."
-  },
-  {
-    "id": "korytarz",
-    "type": "trace",
-    "after": 6,
-    "title": "Nie podnoś palca",
-    "level": "dla wytrwałych",
-    "intro": "Korytarz z Opatowskiej na południe. Trzy rozgałęzienia. Powietrze rzednie z każdym metrem.",
-    "reveal": "Opatowska, pod Wzgórzem Miejskim, na południe, na zachód. Trzy odnogi, których nie wybrałeś. Ciemność, w której nie puściłeś. To jest ta droga. Reszta jest w książce.",
-    "cue": "Prowadź palcem od wejścia do komnaty, nie odrywając go od ekranu. Puścisz albo skręcisz w złą odnogę, wracasz na Opatowską."
-  },
-  {
-    "id": "kroki",
-    "type": "steps",
-    "after": 6,
-    "title": "Tysiąc dwieście kroków",
-    "level": "dla wytrwałych",
-    "steps": 1200,
-    "intro": "Korytarz z Opatowskiej do komnaty ma około kilometra. Tysiąc dwieście kroków. Ostatnie dwieście idzie się z zatrzymanym oddechem, bo powietrze rzednie.",
-    "reveal": "Tysiąc dwieście. Tyle kroków dzieli piwnicę na Opatowskiej od komnaty pod Wzgórzem Świętopawłowskim. Przeszedłeś to po własnym mieszkaniu, po swoim mieście, i nikt tego nie widział. Aneta szła dwie godziny. Tobie zajęło to tyle, ile zajęło.",
-    "cue": "Nie musisz być w Sandomierzu. Weź telefon do kieszeni albo do ręki i idź: po mieszkaniu, po ulicy, po parku. Licznik pamięta między dniami."
+    "cue": "Podejdź do lustra. Albo włącz aparat z przodu i patrz na ekran w jego odbiciu.",
+    "place": "apokryf"
   },
   {
     "id": "dwa-glosy",
@@ -449,6 +440,7 @@
     "level": "we dwoje",
     "intro": "Anzelm kładzie na płycie drugą garść piasku. „Jeden ton daje jeden wzór. Dwa tony w kwincie dają wzór, którego jeden człowiek nie zrobi.”",
     "reveal": "Dwa głosy, trzy do dwóch. Płyta rozpoznała oba, chociaż mikrofon dostał jeden sygnał. Rozdzieliła je tak, jak Aneta rozdziela warstwy w rdzeniu: po tym, co się powtarza. Helena nuciła sama. Halina nuciła sama. Wy nie.",
-    "cue": "Dwie osoby, jeden telefon między wami. Jedna nuci niżej, druga wyżej, w odległości kwinty: jak dwa pierwsze dźwięki „Wlazł kotek na płotek”. Trzymajcie trzy sekundy. Jeśli jesteś sam, telefon zanuci za drugą osobę."
+    "cue": "Dwie osoby, jeden telefon między wami. Jedna nuci niżej, druga wyżej, w odległości kwinty: jak dwa pierwsze dźwięki „Wlazł kotek na płotek”. Trzymajcie trzy sekundy. Jeśli jesteś sam, telefon zanuci za drugą osobę.",
+    "place": "laboratorium"
   }
 ]

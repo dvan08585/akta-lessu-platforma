@@ -14,7 +14,7 @@ import type { CaseData, Doc } from "../engine/types";
 import { evaluate, heatLabel, recordAttempt, encodeFill, GESTURE_OF } from "../engine/cases";
 import { halfKey, looksLikeHalfKey, verifyCheck, readingToken, parseReading } from "../engine/pair";
 import { shareCard, shareText } from "../engine/share";
-import { codeMatches, unlockDate, placeFromUrl, releaseDate } from "../engine/unlock";
+import { codeMatches, placeFromUrl, releaseDate } from "../engine/unlock";
 import { exportCode, importCode, save, reset } from "../engine/state";
 
 export function pendant(heat: 0 | 1 | 2 | 3 | 4, label?: string, seed = 7): HTMLElement {
@@ -106,29 +106,16 @@ export function viewMap(app: App): HTMLElement {
   sec.append(app.state.sawFooter ? h("h3", {}, "Rejestr statusów — ", h("a", { href: import.meta.env.BASE_URL + "fundacja/", style: "color:var(--blood)" }, "Fundacja Sandomierska Memoria")) : h("h3", {}, "Rejestr statusów"), list);
   sec.append(dailyBox(app));
   if (app.state.solvedCases.length >= 3) { const nb = newsletterBox(app, "Trzy bramy za tobą. Kolejne akta przyjdą w terminie z kalendarza; jeśli zostawisz adres, dostaniesz je pierwszego dnia, razem z dokumentem, którego nie ma na stronie."); if (nb) sec.append(nb); }
-  const inter = interludesFor(app);
-  if (inter.length) {
-    // Grupy po poziomie; Amor zwinięty do jednego wiersza (link do pierwszego nieprzeczytanego); bez ikon; status tylko dla przebytych.
-    const LEVELS = ["wejście", "średnio", "dla wytrwałych", "we dwoje", "na miejscu"];
-    const hint: Record<string, string> = { talk: "rozmowa, jedno kłamstwo", beat: "słuchawki", still: "nieruchomo, 30 sekund", breath: "dziesięć oddechów", fire: "kamera i coś czerwonego", dark: "kamera i ciemność", earth: "telefon płasko, 20 kroków", spectro: "patrz, nie słuchaj", compass: "GPS i kompas", whistle: "czysty ton", touch7: "siedem palców", hold: "90 sekund", mirror: "lustro", trace: "palec bez odrywania", steps: "1200 kroków", duet: "kwinta", plate: "nucenie" };
-    const wrap = h("div", { class: "interludes-group" }, h("h3", {}, "Między sprawami"));
-    const amor = inter.filter((i) => i.type === "amor");
-    const amorDone = amor.filter((i) => app.state.interludesDone.includes(i.id)).length;
-    const nextAmor = amor.find((i) => !app.state.interludesDone.includes(i.id)) ?? amor[amor.length - 1];
-    if (amor.length) wrap.append(h("div", { class: "gates-list" }, h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": amorDone === amor.length ? "solved" : "open", onclick: () => go(`#/miedzy/${nextAmor.id}`) },
-      h("span", { class: "ico" }, icon("amor")), h("span", { class: "t" }, "Amor", h("small", {}, `${amor.length === 1 ? "jedno spotkanie" : amor.length < 5 ? amor.length + " spotkania" : amor.length + " spotkań"} · pies`)), h("span", { class: "s" }, amorDone ? `${amorDone}/${amor.length}` : ""))));
-    for (const lv of LEVELS) {
-      const items = inter.filter((i) => i.type !== "amor" && (i.level ?? "średnio") === lv);
-      if (!items.length) continue;
-      const il = h("div", { class: "gates-list" });
-      for (const i of items) {
-        const done = app.state.interludesDone.includes(i.id);
-        il.append(h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`), onkeydown: (e: Event) => { if ((e as KeyboardEvent).key === "Enter" || (e as KeyboardEvent).key === " ") { e.preventDefault(); go(`#/miedzy/${i.id}`); } } },
-          h("span", { class: "ico" }, icon(i.type)), h("span", { class: "t" }, i.title, h("small", {}, hint[i.type] ?? "")), h("span", { class: "s" }, done ? "przebyte" : "")));
-      }
-      wrap.append(h("p", { class: "faint", style: "margin:0.9rem 0 0.4rem" }, lv), il);
+  // Między sprawami zostają tylko rozmowy. Gesty bram są pod rozwiązaniem bramy; apokryfy w zeszycie; laboratorium poza grą.
+  const talks = interludesFor(app).filter((i) => i.place === "rozmowa");
+  if (talks.length) {
+    const il = h("div", { class: "gates-list" });
+    for (const i of talks) {
+      const done = app.state.interludesDone.includes(i.id);
+      il.append(h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`), onkeydown: (e: Event) => { if ((e as KeyboardEvent).key === "Enter" || (e as KeyboardEvent).key === " ") { e.preventDefault(); go(`#/miedzy/${i.id}`); } } },
+        h("span", { class: "ico" }, icon(i.type)), h("span", { class: "t" }, i.title, h("small", {}, "rozmowa, jedno kłamstwo")), h("span", { class: "s" }, done ? "rozpoznane" : "")));
     }
-    sec.append(wrap);
+    sec.append(h("div", { class: "interludes-group" }, h("h3", {}, "Rozmowy"), il));
   }
   return sec;
 }
@@ -155,14 +142,7 @@ export function viewGate(app: App, n: number): HTMLElement {
   const c = app.caseForGate(n);
   const st = app.gateStatus(n);
   const head = () => h("p", { class: "kicker" }, `Brama ${n} · ${g.name} · żywioł: ${g.element}`);
-  if (st === "silent" && c) {
-    sec.append(head());
-    sec.append(h("h2", {}, "Zawieszka milczy."),
-      h("p", { class: "muted" }, "Na tym wzgórzu twoja zawieszka nie reaguje. Nie dlatego, że nie ma tu bramy. U innego biegłego reaguje. Jego karta udostępnienia ma linię „odczyt” z tokenem zaczynającym się od cyfry tego wzgórza."),
-      readingBox(app, n),
-      back());
-    return sec;
-  }
+  const silentHere = !!c && app.isSilentFor(n);
   if (!c) {
     sec.append(head(), h("h2", {}, g.silent ? "Zawieszka milczy." : "Status: nieznany"),
       h("p", { class: "muted" }, g.silent ? "Na tym wzgórzu zawieszka nie reaguje. Nie dlatego, że nie ma tu bramy." : "Ta sprawa otworzy się później. Mapa jest psychograficzna, nie kartograficzna."),
@@ -177,9 +157,17 @@ export function viewGate(app: App, n: number): HTMLElement {
         ? `Te akta przyjdą ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}. Wcześniej otwiera je tylko kod z rozdziału ${c.requires.chapter}.`
         : `Ta sprawa wymaga rozdziału ${c.requires.chapter}.`;
     sec.append(head(), h("h2", {}, c.title), h("p", { class: "muted" }, need),
-      h("div", { class: "verdict" }, next("Wpisz kod z książki", "#/akta"), back("Mapa")));
+      h("div", { class: "verdict" }, app.now().getTime() >= new Date(app.cfg.premiereDate).getTime() ? next("Wpisz kod z książki", "#/akta") : null, back("Mapa")));
     return sec;
   }
+  if (c.sealed) {
+    const wait = h("p", { class: "muted" }, "Otwieram akta…"); sec.append(head(), h("h2", {}, c.title), wait);
+    app.unsealCase(c.n).then((ok) => { if (ok) { go(`#/brama/${n}`); return; } wait.replaceWith(h("p", { class: "muted" }, `Akta są zapieczętowane. Otwiera je kod z rozdziału ${c.requires.chapter} albo dzień publikacji${c.requires.release && releaseDate(app.cfg, c.requires.release) ? ` (${releaseDate(app.cfg, c.requires.release)!.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })})` : ""}.`), h("div", { class: "verdict" }, next("Wpisz kod z książki", "#/akta"), back("Mapa"))); });
+    return sec;
+  }
+  if (silentHere) sec.append(h("div", { class: "gatebox silent-box" }, h("p", { class: "kicker" }, "Zawieszka milczy"),
+    h("p", { class: "muted" }, "Na tym wzgórzu twoja zawieszka nie reaguje. Dokumenty czytasz i wniosek ustalasz sam. Odczyt z karty innego biegłego dopełnia sprawę: dodaje linię, której nie ma w aktach. Jeśli nikt nie przyjdzie w trzy doby, odczyt przyjdzie z archiwum."),
+    readingBox(app, n)));
   return viewCase(app, c, sec);
 }
 
@@ -392,8 +380,9 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
 
   function renderDecision() {
     const d = c.decision!;
-    const box = h("div", { class: "decision" }, h("p", { class: "quote" }, d.prompt));
-    const open = h("button", { class: "primary" }, d.open);
+    const box = h("div", { class: "decision" }, h("p", { class: "quote" }, d.prompt),
+      h("p", { class: "faint" }, "To nie jest pytanie. To jest decyzja. Brama, którą otworzysz, zostaje w twojej karcie na zawsze, a droga do siódmej będzie wtedy dłuższa."));
+    const open = h("button", {}, d.open);
     const leave = h("button", {}, d.leave);
     open.addEventListener("click", () => {
       if (d.correct === "open") { markSolved(); renderSolution(1); return; }
@@ -443,7 +432,11 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       box.remove(); renderRegister();
     });
     const ask = h("button", { onclick: async () => { const own = await halfKey(app.state.seed); const r = await shareText(`${p.ask}\n${own}\n${app.cfg.share.url}#/brama/${c.gate}`); toast(r === "shared" ? "Wysłano." : r === "copied" ? "Skopiowano prośbę do schowka." : "Nie udało się."); } }, "Poproś kogoś");
-    box.append(h("div", { class: "row" }, input, btn), h("div", { class: "verdict" }, ask));
+    // Druga droga: dwoje ludzi przy jednym stole. Pięć palców dwojga na siedmiu punktach jednego telefonu przez trzy sekundy.
+    const together = app.state.interludesDone.includes("siedem-palcow")
+      ? h("button", { class: "body", onclick: () => { app.addNote(`Brama ${c.gate}: pięć palców dwojga, jeden telefon.`, "para"); box.remove(); renderRegister(); } }, "Oddychaliśmy razem. Pięć palców dwojga →")
+      : h("a", { class: "btn", href: "#/miedzy/siedem-palcow" }, "Albo: druga osoba obok, pięć palców dwojga na jednym telefonie");
+    box.append(h("div", { class: "row" }, input, btn), h("div", { class: "verdict" }, ask, together));
     if (!solvedAlready) sec.append(box);
     sec.append(solutionBox);
   }
@@ -457,7 +450,17 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     const no = h("button", { class: "primary" }, p.no);
     const box = h("div", { class: "pair" }, reg, h("p", { class: "quote" }, p.registerQuestion), h("div", { class: "verdict" }, no, yes));
     yes.addEventListener("click", () => { toast(p.yesRefused); yes.classList.add("shake"); });
-    no.addEventListener("click", () => { app.state.leftSeventhEmpty = true; sendEvent(app.cfg.backendUrl, app.state, { type: "seventh_empty" }); markSolved(); app.addNote("Siódma pozycja: pusta. Zostawiona.", "finał"); box.remove(); renderSolution(1); });
+    no.addEventListener("click", () => {
+      app.state.leftSeventhEmpty = true; sendEvent(app.cfg.backendUrl, app.state, { type: "seventh_empty" }); markSolved(); app.addNote("Siódma pozycja: pusta. Zostawiona.", "finał"); box.remove();
+      // Ciało kończy to, co zaczęło: telefon ekranem w dół na dwadzieścia sekund. Less opada. Dopiero potem ostatnie zdanie.
+      const dark = h("div", { class: "facedown" }, h("p", {}, "Połóż telefon ekranem w dół."), h("p", { class: "faint" }, "Dwadzieścia sekund. Less opada."));
+      sec.insertBefore(dark, solutionBox);
+      let down = 0, iv: number | undefined; let sensor = false;
+      const onOrient = (e: DeviceOrientationEvent) => { sensor = true; const faceDown = e.beta !== null && e.gamma !== null && Math.abs(e.beta) > 150; down = faceDown ? down + 1 : 0; };
+      try { addEventListener("deviceorientation", onOrient); } catch { /* */ }
+      let t = 0;
+      iv = window.setInterval(() => { t += 1; if ((sensor ? down >= 40 : t >= 40)) { clearInterval(iv); removeEventListener("deviceorientation", onOrient); dark.remove(); renderSolution(1); } }, 500);
+    });
     sec.insertBefore(box, solutionBox);
   }
 
@@ -517,6 +520,12 @@ export function viewNotebook(app: App): HTMLElement {
   for (const e of [...app.state.notebook].reverse()) {
     sec.append(h("div", { class: "entry" }, h("div", { class: "meta" }, `${new Date(e.at).toLocaleString("pl-PL")} · ${e.meta}`), h("div", {}, e.text)));
   }
+  const apo = interludesFor(app).filter((i) => i.place === "apokryf");
+  if (apo.length) {
+    const il = h("div", { class: "gates-list" });
+    for (const i of apo) { const done = app.state.interludesDone.includes(i.id); il.append(h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) }, h("span", { class: "ico" }, icon(i.type)), h("span", { class: "t" }, i.title), h("span", { class: "s" }, done ? "przeczytane" : ""))); }
+    sec.append(h("h3", {}, "Apokryfy"), h("p", { class: "muted" }, "Kartki, których nie ma w aktach. Przychodzą z bramami."), il);
+  }
   const code = exportCode(app.state);
   const pre = h("pre", { class: "mono", style: "white-space:pre-wrap;word-break:break-all;display:none" }, code);
   const inp2 = h("input", { type: "text", placeholder: "KOD", "aria-label": "Kod wznowienia", style: "text-transform:none;letter-spacing:0" }) as HTMLInputElement;
@@ -549,6 +558,7 @@ export function viewAkta(app: App): HTMLElement {
     if (hit === null) { toast("Zawieszka zimna. To nie ten kod."); return; }
     if (!app.state.unlockedChapters.includes(hit)) { app.state.unlockedChapters.push(hit); app.state.chapterCursor = Math.max(app.state.chapterCursor, hit); save(app.state); }
     app.addNote(`Otwarto ${hit === 0 ? "Prolog" : "rozdział " + hit} kodem z książki.`, "klucz: kod"); track("code", { chapter: hit });
+    for (const sc of app.cases.filter((x) => x.sealed && x.requires.chapter === hit)) await app.unsealCase(sc.n, val);
     // Co ten kod realnie zmienia: która sprawa i co ją jeszcze blokuje.
     const c = app.cases.find((x) => x.requires.chapter === hit);
     let msg = `Otwarto: ${hit === 0 ? "Prolog" : "R." + hit}.`;
@@ -563,13 +573,11 @@ export function viewAkta(app: App): HTMLElement {
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") btn.click(); });
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz pierwszy: kod z książki"), h("p", { class: "muted" }, "Każdy rozdział kończy się siedmiobokiem i jednym słowem. Wpisz je tutaj."), h("div", { class: "row" }, input, btn)));
 
-  // Klucz 2: czas
-  const next = app.nextLocked();
+  // Klucz 2: czas. Jeden kalendarz: sprawy jako odcinki. Rozdziały otwierają się kodem albo razem ze sprawą.
   const box2 = h("div", { class: "gatebox" }, h("h3", {}, "Klucz drugi: czas"));
-  if (next) {
-    const d = unlockDate(app.cfg, next.n);
-    box2.append(h("p", { class: "muted" }, d ? `${next.n === 0 ? "Prolog" : "Rozdział " + next.n} otworzy się sam: ${d.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}.` : `Rozdział ${next.n} nie otwiera się czasem. Tylko kodem.`));
-  } else box2.append(h("p", { class: "muted" }, "Wszystko, co można otworzyć czasem, jest otwarte."));
+  const upcoming = app.cases.filter((c) => c.requires.release && !app.state.solvedCases.includes(c.n)).map((c) => ({ c, d: releaseDate(app.cfg, c.requires.release!) })).filter((x) => x.d && x.d.getTime() > app.now().getTime()).sort((a, b) => a.d!.getTime() - b.d!.getTime());
+  if (upcoming.length) box2.append(h("p", { class: "muted" }, `Najbliższe akta: sprawa „${upcoming[0].c.title}”, ${upcoming[0].d!.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}. Potem co tydzień.`));
+  else box2.append(h("p", { class: "muted" }, "Wszystko, co można otworzyć czasem, jest otwarte."));
   sec.append(box2);
 
   // Klucz 3: miejsce

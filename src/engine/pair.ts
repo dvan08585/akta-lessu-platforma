@@ -15,11 +15,14 @@ export async function verifyCheck(token: string): Promise<boolean> {
   return (await withCheck(body)) === t;
 }
 
-/** Połowa klucza (sprawa 7): 5 znaków z ziarna + 2 kontrolne = 7. */
+/**
+ * Połowa klucza (sprawa 7): „k" + 4 znaki z ziarna + 2 kontrolne = 7. Prefiks „k" odróżnia ją od odczytu wzgórza (cyfra 1–7),
+ * więc własny odczyt z karty NIE otwiera finału. Bez serwera to nadal zamek na pamiętnik: pełną obietnicę daje dopiero wydanie przez Worker.
+ */
 export async function halfKey(seed: string): Promise<string> {
-  return withCheck((await sha("akta-lessu:pair:" + seed)).slice(0, 5));
+  return withCheck("k" + (await sha("akta-lessu:pair:" + seed)).slice(0, 4));
 }
-export function looksLikeHalfKey(v: string): boolean { return /^[0-9a-f]{7}$/i.test(v.trim()); }
+export function looksLikeHalfKey(v: string): boolean { return /^k[0-9a-f]{6}$/i.test(v.trim()); }
 
 /** Mapa 5/7: dwa wzgórza, na których zawieszka TEGO gracza milczy. Deterministyczne z ziarna. Nigdy 4 (pierwsza sprawa) ani 7 (finał). */
 export async function silentHills(seed: string): Promise<[number, number]> {

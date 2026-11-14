@@ -34,20 +34,31 @@ export function reset(): void {
 }
 
 /** Kod wznowienia: base64url z JSON (bez serwera). */
+/** Suma kontrolna FNV-1a (4 hex). Nie kryptografia: wykrywa literówkę w przepisanym kodzie. */
+function fnv(str: string): string { let h = 0x811c9dc5; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return (h >>> 0).toString(16).padStart(8, "0").slice(0, 4); }
+/** Kod wznowienia: cały postęp, który ma znaczenie na nowym telefonie (sprawy, gesty, miejsca, listy, mikro-akta, decyzje). */
 export function exportCode(s: SaveState): string {
-  const slim = { u: s.unlockedChapters, s: s.solvedCases, c: s.chapterCursor, d: s.streak.days, l: s.streak.last, x: s.unstableGates, e: s.seed, m: s.month, r: s.readings, f: s.sawFooter };
+  const slim = { v: 2, u: s.unlockedChapters, s: s.solvedCases, c: s.chapterCursor, x: s.unstableGates, e: s.seed, m: s.month, r: s.readings, f: s.sawFooter,
+    i: s.interludesDone, p: s.placeVisits, o: s.onboarded ? 1 : 0, n: s.leftSeventhEmpty ? 1 : 0, y: s.daily,
+    b: { s: Object.fromEntries(Object.entries(s.inbox?.scheduled ?? {}).map(([k, v]) => [k, Math.round(v / 60000)])), r: s.inbox?.read ?? [], a: s.inbox?.replies ?? {} } };
   const json = JSON.stringify(slim);
-  return btoa(unescape(encodeURIComponent(json))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  const body = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  return body + "." + fnv(body);
 }
 export function importCode(code: string): SaveState | null {
   try {
-    const b64 = code.trim().replace(/-/g, "+").replace(/_/g, "/");
+    const raw = code.trim();
+    const [body, chk] = raw.includes(".") ? raw.split(".") : [raw, null];
+    if (chk !== null && fnv(body) !== chk) return null;
+    const b64 = body.replace(/-/g, "+").replace(/_/g, "/");
     const json = decodeURIComponent(escape(atob(b64 + "===".slice((b64.length + 3) % 4))));
-    const slim = JSON.parse(json) as { u: number[]; s: number[]; c: number; d: number; l: string; x?: number[]; e?: string; m?: number; r?: Record<string, string>; f?: boolean };
+    const slim = JSON.parse(json) as { u: number[]; s: number[]; c: number; x?: number[]; e?: string; m?: number; r?: Record<string, string>; f?: boolean;
+      i?: string[]; p?: string[]; o?: number; n?: number; y?: Record<string, boolean>; b?: { s: Record<string, number>; r: string[]; a: Record<string, number> } };
     const s = emptyState();
     s.unlockedChapters = slim.u ?? []; s.solvedCases = slim.s ?? []; s.chapterCursor = slim.c ?? 0;
     s.unstableGates = slim.x ?? []; if (slim.e) s.seed = slim.e; s.month = slim.m ?? 0; s.readings = slim.r ?? {}; s.sawFooter = slim.f ?? false;
-    s.streak = { days: slim.d ?? 0, last: slim.l ?? "", freezeUsed: "" };
+    s.interludesDone = slim.i ?? []; s.placeVisits = slim.p ?? []; s.onboarded = !!slim.o; s.leftSeventhEmpty = !!slim.n; s.daily = slim.y ?? {};
+    if (slim.b) s.inbox = { scheduled: Object.fromEntries(Object.entries(slim.b.s ?? {}).map(([k, v]) => [k, v * 60000])), read: slim.b.r ?? [], replies: slim.b.a ?? {} };
     return s;
   } catch { return null; }
 }

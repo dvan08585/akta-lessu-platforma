@@ -3,3 +3,5 @@ dist
 .DS_Store
 *.local
 codes.local.json
+content-prywatne/
+public/live/klucze.dev.json
