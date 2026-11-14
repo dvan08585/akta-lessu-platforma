@@ -1,12 +1,12 @@
-// Eksport wszystkich tekstów gry do jednego pliku Markdown do redakcji: docs/TEKSTY_DO_REDAKCJI.md
-// Użycie: node scripts/export-texts.mjs        (import z powrotem: node scripts/import-texts.mjs docs/TEKSTY_DO_REDAKCJI.md)
+// Eksport wszystkich tekstów gry do jednego pliku Markdown do redakcji: content-prywatne/docs/TEKSTY_DO_REDAKCJI.md
+// Użycie: node scripts/export-texts.mjs        (import z powrotem: node scripts/import-texts.mjs content-prywatne/docs/TEKSTY_DO_REDAKCJI.md)
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 // Sprawy zapieczętowane: jawna treść leży w content-prywatne/cases (poza gitem), w src/content/cases tylko nagłówek.
 const casePath = (f) => (existsSync("content-prywatne/cases/" + f) ? "content-prywatne/cases/" + f : "src/content/cases/" + f);
 const out = [];
 const H = (t) => out.push("\n## " + t + "\n");
 const F = (ref, text) => out.push(`<!-- ${ref} -->\n${text}\n`);
-out.push("# AKTA LESSU — TEKSTY DO REDAKCJI\n\nKażdy fragment ma nad sobą komentarz z adresem pola. Zmieniaj tylko tekst pod komentarzem, nie komentarz. Potem: `node scripts/import-texts.mjs docs/TEKSTY_DO_REDAKCJI.md`.\n");
+out.push("# AKTA LESSU — TEKSTY DO REDAKCJI\n\nKażdy fragment ma nad sobą komentarz z adresem pola. Zmieniaj tylko tekst pod komentarzem, nie komentarz. Potem: `node scripts/import-texts.mjs content-prywatne/docs/TEKSTY_DO_REDAKCJI.md`.\n");
 for (const f of readdirSync("src/content/cases").sort()) {
   const c = JSON.parse(readFileSync(casePath(f), "utf8"));
   H(`SPRAWA ${c.n}: ${c.title} (${f})`);
@@ -32,5 +32,5 @@ mk.forEach((m, i) => { F(`mikroakta[${i}].title`, m.title); F(`mikroakta[${i}].d
 const rw = JSON.parse(readFileSync("src/content/rewards.json", "utf8"));
 H("NAGRODY (rewards.json)");
 for (const [k, r] of Object.entries(rw)) { F(`rewards.${k}.title`, r.title); F(`rewards.${k}.note`, r.note); r.paragraphs.forEach((p, j) => F(`rewards.${k}.paragraphs[${j}]`, p)); }
-writeFileSync("docs/TEKSTY_DO_REDAKCJI.md", out.join("\n"));
-console.log("Zapisano docs/TEKSTY_DO_REDAKCJI.md:", out.length, "fragmentów");
+writeFileSync("content-prywatne/docs/TEKSTY_DO_REDAKCJI.md", out.join("\n"));
+console.log("Zapisano content-prywatne/docs/TEKSTY_DO_REDAKCJI.md:", out.length, "fragmentów");

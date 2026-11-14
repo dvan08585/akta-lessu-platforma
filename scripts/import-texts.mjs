@@ -1,6 +1,6 @@
-// Import zredagowanych tekstów z docs/TEKSTY_DO_REDAKCJI.md z powrotem do JSON.
+// Import zredagowanych tekstów z content-prywatne/docs/TEKSTY_DO_REDAKCJI.md z powrotem do JSON.
 import { readFileSync, writeFileSync } from "node:fs";
-const file = process.argv[2] || "docs/TEKSTY_DO_REDAKCJI.md";
+const file = process.argv[2] || "content-prywatne/docs/TEKSTY_DO_REDAKCJI.md";
 const md = readFileSync(file, "utf8");
 const re = /<!-- (.+?) -->\n([\s\S]*?)(?=\n<!-- |\n## |\n*$)/g;
 const files = {};
