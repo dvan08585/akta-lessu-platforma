@@ -108,7 +108,15 @@
     "gate": 3,
     "level": "średnio",
     "cue": "Nuć do telefonu, aż piasek ułoży się w siedem ramion. Bez mikrofonu: suwak.",
-    "place": "brama"
+    "place": "brama",
+    "rite": {
+      "opening": "Anzelm nie tłumaczy. Pokazuje. „Znajdź ton.”",
+      "word": "Piotr",
+      "minutes": 1,
+      "rigid": "Jeden ton, trzymany osiem sekund. Nie wysokość, stałość. Piasek nie słucha głosu, który się waha.",
+      "body": "głos i mikrofon, albo suwak i osiem sekund bez ruchu",
+      "closing": "Zapisano: siedem ramion w piasku. G, ton Piotra. Sandomierz stoi na rezonatorze, a ja na Sandomierzu."
+    }
   },
   {
     "id": "amor-3",
@@ -300,21 +308,37 @@
     "gate": 5,
     "level": "średnio",
     "cue": "Weź telefon w obie dłonie i trzymaj nieruchomo. Pasek rośnie, dopóki ręce nie drżą.",
-    "place": "brama"
+    "place": "brama",
+    "rite": {
+      "opening": "Przy trzydziestu trzech stopniach drżenie jest silne. Przy trzydziestu jeden ustaje.",
+      "word": "Helena",
+      "minutes": 1,
+      "rigid": "Trzydzieści sekund bez ruchu, mierzone twoimi dłońmi, nie cudzymi. Pierwsze pięć sekund telefon uczy się twojego drżenia. Po dwóch drgnięciach robi się łagodniejszy.",
+      "body": "telefon w obu dłoniach, albo na stole z dłonią na nim",
+      "closing": "Zapisano: trzydzieści sekund. Ręce zaczęły drżeć wcześniej, niż myślałam. Helena leżała pod lessem dłużej."
+    }
   },
   {
     "id": "woda",
     "type": "breath",
     "title": "Woda",
     "intro": "Krypta pod katedrą. Czterdzieści dwa centymetry wody, cieplejszej, niż powinna. Tafla drży, bo ty drżysz. Anzelm: „Oddychaj tak, jak oddycha woda, kiedy nikt jej nie rusza.”",
-    "cycles": 10,
+    "cycles": 7,
     "inhale": 5,
     "exhale": 5,
     "reveal": "Sto sekund. Tafla jest gładka i widać dno: spoiny posadzki, przez które przychodzi ciepło. Nic nie zrobiłeś. Oddychałeś wolniej, niż oddychasz zwykle, i to wystarczyło, żeby woda przestała drżeć. Zapamiętaj to tempo. Będzie potrzebne niżej.",
     "gate": 2,
     "level": "wejście",
     "cue": "Pięć sekund wdech nosem, pięć sekund wydech. Dziesięć razy. Jeśli pozwolisz na mikrofon, tafla usłyszy wydech. Jeśli nie, trzymaj palec na tafli, kiedy wydychasz.",
-    "place": "brama"
+    "place": "brama",
+    "rite": {
+      "opening": "Oddychaj tak, jak oddycha woda, kiedy nikt jej nie rusza.",
+      "word": "listopad",
+      "minutes": 2,
+      "rigid": "Siedem oddechów po dziesięć sekund, potem siedem sekund ciszy. Liczy się liczba, nie czas. Tafla musi być gładka na końcu.",
+      "body": "oddech do mikrofonu, albo palec na tafli przy każdym wydechu",
+      "closing": "Zapisano: siedem oddechów i widać dno. Spoiny pod listopadem. Nic nie zrobiłam. Oddychałam wolniej."
+    }
   },
   {
     "id": "ogien",
@@ -325,7 +349,15 @@
     "gate": 4,
     "level": "wejście",
     "cue": "Skieruj kamerę na coś czerwonego: jabłko, szalik, własną dłoń pod światło lampy.",
-    "place": "brama"
+    "place": "brama",
+    "rite": {
+      "opening": "Halina natarła kamień krwią. Nie musi być twoja.",
+      "word": "Halina",
+      "minutes": 1,
+      "rigid": "Czerwień przed kamieniem przez siedem sekund bez przerwy. Odwrócisz kamerę, liczymy od nowa.",
+      "body": "kamera, albo wybór koloru i siedem sekund trzymania",
+      "closing": "Zapisano: kamień rozjaśnił się na sekundę. Nie odróżnia krwi od jabłka. Halina wiedziała tyle samo co ja."
+    }
   },
   {
     "id": "ciemnosc",
@@ -341,19 +373,35 @@
     "gate": 6,
     "level": "średnio",
     "cue": "Zakryj kamerę dłonią albo zgaś światło. Litery przyjdą, kiedy będzie ciemno.",
-    "place": "brama"
+    "place": "brama",
+    "rite": {
+      "opening": "Kartka, której nie było w aktach, czyta się tylko wtedy, kiedy nie widzisz nic innego.",
+      "word": "punkt szósty",
+      "minutes": 1,
+      "rigid": "Minuta ciemności bez przerwy. Światło cofa litery.",
+      "body": "kamera zakryta dłonią albo zgaszone światło; bez kamery: oczy zamknięte i trzymany przycisk",
+      "closing": "Zapisano: trzy zdania w ciemności. Kiedy wróciło światło, kartki nie było. Punkt szósty nie reaguje na patrzenie."
+    }
   },
   {
     "id": "ziemia",
     "type": "earth",
     "title": "Ziemia",
     "intro": "Korytarz pod Żmigrodem. Less sypie się z łuku przy każdym kroku. Nie tędy, mówił Berbeć. Tędy, ale równo.",
-    "steps": 20,
+    "steps": 777,
     "reveal": "Dwadzieścia kroków. Less na butach, nie na cegle. Mur stoi, cegła wysunięta o centymetr jest ciepła, i nic nie zrobiłeś. Ziemia nie wymaga odwagi. Wymaga, żeby nie drgnąć.",
     "gate": 1,
     "level": "średnio",
     "cue": "Trzymaj telefon płasko, jak tacę z wodą, i idź: dwadzieścia kroków do muru. Przechylisz, less zsunie się na cegłę i wracasz.",
-    "place": "brama"
+    "place": "brama",
+    "rite": {
+      "opening": "Nie tędy, mówił Berbeć. Tędy, ale równo.",
+      "word": "nie tędy",
+      "minutes": 8,
+      "rigid": "Siedemset siedemdziesiąt siedem kroków z telefonem płasko, jak z tacą wody. Przechylisz, less zsuwa się na cegłę i wracasz. To jest najdłuższy obrzęd, bo ziemia nie wymaga odwagi, wymaga czasu.",
+      "body": "wyjście z domu, telefon w ręce, ekran włączony; bez żyroskopu: trzymany przycisk",
+      "closing": "Zapisano: siedemset siedemdziesiąt siedem kroków. Less na butach, nie na cegle. Mur stoi. Nie tędy."
+    }
   },
   {
     "id": "widmo",
@@ -406,7 +454,15 @@
     "reveal": "Pięć palców dwojga ludzi na siedmiu punktach. Dwa zostały puste: to są te, na których milczy zawieszka. Jedna dłoń nie wystarczy. Ty nie jesteś sam. To nie jest metafora, to jest liczba palców.",
     "cue": "Połóż telefon na stole. Potrzebujesz drugiej osoby: pięć palców dwojga ludzi na pięciu z siedmiu punktów naraz, przez trzy sekundy. Telefon nie zliczy więcej, i o to chodzi: zostają dwa puste punkty.",
     "gate": 7,
-    "place": "brama"
+    "place": "brama",
+    "rite": {
+      "opening": "„Pięć. Za mało na siedem bram.”",
+      "word": "pięć",
+      "minutes": 1,
+      "rigid": "Pięć palców dwojga ludzi na pięciu z siedmiu punktów naraz, trzy sekundy. Telefon nie zliczy więcej, i o to chodzi.",
+      "body": "druga osoba obok; bez niej: rozmowa z kimś przez siedem minut, a potem jedna dłoń",
+      "closing": "Zapisano: pięć palców, dwoje ludzi, dwa puste punkty. Jedna dłoń nie wystarczy. Nie jestem sama."
+    }
   },
   {
     "id": "lustro",

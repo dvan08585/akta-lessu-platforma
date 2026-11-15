@@ -50,6 +50,8 @@ export interface CaseData {
   sealed?: boolean;
   docs: Doc[]; questions: Question[];
   solution: string[]; reward?: { kind: "text"; title: string; file: string };
+  /** Rozwiązanie jako nowy dokument (głos źródła, nie autora): tytuł, pochodzenie, styl. */
+  solutionDoc?: { title: string; source: string; style?: string };
   decision?: { prompt: string; open: string; leave: string; buried: string[]; correct: "open" | "leave" };
   pair?: { prompt: string; promptUnstable: string; ask: string; refuse: string; register: string; registerQuestion: string; yes: string; no: string; yesRefused: string; finale: string[] };
 }

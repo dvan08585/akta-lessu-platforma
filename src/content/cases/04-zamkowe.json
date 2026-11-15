@@ -4,7 +4,7 @@
   "gate": 5,
   "title": "Partner wydarzenia",
   "subtitle": "Wzgórze Zamkowe · żywioł: zimno · akty, faktury, gala",
-  "epigraph": "Przeczytaj stopkę. Każdą stopkę. Od pierwszej sprawy.",
+  "epigraph": "Zarząd dziękuje biegłym za dotychczasowe wnioski. Rejestr jest uzupełniany na bieżąco.",
   "requires": {
     "solvedCases": 3,
     "chapter": 13,
@@ -59,144 +59,60 @@
   ],
   "questions": [
     {
-      "id": "q1",
-      "text": "Kamienicę na Opatowskiej kupiła spółka ___, której jedynym wspólnikiem jest ___, prowadząca program ___.",
+      "id": "u1",
+      "kind": "fill",
+      "text": "Kamienicę Heleny S. na Opatowskiej kupiła ___, przez spółkę, z zapisem, by nie naruszać ___. Biegły z Krakowa pracuje dla ___, choć sądzi, że dla ___, a jego wnioski, wzgórze po wzgórzu, zasilają ___. Koperty z aktami od pierwszego dnia nosiły ___. Biegłym jesteś ___.",
       "options": [],
       "answer": -1,
-      "kind": "fill",
       "bank": [
-        "Memoria Nieruchomości",
-        "Sandomierska Memoria",
-        "Ciżemka",
-        "Fundacja",
-        "miasto",
-        "hotel",
-        "Sandomierz Pod Spodem",
-        "Święto Młodego Wina",
-        "Witamina Jazz",
-        "archiwum",
-        "Collegium",
-        "konserwator"
-      ],
-      "answerWords": [
-        "Memoria Nieruchomości",
-        "Fundacja",
-        "Sandomierz Pod Spodem"
-      ],
-      "hint": "Akt notarialny i sprawozdanie: te same nazwy."
-    },
-    {
-      "id": "q2",
-      "text": "§ 7 zakazuje zmieniać ___ i udostępniać je bez zgody ___, a inwentarz każe nie naruszać ___.",
-      "options": [],
-      "answer": -1,
-      "kind": "fill",
-      "bank": [
-        "piwnic",
-        "dachu",
-        "mieszkań",
-        "zarządu Fundacji",
-        "miasta",
-        "notariusza",
-        "zamurowanej ściany",
-        "drzwi",
-        "okien",
-        "podłogi",
-        "słoików",
-        "kłódki"
-      ],
-      "answerWords": [
-        "piwnic",
-        "zarządu Fundacji",
-        "zamurowanej ściany"
-      ],
-      "hint": "Akt notarialny: paragraf i załącznik."
-    },
-    {
-      "id": "q3",
-      "text": "Komisarz pisze, że materiały przekazuje ___, sprawozdanie mówi, że to program ___, a stopka każdej koperty mówi to samo: koperty wkłada ___.",
-      "options": [],
-      "answer": -1,
-      "hint": "List od komisarza, sprawozdanie, stopka.",
-      "kind": "fill",
-      "bank": [
-        "program edukacyjny",
-        "komenda",
-        "archiwum",
+        "Fundacja Sandomierska Memoria",
+        "gmina Sandomierz",
+        "Hotel Pod Ciżemką",
+        "spadkobierczyni Heleny",
+        "zamurowanej ściany w piwnicy",
+        "dachu i więźby",
+        "frontu kamienicy",
+        "słoików w piwnicy",
         "Fundacji",
-        "miasta",
+        "komendy",
         "uczelni",
-        "Fundacja",
-        "komisarz",
-        "konserwator",
-        "Wanda",
-        "Berbeć",
-        "Zieliński"
-      ],
-      "answerWords": [
-        "program edukacyjny",
-        "Fundacji",
-        "Fundacja"
-      ]
-    },
-    {
-      "id": "q4",
-      "text": "Wnioski biegłego, wzgórze po wzgórzu, zasilają ___ prowadzony przez ___, a faktura prosi, by biegłego nie wyprowadzać z ___.",
-      "options": [],
-      "answer": -1,
-      "kind": "fill",
-      "bank": [
-        "rejestr statusów",
-        "akta policyjne",
-        "archiwum",
-        "zarząd Fundacji",
-        "komisarza",
-        "uczelnię",
-        "błędu",
-        "miasta",
-        "Sandomierza",
-        "hotelu",
-        "kopert",
-        "programu"
-      ],
-      "answerWords": [
-        "rejestr statusów",
-        "zarząd Fundacji",
-        "błędu"
-      ],
-      "hint": "Sprawozdanie i adnotacja na fakturze."
-    },
-    {
-      "id": "q5",
-      "text": "Pracujesz dla ___, która kupiła kamienicę przez ___ i prosi, by nie wyprowadzać cię z ___.",
-      "options": [],
-      "answer": -1,
-      "kind": "fill",
-      "bank": [
-        "Fundacji",
-        "komisarza",
-        "miasta",
-        "spółkę",
-        "hotel",
-        "archiwum",
-        "błędu",
-        "Sandomierza",
         "konserwatora",
-        "zarząd",
-        "program",
-        "Kraków"
+        "komisarza",
+        "Fundacji, i wie o tym",
+        "archiwum",
+        "miasta",
+        "rejestr statusów zarządu",
+        "akta policyjne",
+        "ewidencję zabytków",
+        "sprawozdanie dla kurii",
+        "nadruk programu edukacyjnego",
+        "pieczęć komendy",
+        "podpis komisarza",
+        "znaczek pocztowy z Krakowa",
+        "ty",
+        "komisarz Zieliński",
+        "człowiek ze spinkami",
+        "Berbeć"
       ],
       "answerWords": [
+        "Fundacja Sandomierska Memoria",
+        "zamurowanej ściany w piwnicy",
         "Fundacji",
-        "spółkę",
-        "błędu"
-      ],
-      "hint": "Akt notarialny, faktura, stopka."
+        "komisarza",
+        "rejestr statusów zarządu",
+        "nadruk programu edukacyjnego",
+        "ty"
+      ]
     }
   ],
   "solution": [
-    "Koperty miały nadruk od pierwszego dnia. Mała czcionka w stopce: program edukacyjny, partner, kopia dla biegłego. List komisarza mówił, kto pośredniczy. Nikt nie czyta stopek.",
-    "Fundacja kupiła kamienicę Heleny z zapisem o piwnicach. Fundacja partneruje winu i lampionom. Fundacja płaci biegłemu, który sądzi, że pracuje dla komisarza. Biegłym jesteś ty.",
-    "Rejestr statusów na mapie nosi od teraz nazwę tego, kto go prowadzi. Rozpoznałeś dla nich cztery punkty."
-  ]
+    "Szanowna Pani, Szanowny Panie, Zarząd potwierdza przyjęcie wniosków dotyczących czterech punktów programu „Sandomierz Pod Spodem”. Wnioski zostały wprowadzone do rejestru statusów.",
+    "Uprzejmie informujemy, że komisarz Zieliński nie jest stroną programu i nie ma dostępu do rejestru. Prosimy o kierowanie dalszej korespondencji wyłącznie w kopertach z nadrukiem programu, jak dotąd.",
+    "Pozostałe trzy punkty czekają. Zarząd ma nadzieję, że Pani/Pana kwalifikacje pozwolą zamknąć rejestr przed Świętem Młodego Wina. Partnerem wydarzenia jest Fundacja."
+  ],
+  "solutionDoc": {
+    "title": "Potwierdzenie",
+    "source": "Fundacja Sandomierska Memoria. Pismo do biegłego. Papier firmowy, bez podpisu, sygnatura S.",
+    "style": "mono"
+  }
 }

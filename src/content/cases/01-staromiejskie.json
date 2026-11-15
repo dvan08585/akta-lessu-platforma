@@ -4,7 +4,7 @@
   "gate": 4,
   "title": "Biały gołąb",
   "subtitle": "Wzgórze Staromiejskie · żywioł: ziemia i ogień · grudzień 1287",
-  "epigraph": "Rocznik nazwał ją zdrajczynią. Przeczytaj go jeszcze raz.",
+  "epigraph": "Niewiasty tej imienia tu nie piszemy. Niech ją Bóg sądzi.",
   "requires": {
     "chapter": 0
   },
@@ -79,150 +79,68 @@
       "paragraphs": [
         "Stałem na wale od północy. Mróz. Trzystu poszło za nią pod ziemię o zmroku, liczyłem pochodnie. Potem ziemia pod Starym Wzgórzem drżała sama, długo, i cichła, i drżała.",
         "O świcie biały gołąb nad zgliszczami. Nie z naszego grodu, bo nasze siedziały w gołębniku, liczyłem rano i brakowało jednego, tego, który u niej.",
-        "Kazałem sypać. Belki, kamień, ziemia, w każde wejście, które znaliśmy. Sypaliśmy do południa. Nie wiedzieliśmy, że ona zamknęła wcześniej. Sypaliśmy na zamknięte.",
+        "Kazałem sypać. Belki, kamień, ziemia, w każde wejście, które znaliśmy. Sypaliśmy do południa. Kiedy spadła pierwsza belka, ziemia pod nią już nie drżała.",
         "Zapisuję, żeby ktoś kiedyś przeczytał o świcie, bo o świcie się to stało, a w dzień nikt nie uwierzy."
       ]
     }
   ],
   "questions": [
     {
-      "id": "q1",
-      "text": "Wdowa po Sędziwoju miała w 1260 roku ___ lata, więc za wały wyszła, mając około ___.",
+      "id": "u1",
+      "kind": "fill",
+      "text": "Trzystu z roku 1287 leży ___, zamknięci ___ przez ___, ___ pierwszą belką Berbecia. Znak nad Starym Wzgórzem to ___, wypuszczony ___. Rocznik pisze o zdradzie; dokumenty mówią, że wdowa ___.",
       "options": [],
       "answer": -1,
-      "hint": "Dziecko trzech lat w 1260. Policz do 1287.",
-      "kind": "fill",
       "bank": [
-        "trzy",
-        "pięć",
-        "dziesięć",
-        "trzydziestu",
-        "dwudziestu",
-        "czterdziestu",
-        "pięćdziesięciu",
-        "dwa",
-        "siedem",
-        "sześćdziesięciu"
-      ],
-      "answerWords": [
-        "trzy",
-        "trzydziestu"
-      ]
-    },
-    {
-      "id": "q2",
-      "text": "W dole na dziedzińcu leży ___ szkieletów z roku ___, a trzystu wojowników z 1287 leży ___.",
-      "options": [],
-      "answer": -1,
-      "hint": "Sarama liczył warstwami. W zasypie nie ma nikogo. Co jest niżej?",
-      "kind": "fill",
-      "bank": [
-        "330",
-        "300",
-        "49",
-        "1260",
-        "1287",
-        "1959",
         "poniżej 6,1 m",
         "w zasypie",
-        "w kościele",
-        "nad rzeką",
-        "w krypcie",
-        "pod Rynkiem"
+        "w dole na dziedzińcu",
+        "pod kościołem",
+        "od spodu",
+        "od góry",
+        "od wałów",
+        "Halinę",
+        "Berbecia",
+        "setnika",
+        "Sadoka",
+        "przed",
+        "po",
+        "razem z",
+        "biały gołąb z gołębnika grodu",
+        "gołąb z obozu Telebugi",
+        "dym z pochodni",
+        "sokół Berbecia",
+        "spod ziemi",
+        "z obozu za Wisłą",
+        "z wieży grodu",
+        "zamknęła ich pod sobą",
+        "wyprowadziła ich pod gród",
+        "uciekła za Wisłę"
       ],
       "answerWords": [
-        "330",
-        "1260",
-        "poniżej 6,1 m"
-      ]
-    },
-    {
-      "id": "q3",
-      "text": "W noc wyjścia wdowy z gołębnika grodu ubył ___ gołąb, a rano wrócił od strony ___.",
-      "options": [],
-      "answer": -1,
-      "kind": "fill",
-      "bank": [
-        "biały",
-        "szary",
-        "czarny",
-        "południowej",
-        "północnej",
-        "wschodniej",
-        "rzeki",
-        "obozu",
-        "wałów",
-        "Starego Wzgórza"
-      ],
-      "answerWords": [
-        "biały",
-        "południowej"
-      ],
-      "hint": "Inwentarz liczy gołębie. Zapisał też, skąd wrócił."
-    },
-    {
-      "id": "q4",
-      "text": "Znak nad Starym Wzgórzem wzleciał spod ___, w miejscu, gdzie nie stał nikt z ___, i dopiero wtedy Berbeć kazał ___.",
-      "options": [],
-      "answer": -1,
-      "hint": "Gołębia nie posłano z grodu. Rocznik mówi, gdzie nikt z naszych nie stał.",
-      "kind": "fill",
-      "bank": [
-        "ziemi",
-        "wałów",
-        "nieba",
-        "obrońców",
-        "Tatarów",
-        "mieszczan",
-        "zasypywać",
-        "dzwonić",
-        "otworzyć wrota",
-        "modlić się",
-        "czekać",
-        "liczyć"
-      ],
-      "answerWords": [
-        "ziemi",
-        "obrońców",
-        "zasypywać"
-      ]
-    },
-    {
-      "id": "q5",
-      "text": "Korytarze zamknęła ___, od ___, zanim spadła ___.",
-      "options": [],
-      "answer": -1,
-      "hint": "Zasyp obrońców kończy się na 6,1 m. Ziemia pracowała głębiej i wcześniej.",
-      "kind": "fill",
-      "bank": [
-        "Halina",
-        "Berbeć",
-        "setnik",
-        "spodu",
-        "góry",
-        "wałów",
-        "pierwsza belka",
-        "ostatnia belka",
-        "Wisła",
-        "gołąb",
-        "Sadok",
-        "ziemia"
-      ],
-      "answerWords": [
-        "Halina",
-        "spodu",
-        "pierwsza belka"
+        "poniżej 6,1 m",
+        "od spodu",
+        "Halinę",
+        "przed",
+        "biały gołąb z gołębnika grodu",
+        "spod ziemi",
+        "zamknęła ich pod sobą"
       ]
     }
   ],
   "solution": [
-    "Rocznik nie zapisał jej imienia. Inwentarz zapisał kożuch.",
-    "Halina, córka Piotra z Krępy, wzięła z gołębnika białego gołębia, wyprowadziła trzystu pod ziemię i zamknęła od spodu. Gołąb wyleciał szybem w sklepieniu, kiedy już było po wszystkim. Berbeć zobaczył go nad Starym Wzgórzem i dopiero wtedy kazał sypać.",
-    "Zasyp obrońców sięga sześciu metrów. Poniżej less jest nienaruszony, a korytarz biegnie dalej w dół. Nikt z 1959 roku tam nie zszedł."
+    "Białego, co wrócił od południa, trzymano osobno do Gromnicznej. Nie jadł z innymi. Siadał na belce nad wejściem, które zasypano ostatnie, i patrzył w dół.",
+    "Kożuch wdowy po Sędziwoju znaleziono w marcu przy sondowaniu wejścia siódmego, na głębokości, do której sięgały belki. Pod nim ziemia twarda jak kamień, ułożona nie przez nas.",
+    "Kasztelan kazał nie kopać. Gołębia wypuszczono na Gromniczną. Wrócił wieczorem od południa. Zapisuję, bo kazał."
   ],
   "reward": {
     "kind": "text",
     "title": "Prolog: Krew na kamieniu (fragment)",
     "file": "prolog-fragment"
+  },
+  "solutionDoc": {
+    "title": "Zapis gołębnika",
+    "source": "Dopisek do inwentarza nowego grodu, styczeń 1288. Inna ręka niż reszta. Przekład z łaciny.",
+    "style": "chronicle"
   }
 }

@@ -62,3 +62,8 @@ Każdy dokument w aktach ma `style`, a styl mówi, czym był napisany. Rzetelno�
 | `plain` | druk: prasa, przewodnik, ulotka, strona z książki | szeryf, prosto | artykuł, wyciąg z przewodnika |
 
 Nagłówek (`h4`) i linia źródła (`.src`) są zawsze w szeryfie, w kapitalikach: to archiwista opisuje dokument, nie autor dokumentu.
+
+## Ustalenie biegłego i obrzęd bramy (marzec / luty 2027, zrobione w listopadzie 2026)
+
+- **Sprawy 1–4** mają jedno pytanie `fill` („Ustalenie biegłego”) z 6–7 lukami i jednym bankiem 22–27 słów na sprawę. Luki stoją na wnioskach, nie na danych; w banku jest hipoteza konkurencyjna (np. „wyprowadziła ich pod gród”), która musi upaść na dokumentach. Zawieszka grzeje od liczby trafionych luk (`fillGaps`), nie mówi których; próba raz na 60 s; bez podpowiedzi (po pięciu próbach jedno zdanie o metodzie). Motto sprawy to zdanie z dokumentu. Rozwiązanie to nowy dokument (`solutionDoc`: tytuł, pochodzenie, styl), nie parafraza autora.
+- **Obrzęd bramy** (`rite` w `interludia.json`): próg z kontraktem frustracji (czas, co sztywne, czego wymaga ciało, brak kary, trzy drogi, nic nie nagrywane) → gest → trzy sekundy ciemności i ciepła (`.hush`) → zapis ręką geolożki (`rite.closing`) ze słowem bramy (`rite.word`). Po trzykrotności czasu bez domknięcia brama „drga” i można ją przyjąć na słowo (zapis w notatce). Liczby: dotyk 7 s, oddech 7 cykli po 10 s + 7 s ciszy, ton stały 8 s, bezruch 30 s z 5 s kalibracji i łagodniejącym progiem, ciemność 60 s, kroki 777 (cofnięcie o 77 przy przechyle), pięć palców dwojga 3 s. Bez iskier i komunikatów; wibracja jedna.

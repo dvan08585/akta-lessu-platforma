@@ -358,6 +358,9 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     const fillIncomplete = c.questions.some((q, i) => q.kind === "fill" && q.bank && (() => { let v = answers[i]; const N = q.bank!.length + 1; const n = q.text.split("___").length - 1; for (let k = 0; k < n; k++) { if (v % N === 0) return true; v = Math.floor(v / N); } return false; })());
     if (answers.some((a) => a < 0) || fillIncomplete || c.questions.some((q, i) => q.kind === "month" && answers[i] < 1)) { toast("Odpowiedz na wszystkie pytania. Zawieszka nie reaguje na puste miejsca."); return; }
     app.state.answers[c.id] = answers;
+    // Zawieszka stygnie minutę między próbami: czas na powrót do dokumentów, nie na zgadywanie przez eliminację.
+    const last = (app.state.attempts[c.id] ?? []).slice(-1)[0]?.at ?? 0; const wait = 60000 - (Date.now() - last);
+    if (wait > 0 && !app.state.testMode) { verdictText.textContent = `Zawieszka jeszcze stygnie. Wróć do dokumentów; spróbuj za ${Math.ceil(wait / 1000)} s.`; return; }
     const v = evaluate(c, answers);
     recordAttempt(app.state, c, v);
     save(app.state);
@@ -366,11 +369,10 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     if (v.solved) { verdictText.textContent = ""; grid.querySelectorAll(".q").forEach((el) => el.classList.add("ok")); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
     else {
       const tries = (app.state.attempts[c.id] ?? []).length;
-      const hints = c.questions.filter((q, i) => !v.perQuestion[i] && q.hint).map((q) => q.hint!);
       const rejectMissed = c.questions.some((q, i) => q.kind === "reject" && !v.perQuestion[i]);
       verdictText.textContent = rejectMissed
         ? "Zawieszka zimna. Z pięcioma stronami nic się nie zgadza. Najpierw odrzuć tę, która kłamie."
-        : `Zawieszka ${heatLabel[v.heat]}. Coś się nie zgadza. Zawieszka nie mówi co: wróć do dokumentów.${tries >= 3 && hints.length ? " Podpowiedź: " + hints[0] : ""}`;
+        : `Zawieszka ${heatLabel[v.heat]}. Coś się nie zgadza. Zawieszka nie mówi co: wróć do dokumentów.${tries >= 5 ? " Każde słowo ustalenia ma swoje zdanie w aktach. Szukaj zdania, nie słowa." : ""}`;
       toast(`Zawieszka: ${heatLabel[v.heat]}.`);
     }
   });
@@ -478,7 +480,8 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
 
     // 1. Rozwiązanie: proza.
     const sol = h("div", { class: "solution fade-in" });
-    for (const p of c.solution) sol.append(h("p", {}, p));
+    if (c.solutionDoc) { const art = h("article", { class: `doc ${c.solutionDoc.style ?? "hand"}` }, h("h4", {}, c.solutionDoc.title), h("div", { class: "src" }, c.solutionDoc.source)); for (const p of c.solution) art.append(h("p", {}, p)); sol.append(art); }
+    else for (const p of c.solution) sol.append(h("p", {}, p));
     if (c.pair) for (const p of c.pair.finale) sol.append(h("p", { class: "finale" }, p));
 
     // 2. Jeden blok: stan bramy, nagroda jako link tekstowy, karta (tylko gdy prawdziwa), dwa przyciski.
@@ -693,8 +696,8 @@ export function viewOnboarding(app: App): HTMLElement {
     hold.addEventListener("pointerdown", (e) => {
       e.preventDefault(); t0 = Date.now(); txt.textContent = "Trzymaj.";
       iv = window.setInterval(() => {
-        const sN = (Date.now() - t0) / 1000; pend.dataset.heat = String(sN < 1.2 ? 1 : sN < 2.4 ? 2 : sN < 3.6 ? 3 : 4);
-        if (sN >= 5 && !done) {
+        const sN = (Date.now() - t0) / 1000; pend.dataset.heat = String(sN < 1.7 ? 1 : sN < 3.4 ? 2 : sN < 5.1 ? 3 : 4);
+        if (sN >= 7 && !done) {
           done = true; clearInterval(iv);
           // Najpierw zdanie, czytelne przez dwie sekundy przy pulsującym kamieniu. Potem ciepło rozlewa się z kamienia na cały ekran i zabiera wszystko. Potem czysty ekran i zlecenie.
           txt.replaceWith(line("Zawieszka. Ciepła. Od teraz jesteś w sieci."));

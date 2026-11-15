@@ -10,6 +10,8 @@ import { flint, flintSeed } from "./icons";
 
 export interface Interlude {
   id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace" | "steps" | "duet"; after?: number; gate?: number; title: string; level?: string; place?: "brama" | "rozmowa" | "apokryf" | "laboratorium";
+  /** Obrzęd bramy: formuła otwarcia, słowo bramy (gest koduje treść), minuty, co sztywne, czego wymaga ciało, formuła zamknięcia (ręka geolożki). */
+  rite?: { opening: string; word: string; minutes: number; rigid: string; body: string; closing: string };
   secret?: string[]; steps?: number;
   cycles?: number; inhale?: number; exhale?: number;
   /** Instrukcja osobnym głosem (didaskalia), oddzielona od prozy w intro. */
@@ -39,9 +41,44 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   const done = app.state.interludesDone.includes(it.id);
   let alive = true; onLeave(() => { alive = false; });
   const acs: AudioContext[] = []; onLeave(() => { for (const a of acs) a.close().catch(() => { /* */ }); });
-  sec.append(h("p", { class: "kicker" }, it.place === "apokryf" ? "Apokryf" : it.place === "rozmowa" ? "Rozmowa" : it.gate !== undefined ? `Brama ${it.gate} · ciałem` : "Między sprawami"), h("h2", {}, it.title));
-  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else if (it.type === "whistle") renderWhistle(); else if (it.type === "touch7") renderTouch7(); else if (it.type === "hold") renderHold(); else if (it.type === "mirror") renderMirror(); else if (it.type === "trace") renderTrace(); else if (it.type === "steps") renderSteps(); else if (it.type === "duet") renderDuet(); else renderPlate();
+  sec.append(h("p", { class: "kicker" }, it.place === "apokryf" ? "Apokryf" : it.place === "rozmowa" ? "Rozmowa" : it.gate !== undefined ? `Obrzęd bramy ${it.gate}` : "Między sprawami"), h("h2", {}, it.title));
+  if (it.rite && !done) { renderThreshold(); return sec; }
+  renderBody();
   return sec;
+
+  /**
+   * Próg obrzędu: kontrakt frustracji. Gracz wie z góry, ile to zajmie, co jest sztywne, czego wymaga ciało,
+   * że nie ma kary za nieudaną próbę i że nic nie jest nagrywane. Czytanie kontraktu to pierwszy krok obrzędu.
+   */
+  function renderThreshold() {
+    const r = it.rite!;
+    const box = h("div", { class: "rite" },
+      h("p", { class: "quote" }, r.opening),
+      h("p", { class: "rite-word" }, "Słowo tej bramy: ", h("strong", {}, r.word)),
+      h("ul", { class: "rite-contract" },
+        h("li", {}, `Czas: około ${r.minutes === 1 ? "minuty" : r.minutes + " minut"}.`),
+        h("li", {}, `Sztywne: ${r.rigid}`),
+        h("li", {}, `Ciało: ${r.body}.`),
+        h("li", {}, "Nie ma kary za nieudaną próbę. Jest tylko inny zapis."),
+        h("li", {}, "Trzy drogi liczą się tak samo: czujnik, drugi klucz, na słowo."),
+        h("li", {}, "Nic nie jest nagrywane ani wysyłane. Liczby liczą się w telefonie i znikają.")),
+      h("div", { class: "verdict" }, h("button", { class: "primary", onclick: () => { try { navigator.vibrate?.(40); } catch { /* */ } box.remove(); renderBody(); armPledge(); } }, "Wchodzę"), back("Jeszcze nie")));
+    sec.append(box);
+  }
+  /** Sufit porażki: po trzykrotności czasu obrzędu bez domknięcia brama „drga" i można ją przyjąć na słowo. Koszt zmienia się z sensorycznego na honorowy. */
+  function armPledge() {
+    const r = it.rite!; const ms = Math.max(90000, r.minutes * 60000 * 3);
+    setTimeout(() => {
+      if (!alive || app.state.interludesDone.includes(it.id)) return;
+      const box = h("div", { class: "gatebox pledge" }, h("p", { class: "kicker" }, "Brama drgnęła"),
+        h("p", { class: "muted" }, "Nie otworzyła się. Czujnik nie jest sędzią: możesz spróbować jeszcze raz albo przyjąć tę bramę na słowo. W rejestrze będzie to widać. To nie wstyd, to inny zapis."),
+        h("div", { class: "verdict" }, h("button", { onclick: () => { const v = h("div"); sec.append(v); box.remove(); reveal(v, `${it.title}: przyjęto na słowo.`); } }, "Przyjmuję na słowo")));
+      sec.append(box);
+    }, ms);
+  }
+  function renderBody() {
+  if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else if (it.type === "whistle") renderWhistle(); else if (it.type === "touch7") renderTouch7(); else if (it.type === "hold") renderHold(); else if (it.type === "mirror") renderMirror(); else if (it.type === "trace") renderTrace(); else if (it.type === "steps") renderSteps(); else if (it.type === "duet") renderDuet(); else renderPlate();
+  }
 
   /**
    * Odsłona po geście albo poprawnej odpowiedzi, jedna dla wszystkich przerywników:
@@ -49,31 +86,29 @@ export function viewInterlude(app: App, id: string): HTMLElement {
    * a tekst przyjeżdża na środek ekranu z jednym przyciskiem „dalej". Brama przebyta prowadzi do swojej bramy.
    */
   function reveal(verdict: HTMLElement, note: string, extra: HTMLElement[] = []) {
-    sec.querySelectorAll<HTMLElement>("button, input, select, label, .opts, .verdict, .q, .row, .talk-qs, p.mono, .breath-phase").forEach((el) => {
+    sec.querySelectorAll<HTMLElement>("button, input, select, label, .opts, .verdict, .q, .row, .talk-qs, p.mono, .breath-phase, p.faint").forEach((el) => {
       if (el.closest(".topbar") || verdict.contains(el)) return; el.classList.add("hide-out");
     });
     setTimeout(() => sec.querySelectorAll<HTMLElement>(".hide-out").forEach((el) => (el.style.display = "none")), 500);
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduced) {
-      const glow = h("div", { class: "glow soft" }); glow.style.setProperty("--cx", "50%"); glow.style.setProperty("--cy", "55%"); document.body.append(glow);
-      setTimeout(() => glow.classList.add("out"), 900); setTimeout(() => glow.remove(), 1900);
-      for (let i = 0; i < 14; i++) {
-        const sp = h("i", { class: "spark" }); const a = Math.random() * Math.PI * 2, r = 80 + Math.random() * 160;
-        sp.style.left = "50%"; sp.style.top = "55%"; sp.style.setProperty("--dx", `${Math.cos(a) * r}px`); sp.style.setProperty("--dy", `${Math.sin(a) * r - 60}px`); sp.style.animationDelay = `${Math.random() * 0.4}s`;
-        document.body.append(sp); setTimeout(() => sp.remove(), 2200);
-      }
-    }
-    try { navigator.vibrate?.([60, 80, 160]); } catch { /* */ }
-    const sol = h("div", { class: "solution fade-in" }, h("p", {}, it.reveal!));
+    // Obrzęd: trzy sekundy ciemności i ciepła, jedna wibracja, potem jedno zdanie ręką geolożki. Bez iskier, bez komunikatów.
+    const rite = !!it.rite;
+    const hushMs = rite && !reduced ? 3000 : 0;
+    if (rite && !reduced) { const hush = h("div", { class: "hush" }); document.body.append(hush); setTimeout(() => hush.classList.add("out"), hushMs); setTimeout(() => hush.remove(), hushMs + 900); }
+    else if (!reduced) { const glow = h("div", { class: "glow soft" }); glow.style.setProperty("--cx", "50%"); glow.style.setProperty("--cy", "55%"); document.body.append(glow); setTimeout(() => glow.classList.add("out"), 900); setTimeout(() => glow.remove(), 1900); }
+    try { navigator.vibrate?.(rite ? 120 : [60, 80, 160]); } catch { /* */ }
+    const sol = h("div", { class: "solution fade-in" });
+    if (rite) { const r = it.rite!; sol.append(h("article", { class: "doc hand rite-closing" }, h("h4", {}, "Zeszyt geolożki"), h("div", { class: "src" }, `Obrzęd bramy ${it.gate}. Słowo: ${r.word}.${note.includes("na słowo") ? " Przyjęto na słowo." : ""}`), h("p", {}, r.closing))); }
+    sol.append(h("p", {}, it.reveal!));
     const to = it.gate !== undefined ? `#/brama/${it.gate}` : "#/mapa";
-    setTimeout(() => { verdict.replaceChildren(sol, ...extra, h("div", { class: "verdict" }, next(it.gate !== undefined ? "Wróć do bramy" : "Ruszaj dalej", to))); sol.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }); }, reduced ? 0 : 700);
+    setTimeout(() => { verdict.replaceChildren(sol, ...extra, h("div", { class: "verdict" }, next(it.gate !== undefined ? "Wróć do bramy" : "Ruszaj dalej", to))); sol.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }); }, hushMs ? hushMs + 400 : reduced ? 0 : 700);
     finish(note);
   }
 
   function newAC(): AudioContext { const a = new AudioContext(); acs.push(a); return a; }
 
   function finish(note: string) {
-    if (!app.state.interludesDone.includes(it.id)) { app.state.interludesDone.push(it.id); app.addNote(note, it.gate !== undefined ? `brama ${it.gate} przebyta` : "między sprawami"); save(app.state); if (it.gate !== undefined) { toast(`Brama ${it.gate} przebyta. Ciałem.`); sendEvent(app.cfg.backendUrl, app.state, { type: "gesture", gate: it.gate }); } }
+    if (!app.state.interludesDone.includes(it.id)) { app.state.interludesDone.push(it.id); app.addNote(note, it.gate !== undefined ? `brama ${it.gate} przebyta` : "między sprawami"); save(app.state); if (it.gate !== undefined) { sendEvent(app.cfg.backendUrl, app.state, { type: "gesture", gate: it.gate }); } }
   }
 
   function renderAmor() {
@@ -189,7 +224,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const start = h("button", { class: "primary" }, "Trzymam");
     const verdict = h("div");
     sec.append(bar, status, temp, h("div", { class: "verdict" }, start), verdict);
-    let held = 0, last = 0, running = false, jitter = 0, finished = done, base = 0.12, calib: number[] = [], calibrating = false;
+    let held = 0, last = 0, running = false, jitter = 0, finished = done, base = 0.12, calib: number[] = [], calibrating = false, resets = 0;
     const onMotion = (e: DeviceMotionEvent) => {
       const a = e.accelerationIncludingGravity; if (!a) return;
       const mag = Math.sqrt((a.x ?? 0) ** 2 + (a.y ?? 0) ** 2 + (a.z ?? 0) ** 2);
@@ -198,7 +233,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     function tick() {
       if (!running) return;
       if (calibrating) { if (alive) setTimeout(tick, 100); return; }
-      if (jitter > base * 2.5 + 0.08) { held = Math.max(0, held - 1.5); temp.textContent = "Drżysz. 33°C."; }
+      if (jitter > base * (2.5 + resets) + 0.08) { held = Math.max(0, held - 1.5); resets = Math.min(4, resets + 0.1); temp.textContent = "Drżysz. 33°C."; } // każde drgnięcie łagodzi próg: frustracja ma sufit
       else { held += 0.1; temp.textContent = `${(36.6 - (held / total) * 5.6).toFixed(1).replace(".", ",")}°C`; }
       fill.style.width = `${Math.min(100, (held / total) * 100)}%`; status.textContent = `${held.toFixed(0)} s`;
       if (held >= total && !finished) { finished = true; running = false; reveal(verdict, `${it.title}: wytrzymane.`); return; }
@@ -212,7 +247,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       } catch { toast("Bez czujnika ruchu: liczy się samo trzymanie przycisku."); }
       running = true; start.disabled = true; start.textContent = "Kalibruję…"; calibrating = true; calib = [];
       // 2 s kalibracji: mediana drgania TEJ ręki na TYM telefonie = poziom zero (progi absolutne zawodzą między urządzeniami)
-      setTimeout(() => { calib.sort((a, b) => a - b); base = calib.length ? calib[Math.floor(calib.length / 2)] : 0.12; calibrating = false; start.textContent = "Nie ruszaj się"; }, 2000);
+      setTimeout(() => { calib.sort((a, b) => a - b); base = calib.length ? calib[Math.floor(calib.length / 2)] : 0.12; calibrating = false; start.textContent = "Nie ruszaj się"; }, 5000);
       tick();
     });
     // zapas bez czujnika: puszczenie przycisku = drgnięcie
@@ -266,7 +301,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       if (running && cyc >= cycles && !finished) {
         running = false;
         // Liczy się oddech, nie czas: tafla musi być gładka. Bez wydechu (mikrofon) albo palca na tafli przy wydechu „calm" nie urośnie.
-        if (calm >= 0.7) { finished = true; reveal(verdict, `${it.title}: dziesięć oddechów.`, [h("p", { class: "faint" }, "Dlaczego to działa: ", h("a", { href: "#/o-ciele" }, "co robi z tobą ta gra"))]); }
+        if (calm >= 0.7) { finished = true; phaseEl.textContent = "cisza"; count.textContent = `${cycles} / ${cycles} · siedem sekund ciszy`; setTimeout(() => reveal(verdict, `${it.title}: siedem oddechów.`, [h("p", { class: "faint" }, "Dlaczego to działa: ", h("a", { href: "#/o-ciele" }, "co robi z tobą ta gra"))]), 7000); }
         else { calm = 0; done_cycles = 0; count.textContent = `0 / ${cycles}`; start.disabled = false; start.textContent = "Jeszcze raz"; toast("Tafla drży. Oddychałeś z nią, czy tylko czekałeś? Wydech ma być słyszalny albo palec na tafli."); }
       }
       if (alive) requestAnimationFrame(draw);
@@ -321,7 +356,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const verdict = h("div");
     sec.append(video, probe, stone, status, h("div", { class: "verdict" }, camBtn, h("label", { class: "faint", style: "display:inline-flex;align-items:center;gap:.4rem" }, "albo kolor", pick)), verdict);
     let heat = 0, finished = done;
-    const bump = (ok: boolean) => { heat = Math.max(0, Math.min(1, heat + (ok ? 0.06 : -0.03))); (stone.firstElementChild as HTMLElement).style.opacity = String(heat); status.textContent = heat > 0.95 ? "kamień: pulsuje" : heat > 0.5 ? "kamień: ciepły" : "kamień: zimny"; if (heat >= 1 && !finished) { finished = true; reveal(verdict, `${it.title}: kamień odpowiedział.`); try { navigator.vibrate?.(200); } catch { /* */ } } };
+    const bump = (ok: boolean) => { /* ~7 s czerwieni przy próbkowaniu co 120 ms */ heat = Math.max(0, Math.min(1, heat + (ok ? 0.02 : -0.01))); (stone.firstElementChild as HTMLElement).style.opacity = String(heat); status.textContent = heat > 0.95 ? "kamień: pulsuje" : heat > 0.5 ? "kamień: ciepły" : "kamień: zimny"; if (heat >= 1 && !finished) { finished = true; reveal(verdict, `${it.title}: kamień odpowiedział.`); try { navigator.vibrate?.(200); } catch { /* */ } } };
     camBtn.addEventListener("click", async () => {
       if (!(await openCamera(video))) { toast("Bez kamery: wybierz kolor poniżej."); return; }
       camBtn.disabled = true; camBtn.textContent = "Kamień patrzy"; video.style.display = "block";
@@ -345,7 +380,8 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const verdict = h("div");
     sec.append(video, probe, page, status, h("div", { class: "verdict" }, camBtn, hold), verdict);
     let dark = 0, baseline = 0.5, finished = done, holding = false;
-    const step = (isDark: boolean) => { dark = Math.max(0, Math.min(1, dark + (isDark ? 0.03 : -0.05))); lines.forEach((l, i) => (l.style.opacity = String(Math.max(0, Math.min(1, dark * 3 - i))))); page.style.background = `rgb(${241 - dark * 200},${235 - dark * 200},${221 - dark * 190})`; page.style.color = dark > 0.5 ? "#e8e0cf" : "#1e1a14"; if (dark >= 1 && !finished) { finished = true; reveal(verdict, `${it.title}: przeczytane w ciemności.`); } };
+    // Minuta ciemności (tick co 120 ms → 1/500 na tick). Światło cofa, ale nie zeruje: koszt jest w czasie, nie w karze.
+    const step = (isDark: boolean) => { dark = Math.max(0, Math.min(1, dark + (isDark ? 1 / 500 : -0.01))); lines.forEach((l, i) => (l.style.opacity = String(Math.max(0, Math.min(1, dark * 3 - i))))); page.style.background = `rgb(${241 - dark * 200},${235 - dark * 200},${221 - dark * 190})`; page.style.color = dark > 0.5 ? "#e8e0cf" : "#1e1a14"; if (dark >= 1 && !finished) { finished = true; reveal(verdict, `${it.title}: przeczytane w ciemności.`); } };
     camBtn.addEventListener("click", async () => {
       if (!(await openCamera(video))) { toast("Bez kamery: przytrzymaj „ciemno”."); return; }
       camBtn.disabled = true; camBtn.textContent = "Kalibruję światło…";
@@ -376,8 +412,8 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       ctx.fillStyle = "#7a1f1f"; ctx.globalAlpha = 0.8; ctx.fillRect(520, 150, 60, 80); ctx.globalAlpha = 1; // cegła na końcu
       const level = running && (sensor ? tilt < 0.35 : holding);
       if (running) {
-        if (level) { if (now - lastStep > 900) { steps++; lastStep = now; status.textContent = `${steps} / ${total} kroków`; try { navigator.vibrate?.(20); } catch { /* */ } } spill = Math.max(0, spill - 0.004); }
-        else { spill = Math.min(1, spill + 0.02); if (spill >= 1) { steps = 0; spill = 0; status.textContent = `Less na cegle. Wracasz. 0 / ${total}`; } }
+        if (level) { if (now - lastStep > 600) { steps++; lastStep = now; status.textContent = `${steps} / ${total} kroków`; if (steps % 7 === 0) { try { navigator.vibrate?.(20); } catch { /* */ } } } spill = Math.max(0, spill - 0.004); }
+        else { spill = Math.min(1, spill + 0.02); if (spill >= 1) { steps = Math.max(0, steps - 77); spill = 0; status.textContent = `Less na cegle. Cofasz się o siedemdziesiąt siedem. ${steps} / ${total}`; } }
       }
       ctx.fillStyle = "#e8e0cf";
       for (const gr of grains) { gr.y += gr.v * (0.2 + (running && !level ? 3 : 0.4)); gr.x += (tilt - 0.2) * 1.5; if (gr.y > 300) { gr.y = -2; gr.x = Math.random() * 600; } ctx.fillRect(gr.x, gr.y, 1.5, 1.5); }
@@ -385,7 +421,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       ctx.fillStyle = "#e8e0cf"; ctx.globalAlpha = 0.9; ctx.fillRect(520, 150 - spill * 40, 60, spill * 40); ctx.globalAlpha = 1;
       // pozycja
       const px = 30 + (steps / total) * 470; ctx.beginPath(); ctx.arc(px, 225, 5, 0, Math.PI * 2); ctx.fillStyle = "#c9a86a"; ctx.fill();
-      if (steps >= total && !finished) { finished = true; running = false; reveal(verdict, `${it.title}: dwadzieścia kroków.`); }
+      if (steps >= total && !finished) { finished = true; running = false; reveal(verdict, `${it.title}: ${total} kroków.`); }
       if (alive) requestAnimationFrame(draw);
     }
     if (alive) requestAnimationFrame(draw);
@@ -682,7 +718,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     sec.append(canvas, status, h("div", { class: "verdict" }, micBtn), h("p", { class: "faint", style: "margin:0.2rem 0" }, "albo suwak:"), slider, verdict);
     const ctx = canvas.getContext("2d")!;
     const N = 1400; const pts = Array.from({ length: N }, () => { const a = Math.random() * Math.PI * 2, r = Math.random(); return { a, r, j: Math.random(), x: 300 + Math.cos(a) * r * 270, y: 300 + Math.sin(a) * r * 270 }; });
-    let hz: number | null = null, hold = 0, finished = done, cSmooth = 0;
+    let hz: number | null = null, finished = done, cSmooth = 0, stableSince = 0;
     const target = it.targetHz ?? 196, tol = it.tolerance ?? 6;
     function draw() {
       const c = hz ? closeness(hz, target, tol) : 0;
@@ -699,7 +735,8 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         ctx.fillRect(p.x, p.y, 1.6, 1.6);
       }
       status.textContent = hz ? `${hz.toFixed(1)} Hz · ${c > 0.9 ? "siedem ramion" : c > 0.5 ? "blisko" : "piasek nie słucha"}` : "cisza";
-      if (c > 0.9 && !finished) { hold++; if (hold > 25) { finished = true; reveal(verdict, `${it.title}: ton znaleziony.`); } } else hold = 0;
+      // Osiem sekund stałego tonu (stałość, nie wysokość): piasek siada, kiedy głos się nie waha.
+      if (c > 0.9 && !finished) { if (!stableSince) stableSince = performance.now(); status.textContent += ` · ${Math.min(8, (performance.now() - stableSince) / 1000).toFixed(0)}/8 s`; if (performance.now() - stableSince > 8000) { finished = true; reveal(verdict, `${it.title}: ton znaleziony.`); } } else stableSince = 0;
       if (alive) requestAnimationFrame(draw);
     }
     draw();

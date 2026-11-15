@@ -13,17 +13,29 @@ export function expectedAnswer(q: { kind?: string; answer: number; bank?: string
   return q.kind === "fill" && q.bank && q.answerWords ? encodeFill(q.bank, q.answerWords) : q.answer;
 }
 
+/** Luka po luce: ile słów ustalenia się zgadza. Zawieszka grzeje od tego, nie mówi, które. */
+export function fillGaps(q: { bank?: string[]; answerWords?: string[] }, value: number): { ok: number; total: number } {
+  if (!q.bank || !q.answerWords) return { ok: 0, total: 1 };
+  const N = q.bank.length + 1; let v = value; let ok = 0;
+  for (const w of q.answerWords) { const i = v % N; v = Math.floor(v / N); if (i === q.bank.indexOf(w) + 1) ok++; }
+  return { ok, total: q.answerWords.length };
+}
+
 export function evaluate(c: CaseData, answers: number[]): Verdict {
   // Pytanie „month" nie ma poprawnej odpowiedzi: liczy się jako trafione, gdy podano miesiąc.
   const per = c.questions.map((q, i) => (q.kind === "month" ? answers[i] >= 1 && answers[i] <= 12 : answers[i] === expectedAnswer(q)));
   // Pytanie „reject": dopóki fałszywy dokument nie jest odrzucony, żadne inne ustalenie się nie liczy.
   const rejectIdx = c.questions.findIndex((q) => q.kind === "reject");
   if (rejectIdx >= 0 && !per[rejectIdx]) per.fill(false);
-  const correct = per.filter(Boolean).length;
-  const total = c.questions.length;
+  // Ciepło liczone po lukach (ustalenie z sześcioma lukami grzeje stopniowo), inne pytania po jednym.
+  let correct = 0, total = 0;
+  c.questions.forEach((q, i) => {
+    if (q.kind === "fill" && q.bank && q.answerWords) { const g = fillGaps(q, answers[i] ?? 0); correct += rejectIdx >= 0 && !per[rejectIdx] ? 0 : g.ok; total += g.total; }
+    else { correct += per[i] ? 1 : 0; total += 1; }
+  });
   const ratio = total ? correct / total : 0;
   const heat: Verdict["heat"] = ratio === 1 ? 4 : ratio >= 0.75 ? 3 : ratio >= 0.5 ? 2 : ratio > 0 ? 1 : 0;
-  return { correct, total, perQuestion: per, heat, solved: correct === total };
+  return { correct, total, perQuestion: per, heat, solved: per.every(Boolean) };
 }
 
 export const heatLabel = ["zimna", "letnia", "ciepła", "gorąca", "pulsuje"] as const;

@@ -4,7 +4,7 @@
   "gate": 2,
   "title": "Twój miesiąc",
   "subtitle": "Wzgórze Katedralne · żywioł: woda · katedra, krypty, Wisła",
-  "epigraph": "Podobno jeśli przyjdziesz w dniu urodzin i znajdziesz swój miesiąc, odczytasz z niego rodzaj własnej śmierci.",
+  "epigraph": "Nie badać źródła napływu bez ekspertyzy geologicznej.",
   "requires": {
     "solvedCases": 2,
     "chapter": 7,
@@ -94,140 +94,57 @@
       "monthClosing": "A potem wzrok i tak wraca do listopada."
     },
     {
-      "id": "q1",
-      "text": "W dniu zalania Wisła stała na ___ cm przy majowej średniej ___ cm: krypt nie zalewa ___.",
+      "id": "u1",
+      "kind": "fill",
+      "text": "Woda w kryptach przychodzi ___, kiedy Wisła stoi ___. Jest cieplejsza od wód gruntowych o około ___ stopni i zbiera się pod obrazem ___, po stronie ___. Konserwator zalecił ___ i nikt tego nie zlecił. Legenda każe szukać swojego miesiąca; wzrok i tak wraca do ___.",
       "options": [],
       "answer": -1,
-      "hint": "Protokół podaje stan w dniu zalania. Wodowskaz podaje średnią maja.",
-      "kind": "fill",
       "bank": [
-        "180",
-        "210",
-        "301",
-        "338",
-        "rzeka",
-        "deszcz",
-        "Wisła",
-        "ogrzewanie",
-        "katedra",
-        "konserwator"
-      ],
-      "answerWords": [
-        "180",
-        "301",
-        "rzeka"
-      ]
-    },
-    {
-      "id": "q2",
-      "text": "Woda w kryptach ma ___°C, wody gruntowe ___°C: jest cieplejsza o około ___ stopni.",
-      "options": [],
-      "answer": -1,
-      "hint": "Protokół ma jedną liczbę. Zeszyt ma drugą.",
-      "kind": "fill",
-      "bank": [
-        "14,8",
-        "9–10",
-        "4,2",
-        "12,3",
+        "od spodu, przez spoiny",
+        "od rzeki, przez mur",
+        "z dachu, przez sklepienie",
+        "od grzejników",
+        "nisko",
+        "wysoko",
+        "jak zwykle w maju",
         "pięć",
         "dwa",
         "dziesięć",
-        "trzy",
-        "osiem",
-        "jeden"
-      ],
-      "answerWords": [
-        "14,8",
-        "9–10",
-        "pięć"
-      ]
-    },
-    {
-      "id": "q3",
-      "text": "Posadzka przy obrazie ___ ma wilgotność 71%, grzejniki są przy ___, więc ciepło pod XI pochodzi od ___.",
-      "options": [],
-      "answer": -1,
-      "hint": "Zeszyt geologa: dwie liczby, dwa miejsca.",
-      "kind": "fill",
-      "bank": [
-        "XI",
-        "V",
-        "XIII",
-        "I",
-        "wody od spodu",
-        "grzejników",
-        "słońca",
-        "świec",
-        "Wisły",
-        "kadzidła",
-        "konserwatora",
-        "ogrzewania"
-      ],
-      "answerWords": [
-        "XI",
-        "V",
-        "wody od spodu"
-      ]
-    },
-    {
-      "id": "q4",
-      "text": "Zalania odnotowano w maju, wrześniu i ___; to majowe, przy ___ cm, najwyraźniej nie ma nic wspólnego z ___.",
-      "options": [],
-      "answer": -1,
-      "hint": "Wodowskaz: które miesiące. Protokół: który stan.",
-      "kind": "fill",
-      "bank": [
-        "listopadzie",
-        "kwietniu",
-        "grudniu",
-        "180",
-        "301",
-        "210",
-        "rzeką",
-        "deszczem",
-        "kryptą",
-        "Wisłą",
-        "ogrzewaniem",
-        "obrazem"
-      ],
-      "answerWords": [
-        "listopadzie",
-        "180",
-        "rzeką"
-      ]
-    },
-    {
-      "id": "q5",
-      "text": "Woda w kryptach przychodzi od ___, jest cieplejsza o ___ stopni i zbiera się pod obrazem z napisem ___.",
-      "options": [],
-      "answer": -1,
-      "kind": "fill",
-      "bank": [
-        "spodu",
-        "rzeki",
-        "dachu",
-        "pięć",
-        "dwa",
-        "dziesięć",
+        "pół",
         "listopad",
-        "kwiecień",
         "maj",
-        "trzynastym",
-        "ogrzewania",
-        "Wisły"
+        "kwiecień",
+        "trzynastym, bez miesiąca",
+        "bez grzejników",
+        "z grzejnikami",
+        "przy zejściu do krypt",
+        "ekspertyzę geologiczną",
+        "odpompowanie i osuszenie",
+        "zamknięcie krypt",
+        "pogłębienie koryta Wisły",
+        "listopada",
+        "własnego miesiąca",
+        "trzynastego obrazu"
       ],
       "answerWords": [
-        "spodu",
+        "od spodu, przez spoiny",
+        "nisko",
         "pięć",
-        "listopad"
-      ],
-      "hint": "Protokół, zeszyt, wodowskaz."
+        "listopad",
+        "bez grzejników",
+        "ekspertyzę geologiczną",
+        "listopada"
+      ]
     }
   ],
   "solution": [
-    "Dwanaście miesięcy na ścianach i trzynasty obraz bez miesiąca, który dzieje się tutaj. Woda w kryptach jest o pięć stopni za ciepła i przychodzi od spodu, kiedy rzeka stoi nisko.",
-    "Konserwator napisał: nie badać bez geologa. Nikt nie zlecił geologa.",
-    "Każdy, kto szuka swojego miesiąca, kończy przy listopadzie. Grzejniki są po drugiej stronie."
-  ]
+    "Księże, pisałem już dwa razy. Posadzka przy listopadzie jest ciepła w nocy, kiedy ogrzewanie wyłączone. Rano chłodna. Jak oddech.",
+    "Pompa z maja wyciągnęła wodę z krypty, ale nie ze spoin. Spoiny pod jedenastym są wilgotne do dziś, a pod piątym suche. Geolog nie przyjechał. Przyjechała za to jakaś pani z psem, mierzyła coś na posadzce i nie zapytała o pozwolenie.",
+    "Proszę nie mówić przewodnikom o cieple. Oni i tak opowiadają o miesiącach. Niech opowiadają o miesiącach."
+  ],
+  "solutionDoc": {
+    "title": "Kartka kościelnego",
+    "source": "Znaleziona w skrzynce na intencje, przy zejściu do krypt. Ołówek kopiowy, pismo drżące.",
+    "style": "hand"
+  }
 }

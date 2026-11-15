@@ -4,7 +4,7 @@
   "gate": 3,
   "title": "Dzwon Piotr",
   "subtitle": "Wzgórze Miejskie · żywioł: dźwięk · 1354 / 1677 / październik",
-  "epigraph": "Dzwon nie odmierza czasu. Dzwon mierzy.",
+  "epigraph": "Kapituła prosiła, by dzwon mówił niżej, niż ucho słyszy. Spełniono.",
   "requires": {
     "solvedCases": 1,
     "chapter": 2,
@@ -85,142 +85,55 @@
   ],
   "questions": [
     {
-      "id": "q1",
-      "text": "Za wrota płacono grzywnę i ___ skojców od sztuki, grzywna liczy ___ skojce, razem za wrota ___ grzywien i dwadzieścia dwa skojce: wrót było siedmioro.",
+      "id": "u1",
+      "kind": "fill",
+      "text": "Pod Wzgórzem Miejskim murarze Kazimierza zamknęli ___ wrót, wszystkie z otworem na pieczęć. Trzysta lat później kapituła dopłaciła srebra, by dzwon ___. Dwanaście razy dziennie ton ___ uderza w coś, co odpowiada ___ i nie cichnie razem z dzwonem. Pies usłyszał to ___ pierwszym uderzeniem, bo to coś brzmi ___.",
       "options": [],
       "answer": -1,
-      "hint": "Trzy liczby z księgi wydatków. Reszta to dzielenie.",
-      "kind": "fill",
       "bank": [
-        "dziesięć",
-        "dwadzieścia",
-        "pięć",
-        "dwadzieścia cztery",
-        "dwanaście",
-        "trzydzieści",
-        "dziewięć",
-        "siedem",
-        "dziesięć i pół",
-        "osiem"
+        "siedmioro",
+        "sześcioro",
+        "ośmioro",
+        "dziesięcioro",
+        "dziewięcioro",
+        "mówił niżej, niż ucho słyszy",
+        "brzmiał głośniej niż burza",
+        "niósł się za Wisłę",
+        "mówił czyściej niż srebro",
+        "18 Hz",
+        "196 Hz",
+        "12 Hz",
+        "36 Hz",
+        "spod wrót",
+        "z wieży",
+        "z Wisły",
+        "z Rynku",
+        "echem z murów",
+        "przed",
+        "po",
+        "razem z",
+        "cały czas, cicho",
+        "tylko w południe",
+        "tylko w dzwonie"
       ],
       "answerWords": [
-        "dziesięć",
-        "dwadzieścia cztery",
-        "dziewięć"
-      ]
-    },
-    {
-      "id": "q2",
-      "text": "Ton dolny sprawdzano ___ na posadzce wieży, bo leży poniżej ___, a płomień reaguje na ___.",
-      "options": [],
-      "answer": -1,
-      "kind": "fill",
-      "bank": [
-        "świecą",
-        "uchem",
-        "dzwonem",
-        "progu słyszenia",
-        "Rynku",
-        "wieży",
-        "drganie",
-        "światło",
-        "modlitwę",
-        "srebro",
-        "ciepło",
-        "wiatr"
-      ],
-      "answerWords": [
-        "świecą",
-        "progu słyszenia",
-        "drganie"
-      ],
-      "hint": "Rachunek ludwisarza: jak strojono i czym."
-    },
-    {
-      "id": "q3",
-      "text": "Pies zaczął skomleć o ___, dwie minuty przed ___, bo słyszał ton ___ Hz, który był w tle.",
-      "options": [],
-      "answer": -1,
-      "hint": "Wydruk ma minuty. Margines ma psa.",
-      "kind": "fill",
-      "bank": [
-        "11:58",
-        "12:00",
-        "11:50",
-        "pierwszym uderzeniem",
-        "dzwonem Piotrem",
-        "rejestratorem",
-        "18",
-        "196",
-        "12",
-        "barką",
-        "gołębiami",
-        "wiatrem"
-      ],
-      "answerWords": [
-        "11:58",
-        "pierwszym uderzeniem",
-        "18"
-      ]
-    },
-    {
-      "id": "q4",
-      "text": "Po uderzeniach dzwonu dominanta 18 Hz rośnie ___ razy, nie zanika z dzwonem i wraca do tła po ___ minutach: w ziemi brzmi nie dzwon, tylko ___.",
-      "options": [],
-      "answer": -1,
-      "kind": "fill",
-      "bank": [
-        "sześć",
-        "dwa",
-        "dziesięć",
-        "czterdziestu",
-        "dziesięciu",
-        "pięciu",
-        "coś pod nim",
-        "echo",
-        "Wisła",
-        "rejestrator",
-        "pies",
-        "wiatr"
-      ],
-      "answerWords": [
-        "sześć",
-        "czterdziestu",
-        "coś pod nim"
-      ],
-      "hint": "Wydruk z rejestratora, trzy wiersze."
-    },
-    {
-      "id": "q5",
-      "text": "Kapituła stroiła dzwon do tego, co odpowiada spod ___ zbudowanych w roku ___, a ton dolny ma ___ Hz.",
-      "options": [],
-      "answer": -1,
-      "hint": "Księga wydatków, rachunek ludwisarza, wydruk. Trzy dokumenty, jedno zdanie.",
-      "kind": "fill",
-      "bank": [
-        "wrót",
-        "piwnic",
-        "katedry",
-        "1354",
-        "1677",
-        "1260",
-        "18",
-        "196",
-        "11",
-        "Rynku",
-        "kadzi",
-        "srebra"
-      ],
-      "answerWords": [
-        "wrót",
-        "1354",
-        "18"
+        "siedmioro",
+        "mówił niżej, niż ucho słyszy",
+        "18 Hz",
+        "spod wrót",
+        "przed",
+        "cały czas, cicho"
       ]
     }
   ],
   "solution": [
-    "Siedmioro wrót, wszystkie jednakie, z otworem na pieczęć. Trzysta lat później kapituła dopłaciła do kadzi jedenaście grzywien, więcej niż głos potrzebuje, i sprawdzała ton świecą, bo ucho go nie słyszy.",
-    "Dzwon Piotr nie odmierza godzin. Dwanaście razy dziennie uderza w coś, co odpowiada z dołu i nie cichnie razem z nim.",
-    "Pies usłyszał to dwie minuty przed dzwonem. Ludzie na Rynku nie słyszeli nic."
-  ]
+    "Lałem dzwony w Gdańsku, w Toruniu i w Krakowie. Nigdzie nie proszono o ton, którego nie słychać. Kanonik powiedział: ma odpowiadać temu, co jest pod wrotami. Spytałem, co jest pod wrotami. Powiedział, że to nie moja rzecz, moja rzecz to srebro.",
+    "Przy próbie postawiłem świecę na posadzce wieży. Przy uderzeniu płomień położył się. Po uderzeniu, kiedy dzwon już milczał, płomień drżał dalej, równo, jak od oddechu. Kanonik kiwnął głową. Zapłacono.",
+    "Zabieram do domu jedną rzecz: że w Sandomierzu stroi się dzwony do ziemi, nie do nieba."
+  ],
+  "solutionDoc": {
+    "title": "Odwrót rachunku",
+    "source": "Notatka ludwisarza Jana Dehnego na odwrocie kopii rachunku, 1677. Nie dla kapituły.",
+    "style": "hand"
+  }
 }

@@ -208,3 +208,13 @@ describe("odmiana", () => {
     expect(plural(22, "brama", "bramy", "bram")).toBe("bramy");
   });
 });
+
+import { fillGaps, encodeFill as enc2 } from "../src/engine/cases";
+describe("ustalenie z lukami", () => {
+  it("ciepło liczy luki, nie pytania", () => {
+    const bank = ["a", "b", "c", "d", "e", "f"]; const q = { bank, answerWords: ["a", "c", "e"] };
+    expect(fillGaps(q, enc2(bank, ["a", "c", "e"]))).toEqual({ ok: 3, total: 3 });
+    expect(fillGaps(q, enc2(bank, ["a", "d", "e"]))).toEqual({ ok: 2, total: 3 });
+    expect(fillGaps(q, enc2(bank, ["b", "d", "f"]))).toEqual({ ok: 0, total: 3 });
+  });
+});
