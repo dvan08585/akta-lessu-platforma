@@ -8,7 +8,7 @@
 <style>
   :root { --ink: #e8e0cf; --dim: #a39a86; --sand: #c9a86a; --bg: #0e0d0b; }
   html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; overflow: hidden; user-select: none; -webkit-user-select: none; touch-action: none; }
-  canvas { display: block; }
+  canvas { display: block; touch-action: none; }
   .hatch { position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: 0.28; background: repeating-linear-gradient(-32deg, rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.55) 2px 3px); }
   .grain { position: fixed; inset: 0; pointer-events: none; opacity: 0.14; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
   .vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 55%, transparent 55%, rgba(0,0,0,0.55) 100%); }
@@ -25,7 +25,7 @@
 <script type="importmap">{ "imports": { "three": "../vendor/three.module.js" } }</script>
 </head>
 <body>
-<div class="kicker"><span id="diag">Próba · bez fabuły · v4</span><b>Komnata</b></div>
+<div class="kicker"><span id="diag">Próba · bez fabuły · v5</span><b>Komnata</b></div>
 <div class="hint" id="hint">Obracaj telefonem. Trzymaj „Idź”, żeby iść tam, gdzie patrzysz. Dotknij rzeczy, żeby się przyjrzeć.</div>
 <div class="hatch"></div><div class="grain"></div><div class="vignette"></div>
 <div class="cap" id="cap"><small id="capk"></small><span id="capt"></span></div>
@@ -39,7 +39,7 @@ window.addEventListener("error", (e) => { document.getElementById("diag").textCo
 const N = 7, R = 4.2, H = 3.0, NW = 0.95, NH = 2.75, ND = 0.7, NY = 0;
 const corners = Array.from({ length: N }, (_, i) => { const a = (i / N) * Math.PI * 2; return new THREE.Vector3(Math.cos(a) * R, 0, Math.sin(a) * R); });
 const PASS = 4;
-const CW = 0.9, CH = 2.0, CL = 9, VR = CW / 2; // korytarz: szerokość, wysokość w kluczu sklepienia, długość, promień kolebki
+const CW = 0.78, CH = 2.0, CL = 9, VR = CW / 2, LA = 0.9; // LA: prosty odcinek za drzwiami, potem zakręt // korytarz: szerokość, wysokość w kluczu sklepienia, długość, promień kolebki
 const S1 = CL * 0.58, S2 = CL * 0.78; // zapadnięte sklepienie
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
@@ -130,16 +130,22 @@ for (let k = 0; k < 9; k++) { const a = Math.random() * Math.PI * 2, r = 1.4 + M
 
 // ============ korytarz: z prawej ściany wnęki, kolebka, zapadnięte sklepienie, krata ============
 const pass = niches.find((n) => n.i === PASS);
-const cx = pass.p(pass.t1, 0).add(pass.inward.clone().multiplyScalar(-ND / 2));
-const cdir = pass.dir.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), -0.75).normalize(); if (cdir.dot(pass.inward) > 0) cdir.applyAxisAngle(new THREE.Vector3(0, 1, 0), 1.5);
-const cright = new THREE.Vector3(-cdir.z, 0, cdir.x);
+// A: za drzwiami prosto wzdłuż ściany komnaty (żeby wejść, wystarczy skręcić w prawo); B: po zakręcie 60° od komnaty, żeby nie wejść w sąsiednią wnękę
+const ax = pass.p(pass.t1, 0).add(pass.inward.clone().multiplyScalar(-ND / 2)); const adir = pass.dir.clone(); const aright = pass.inward.clone().multiplyScalar(-1);
+const ap = (s, side, y) => ax.clone().add(adir.clone().multiplyScalar(s)).add(aright.clone().multiplyScalar(side)).setY(y);
+const cx = ap(LA, 0, 0); const cdir = adir.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), 1.05).normalize(); if (cdir.dot(pass.inward) > 0) cdir.copy(adir).applyAxisAngle(new THREE.Vector3(0, 1, 0), -1.05).normalize();
+const cright = new THREE.Vector3(-cdir.z, 0, cdir.x); if (cright.dot(aright) < 0) cright.multiplyScalar(-1);
 const cp = (s, side, y) => cx.clone().add(cdir.clone().multiplyScalar(s)).add(cright.clone().multiplyScalar(side)).setY(y);
-const WH = CH - VR; // wysokość ściany pionowej, nad nią kolebka
-quad(cp(0, -CW / 2, 0), cp(CL, -CW / 2, 0), cp(CL, -CW / 2, WH), cp(0, -CW / 2, WH), brickMat, 0.5, 8, 0.02); quad(cp(0, CW / 2, 0), cp(CL, CW / 2, 0), cp(CL, CW / 2, WH), cp(0, CW / 2, WH), brickMat, 0.5, 8, 0.02);
-const cfloor = quad(cp(0, -CW / 2, 0), cp(CL, -CW / 2, 0), cp(CL, CW / 2, 0), cp(0, CW / 2, 0), floorMat, 0.5); pickables.push(cfloor);
-// kolebka: 10 segmentów łuku, z przerwą nad zawaliskiem
-function vault(s0, s1) { const SEG = 10; for (let k = 0; k < SEG; k++) { const a0 = Math.PI * (k / SEG), a1 = Math.PI * ((k + 1) / SEG); const e0 = -Math.cos(a0) * VR, e1 = -Math.cos(a1) * VR; const h0 = WH + Math.sin(a0) * VR, h1 = WH + Math.sin(a1) * VR; quad(cp(s0, e0, h0), cp(s1, e0, h0), cp(s1, e1, h1), cp(s0, e1, h1), brickMat, 0.5, 4, 0.01); } }
-vault(0, S1); vault(S2, CL);
+const WH = CH - VR;
+function corridor(P, s0, s1, vaultGaps) {
+  quad(P(s0, -CW / 2, 0), P(s1, -CW / 2, 0), P(s1, -CW / 2, WH), P(s0, -CW / 2, WH), brickMat, 0.5, 8, 0.02); quad(P(s0, CW / 2, 0), P(s1, CW / 2, 0), P(s1, CW / 2, WH), P(s0, CW / 2, WH), brickMat, 0.5, 8, 0.02);
+  const f = quad(P(s0, -CW / 2, 0), P(s1, -CW / 2, 0), P(s1, CW / 2, 0), P(s0, CW / 2, 0), floorMat, 0.5); pickables.push(f);
+  const SEG = 10; for (const [v0, v1] of vaultGaps) for (let k = 0; k < SEG; k++) { const a0 = Math.PI * (k / SEG), a1 = Math.PI * ((k + 1) / SEG); const e0 = -Math.cos(a0) * VR, e1 = -Math.cos(a1) * VR; const h0 = WH + Math.sin(a0) * VR, h1 = WH + Math.sin(a1) * VR; quad(P(v0, e0, h0), P(v1, e0, h0), P(v1, e1, h1), P(v0, e1, h1), brickMat, 0.5, 4, 0.01); }
+  return f;
+}
+corridor(ap, -0.05, LA + 0.45, [[-0.05, LA + 0.45]]); // odcinek A, z zapasem za zakręt (ściana zewnętrzna zakrętu)
+quad(ap(LA + 0.45, -CW / 2, 0), ap(LA + 0.45, CW / 2, 0), ap(LA + 0.45, CW / 2, CH), ap(LA + 0.45, -CW / 2, CH), brickMat, 0.5, 4, 0.02); // koniec A: ściana, w którą się patrzy, zanim skręci się w B
+const cfloor = corridor(cp, -0.2, CL, [[-0.2, S1], [S2, CL]]);
 // komin wyrwy nad zawaliskiem: less, ciemno u góry
 quad(cp(S1, -CW / 2, WH), cp(S2, -CW / 2, WH), cp(S2, -CW / 2, CH + 1.4), cp(S1, -CW / 2, CH + 1.4), lessMat, 0.5, 4, 0.08); quad(cp(S1, CW / 2, WH), cp(S2, CW / 2, WH), cp(S2, CW / 2, CH + 1.4), cp(S1, CW / 2, CH + 1.4), lessMat, 0.5, 4, 0.08);
 quad(cp(S1, -CW / 2, WH), cp(S1, CW / 2, WH), cp(S1, CW / 2, CH + 1.4), cp(S1, -CW / 2, CH + 1.4), lessMat, 0.5, 3, 0.06); quad(cp(S2, -CW / 2, WH), cp(S2, CW / 2, WH), cp(S2, CW / 2, CH + 1.4), cp(S2, -CW / 2, CH + 1.4), lessMat, 0.5, 3, 0.06);
@@ -174,7 +180,7 @@ pg.setAttribute("position", new THREE.BufferAttribute(pp, 3)); scene.add(new THR
 
 // ============ ruch: stała prędkość, „trzymaj, żeby iść", granice, kucanie pod zawałem ============
 const EYE = 1.5, CROUCH = 0.62, SPEED = 0.75;
-const camPos = new THREE.Vector3(0, EYE, 3.0); camera.position.copy(camPos); window.__pos = camPos; window.__walkable = (x, z) => walkable(x, z);
+const camPos = new THREE.Vector3(0, EYE, 3.0); camera.position.copy(camPos); window.__pos = camPos; window.__walkable = (x, z) => walkable(x, z); window.__dbg = { pass, cdir, cx, cright };
 let target = null; // punkt, do którego idziemy po dotknięciu podłogi
 let walking = false;
 let yaw = 0, pitch = -0.08, gyro = false, q = new THREE.Quaternion();
@@ -186,8 +192,10 @@ function walkable(x, z) {
   let inside = true; for (let i = 0; i < N; i++) { const A = corners[i], B = corners[(i + 1) % N]; const e = B.clone().sub(A); const n = new THREE.Vector3(-e.z, 0, e.x).normalize(); if (v.clone().sub(A).dot(n) < 0.35) inside = false; }
   if (inside && Math.hypot(x, z) < 0.95) inside = false;
   if (inside) return true;
-  for (const n of niches) { const rel = v.clone().sub(n.A); const t = rel.dot(n.dir), d = -rel.dot(n.inward); if (t > n.t0 + 0.12 && t < n.t1 - 0.12 && d > -0.5 && d < ND - 0.1) return true; }
-  const rel = v.clone().sub(cx); const s = rel.dot(cdir), side = rel.dot(cright); if (s > -0.2 && s < CL - 0.7 && Math.abs(side) < CW / 2 - 0.18) return true;
+  for (const n of niches) { const rel = v.clone().sub(n.A); const t = rel.dot(n.dir), d = -rel.dot(n.inward); if (t > n.t0 + 0.1 && t < (n.i === PASS ? n.t1 + 0.3 : n.t1 - 0.1) && d > -0.5 && d < ND - 0.08) return true; }
+  const ra = v.clone().sub(ax); const sa = ra.dot(adir), sideA = ra.dot(aright); if (sa > -0.25 && sa < LA + 0.25 && Math.abs(sideA) < CW / 2 - 0.1) return true;
+  const rel = v.clone().sub(cx); const s = rel.dot(cdir), side = rel.dot(cright); if (s > -0.3 && s < CL - 0.7 && Math.abs(side) < CW / 2 - 0.1) return true;
+  if (v.distanceTo(cx) < CW / 2 - 0.05) return true; // zakręt
   return false;
 }
 function eyeHeightAt(x, z) { const rel = new THREE.Vector3(x, 0, z).sub(cx); const s = rel.dot(cdir), side = rel.dot(cright); if (Math.abs(side) < CW && s > S1 - 0.5 && s < S2 + 0.3) { const d = Math.min(Math.max(0, s - (S1 - 0.5)), Math.max(0, S2 + 0.3 - s)); return EYE - (EYE - CROUCH) * Math.min(1, d / 0.5); } return EYE; }
@@ -196,8 +204,8 @@ function onOrient(e) { if (e.alpha === null) return; const a = THREE.MathUtils.d
 document.getElementById("gyro").addEventListener("click", async () => { try { const DO = DeviceOrientationEvent; if (DO.requestPermission) { const r = await DO.requestPermission(); if (r !== "granted") throw 0; } addEventListener("deviceorientation", onOrient); document.getElementById("gyro").textContent = "Żyroskop działa"; } catch { document.getElementById("gyro").textContent = "Bez żyroskopu: przeciągaj"; } });
 // „Idź (trzymaj)": każdy rodzaj wejścia osobno (pointer, touch, mouse), bez menu kontekstowego; stan widać na przycisku, ostatnie zdarzenie w nagłówku (diagnostyka na telefonie).
 const diag = document.getElementById("diag");
-const startWalk = (e) => { if (e.cancelable) e.preventDefault(); walking = true; target = null; walkBtn.textContent = "Idziesz…"; diag.textContent = "v4 · " + e.type; };
-const stopWalk = (e) => { walking = false; walkBtn.textContent = "Idź (trzymaj)"; if (e) diag.textContent = "v4 · " + e.type; };
+const startWalk = (e) => { if (e.cancelable) e.preventDefault(); walking = true; target = null; walkBtn.textContent = "Idziesz…"; diag.textContent = "v5 · " + e.type; };
+const stopWalk = (e) => { walking = false; walkBtn.textContent = "Idź (trzymaj)"; if (e) diag.textContent = "v5 · " + e.type; };
 walkBtn.addEventListener("pointerdown", startWalk); walkBtn.addEventListener("pointerup", stopWalk); walkBtn.addEventListener("pointercancel", stopWalk); walkBtn.addEventListener("pointerleave", stopWalk);
 walkBtn.addEventListener("touchstart", startWalk, { passive: false }); walkBtn.addEventListener("touchend", stopWalk); walkBtn.addEventListener("touchcancel", stopWalk);
 walkBtn.addEventListener("mousedown", startWalk); addEventListener("mouseup", stopWalk);
@@ -220,7 +228,18 @@ function caption(k, t) { document.getElementById("capk").textContent = k; docume
 setTimeout(() => (document.getElementById("hint").style.opacity = "0"), 7000);
 addEventListener("resize", () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 
-let t0 = performance.now(); const fwd = new THREE.Vector3(); let bob = 0;
+// Opisy po podejściu: w zasięgu 1,4 m i w polu widzenia pojawia się kartka, raz na obiekt, znowu po odejściu.
+const POI = [
+  { p: new THREE.Vector3(0, 0.9, 0), r: 1.6, k: "cokół", t: "Siedmioboczny cokół z kamienia, którego nie ma w okolicy. Na nim płyta, pęknięta w poprzek, z wyrytym siedmiobokiem. Obok krzemień. Kamień jest ciepły, nie od latarki." },
+  ...niches.map((n) => ({ p: n.back(n.len / 2, 1.55), r: 1.5, k: `wnęka ${n.i + 1}`, t: n.i === PASS ? "Siedmiobok w siedmioboku, jak w każdej wnęce. Ale po prawej, w bocznej ścianie, latarka pokazuje cegłę: otwór na wysokość człowieka." : "Siedmiobok w siedmioboku, wypukły, wykuty w lessie, który trzyma jak kamień. Less wokół jest gładszy niż gdzie indziej: ktoś tu przykładał dłonie." })),
+  { p: ap(0.5, 0, 1.2), r: 1.1, k: "korytarz", t: "Cegła zamiast lessu. Ktoś ten korytarz murował, nie kopał. Spoiny równe, sklepienie czyste. Dalej ciemno i chłodniej." },
+  { p: cp(S1 - 0.3, 0, 1.2), r: 1.2, k: "zawalisko", t: "Sklepienie zapadło się. Rumowisko wisi od góry do pół metra nad posadzką. Pod nim prześwit. Na kolana." },
+  { p: cp(CL - 0.6, 0, 1.2), r: 1.3, k: "krata", t: "Krata. Kute pręty, nowsze niż mur. Zamek bez dziurki na klucz: otwiera się z drugiej strony. Za nią zimne światło i cisza." },
+];
+let poiShown = null;
+function checkPOI() { camera.getWorldDirection(fwd); let best = null, bd = 1e9; for (const o of POI) { const d = o.p.clone().sub(camera.position); const dist = d.length(); if (dist > o.r) continue; d.normalize(); if (d.dot(fwd) < 0.45) continue; if (dist < bd) { bd = dist; best = o; } } if (best !== poiShown) { poiShown = best; if (best) caption(best.k, best.t); } }
+window.__look = (x, z) => { yaw = Math.atan2(-x, -z); };
+let t0 = performance.now(); const fwd = new THREE.Vector3(); let bob = 0; let poiTick = 0;
 function frame(now) {
   const dt = Math.min(0.05, (now - t0) / 1000); t0 = now;
   // kierunek patrzenia
@@ -233,6 +252,7 @@ function frame(now) {
   const eye = eyeHeightAt(camPos.x, camPos.z); camPos.y += (eye - camPos.y) * Math.min(1, dt * 4); bob = moved ? bob + dt * 7 : bob * 0.9;
   camera.position.set(camPos.x, camPos.y + Math.sin(bob) * 0.015, camPos.z);
   torch.intensity = 58 + Math.sin(now / 230) * 2;
+  if ((poiTick = (poiTick + 1) % 10) === 0) checkPOI();
   const arr = pg.attributes.position.array; for (let i = 0; i < pn; i++) { arr[i * 3 + 1] -= dt * 0.03; arr[i * 3] += Math.sin(now / 1000 + i) * dt * 0.01; if (arr[i * 3 + 1] < 0) arr[i * 3 + 1] = H; } pg.attributes.position.needsUpdate = true;
   renderer.render(scene, camera); requestAnimationFrame(frame);
 }
