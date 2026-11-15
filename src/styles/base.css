@@ -163,3 +163,11 @@ button.body:hover, .btn.body:hover { box-shadow: 0 0 0 1px var(--sand), 0 0 20px
 @keyframes hush-out { from { opacity: 1; } to { opacity: 0; } }
 .rite-closing { margin-top: 0.4rem; }
 .pledge { border-style: dashed; }
+
+/* Ryciny: kreska w kolorze atramentu, bez tła. Panorama na wejściu, winieta żywiołu w nagłówku sprawy. */
+.vignette { display: block; color: var(--ink-dim); }
+.vignette.hero { width: 100%; height: auto; margin: 0.2rem 0 1rem; color: var(--ink-faint); }
+.case-head { display: flex; align-items: flex-start; gap: 0.8rem; }
+.case-head > div { flex: 1; min-width: 0; }
+.case-head .vignette { width: 112px; height: auto; flex: none; margin-top: 0.4rem; color: var(--ink-faint); }
+@media (max-width: 360px) { .case-head .vignette { width: 84px; } }

@@ -2,6 +2,7 @@ import { h, go, toast, back, next } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import { interludesFor } from "./interludes";
 import { icon, flint, flintSeed } from "./icons";
+import { hero, vignette } from "./vignettes";
 import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import { pickDaily, dayKey } from "../engine/daily";
 import { track } from "../engine/track";
@@ -55,6 +56,7 @@ export function viewIntro(app: App): HTMLElement {
     h("div", { class: "footer" }, "Przekazano przez: Program edukacyjny „Sandomierz Pod Spodem”. Partner: Fundacja Sandomierska Memoria."));
   return h("section", { class: "intro fade-in" },
     dateline(),
+    hero(),
     h("h1", {}, "Akta Lessu"),
     h("p", { class: "quote" }, "Less nie był pyłem. Less był materią, która pamięta. ", h("em", {}, "Jak skóra okładki, jak wosk na pieczęci, jak zapach jabłek w piwnicy.")),
     solved ? null : letter,
@@ -263,8 +265,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   // Nadtytuł (brama i wzgórze) + tytuł + motto. Podtytuł sprawy nie powtarza wzgórza: zostaje tylko to, czego nie ma w nadtytule.
   const g = app.map.gates.find((x) => x.n === c.gate);
   const sub = c.subtitle.split(" · ").filter((part) => !(g && (part.includes(g.name.replace("Wzgórze ", "")) || part.startsWith("żywioł")))).join(" · ");
-  sec.append(h("p", { class: "kicker" }, `Brama ${c.gate} · ${g?.name ?? ""}`), h("h2", {}, c.title));
-  sec.append(h("p", { class: "muted" }, [g ? `żywioł: ${g.element}` : "", sub].filter(Boolean).join(" · ")));
+  sec.append(h("div", { class: "case-head" }, h("div", {}, h("p", { class: "kicker" }, `Brama ${c.gate} · ${g?.name ?? ""}`), h("h2", {}, c.title), h("p", { class: "muted" }, [g ? `żywioł: ${g.element}` : "", sub].filter(Boolean).join(" · "))), g ? vignette(g.element) : null));
   sec.append(h("p", { class: "faint epigraph" }, c.epigraph));
 
   // Dokumenty: nawigacja zakładkami, jeden na ekran (telefon).
