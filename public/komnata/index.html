@@ -9,76 +9,82 @@
   :root { --ink: #e8e0cf; --dim: #a39a86; --sand: #c9a86a; --bg: #0e0d0b; }
   html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; overflow: hidden; user-select: none; -webkit-user-select: none; touch-action: none; }
   canvas { display: block; }
-  .hatch { position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: 0.32; background: repeating-linear-gradient(-32deg, rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.55) 2px 3px); }
-  .grain { position: fixed; inset: 0; pointer-events: none; opacity: 0.16; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-  .vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 55%, transparent 50%, rgba(0,0,0,0.6) 100%); }
+  .hatch { position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: 0.28; background: repeating-linear-gradient(-32deg, rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.55) 2px 3px); }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: 0.14; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 55%, transparent 55%, rgba(0,0,0,0.55) 100%); }
   .ui { position: fixed; left: 0; right: 0; bottom: 0; padding: 0.8rem 1rem calc(0.8rem + env(safe-area-inset-bottom)); display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; z-index: 5; }
-  .ui a, .ui button { font: inherit; font-size: 0.95rem; color: var(--ink); background: rgba(14,13,11,0.6); border: 1px solid var(--dim); border-radius: 6px; padding: 0.5rem 0.9rem; text-decoration: none; backdrop-filter: blur(4px); }
+  .ui a, .ui button { font: inherit; font-size: 0.95rem; color: var(--ink); background: rgba(14,13,11,0.6); border: 1px solid var(--dim); border-radius: 6px; padding: 0.55rem 0.9rem; text-decoration: none; backdrop-filter: blur(4px); touch-action: none; }
+  .ui button.walk { flex: 1; text-align: center; padding: 0.8rem 0.9rem; }
+  .ui button.walk:active { background: rgba(201,168,106,0.25); }
   .kicker { position: fixed; top: calc(0.8rem + env(safe-area-inset-top)); left: 1rem; right: 1rem; z-index: 5; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); }
   .kicker b { display: block; font-weight: 400; font-size: 1.3rem; letter-spacing: 0; text-transform: none; color: var(--ink); margin-top: 0.2rem; }
-  .cap { position: fixed; left: 1rem; right: 1rem; bottom: 4.6rem; z-index: 5; background: #f1ebdd; color: #1e1a14; border-radius: 2px; padding: 0.8rem 1rem; font-size: 1.05rem; line-height: 1.4; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: rotate(-0.4deg); display: none; }
+  .cap { position: fixed; left: 1rem; right: 1rem; bottom: 5rem; z-index: 5; background: #f1ebdd; color: #1e1a14; border-radius: 2px; padding: 0.8rem 1rem; font-size: 1.05rem; line-height: 1.4; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: rotate(-0.4deg); display: none; }
   .cap small { display: block; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: #6b5a40; margin-bottom: 0.3rem; }
-  .hint { position: fixed; left: 0; right: 0; top: 45%; text-align: center; color: var(--dim); font-size: 0.95rem; letter-spacing: 0.08em; z-index: 4; pointer-events: none; transition: opacity 1s; }
+  .hint { position: fixed; left: 0; right: 0; top: 45%; text-align: center; color: var(--dim); font-size: 0.95rem; letter-spacing: 0.08em; z-index: 4; pointer-events: none; transition: opacity 1s; padding: 0 1.5rem; }
 </style>
 <script type="importmap">{ "imports": { "three": "../vendor/three.module.js" } }</script>
 </head>
 <body>
 <div class="kicker">Próba · bez fabuły<b>Komnata</b></div>
-<div class="hint" id="hint">Obracaj telefonem. Dotknij podłogi, żeby podejść. Dotknij rzeczy, żeby się przyjrzeć.</div>
+<div class="hint" id="hint">Obracaj telefonem. Trzymaj „Idź”, żeby iść tam, gdzie patrzysz. Dotknij rzeczy, żeby się przyjrzeć.</div>
 <div class="hatch"></div><div class="grain"></div><div class="vignette"></div>
 <div class="cap" id="cap"><small id="capk"></small><span id="capt"></span></div>
-<div class="ui"><a href="../#/akta">← Wróć</a><button id="gyro">Żyroskop</button><button id="walk">Dalej</button></div>
+<div class="ui"><a href="../#/akta">← Wróć</a><button id="walk" class="walk">Idź (trzymaj)</button><button id="gyro">Żyroskop</button></div>
 <script type="module">
 import * as THREE from "three";
 
-// ============ geometria komnaty: siedmiobok z lessu, siedem wnęk, z jednej korytarz do zawaliska i kraty ============
-const N = 7, R = 4.2, H = 3.0, NW = 0.95, NH = 2.75, ND = 0.7, NY = 0; // wnęka: szerokość, wysokość, głębokość, dolna krawędź
+// ============ wymiary ============
+const N = 7, R = 4.2, H = 3.0, NW = 0.95, NH = 2.75, ND = 0.7, NY = 0;
 const corners = Array.from({ length: N }, (_, i) => { const a = (i / N) * Math.PI * 2; return new THREE.Vector3(Math.cos(a) * R, 0, Math.sin(a) * R); });
-const PASS = 4; // wnęka z przejściem (po wejściu na prawo)
+const PASS = 4;
+const CW = 0.9, CH = 2.0, CL = 9, VR = CW / 2; // korytarz: szerokość, wysokość w kluczu sklepienia, długość, promień kolebki
+const S1 = CL * 0.58, S2 = CL * 0.78; // zapadnięte sklepienie
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "low-power" });
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
 renderer.setPixelRatio(Math.min(2, devicePixelRatio)); renderer.setSize(innerWidth, innerHeight); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.5;
 document.body.prepend(renderer.domElement);
 const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0b0a08); scene.fog = new THREE.FogExp2(0x0b0a08, 0.06);
 const camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 0.05, 60);
 
-// ---------- tekstury proceduralne ----------
+// ============ tekstury proceduralne (kolor + wypukłość) ============
 function tex(w, h, draw, rep = [1, 1]) { const c = document.createElement("canvas"); c.width = w; c.height = h; draw(c.getContext("2d"), w, h); const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(...rep); t.colorSpace = THREE.SRGBColorSpace; return t; }
 const rnd = (seed) => { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; };
-const lessTex = tex(512, 512, (x, w, h) => { const r = rnd(7); x.fillStyle = "#8e7f62"; x.fillRect(0, 0, w, h);
+const lessDraw = (x, w, h) => { const r = rnd(7); x.fillStyle = "#8e7f62"; x.fillRect(0, 0, w, h);
   for (let i = 0; i < 26000; i++) { const g = 110 + r() * 70; x.fillStyle = `rgb(${g + 20},${g + 6},${g - 20})`; x.fillRect(r() * w, r() * h, 1.5, 1.5); }
   for (let y = 0; y < h; y += 7 + r() * 9) { x.strokeStyle = `rgba(40,30,18,${0.15 + r() * 0.25})`; x.lineWidth = 0.8 + r(); x.beginPath(); for (let px = 0; px <= w; px += 16) x.lineTo(px, y + Math.sin(px / 37 + y) * 2.2 + (r() - 0.5) * 2); x.stroke(); }
-  // rysy od narzędzi
-  for (let i = 0; i < 40; i++) { x.strokeStyle = "rgba(60,45,25,0.25)"; x.lineWidth = 1; x.beginPath(); const sx = r() * w, sy = r() * h; x.moveTo(sx, sy); x.lineTo(sx + (r() - 0.5) * 60, sy + (r() - 0.5) * 14); x.stroke(); }
-}, [3, 1.5]);
-const brickTex = tex(512, 512, (x, w, h) => { const r = rnd(5); x.fillStyle = "#5a4634"; x.fillRect(0, 0, w, h); const bh = 32, bw = 64;
-  for (let row = 0; row < h / bh; row++) for (let col = -1; col < w / bw + 1; col++) { const ox = (row % 2) * bw / 2; const g = 95 + r() * 40; x.fillStyle = `rgb(${g + 30},${g - 5},${g - 30})`; x.fillRect(col * bw + ox + 2, row * bh + 2, bw - 4, bh - 4); for (let k = 0; k < 60; k++) { x.fillStyle = `rgba(0,0,0,${0.08 + r() * 0.1})`; x.fillRect(col * bw + ox + 2 + r() * (bw - 4), row * bh + 2 + r() * (bh - 4), 1.5, 1.5); } }
-}, [2, 2]);
-const stoneTex = tex(256, 256, (x, w, h) => { const r = rnd(3); x.fillStyle = "#5b5650"; x.fillRect(0, 0, w, h); for (let i = 0; i < 9000; i++) { const g = 70 + r() * 50; x.fillStyle = `rgb(${g},${g - 3},${g - 8})`; x.fillRect(r() * w, r() * h, 2, 2); } for (let i = 0; i < 30; i++) { x.strokeStyle = "rgba(20,18,14,0.35)"; x.beginPath(); x.moveTo(r() * w, r() * h); x.lineTo(r() * w, r() * h); x.stroke(); } });
-const floorTex = tex(512, 512, (x, w, h) => { const r = rnd(9); x.fillStyle = "#4a4640"; x.fillRect(0, 0, w, h);
-  for (let i = 0; i < 14000; i++) { const g = 60 + r() * 40; x.fillStyle = `rgb(${g + 4},${g},${g - 6})`; x.fillRect(r() * w, r() * h, 2, 2); }
-  // płyty posadzki ze spoinami
-  x.strokeStyle = "rgba(10,8,6,0.8)"; x.lineWidth = 3; for (let i = 0; i <= 4; i++) { x.beginPath(); x.moveTo(i * 128, 0); x.lineTo(i * 128 + (r() - 0.5) * 10, h); x.stroke(); x.beginPath(); x.moveTo(0, i * 128); x.lineTo(w, i * 128 + (r() - 0.5) * 10); x.stroke(); }
-}, [4, 4]);
+  for (let i = 0; i < 40; i++) { x.strokeStyle = "rgba(60,45,25,0.25)"; x.lineWidth = 1; x.beginPath(); const sx = r() * w, sy = r() * h; x.moveTo(sx, sy); x.lineTo(sx + (r() - 0.5) * 60, sy + (r() - 0.5) * 14); x.stroke(); } };
+const lessTex = tex(512, 512, lessDraw, [3, 1.5]); const lessBump = tex(512, 512, lessDraw, [3, 1.5]); lessBump.colorSpace = THREE.NoColorSpace;
+const brickDraw = (x, w, h) => { const r = rnd(5); x.fillStyle = "#4a3a2c"; x.fillRect(0, 0, w, h); const bh = 32, bw = 64;
+  for (let row = 0; row < h / bh; row++) for (let col = -1; col < w / bw + 1; col++) { const ox = (row % 2) * bw / 2; const g = 95 + r() * 40; x.fillStyle = `rgb(${g + 30},${g - 5},${g - 30})`; x.beginPath(); x.roundRect(col * bw + ox + 2, row * bh + 2, bw - 4, bh - 4, 3); x.fill(); for (let k = 0; k < 60; k++) { x.fillStyle = `rgba(0,0,0,${0.08 + r() * 0.1})`; x.fillRect(col * bw + ox + 2 + r() * (bw - 4), row * bh + 2 + r() * (bh - 4), 1.5, 1.5); } } };
+const brickTex = tex(512, 512, brickDraw, [2, 2]); const brickBump = tex(512, 512, brickDraw, [2, 2]); brickBump.colorSpace = THREE.NoColorSpace;
+const stoneTex = tex(256, 256, (x, w, h) => { const r = rnd(3); x.fillStyle = "#5b5650"; x.fillRect(0, 0, w, h); for (let i = 0; i < 9000; i++) { const g = 70 + r() * 50; x.fillStyle = `rgb(${g},${g - 3},${g - 8})`; x.fillRect(r() * w, r() * h, 2, 2); } });
+const floorTex = tex(512, 512, (x, w, h) => { const r = rnd(9); x.fillStyle = "#4a4640"; x.fillRect(0, 0, w, h); for (let i = 0; i < 14000; i++) { const g = 60 + r() * 40; x.fillStyle = `rgb(${g + 4},${g},${g - 6})`; x.fillRect(r() * w, r() * h, 2, 2); } x.strokeStyle = "rgba(10,8,6,0.8)"; x.lineWidth = 3; for (let i = 0; i <= 4; i++) { x.beginPath(); x.moveTo(i * 128, 0); x.lineTo(i * 128 + (r() - 0.5) * 10, h); x.stroke(); x.beginPath(); x.moveTo(0, i * 128); x.lineTo(w, i * 128 + (r() - 0.5) * 10); x.stroke(); } }, [4, 4]);
 const flintTex = tex(256, 256, (x, w, h) => { x.fillStyle = "#3a3630"; x.fillRect(0, 0, w, h); const tones = ["#d6c8a6", "#4e473d", "#b9a98a", "#3b3630", "#8f8470"]; for (let i = 34; i >= 0; i--) { const t = i / 33; x.strokeStyle = tones[i % 5]; x.lineWidth = 1 + t * 2; x.beginPath(); x.ellipse(80 + t * 60, 90 + t * 50, 6 + i * 6 + t * t * 40, 6 + i * 4.5 + t * 12, -0.3, 0, Math.PI * 2); x.stroke(); } });
 const slabTex = tex(512, 256, (x, w, h) => { const r = rnd(13); x.fillStyle = "#6a655c"; x.fillRect(0, 0, w, h); for (let i = 0; i < 12000; i++) { const g = 85 + r() * 40; x.fillStyle = `rgb(${g},${g - 2},${g - 8})`; x.fillRect(r() * w, r() * h, 2, 2); }
-  // pęknięcie przez płytę i siedmiobok wyryty pośrodku
   x.strokeStyle = "rgba(20,16,12,0.9)"; x.lineWidth = 2; x.beginPath(); x.moveTo(40, 30); for (let px = 40; px < w - 40; px += 20) x.lineTo(px, 30 + (px - 40) * 0.35 + (r() - 0.5) * 14); x.stroke();
-  x.strokeStyle = "rgba(30,24,16,0.8)"; x.lineWidth = 2.5; x.beginPath(); for (let k = 0; k <= 7; k++) { const a = -Math.PI / 2 + (k * 2 * Math.PI) / 7; const px = w / 2 + Math.cos(a) * 52, py = h / 2 + Math.sin(a) * 52; k ? x.lineTo(px, py) : x.moveTo(px, py); } x.stroke();
-});
-const lessMat = new THREE.MeshStandardMaterial({ map: lessTex, roughness: 1, color: 0xb8a98c, side: THREE.DoubleSide });
-const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 1, color: 0xb0a090, side: THREE.DoubleSide });
+  x.strokeStyle = "rgba(30,24,16,0.8)"; x.lineWidth = 2.5; x.beginPath(); for (let k = 0; k <= 7; k++) { const a = -Math.PI / 2 + (k * 2 * Math.PI) / 7; const px = w / 2 + Math.cos(a) * 52, py = h / 2 + Math.sin(a) * 52; k ? x.lineTo(px, py) : x.moveTo(px, py); } x.stroke(); });
+const lessMat = new THREE.MeshStandardMaterial({ map: lessTex, bumpMap: lessBump, bumpScale: 0.6, roughness: 1, color: 0xb8a98c, side: THREE.DoubleSide });
+const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, bumpMap: brickBump, bumpScale: 0.5, roughness: 1, color: 0xb0a090, side: THREE.DoubleSide });
+const rubbleMat = new THREE.MeshStandardMaterial({ map: lessTex, bumpMap: lessBump, bumpScale: 0.4, roughness: 1, color: 0xa89a80 });
 const stoneMat = new THREE.MeshStandardMaterial({ map: stoneTex, roughness: 0.95, color: 0x9a948a });
 const floorMat = new THREE.MeshStandardMaterial({ map: floorTex, roughness: 1, color: 0x8a847a });
 const darkMat = new THREE.MeshStandardMaterial({ color: 0x1a1612, roughness: 1, side: THREE.DoubleSide });
 const ironMat = new THREE.MeshStandardMaterial({ color: 0x2a2622, roughness: 0.6, metalness: 0.7 });
 
-// ---------- ściany z wnękami (każda ściana: trzy płaty wokół otworu + skrzynka wnęki za ścianą) ----------
-const pickables = []; const spots = [];
-function quad(a, b, c, d, mat, uvScale = 1) { // czworokąt w przestrzeni, UV po długości
-  const g = new THREE.BufferGeometry(); const v = [a, b, c, a, c, d]; const pos = new Float32Array(v.flatMap((p) => [p.x, p.y, p.z]));
-  const w = a.distanceTo(b), h = a.distanceTo(d); const uv = new Float32Array([0, 0, w, 0, w, h, 0, 0, w, h, 0, h].map((u) => u * uvScale));
-  g.setAttribute("position", new THREE.BufferAttribute(pos, 3)); g.setAttribute("uv", new THREE.BufferAttribute(uv, 2)); g.computeVertexNormals();
+// ============ geometria: płaty z lekkim pofałdowaniem (less nie jest płaski) ============
+const hash = (x, y, z) => { const s = Math.sin(x * 12.9898 + y * 78.233 + z * 37.719) * 43758.5453; return s - Math.floor(s); };
+function smoothNoise(x, y, z) { const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z); const xf = x - xi, yf = y - yi, zf = z - zi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), w = zf * zf * (3 - 2 * zf);
+  const l = (a, b, t) => a + (b - a) * t; const n = (dx, dy, dz) => hash(xi + dx, yi + dy, zi + dz);
+  return l(l(l(n(0, 0, 0), n(1, 0, 0), u), l(n(0, 1, 0), n(1, 1, 0), u), v), l(l(n(0, 0, 1), n(1, 0, 1), u), l(n(0, 1, 1), n(1, 1, 1), u), v), w) - 0.5; }
+const pickables = [];
+/** czworokąt a-b-c-d, podzielony na siatkę, wierzchołki wewnętrzne przesunięte wzdłuż normalnej szumem (0 na krawędziach, więc szwy zostają szczelne) */
+function quad(a, b, c, d, mat, uvScale = 1, segs = 1, amp = 0) {
+  const g = new THREE.BufferGeometry(); const pos = [], uv = [], idx = [];
+  const ab = b.clone().sub(a), ad = d.clone().sub(a); const nrm = ab.clone().cross(ad).normalize(); const w = ab.length(), h = ad.length();
+  for (let j = 0; j <= segs; j++) for (let i = 0; i <= segs; i++) { const u = i / segs, v = j / segs; const p = a.clone().add(ab.clone().multiplyScalar(u)).add(ad.clone().multiplyScalar(v));
+    const edge = Math.min(u, 1 - u, v, 1 - v) * 4; const f = amp * Math.min(1, edge) * smoothNoise(p.x * 1.3, p.y * 1.3, p.z * 1.3); p.add(nrm.clone().multiplyScalar(f)); pos.push(p.x, p.y, p.z); uv.push(u * w * uvScale, v * h * uvScale); }
+  for (let j = 0; j < segs; j++) for (let i = 0; i < segs; i++) { const k = j * (segs + 1) + i; idx.push(k, k + 1, k + segs + 2, k, k + segs + 2, k + segs + 1); }
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2)); g.setIndex(idx); g.computeVertexNormals();
   const m = new THREE.Mesh(g, mat); scene.add(m); return m;
 }
 const niches = [];
@@ -87,134 +93,137 @@ for (let i = 0; i < N; i++) {
   const mid = A.clone().add(B).multiplyScalar(0.5); const up = new THREE.Vector3(0, 1, 0);
   const p = (t, y) => A.clone().add(dir.clone().multiplyScalar(t)).add(up.clone().multiplyScalar(y));
   const t0 = len / 2 - NW / 2, t1 = len / 2 + NW / 2; const y0 = NY, y1 = NY + NH;
-  // lewa, prawa, nad i pod otworem
-  quad(p(0, 0), p(t0, 0), p(t0, H), p(0, H), lessMat, 0.35); quad(p(t1, 0), p(len, 0), p(len, H), p(t1, H), lessMat, 0.35);
-  quad(p(t0, y1), p(t1, y1), p(t1, H), p(t0, H), lessMat, 0.35); quad(p(t0, 0), p(t1, 0), p(t1, y0), p(t0, y0), lessMat, 0.35);
-  // wnęka: boki, tył, góra, dół (tył wnęki PASS to otwór korytarza)
+  quad(p(0, 0), p(t0, 0), p(t0, H), p(0, H), lessMat, 0.35, 6, 0.09); quad(p(t1, 0), p(len, 0), p(len, H), p(t1, H), lessMat, 0.35, 6, 0.09);
+  quad(p(t0, y1), p(t1, y1), p(t1, H), p(t0, H), lessMat, 0.35, 2, 0.03);
   const back = (t, y) => p(t, y).add(inward.clone().multiplyScalar(-ND));
-  quad(p(t0, y0), back(t0, y0), back(t0, y1), p(t0, y1), lessMat, 0.4);
-  if (i !== PASS) quad(p(t1, y0), back(t1, y0), back(t1, y1), p(t1, y1), lessMat, 0.4); else quad(p(t1, 2.0), back(t1, 2.0), back(t1, y1), p(t1, y1), lessMat, 0.4); // prawa ściana wnęki: nad otworem korytarza
+  quad(p(t0, y0), back(t0, y0), back(t0, y1), p(t0, y1), lessMat, 0.4, 3, 0.03);
+  if (i !== PASS) quad(p(t1, y0), back(t1, y0), back(t1, y1), p(t1, y1), lessMat, 0.4, 3, 0.03); else quad(p(t1, 2.0), back(t1, 2.0), back(t1, y1), p(t1, y1), lessMat, 0.4);
   quad(p(t0, y1), p(t1, y1), back(t1, y1), back(t0, y1), lessMat, 0.4); quad(p(t0, y0), p(t1, y0), back(t1, y0), back(t0, y0), stoneMat, 0.6);
-  const bk = quad(back(t0, y0), back(t1, y0), back(t1, y1), back(t0, y1), lessMat, 0.4);
-  // płaskorzeźba: siedmiobok wypukły na tylnej ścianie wnęki, na wysokości oczu
+  const bk = quad(back(t0, y0), back(t1, y0), back(t1, y1), back(t0, y1), lessMat, 0.4, 3, 0.03);
+  // płaskorzeźba: siedmiobok w siedmioboku
   const shape = new THREE.Shape(); for (let k = 0; k < 7; k++) { const a = -Math.PI / 2 + (k * 2 * Math.PI) / 7; const px = Math.cos(a) * 0.26, py = Math.sin(a) * 0.26; k ? shape.lineTo(px, py) : shape.moveTo(px, py); } shape.closePath();
   const inner = new THREE.Path(); for (let k = 0; k < 7; k++) { const a = -Math.PI / 2 + (k * 2 * Math.PI) / 7; const px = Math.cos(a) * 0.17, py = Math.sin(a) * 0.17; k ? inner.lineTo(px, py) : inner.moveTo(px, py); } inner.closePath(); shape.holes.push(inner);
-  const relief = new THREE.Mesh(new THREE.ExtrudeGeometry(shape, { depth: 0.035, bevelEnabled: true, bevelThickness: 0.01, bevelSize: 0.01, bevelSegments: 2 }), stoneMat);
+  const relief = new THREE.Mesh(new THREE.ExtrudeGeometry(shape, { depth: 0.035, bevelEnabled: true, bevelThickness: 0.012, bevelSize: 0.012, bevelSegments: 3 }), stoneMat);
   const core = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.02, 7), stoneMat); core.rotation.x = Math.PI / 2; core.position.z = 0.01;
-  const rg = new THREE.Group(); rg.add(relief, core); rg.position.copy(back(len / 2, 1.55)); rg.lookAt(rg.position.clone().add(inward)); rg.rotateY(Math.PI); scene.add(rg); relief.userData.cap = ["płaskorzeźba", `Siedmiobok w siedmioboku, wypukły, wykuty w lessie, który trzyma jak kamień. Wnęka ${i + 1} z siedmiu. Każda ma taki sam.`]; pickables.push(relief, core); core.userData.cap = relief.userData.cap;
+  const rg = new THREE.Group(); rg.add(relief, core); rg.position.copy(back(len / 2, 1.55)); rg.lookAt(rg.position.clone().add(inward)); rg.rotateY(Math.PI); scene.add(rg);
+  relief.userData.cap = ["płaskorzeźba", `Siedmiobok w siedmioboku, wypukły, wykuty w lessie, który trzyma jak kamień. Wnęka ${i + 1} z siedmiu. Każda ma taki sam.`]; core.userData.cap = relief.userData.cap; pickables.push(relief, core);
   niches.push({ i, mesh: bk, mid: mid.clone().add(inward.clone().multiplyScalar(-ND / 2)).setY(1.2), inward, dir, A, B, t0, t1, p, back, len });
 }
-// sufit i podłoga z tych samych narożników: wachlarz trójkątów, bez szpar
-function fan(y, apexY, mat, flip) { const g = new THREE.BufferGeometry(); const pos = []; const uv = []; for (let i = 0; i < N; i++) { const a = corners[i], b = corners[(i + 1) % N]; const tri = flip ? [[0, apexY, 0], [b.x, y, b.z], [a.x, y, a.z]] : [[0, apexY, 0], [a.x, y, a.z], [b.x, y, b.z]]; pos.push(...tri.flat()); uv.push(0.5, 0.5, (a.x / R + 1) / 2, (a.z / R + 1) / 2, (b.x / R + 1) / 2, (b.z / R + 1) / 2); } g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2)); g.computeVertexNormals(); const m = new THREE.Mesh(g, mat); scene.add(m); return m; }
+function fan(y, apexY, mat, flip) { const g = new THREE.BufferGeometry(); const pos = [], uv = []; for (let i = 0; i < N; i++) { const a = corners[i], b = corners[(i + 1) % N]; const tri = flip ? [[0, apexY, 0], [b.x, y, b.z], [a.x, y, a.z]] : [[0, apexY, 0], [a.x, y, a.z], [b.x, y, b.z]]; pos.push(...tri.flat()); uv.push(0.5, 0.5, (a.x / R + 1) / 2, (a.z / R + 1) / 2, (b.x / R + 1) / 2, (b.z / R + 1) / 2); } g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2)); g.computeVertexNormals(); const m = new THREE.Mesh(g, mat); scene.add(m); return m; }
 const floor = fan(0, 0, floorMat, false); pickables.push(floor);
-const ceilMat = lessMat.clone(); ceilMat.map = lessTex.clone(); ceilMat.map.repeat.set(2, 2); ceilMat.map.needsUpdate = true;
-fan(H, H + 1.1, ceilMat, true);
-// żebra sufitu: siedem belek dębowych od narożników do klucza
+const ceilMat = lessMat.clone(); ceilMat.map = lessTex.clone(); ceilMat.map.repeat.set(2, 2); ceilMat.map.needsUpdate = true; fan(H, H + 1.1, ceilMat, true);
 const beamMat = new THREE.MeshStandardMaterial({ color: 0x4a3a28, roughness: 0.9 });
 for (let i = 0; i < N; i++) { const c = corners[i]; const len = Math.hypot(c.x, c.z, 1.1); const beam = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.18, len), beamMat); beam.position.set(c.x / 2, H + 0.5, c.z / 2); beam.lookAt(0, H + 1.05, 0); scene.add(beam); }
 const key = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.3, N), stoneMat); key.position.y = H + 0.95; scene.add(key);
 
-// ---------- cokół, płyta, krzemień, świeca ----------
+// cokół, płyta, krzemień
 const plinth = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.7, 0.8, N), stoneMat); plinth.position.y = 0.4; scene.add(plinth); pickables.push(plinth);
 const slab = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.12, 0.8), new THREE.MeshStandardMaterial({ map: slabTex, roughness: 0.9, color: 0x9a948a })); slab.position.y = 0.86; slab.rotation.y = 0.25; scene.add(slab); pickables.push(slab);
 const flint = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 0.06, N), new THREE.MeshStandardMaterial({ map: flintTex, roughness: 0.5 })); flint.position.set(0.55, 0.95, 0.1); flint.rotation.y = 0.4; scene.add(flint); pickables.push(flint);
-const candle = new THREE.Group(); candle.visible = false; const cBody = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.028, 0.14, 10), new THREE.MeshStandardMaterial({ color: 0xe9dfc6, roughness: 0.8 })); cBody.position.y = 0.07; candle.add(cBody);
-const cFlame = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffd9a0 })); cFlame.position.y = 0.17; candle.add(cFlame); const cLight = new THREE.PointLight(0xffb070, 5, 7, 1.6); cLight.position.y = 0.2; candle.add(cLight);
-candle.position.set(-0.6, 0.92, -0.15);
-// napis wyżłobiony w lessie na ścianie 0, na wysokości oczu
 const scratch = new THREE.Group(); for (let k = 0; k < 11; k++) { const m = new THREE.Mesh(new THREE.BoxGeometry(0.05 + Math.random() * 0.1, 0.012, 0.015), new THREE.MeshStandardMaterial({ color: 0x2a2419 })); m.position.set(-0.5 + k * 0.1 + (k > 5 ? 0.1 : 0), 1.55 + (k % 2) * 0.03, 0); scratch.add(m); }
-{ const nch = niches[1]; scratch.position.copy(nch.mid).setY(0).add(nch.inward.clone().multiplyScalar(-0.3)); scratch.lookAt(0, 0, 0); scratch.position.x += 1.2; }
-scene.add(scratch); scratch.children.forEach((m) => pickables.push(m));
-
-// ---------- przedmioty we wnękach ----------
-function jar(x, z, y, s = 1) { const j = new THREE.Mesh(new THREE.CylinderGeometry(0.07 * s, 0.065 * s, 0.16 * s, 10), new THREE.MeshStandardMaterial({ color: 0x6b5a3a, roughness: 0.3, transparent: true, opacity: 0.85 })); j.position.set(x, y, z); scene.add(j); return j; }
-const lampNiche = niches.find((n) => n.i === 3);
-// Latarka w ręce: jedyne światło. Stożek idzie tam, gdzie patrzysz.
-const torch = new THREE.SpotLight(0xffe2b8, 60, 14, 0.5, 0.7, 1.4); torch.position.set(0.08, -0.06, 0); torch.target.position.set(0, 0, -1); camera.add(torch, torch.target); scene.add(camera);
-{ const n = niches.find((n) => n.i === 5); const rope = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.035, 8, 20), new THREE.MeshStandardMaterial({ color: 0x8a7a5a, roughness: 1 })); rope.position.copy(n.mid).setY(NY + 0.04); rope.rotation.x = Math.PI / 2; scene.add(rope); rope.userData.cap = ["sznur", "Zwój sznura. Suchy, ale nie stary. Jeden koniec przecięty, nie przetarty."]; pickables.push(rope); }
-{ const n = niches.find((n) => n.i === 6); const book = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.04, 0.3), new THREE.MeshStandardMaterial({ color: 0x3a2e24, roughness: 1 })); book.position.copy(n.mid).setY(NY + 0.02); book.rotation.y = 0.3; scene.add(book); book.userData.cap = ["notatnik", "Notatnik terenowy. Okładka w lessie. Nie otwieraj tutaj: światło za słabe, kartki za cienkie."]; pickables.push(book); }
-// luźne cegły i kamienie na posadzce
+{ const nch = niches[1]; scratch.position.copy(nch.mid).setY(0).add(nch.inward.clone().multiplyScalar(-0.3)); scratch.lookAt(0, 0, 0); scratch.position.x += 1.2; } scene.add(scratch); scratch.children.forEach((m) => pickables.push(m));
+{ const n = niches.find((n) => n.i === 5); const rope = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.035, 10, 28), new THREE.MeshStandardMaterial({ color: 0x8a7a5a, roughness: 1 })); rope.position.copy(n.mid).setY(0.04); rope.rotation.x = Math.PI / 2; scene.add(rope); rope.userData.cap = ["sznur", "Zwój sznura. Suchy, ale nie stary. Jeden koniec przecięty, nie przetarty."]; pickables.push(rope); }
+{ const n = niches.find((n) => n.i === 6); const book = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.04, 0.3), new THREE.MeshStandardMaterial({ color: 0x3a2e24, roughness: 1 })); book.position.copy(n.mid).setY(0.02); book.rotation.y = 0.3; scene.add(book); book.userData.cap = ["notatnik", "Notatnik terenowy. Okładka w lessie. Nie otwieraj tutaj: światło za słabe, kartki za cienkie."]; pickables.push(book); }
 for (let k = 0; k < 9; k++) { const a = Math.random() * Math.PI * 2, r = 1.4 + Math.random() * 2.2; const b = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.07, 0.11), brickMat); b.position.set(Math.cos(a) * r, 0.035, Math.sin(a) * r); b.rotation.y = Math.random() * Math.PI; scene.add(b); }
 
-// ---------- korytarz z wnęki PASS: w prawo, do zawaliska i kraty ----------
+// ============ korytarz: z prawej ściany wnęki, kolebka, zapadnięte sklepienie, krata ============
 const pass = niches.find((n) => n.i === PASS);
-const CW = 0.9, CH = 2.0, CL = 9; // korytarz: szerokość, wysokość, długość
-const cx = pass.p(pass.t1, 0).add(pass.inward.clone().multiplyScalar(-ND / 2)); // początek korytarza = otwór w prawej ścianie wnęki
-const cdir = pass.dir.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), -0.75).normalize(); // w prawo i w głąb, 43° od ściany: z komnaty go nie widać
-if (cdir.dot(pass.inward) > 0) cdir.applyAxisAngle(new THREE.Vector3(0, 1, 0), 1.5); // zawsze od komnaty, nie do niej
+const cx = pass.p(pass.t1, 0).add(pass.inward.clone().multiplyScalar(-ND / 2));
+const cdir = pass.dir.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), -0.75).normalize(); if (cdir.dot(pass.inward) > 0) cdir.applyAxisAngle(new THREE.Vector3(0, 1, 0), 1.5);
 const cright = new THREE.Vector3(-cdir.z, 0, cdir.x);
 const cp = (s, side, y) => cx.clone().add(cdir.clone().multiplyScalar(s)).add(cright.clone().multiplyScalar(side)).setY(y);
-quad(cp(0, -CW / 2, 0), cp(CL, -CW / 2, 0), cp(CL, -CW / 2, CH), cp(0, -CW / 2, CH), brickMat, 0.5); quad(cp(0, CW / 2, 0), cp(CL, CW / 2, 0), cp(CL, CW / 2, CH), cp(0, CW / 2, CH), brickMat, 0.5);
-const S1 = CL * 0.58, S2 = CL * 0.78; // zapadnięty sufit: wyrwa między S1 a S2
-quad(cp(0, -CW / 2, CH), cp(S1, -CW / 2, CH), cp(S1, CW / 2, CH), cp(0, CW / 2, CH), brickMat, 0.5); quad(cp(S2, -CW / 2, CH), cp(CL, -CW / 2, CH), cp(CL, CW / 2, CH), cp(S2, CW / 2, CH), brickMat, 0.5);
-// komin wyrwy: less nad sklepieniem, do góry, ciemny na końcu
-quad(cp(S1, -CW / 2, CH), cp(S2, -CW / 2, CH), cp(S2, -CW / 2, CH + 1.4), cp(S1, -CW / 2, CH + 1.4), lessMat, 0.5); quad(cp(S1, CW / 2, CH), cp(S2, CW / 2, CH), cp(S2, CW / 2, CH + 1.4), cp(S1, CW / 2, CH + 1.4), lessMat, 0.5);
-quad(cp(S1, -CW / 2, CH), cp(S1, CW / 2, CH), cp(S1, CW / 2, CH + 1.4), cp(S1, -CW / 2, CH + 1.4), lessMat, 0.5); quad(cp(S2, -CW / 2, CH), cp(S2, CW / 2, CH), cp(S2, CW / 2, CH + 1.4), cp(S2, -CW / 2, CH + 1.4), lessMat, 0.5);
-quad(cp(S1, -CW / 2, CH + 1.4), cp(S2, -CW / 2, CH + 1.4), cp(S2, CW / 2, CH + 1.4), cp(S1, CW / 2, CH + 1.4), darkMat); const cfloor = quad(cp(0, -CW / 2, 0), cp(CL, -CW / 2, 0), cp(CL, CW / 2, 0), cp(0, CW / 2, 0), floorMat, 0.5); pickables.push(cfloor);
-// próg wnęki do korytarza: otwór w tylnej ścianie wnęki ma rozmiar wnęki, korytarz szerszy, więc dwa płaty maskujące
+const WH = CH - VR; // wysokość ściany pionowej, nad nią kolebka
+quad(cp(0, -CW / 2, 0), cp(CL, -CW / 2, 0), cp(CL, -CW / 2, WH), cp(0, -CW / 2, WH), brickMat, 0.5, 8, 0.02); quad(cp(0, CW / 2, 0), cp(CL, CW / 2, 0), cp(CL, CW / 2, WH), cp(0, CW / 2, WH), brickMat, 0.5, 8, 0.02);
+const cfloor = quad(cp(0, -CW / 2, 0), cp(CL, -CW / 2, 0), cp(CL, CW / 2, 0), cp(0, CW / 2, 0), floorMat, 0.5); pickables.push(cfloor);
+// kolebka: 10 segmentów łuku, z przerwą nad zawaliskiem
+function vault(s0, s1) { const SEG = 10; for (let k = 0; k < SEG; k++) { const a0 = Math.PI * (k / SEG), a1 = Math.PI * ((k + 1) / SEG); const e0 = -Math.cos(a0) * VR, e1 = -Math.cos(a1) * VR; const h0 = WH + Math.sin(a0) * VR, h1 = WH + Math.sin(a1) * VR; quad(cp(s0, e0, h0), cp(s1, e0, h0), cp(s1, e1, h1), cp(s0, e1, h1), brickMat, 0.5, 4, 0.01); } }
+vault(0, S1); vault(S2, CL);
+// komin wyrwy nad zawaliskiem: less, ciemno u góry
+quad(cp(S1, -CW / 2, WH), cp(S2, -CW / 2, WH), cp(S2, -CW / 2, CH + 1.4), cp(S1, -CW / 2, CH + 1.4), lessMat, 0.5, 4, 0.08); quad(cp(S1, CW / 2, WH), cp(S2, CW / 2, WH), cp(S2, CW / 2, CH + 1.4), cp(S1, CW / 2, CH + 1.4), lessMat, 0.5, 4, 0.08);
+quad(cp(S1, -CW / 2, WH), cp(S1, CW / 2, WH), cp(S1, CW / 2, CH + 1.4), cp(S1, -CW / 2, CH + 1.4), lessMat, 0.5, 3, 0.06); quad(cp(S2, -CW / 2, WH), cp(S2, CW / 2, WH), cp(S2, CW / 2, CH + 1.4), cp(S2, -CW / 2, CH + 1.4), lessMat, 0.5, 3, 0.06);
+quad(cp(S1, -CW / 2, CH + 1.4), cp(S2, -CW / 2, CH + 1.4), cp(S2, CW / 2, CH + 1.4), cp(S1, CW / 2, CH + 1.4), darkMat);
 
-// zawalisko: rumowisko cegieł i lessu w 2/3 długości, po nim krata
+// zawalisko: masa zwisająca z wyrwy + dwa osuwiska pod ścianami; na nich bryły (nieregularne) i cegły; pośrodku prześwit na kolana
 const rubble = new THREE.Group();
-// Zapadnięty sufit: cegła i less zwisają z wyrwy i zalegają na ścianach, pośrodku przy posadzce zostaje prześwit ok. 0,7 m. Przechodzi się kucając.
-for (let k = 0; k < 220; k++) { const sz = 0.06 + Math.random() * 0.16; const m = new THREE.Mesh(k % 3 ? new THREE.BoxGeometry(sz * 1.6, sz * 0.6, sz) : new THREE.DodecahedronGeometry(sz * 0.6), k % 2 ? brickMat : lessMat);
-  const s = S1 + Math.random() * (S2 - S1); const side = (Math.random() - 0.5) * CW; const edge = Math.abs(side) / (CW / 2);
-  const y = edge > 0.55 ? Math.random() * (CH + 0.8) : 0.75 + Math.random() * (CH + 0.6 - 0.75); // przy ścianach do samej posadzki, w środku dopiero od 0,75 m
-  m.position.copy(cp(s, side, y + sz / 2)); m.rotation.set(Math.random(), Math.random(), Math.random()); rubble.add(m); }
-scene.add(rubble);
-// krata na końcu korytarza
-const grate = new THREE.Group(); for (let k = 0; k < 6; k++) { const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, CH, 8), ironMat); bar.position.copy(cp(CL - 0.4, -CW / 2 + 0.1 + k * (CW - 0.2) / 5, CH / 2)); grate.add(bar); } for (let k = 0; k < 3; k++) { const bar = new THREE.Mesh(new THREE.BoxGeometry(CW, 0.04, 0.04), ironMat); bar.position.copy(cp(CL - 0.4, 0, 0.4 + k * 0.65)); bar.lookAt(bar.position.clone().add(cdir)); grate.add(bar); } scene.add(grate); grate.children.forEach((m) => { m.userData.cap = ["krata", "Krata. Kute pręty, nowsze niż mur. Zamek bez dziurki na klucz: otwiera się z drugiej strony."]; pickables.push(m); });
-quad(cp(CL, -CW / 2, 0), cp(CL, CW / 2, 0), cp(CL, CW / 2, CH), cp(CL, -CW / 2, CH), darkMat); // ciemność za kratą
+function lump(radius, mat) { const g = new THREE.IcosahedronGeometry(radius, 1); const p = g.attributes.position; for (let i = 0; i < p.count; i++) { const f = 1 + (Math.random() - 0.5) * 0.5; p.setXYZ(i, p.getX(i) * f, p.getY(i) * (0.7 + Math.random() * 0.5), p.getZ(i) * f); } g.computeVertexNormals(); return new THREE.Mesh(g, mat); }
+function mass(center, rx, ry, rz, detail = 3) { const g = new THREE.IcosahedronGeometry(1, detail); const p = g.attributes.position; for (let i = 0; i < p.count; i++) { const x = p.getX(i), y = p.getY(i), z = p.getZ(i); const n = 1 + 0.22 * smoothNoise(x * 2.3 + center.x, y * 2.3 + center.y, z * 2.3 + center.z) * 2; p.setXYZ(i, x * rx * n, y * ry * n, z * rz * n); } g.computeVertexNormals(); const m = new THREE.Mesh(g, rubbleMat); m.position.copy(center); rubble.add(m); return { m, center, rx, ry, rz }; }
+const sm = (S1 + S2) / 2, sl = (S2 - S1) / 2;
+const hang = mass(cp(sm, 0, CH + 0.35), sl * 0.95, 1.05, CW * 0.62);          // z wyrwy, do ~0,85 m nad posadzką
+const slopeL = mass(cp(sm, -CW / 2 + 0.05, 0.25), sl * 1.05, 0.75, 0.42);       // osuwisko pod lewą ścianą
+const slopeR = mass(cp(sm + 0.3, CW / 2 - 0.05, 0.2), sl * 0.9, 0.65, 0.4);     // pod prawą
+const masses = [hang, slopeL, slopeR];
+for (let k = 0; k < 170; k++) { const M = masses[k % 3]; const u = Math.random() * Math.PI * 2, v = Math.acos(2 * Math.random() - 1); const dirv = new THREE.Vector3(Math.sin(v) * Math.cos(u), Math.cos(v), Math.sin(v) * Math.sin(u));
+  const sz = 0.05 + Math.random() * 0.14; const piece = k % 5 === 0 ? new THREE.Mesh(new THREE.BoxGeometry(sz * 1.7, sz * 0.7, sz), brickMat) : lump(sz, k % 2 ? rubbleMat : brickMat);
+  piece.position.copy(M.center).add(new THREE.Vector3(dirv.x * M.rx, dirv.y * M.ry, dirv.z * M.rz).multiplyScalar(0.98)); if (piece.position.y < 0.05) piece.position.y = 0.05 + sz / 2;
+  piece.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3); rubble.add(piece); }
+// pył na brzegach prześwitu
+for (let k = 0; k < 40; k++) { const sz = 0.03 + Math.random() * 0.05; const g = lump(sz, rubbleMat); g.position.copy(cp(S1 + Math.random() * (S2 - S1), (Math.random() - 0.5) * CW * 0.9, sz / 2)); rubble.add(g); }
+scene.add(rubble); rubble.children.forEach((m) => { m.userData.cap = ["zawalisko", "Sklepienie zapadło się od góry: cegła i less wiszą w wyrwie i zalegają na ścianach. Przy posadzce prześwit na wysokość kolan. Dalej tylko kucając."]; pickables.push(m); });
+// krata
+const grate = new THREE.Group(); for (let k = 0; k < 6; k++) { const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, CH, 10), ironMat); bar.position.copy(cp(CL - 0.4, -CW / 2 + 0.1 + k * (CW - 0.2) / 5, CH / 2)); grate.add(bar); } for (let k = 0; k < 3; k++) { const bar = new THREE.Mesh(new THREE.BoxGeometry(CW, 0.04, 0.04), ironMat); bar.position.copy(cp(CL - 0.4, 0, 0.4 + k * 0.65)); bar.lookAt(bar.position.clone().add(cdir)); grate.add(bar); } scene.add(grate); grate.children.forEach((m) => { m.userData.cap = ["krata", "Krata. Kute pręty, nowsze niż mur. Zamek bez dziurki na klucz: otwiera się z drugiej strony."]; pickables.push(m); });
+quad(cp(CL, -CW / 2, 0), cp(CL, CW / 2, 0), cp(CL, CW / 2, CH), cp(CL, -CW / 2, CH), darkMat);
 
-
+// ============ światło: tylko latarka ============
+const torch = new THREE.SpotLight(0xffe2b8, 60, 14, 0.5, 0.7, 1.4); torch.position.set(0.08, -0.06, 0); torch.target.position.set(0, 0, -1); camera.add(torch, torch.target); scene.add(camera);
 scene.add(new THREE.AmbientLight(0x8a7a5a, 0.06));
-
-// pył lessowy
 const pg = new THREE.BufferGeometry(); const pn = 1200; const pp = new Float32Array(pn * 3);
 for (let i = 0; i < pn; i++) { pp[i * 3] = (Math.random() - 0.5) * R * 1.6; pp[i * 3 + 1] = Math.random() * H; pp[i * 3 + 2] = (Math.random() - 0.5) * R * 1.6; }
 pg.setAttribute("position", new THREE.BufferAttribute(pp, 3)); scene.add(new THREE.Points(pg, new THREE.PointsMaterial({ color: 0xe8e0cf, size: 0.008, transparent: true, opacity: 0.5 })));
 
-// ---------- punkty, do których można podejść ----------
-spots.push({ p: new THREE.Vector3(0, 1.55, 3.0), k: "wejście", t: "Korytarz kończy się tu. Powietrze stoi. Pył nie opada, tylko wisi. Siedem wnęk dookoła, w środku cokół." });
-spots.push({ p: new THREE.Vector3(0.2, 1.5, 1.5), k: "cokół", t: "Siedmioboczny cokół z kamienia, którego nie ma w okolicy. Na nim płyta, pęknięta w poprzek, z wyrytym siedmiobokiem. Obok krzemień." });
-spots.push({ p: lampNiche.mid.clone().multiplyScalar(0.6).setY(1.5), look: lampNiche.inward.clone().multiplyScalar(-1), k: "wnęka", t: "Siedmiobok w siedmioboku, wypukły. Less wokół jest gładszy niż gdzie indziej: ktoś tu przykładał dłonie." });
-spots.push({ p: pass.mid.clone().setY(1.5), look: pass.dir, k: "wnęka", t: "Z komnaty wygląda jak każda inna: siedmiobok w lessie. Dopiero w środku, po prawej, w ścianie jest otwór. Latarka pokazuje cegłę." });
-spots.push({ p: cp(CL * 0.35, 0, 1.5), look: cdir, k: "korytarz", t: "Cegła zamiast lessu. Ktoś ten korytarz murował, nie kopał. Spoiny równe, sklepienie czyste. Dalej ciemno i chłodniej." });
-spots.push({ p: cp(S1 - 0.6, 0, 1.5), look: cdir, k: "przed zawaliskiem", t: "Sklepienie zapadło się. Rumowisko wisi od góry do pół metra nad posadzką. Pod nim prześwit. Na kolana." });
-spots.push({ p: cp((S1 + S2) / 2, 0, 0.55), look: cdir, k: "pod zawaleniem", t: "Kucasz. Nad głową cegła trzymana tylko przez less. Pył sypie się na kark. Przed tobą pręty." });
-spots.push({ p: cp(S2 + 0.9, 0, 1.45), look: cdir, k: "krata", t: "Krata. Kute pręty, nowsze niż mur. Zamek bez dziurki na klucz: otwiera się z drugiej strony. Za nią zimne światło i cisza." });
-let spot = 0; const camPos = spots[0].p.clone(); camera.position.copy(camPos);
+// ============ ruch: stała prędkość, „trzymaj, żeby iść", granice, kucanie pod zawałem ============
+const EYE = 1.5, CROUCH = 0.62, SPEED = 0.75;
+const camPos = new THREE.Vector3(0, EYE, 3.0); camera.position.copy(camPos);
+let target = null; // punkt, do którego idziemy po dotknięciu podłogi
+let walking = false;
 let yaw = 0, pitch = -0.08, gyro = false, q = new THREE.Quaternion();
+/** czy punkt (x,z) jest na podłodze: komnata (siedmiobok z marginesem), wnęki, korytarz */
+function walkable(x, z) {
+  const v = new THREE.Vector3(x, 0, z);
+  // komnata: wewnątrz siedmioboku z marginesem 0,35 od ścian, poza cokołem
+  let inside = true; for (let i = 0; i < N; i++) { const A = corners[i], B = corners[(i + 1) % N]; const e = B.clone().sub(A); const n = new THREE.Vector3(e.z, 0, -e.x).normalize(); if (v.clone().sub(A).dot(n) < 0.35) inside = false; }
+  if (inside && Math.hypot(x, z) < 0.95) inside = false;
+  if (inside) return true;
+  for (const n of niches) { const rel = v.clone().sub(n.A); const t = rel.dot(n.dir), d = -rel.dot(n.inward); if (t > n.t0 + 0.12 && t < n.t1 - 0.12 && d > -0.5 && d < ND - 0.1) return true; }
+  const rel = v.clone().sub(cx); const s = rel.dot(cdir), side = rel.dot(cright); if (s > -0.2 && s < CL - 0.7 && Math.abs(side) < CW / 2 - 0.18) return true;
+  return false;
+}
+function eyeHeightAt(x, z) { const rel = new THREE.Vector3(x, 0, z).sub(cx); const s = rel.dot(cdir), side = rel.dot(cright); if (Math.abs(side) < CW && s > S1 - 0.5 && s < S2 + 0.3) { const d = Math.min(Math.max(0, s - (S1 - 0.5)), Math.max(0, S2 + 0.3 - s)); return EYE - (EYE - CROUCH) * Math.min(1, d / 0.5); } return EYE; }
 const euler = new THREE.Euler(); const zee = new THREE.Vector3(0, 0, 1); const q1 = new THREE.Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5)); const q0 = new THREE.Quaternion();
-function onOrient(e) { if (e.alpha === null) return; const a = THREE.MathUtils.degToRad(e.alpha), b = THREE.MathUtils.degToRad(e.beta), g = THREE.MathUtils.degToRad(e.gamma); const o = THREE.MathUtils.degToRad(screen.orientation?.angle ?? 0);
-  euler.set(b, a, -g, "YXZ"); q.setFromEuler(euler); q.multiply(q1); q.multiply(q0.setFromAxisAngle(zee, -o)); gyro = true; }
+function onOrient(e) { if (e.alpha === null) return; const a = THREE.MathUtils.degToRad(e.alpha), b = THREE.MathUtils.degToRad(e.beta), g = THREE.MathUtils.degToRad(e.gamma); const o = THREE.MathUtils.degToRad(screen.orientation?.angle ?? 0); euler.set(b, a, -g, "YXZ"); q.setFromEuler(euler); q.multiply(q1); q.multiply(q0.setFromAxisAngle(zee, -o)); gyro = true; }
 document.getElementById("gyro").addEventListener("click", async () => { try { const DO = DeviceOrientationEvent; if (DO.requestPermission) { const r = await DO.requestPermission(); if (r !== "granted") throw 0; } addEventListener("deviceorientation", onOrient); document.getElementById("gyro").textContent = "Żyroskop działa"; } catch { document.getElementById("gyro").textContent = "Bez żyroskopu: przeciągaj"; } });
+const walkBtn = document.getElementById("walk");
+walkBtn.addEventListener("pointerdown", (e) => { e.preventDefault(); walking = true; target = null; walkBtn.setPointerCapture?.(e.pointerId); }); walkBtn.addEventListener("pointerup", () => { walking = false; }); walkBtn.addEventListener("pointercancel", () => { walking = false; }); addEventListener("pointerup", () => { walking = false; });
 let drag = null; renderer.domElement.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, yaw, pitch, moved: false }; });
 addEventListener("pointermove", (e) => { if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 6) drag.moved = true; yaw = drag.yaw - dx * 0.004; pitch = THREE.MathUtils.clamp(drag.pitch - dy * 0.004, -1.2, 1.2); });
 addEventListener("pointerup", (e) => { if (drag && !drag.moved) tap(e); drag = null; });
 const ray = new THREE.Raycaster(); const ndc = new THREE.Vector2();
 function tap(e) { ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera);
   const hit = ray.intersectObjects(pickables, false)[0]; if (!hit) return; const o = hit.object;
-  if (o === floor || o === cfloor) { const p = hit.point; let best = 0, bd = 1e9; spots.forEach((s, i) => { const d = s.p.distanceTo(new THREE.Vector3(p.x, s.p.y, p.z)); if (d < bd) { bd = d; best = i; } }); goTo(best); return; }
+  if (o === floor || o === cfloor) { const p = hit.point; if (walkable(p.x, p.z)) { target = new THREE.Vector3(p.x, 0, p.z); caption("idziesz", "Krok za krokiem. Latarka przed sobą."); } return; }
   if (o.userData.cap) { caption(...o.userData.cap); return; }
-  if (o === plinth) caption("cokół", "Kamień jest ciepły. Nie od świecy: świeca stoi z boku.");
+  if (o === plinth) caption("cokół", "Kamień jest ciepły. Nie od latarki: latarka jest w twojej ręce.");
   else if (o === slab) caption("płyta", "Płyta pęknięta w poprzek. Siedmiobok wyryty pośrodku, głęboko, jednym narzędziem. Na krawędzi ślad, jakby ktoś długo opierał o nią dłonie.");
   else if (o === flint) caption("krzemień", "Siedmiobok. Pasy zbite po jednej stronie, po drugiej rozchodzą się. Taki sam jak twój.");
-  
   else caption("mur", "Dwa słowa wyżłobione w lessie, na wysokości oczu. Nie da się ich przeczytać bez światła z boku.");
 }
-function goTo(i) { spot = i; const s = spots[i]; const d = s.look ?? new THREE.Vector3(0, 0, -1); if (!gyro) { yaw = Math.atan2(-d.x, -d.z); pitch = -0.05; } caption(s.k, s.t); }
-document.getElementById("walk").addEventListener("click", () => goTo((spot + 1) % spots.length));
 const cap = document.getElementById("cap"); let capT;
 function caption(k, t) { document.getElementById("capk").textContent = k; document.getElementById("capt").textContent = t; cap.style.display = "block"; clearTimeout(capT); capT = setTimeout(() => (cap.style.display = "none"), 7000); }
-setTimeout(() => (document.getElementById("hint").style.opacity = "0"), 6000);
+setTimeout(() => (document.getElementById("hint").style.opacity = "0"), 7000);
 addEventListener("resize", () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 
-let t0 = performance.now(); const look = new THREE.Vector3();
+let t0 = performance.now(); const fwd = new THREE.Vector3(); let bob = 0;
 function frame(now) {
   const dt = Math.min(0.05, (now - t0) / 1000); t0 = now;
-  camPos.lerp(spots[spot].p, 1 - Math.pow(0.02, dt)); camera.position.copy(camPos);
+  // kierunek patrzenia
   if (gyro) camera.quaternion.slerp(q, 0.2); else { camera.rotation.set(0, 0, 0, "YXZ"); camera.rotation.y = yaw; camera.rotation.x = pitch; }
-  torch.intensity = 58 + Math.sin(now / 230) * 2; // latarka lekko „oddycha", jak ręka
+  // krok: „trzymaj, żeby iść" w kierunku patrzenia albo do dotkniętego punktu; stała prędkość, bez skoków
+  let moved = false;
+  if (walking) { camera.getWorldDirection(fwd); fwd.y = 0; fwd.normalize(); const nx = camPos.x + fwd.x * SPEED * dt, nz = camPos.z + fwd.z * SPEED * dt; if (walkable(nx, nz)) { camPos.x = nx; camPos.z = nz; moved = true; } else if (walkable(nx, camPos.z)) { camPos.x = nx; moved = true; } else if (walkable(camPos.x, nz)) { camPos.z = nz; moved = true; } }
+  else if (target) { const d = new THREE.Vector3(target.x - camPos.x, 0, target.z - camPos.z); const dist = d.length(); if (dist < 0.05) target = null; else { d.normalize(); const step = Math.min(dist, SPEED * dt); const nx = camPos.x + d.x * step, nz = camPos.z + d.z * step; if (walkable(nx, nz)) { camPos.x = nx; camPos.z = nz; moved = true; } else target = null; } }
+  // wysokość oczu: kucanie pod zawałem; lekkie kołysanie przy chodzeniu (3 cm)
+  const eye = eyeHeightAt(camPos.x, camPos.z); camPos.y += (eye - camPos.y) * Math.min(1, dt * 4); bob = moved ? bob + dt * 7 : bob * 0.9;
+  camera.position.set(camPos.x, camPos.y + Math.sin(bob) * 0.015, camPos.z);
+  torch.intensity = 58 + Math.sin(now / 230) * 2;
   const arr = pg.attributes.position.array; for (let i = 0; i < pn; i++) { arr[i * 3 + 1] -= dt * 0.03; arr[i * 3] += Math.sin(now / 1000 + i) * dt * 0.01; if (arr[i * 3 + 1] < 0) arr[i * 3 + 1] = H; } pg.attributes.position.needsUpdate = true;
   renderer.render(scene, camera); requestAnimationFrame(frame);
 }

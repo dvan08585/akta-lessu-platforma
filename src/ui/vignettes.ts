@@ -9,7 +9,7 @@ import { s, h } from "./dom";
 const PLATES: Record<string, string> = { panorama: "01-panorama.webp", ziemia: "03-ziemia.webp", woda: "04-woda.webp", "dźwięk": "05-dzwiek.webp" };
 export function plate(key: string, cls: string, alt = ""): HTMLImageElement | null {
   const f = PLATES[key]; if (!f) return null;
-  return h("img", { src: import.meta.env.BASE_URL + "ryciny/" + f, class: `plate ${cls}`, alt, loading: "lazy", decoding: "async" });
+  return h("img", { src: import.meta.env.BASE_URL + "ryciny/" + f, class: `rycina ${cls}`, alt, loading: "lazy", decoding: "async" });
 }
 
 const NS = "http://www.w3.org/2000/svg";

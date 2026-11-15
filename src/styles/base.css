@@ -172,12 +172,11 @@ button.body:hover, .btn.body:hover { box-shadow: 0 0 0 1px var(--sand), 0 0 20px
 .case-head .vignette { width: 112px; height: auto; flex: none; margin-top: 0.4rem; color: var(--ink-faint); }
 @media (max-width: 360px) { .case-head .vignette { width: 84px; } }
 
-/* Ryciny rastrowe jako atrament na stronie: papier z obrazu znika w tło (multiply w jasnym; w ciemnym obraz odwrócony i screen). Bez cienia, bez kształtu. */
-.plate { display: block; max-width: 100%; height: auto; mix-blend-mode: multiply; }
-:root:not([data-theme="light"]) .plate { filter: invert(1) brightness(0.92) sepia(0.25); mix-blend-mode: screen; }
-:root[data-theme="light"] .plate { filter: none; mix-blend-mode: multiply; }
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .plate { filter: none; mix-blend-mode: multiply; } }
-/* Krawędź ryciny rozpuszcza się w stronę prostokątnie (nie owalnie): obraz idzie do brzegów, tylko brzeg mięknie. */
-.plate.hero { width: 100%; margin: 0.4rem 0 1.2rem; -webkit-mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent), linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent), linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent); mask-composite: intersect; }
-.case-head .plate.el { width: 120px; margin-top: 0.3rem; flex: none; -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent); mask-composite: intersect; }
-@media (max-width: 360px) { .case-head .plate.el { width: 92px; } }
+/* Ryciny rastrowe (klasa .rycina, żeby nie kolidować z .plate płyty Chladniego): atrament na stronie, bez cienia, bez masek. Brzegi mają same obrazy. */
+.rycina { display: block; max-width: 100%; height: auto; mix-blend-mode: multiply; }
+:root:not([data-theme="light"]) .rycina { filter: invert(1) brightness(0.92) sepia(0.25); mix-blend-mode: screen; }
+:root[data-theme="light"] .rycina { filter: none; mix-blend-mode: multiply; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .rycina { filter: none; mix-blend-mode: multiply; } }
+.rycina.hero { width: 100%; margin: 0.4rem 0 1.2rem; }
+.case-head .rycina.el { width: 124px; margin-top: 0.3rem; flex: none; }
+@media (max-width: 360px) { .case-head .rycina.el { width: 92px; } }
