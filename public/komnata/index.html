@@ -13,7 +13,7 @@
   .grain { position: fixed; inset: 0; pointer-events: none; opacity: 0.14; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
   .vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 55%, transparent 55%, rgba(0,0,0,0.55) 100%); }
   .ui { position: fixed; left: 0; right: 0; bottom: 0; padding: 0.8rem 1rem calc(0.8rem + env(safe-area-inset-bottom)); display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; z-index: 5; }
-  .ui a, .ui button { font: inherit; font-size: 0.95rem; color: var(--ink); background: rgba(14,13,11,0.6); border: 1px solid var(--dim); border-radius: 6px; padding: 0.55rem 0.9rem; text-decoration: none; backdrop-filter: blur(4px); touch-action: none; }
+  .ui a, .ui button { -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; font: inherit; font-size: 0.95rem; color: var(--ink); background: rgba(14,13,11,0.6); border: 1px solid var(--dim); border-radius: 6px; padding: 0.55rem 0.9rem; text-decoration: none; backdrop-filter: blur(4px); touch-action: none; }
   .ui button.walk { flex: 1; text-align: center; padding: 0.8rem 0.9rem; }
   .ui button.walk:active { background: rgba(201,168,106,0.25); }
   .kicker { position: fixed; top: calc(0.8rem + env(safe-area-inset-top)); left: 1rem; right: 1rem; z-index: 5; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); }
@@ -192,7 +192,12 @@ const euler = new THREE.Euler(); const zee = new THREE.Vector3(0, 0, 1); const q
 function onOrient(e) { if (e.alpha === null) return; const a = THREE.MathUtils.degToRad(e.alpha), b = THREE.MathUtils.degToRad(e.beta), g = THREE.MathUtils.degToRad(e.gamma); const o = THREE.MathUtils.degToRad(screen.orientation?.angle ?? 0); euler.set(b, a, -g, "YXZ"); q.setFromEuler(euler); q.multiply(q1); q.multiply(q0.setFromAxisAngle(zee, -o)); gyro = true; }
 document.getElementById("gyro").addEventListener("click", async () => { try { const DO = DeviceOrientationEvent; if (DO.requestPermission) { const r = await DO.requestPermission(); if (r !== "granted") throw 0; } addEventListener("deviceorientation", onOrient); document.getElementById("gyro").textContent = "Żyroskop działa"; } catch { document.getElementById("gyro").textContent = "Bez żyroskopu: przeciągaj"; } });
 const walkBtn = document.getElementById("walk");
-walkBtn.addEventListener("pointerdown", (e) => { e.preventDefault(); walking = true; target = null; walkBtn.setPointerCapture?.(e.pointerId); }); walkBtn.addEventListener("pointerup", () => { walking = false; }); walkBtn.addEventListener("pointercancel", () => { walking = false; }); addEventListener("pointerup", () => { walking = false; });
+// „Idź (trzymaj)": na telefonie przytrzymanie przycisku potrafi wywołać menu kontekstowe albo anulować wskaźnik, więc słuchamy i dotyku, i wskaźnika, a stan pokazujemy na przycisku.
+const startWalk = (e) => { e.preventDefault(); walking = true; target = null; walkBtn.textContent = "Idziesz…"; };
+const stopWalk = () => { walking = false; walkBtn.textContent = "Idź (trzymaj)"; };
+walkBtn.addEventListener("touchstart", startWalk, { passive: false }); walkBtn.addEventListener("touchend", stopWalk); walkBtn.addEventListener("touchcancel", stopWalk);
+walkBtn.addEventListener("mousedown", startWalk); addEventListener("mouseup", stopWalk);
+walkBtn.addEventListener("contextmenu", (e) => e.preventDefault()); addEventListener("blur", stopWalk); document.addEventListener("visibilitychange", () => { if (document.hidden) stopWalk(); });
 let drag = null; renderer.domElement.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, yaw, pitch, moved: false }; });
 addEventListener("pointermove", (e) => { if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 6) drag.moved = true; yaw = drag.yaw - dx * 0.004; pitch = THREE.MathUtils.clamp(drag.pitch - dy * 0.004, -1.2, 1.2); });
 addEventListener("pointerup", (e) => { if (drag && !drag.moved) tap(e); drag = null; });
