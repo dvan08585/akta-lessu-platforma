@@ -25,13 +25,15 @@
 <script type="importmap">{ "imports": { "three": "../vendor/three.module.js" } }</script>
 </head>
 <body>
-<div class="kicker">Próba · bez fabuły<b>Komnata</b></div>
+<div class="kicker"><span id="diag">Próba · bez fabuły · v3</span><b>Komnata</b></div>
 <div class="hint" id="hint">Obracaj telefonem. Trzymaj „Idź”, żeby iść tam, gdzie patrzysz. Dotknij rzeczy, żeby się przyjrzeć.</div>
 <div class="hatch"></div><div class="grain"></div><div class="vignette"></div>
 <div class="cap" id="cap"><small id="capk"></small><span id="capt"></span></div>
 <div class="ui"><a href="../#/akta">← Wróć</a><button id="walk" class="walk">Idź (trzymaj)</button><button id="gyro">Żyroskop</button></div>
 <script type="module">
 import * as THREE from "three";
+const walkBtn = document.getElementById("walk");
+window.addEventListener("error", (e) => { document.getElementById("diag").textContent = "błąd: " + (e.message || "").slice(0, 60); });
 
 // ============ wymiary ============
 const N = 7, R = 4.2, H = 3.0, NW = 0.95, NH = 2.75, ND = 0.7, NY = 0;
@@ -191,13 +193,14 @@ function eyeHeightAt(x, z) { const rel = new THREE.Vector3(x, 0, z).sub(cx); con
 const euler = new THREE.Euler(); const zee = new THREE.Vector3(0, 0, 1); const q1 = new THREE.Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5)); const q0 = new THREE.Quaternion();
 function onOrient(e) { if (e.alpha === null) return; const a = THREE.MathUtils.degToRad(e.alpha), b = THREE.MathUtils.degToRad(e.beta), g = THREE.MathUtils.degToRad(e.gamma); const o = THREE.MathUtils.degToRad(screen.orientation?.angle ?? 0); euler.set(b, a, -g, "YXZ"); q.setFromEuler(euler); q.multiply(q1); q.multiply(q0.setFromAxisAngle(zee, -o)); gyro = true; }
 document.getElementById("gyro").addEventListener("click", async () => { try { const DO = DeviceOrientationEvent; if (DO.requestPermission) { const r = await DO.requestPermission(); if (r !== "granted") throw 0; } addEventListener("deviceorientation", onOrient); document.getElementById("gyro").textContent = "Żyroskop działa"; } catch { document.getElementById("gyro").textContent = "Bez żyroskopu: przeciągaj"; } });
-const walkBtn = document.getElementById("walk");
-// „Idź (trzymaj)": na telefonie przytrzymanie przycisku potrafi wywołać menu kontekstowe albo anulować wskaźnik, więc słuchamy i dotyku, i wskaźnika, a stan pokazujemy na przycisku.
-const startWalk = (e) => { e.preventDefault(); walking = true; target = null; walkBtn.textContent = "Idziesz…"; };
-const stopWalk = () => { walking = false; walkBtn.textContent = "Idź (trzymaj)"; };
+// „Idź (trzymaj)": każdy rodzaj wejścia osobno (pointer, touch, mouse), bez menu kontekstowego; stan widać na przycisku, ostatnie zdarzenie w nagłówku (diagnostyka na telefonie).
+const diag = document.getElementById("diag");
+const startWalk = (e) => { if (e.cancelable) e.preventDefault(); walking = true; target = null; walkBtn.textContent = "Idziesz…"; diag.textContent = "v3 · " + e.type; };
+const stopWalk = (e) => { walking = false; walkBtn.textContent = "Idź (trzymaj)"; if (e) diag.textContent = "v3 · " + e.type; };
+walkBtn.addEventListener("pointerdown", startWalk); walkBtn.addEventListener("pointerup", stopWalk); walkBtn.addEventListener("pointercancel", stopWalk); walkBtn.addEventListener("pointerleave", stopWalk);
 walkBtn.addEventListener("touchstart", startWalk, { passive: false }); walkBtn.addEventListener("touchend", stopWalk); walkBtn.addEventListener("touchcancel", stopWalk);
 walkBtn.addEventListener("mousedown", startWalk); addEventListener("mouseup", stopWalk);
-walkBtn.addEventListener("contextmenu", (e) => e.preventDefault()); addEventListener("blur", stopWalk); document.addEventListener("visibilitychange", () => { if (document.hidden) stopWalk(); });
+walkBtn.addEventListener("contextmenu", (e) => e.preventDefault()); addEventListener("blur", () => stopWalk()); document.addEventListener("visibilitychange", () => { if (document.hidden) stopWalk(); });
 let drag = null; renderer.domElement.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, yaw, pitch, moved: false }; });
 addEventListener("pointermove", (e) => { if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 6) drag.moved = true; yaw = drag.yaw - dx * 0.004; pitch = THREE.MathUtils.clamp(drag.pitch - dy * 0.004, -1.2, 1.2); });
 addEventListener("pointerup", (e) => { if (drag && !drag.moved) tap(e); drag = null; });
