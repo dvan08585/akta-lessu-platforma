@@ -3,7 +3,14 @@
  * szrafowanie wzorem, kontur lekko drżący (feTurbulence + feDisplacementMap, liczone raz, bez animacji),
  * ciepło tylko tam, gdzie fabuła go wymaga (ogień). Żadnych gradientów „magii", żadnych ikon. Drzeworyt, nie aplikacja.
  */
-import { s } from "./dom";
+import { s, h } from "./dom";
+
+/** Ryciny dostarczone (public/ryciny). Gdy plik jest na liście, zastępuje kreskę z kodu. Dodawaj po jednej, bez czekania na komplet. */
+const PLATES: Record<string, string> = { panorama: "01-panorama.webp", krzemien: "02-krzemien.webp", ziemia: "03-ziemia.webp", woda: "04-woda.webp", "dźwięk": "05-dzwiek.webp" };
+export function plate(key: string, cls: string, alt = ""): HTMLImageElement | null {
+  const f = PLATES[key]; if (!f) return null;
+  return h("img", { src: import.meta.env.BASE_URL + "ryciny/" + f, class: `plate ${cls}`, alt, loading: "lazy", decoding: "async" });
+}
 
 const NS = "http://www.w3.org/2000/svg";
 let uid = 0;
@@ -35,7 +42,8 @@ function frame(w: number, h: number, seed: number, cls: string): { svg: SVGSVGEl
 const P = (d: string, extra: Record<string, string> = {}) => s("path", { d, ...extra });
 
 /** Panorama: siedem wzgórz nad Wisłą, less w przekroju, dzwonnica, gołąb nad czwartym. */
-export function hero(): SVGSVGElement {
+export function hero(): HTMLElement | SVGSVGElement {
+  const img = plate("panorama", "hero", "Siedem wzgórz Sandomierza nad Wisłą, pod nimi warstwy lessu"); if (img) return img;
   const { svg, g, id } = frame(600, 220, 3, "hero");
   // niebo: nic. Wzgórza, od zachodu: 7, 4, 1, 5, 2, 3, 6 (wysokości jak na mapie)
   const hills = "M0 150 C40 120 70 70 110 72 C150 74 160 110 200 112 C230 113 245 92 270 92 C300 92 310 118 340 118 C365 118 380 95 405 96 C430 97 440 82 470 80 C505 78 520 105 560 100 C580 98 590 108 600 112 L600 150 Z";
@@ -60,8 +68,9 @@ export function hero(): SVGSVGElement {
 }
 
 /** Winieta żywiołu: 160×110, do nagłówka sprawy i do listy bram. */
-export function vignette(element: string): SVGSVGElement {
+export function vignette(element: string): HTMLElement | SVGSVGElement {
   const key = element.replace(/^żywioł:\s*/, "").split(/\s|,/)[0].toLowerCase();
+  const img = plate(key, "el"); if (img) return img;
   const { svg, g, id } = frame(160, 110, key.length + 5, `el-${key}`);
   switch (key) {
     case "ziemia": {

@@ -9,11 +9,8 @@
   :root { --ink: #e8e0cf; --dim: #a39a86; --sand: #c9a86a; --bg: #0e0d0b; }
   html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; overflow: hidden; user-select: none; -webkit-user-select: none; touch-action: none; }
   canvas { display: block; }
-  /* Rycina na żywo: szrafowanie nałożone na obraz 3D. Tanie (CSS), bez shaderów. */
-  .hatch { position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: 0.35;
-    background: repeating-linear-gradient(-32deg, rgba(0,0,0,0.0) 0 2px, rgba(0,0,0,0.55) 2px 3px); }
-  .grain { position: fixed; inset: 0; pointer-events: none; opacity: 0.18; mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .hatch { position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: 0.32; background: repeating-linear-gradient(-32deg, rgba(0,0,0,0) 0 2px, rgba(0,0,0,0.55) 2px 3px); }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: 0.16; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
   .vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 55%, transparent 50%, rgba(0,0,0,0.6) 100%); }
   .ui { position: fixed; left: 0; right: 0; bottom: 0; padding: 0.8rem 1rem calc(0.8rem + env(safe-area-inset-bottom)); display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; z-index: 5; }
   .ui a, .ui button { font: inherit; font-size: 0.95rem; color: var(--ink); background: rgba(14,13,11,0.6); border: 1px solid var(--dim); border-radius: 6px; padding: 0.5rem 0.9rem; text-decoration: none; backdrop-filter: blur(4px); }
@@ -26,74 +23,146 @@
 <script type="importmap">{ "imports": { "three": "../vendor/three.module.js" } }</script>
 </head>
 <body>
-<div class="kicker">Próba · komnata pod Collegium<b>Komnata</b></div>
-<div class="hint" id="hint">Obracaj telefonem. Dotknij podłogi, żeby podejść.</div>
+<div class="kicker">Próba · bez fabuły<b>Komnata</b></div>
+<div class="hint" id="hint">Obracaj telefonem. Dotknij podłogi, żeby podejść. Dotknij rzeczy, żeby się przyjrzeć.</div>
 <div class="hatch"></div><div class="grain"></div><div class="vignette"></div>
 <div class="cap" id="cap"><small id="capk"></small><span id="capt"></span></div>
-<div class="ui"><a href="../#/akta">← Wróć</a><button id="gyro">Żyroskop</button><button id="walk">Podejdź</button></div>
+<div class="ui"><a href="../#/akta">← Wróć</a><button id="gyro">Żyroskop</button><button id="walk">Dalej</button></div>
 <script type="module">
 import * as THREE from "three";
 
-// ---------- scena: siedmiobok z lessu, cokół, siedem nisz ----------
-const R = 4.2, H = 3.1, N = 7;
+// ============ geometria komnaty: siedmiobok z lessu, siedem wnęk, z jednej korytarz do zawaliska i kraty ============
+const N = 7, R = 4.2, H = 3.0, NW = 0.9, NH = 1.5, ND = 0.7, NY = 0.55; // wnęka: szerokość, wysokość, głębokość, dolna krawędź
+const corners = Array.from({ length: N }, (_, i) => { const a = (i / N) * Math.PI * 2; return new THREE.Vector3(Math.cos(a) * R, 0, Math.sin(a) * R); });
+const PASS = 4; // wnęka z przejściem (po wejściu na prawo)
+
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "low-power" });
-renderer.setPixelRatio(Math.min(2, devicePixelRatio)); renderer.setSize(innerWidth, innerHeight); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.6;
+renderer.setPixelRatio(Math.min(2, devicePixelRatio)); renderer.setSize(innerWidth, innerHeight); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.5;
 document.body.prepend(renderer.domElement);
-const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0b0a08); scene.fog = new THREE.FogExp2(0x0b0a08, 0.07);
-const camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 0.05, 50);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0b0a08); scene.fog = new THREE.FogExp2(0x0b0a08, 0.06);
+const camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 0.05, 60);
 
-// tekstury proceduralne: less (warstwy + ziarno), kamień cokołu, krzemień (pasy)
-function canvasTex(w, h, draw, repeat = [1, 1]) { const c = document.createElement("canvas"); c.width = w; c.height = h; const x = c.getContext("2d"); draw(x, w, h); const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(...repeat); t.colorSpace = THREE.SRGBColorSpace; return t; }
+// ---------- tekstury proceduralne ----------
+function tex(w, h, draw, rep = [1, 1]) { const c = document.createElement("canvas"); c.width = w; c.height = h; draw(c.getContext("2d"), w, h); const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(...rep); t.colorSpace = THREE.SRGBColorSpace; return t; }
 const rnd = (seed) => { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; };
-const lessTex = canvasTex(512, 512, (x, w, h) => {
-  const r = rnd(7); x.fillStyle = "#8e7f62"; x.fillRect(0, 0, w, h);
+const lessTex = tex(512, 512, (x, w, h) => { const r = rnd(7); x.fillStyle = "#8e7f62"; x.fillRect(0, 0, w, h);
   for (let i = 0; i < 26000; i++) { const g = 110 + r() * 70; x.fillStyle = `rgb(${g + 20},${g + 6},${g - 20})`; x.fillRect(r() * w, r() * h, 1.5, 1.5); }
-  for (let y = 0; y < h; y += 7 + r() * 9) { x.strokeStyle = `rgba(40,30,18,${0.15 + r() * 0.25})`; x.lineWidth = 0.8 + r(); x.beginPath(); for (let px = 0; px <= w; px += 16) { x.lineTo(px, y + Math.sin(px / 37 + y) * 2.2 + (r() - 0.5) * 2); } x.stroke(); }
+  for (let y = 0; y < h; y += 7 + r() * 9) { x.strokeStyle = `rgba(40,30,18,${0.15 + r() * 0.25})`; x.lineWidth = 0.8 + r(); x.beginPath(); for (let px = 0; px <= w; px += 16) x.lineTo(px, y + Math.sin(px / 37 + y) * 2.2 + (r() - 0.5) * 2); x.stroke(); }
+  // rysy od narzędzi
+  for (let i = 0; i < 40; i++) { x.strokeStyle = "rgba(60,45,25,0.25)"; x.lineWidth = 1; x.beginPath(); const sx = r() * w, sy = r() * h; x.moveTo(sx, sy); x.lineTo(sx + (r() - 0.5) * 60, sy + (r() - 0.5) * 14); x.stroke(); }
 }, [3, 1.5]);
-const stoneTex = canvasTex(256, 256, (x, w, h) => { const r = rnd(3); x.fillStyle = "#5b5650"; x.fillRect(0, 0, w, h); for (let i = 0; i < 9000; i++) { const g = 70 + r() * 50; x.fillStyle = `rgb(${g},${g - 3},${g - 8})`; x.fillRect(r() * w, r() * h, 2, 2); } for (let i = 0; i < 30; i++) { x.strokeStyle = "rgba(20,18,14,0.35)"; x.beginPath(); x.moveTo(r() * w, r() * h); x.lineTo(r() * w, r() * h); x.stroke(); } });
-const flintTex = canvasTex(256, 256, (x, w, h) => { const r = rnd(11); x.fillStyle = "#3a3630"; x.fillRect(0, 0, w, h); const tones = ["#d6c8a6", "#4e473d", "#b9a98a", "#3b3630", "#8f8470"]; for (let i = 34; i >= 0; i--) { const t = i / 33; x.strokeStyle = tones[i % 5]; x.lineWidth = 1 + t * 2; x.beginPath(); x.ellipse(80 + t * 60, 90 + t * 50, 6 + i * 6 + t * t * 40, 6 + i * 4.5 + t * 12, -0.3, 0, Math.PI * 2); x.stroke(); } });
-
-const lessMat = new THREE.MeshStandardMaterial({ map: lessTex, roughness: 1, metalness: 0, color: 0xb8a98c });
+const brickTex = tex(512, 512, (x, w, h) => { const r = rnd(5); x.fillStyle = "#5a4634"; x.fillRect(0, 0, w, h); const bh = 32, bw = 64;
+  for (let row = 0; row < h / bh; row++) for (let col = -1; col < w / bw + 1; col++) { const ox = (row % 2) * bw / 2; const g = 95 + r() * 40; x.fillStyle = `rgb(${g + 30},${g - 5},${g - 30})`; x.fillRect(col * bw + ox + 2, row * bh + 2, bw - 4, bh - 4); for (let k = 0; k < 60; k++) { x.fillStyle = `rgba(0,0,0,${0.08 + r() * 0.1})`; x.fillRect(col * bw + ox + 2 + r() * (bw - 4), row * bh + 2 + r() * (bh - 4), 1.5, 1.5); } }
+}, [2, 2]);
+const stoneTex = tex(256, 256, (x, w, h) => { const r = rnd(3); x.fillStyle = "#5b5650"; x.fillRect(0, 0, w, h); for (let i = 0; i < 9000; i++) { const g = 70 + r() * 50; x.fillStyle = `rgb(${g},${g - 3},${g - 8})`; x.fillRect(r() * w, r() * h, 2, 2); } for (let i = 0; i < 30; i++) { x.strokeStyle = "rgba(20,18,14,0.35)"; x.beginPath(); x.moveTo(r() * w, r() * h); x.lineTo(r() * w, r() * h); x.stroke(); } });
+const floorTex = tex(512, 512, (x, w, h) => { const r = rnd(9); x.fillStyle = "#4a4640"; x.fillRect(0, 0, w, h);
+  for (let i = 0; i < 14000; i++) { const g = 60 + r() * 40; x.fillStyle = `rgb(${g + 4},${g},${g - 6})`; x.fillRect(r() * w, r() * h, 2, 2); }
+  // płyty posadzki ze spoinami
+  x.strokeStyle = "rgba(10,8,6,0.8)"; x.lineWidth = 3; for (let i = 0; i <= 4; i++) { x.beginPath(); x.moveTo(i * 128, 0); x.lineTo(i * 128 + (r() - 0.5) * 10, h); x.stroke(); x.beginPath(); x.moveTo(0, i * 128); x.lineTo(w, i * 128 + (r() - 0.5) * 10); x.stroke(); }
+}, [4, 4]);
+const flintTex = tex(256, 256, (x, w, h) => { x.fillStyle = "#3a3630"; x.fillRect(0, 0, w, h); const tones = ["#d6c8a6", "#4e473d", "#b9a98a", "#3b3630", "#8f8470"]; for (let i = 34; i >= 0; i--) { const t = i / 33; x.strokeStyle = tones[i % 5]; x.lineWidth = 1 + t * 2; x.beginPath(); x.ellipse(80 + t * 60, 90 + t * 50, 6 + i * 6 + t * t * 40, 6 + i * 4.5 + t * 12, -0.3, 0, Math.PI * 2); x.stroke(); } });
+const slabTex = tex(512, 256, (x, w, h) => { const r = rnd(13); x.fillStyle = "#6a655c"; x.fillRect(0, 0, w, h); for (let i = 0; i < 12000; i++) { const g = 85 + r() * 40; x.fillStyle = `rgb(${g},${g - 2},${g - 8})`; x.fillRect(r() * w, r() * h, 2, 2); }
+  // pęknięcie przez płytę i siedmiobok wyryty pośrodku
+  x.strokeStyle = "rgba(20,16,12,0.9)"; x.lineWidth = 2; x.beginPath(); x.moveTo(40, 30); for (let px = 40; px < w - 40; px += 20) x.lineTo(px, 30 + (px - 40) * 0.35 + (r() - 0.5) * 14); x.stroke();
+  x.strokeStyle = "rgba(30,24,16,0.8)"; x.lineWidth = 2.5; x.beginPath(); for (let k = 0; k <= 7; k++) { const a = -Math.PI / 2 + (k * 2 * Math.PI) / 7; const px = w / 2 + Math.cos(a) * 52, py = h / 2 + Math.sin(a) * 52; k ? x.lineTo(px, py) : x.moveTo(px, py); } x.stroke();
+});
+const lessMat = new THREE.MeshStandardMaterial({ map: lessTex, roughness: 1, color: 0xb8a98c, side: THREE.DoubleSide });
+const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 1, color: 0xb0a090, side: THREE.DoubleSide });
 const stoneMat = new THREE.MeshStandardMaterial({ map: stoneTex, roughness: 0.95, color: 0x9a948a });
-const flintMat = new THREE.MeshStandardMaterial({ map: flintTex, roughness: 0.5, color: 0xffffff });
+const floorMat = new THREE.MeshStandardMaterial({ map: floorTex, roughness: 1, color: 0x8a847a });
+const darkMat = new THREE.MeshStandardMaterial({ color: 0x1a1612, roughness: 1, side: THREE.DoubleSide });
+const ironMat = new THREE.MeshStandardMaterial({ color: 0x2a2622, roughness: 0.6, metalness: 0.7 });
 
-// ściany: siedem płaszczyzn, każda z niszą
-const walls = new THREE.Group(); scene.add(walls);
+// ---------- ściany z wnękami (każda ściana: trzy płaty wokół otworu + skrzynka wnęki za ścianą) ----------
+const pickables = []; const spots = [];
+function quad(a, b, c, d, mat, uvScale = 1) { // czworokąt w przestrzeni, UV po długości
+  const g = new THREE.BufferGeometry(); const v = [a, b, c, a, c, d]; const pos = new Float32Array(v.flatMap((p) => [p.x, p.y, p.z]));
+  const w = a.distanceTo(b), h = a.distanceTo(d); const uv = new Float32Array([0, 0, w, 0, w, h, 0, 0, w, h, 0, h].map((u) => u * uvScale));
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3)); g.setAttribute("uv", new THREE.BufferAttribute(uv, 2)); g.computeVertexNormals();
+  const m = new THREE.Mesh(g, mat); scene.add(m); return m;
+}
 const niches = [];
 for (let i = 0; i < N; i++) {
-  const a = (i / N) * Math.PI * 2 + Math.PI / N; const side = 2 * R * Math.sin(Math.PI / N);
-  const wall = new THREE.Mesh(new THREE.PlaneGeometry(side, H, 1, 1), lessMat);
-  wall.position.set(Math.cos(a) * R * Math.cos(Math.PI / N), H / 2, Math.sin(a) * R * Math.cos(Math.PI / N)); wall.lookAt(0, H / 2, 0); walls.add(wall);
-  // nisza: ciemny prostokąt wpuszczony w ścianę
-  const niche = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.9, 0.5), new THREE.MeshStandardMaterial({ color: 0x1a1612, roughness: 1 }));
-  niche.position.copy(wall.position).multiplyScalar(1.05); niche.position.y = 1.4; niche.lookAt(0, 1.4, 0); walls.add(niche); niches.push({ mesh: niche, i });
+  const A = corners[i], B = corners[(i + 1) % N]; const dir = B.clone().sub(A).normalize(); const len = A.distanceTo(B); const inward = new THREE.Vector3(-(B.x + A.x) / 2, 0, -(B.z + A.z) / 2).normalize();
+  const mid = A.clone().add(B).multiplyScalar(0.5); const up = new THREE.Vector3(0, 1, 0);
+  const p = (t, y) => A.clone().add(dir.clone().multiplyScalar(t)).add(up.clone().multiplyScalar(y));
+  const t0 = len / 2 - NW / 2, t1 = len / 2 + NW / 2; const y0 = NY, y1 = NY + NH;
+  // lewa, prawa, nad i pod otworem
+  quad(p(0, 0), p(t0, 0), p(t0, H), p(0, H), lessMat, 0.35); quad(p(t1, 0), p(len, 0), p(len, H), p(t1, H), lessMat, 0.35);
+  quad(p(t0, y1), p(t1, y1), p(t1, H), p(t0, H), lessMat, 0.35); quad(p(t0, 0), p(t1, 0), p(t1, y0), p(t0, y0), lessMat, 0.35);
+  // wnęka: boki, tył, góra, dół (tył wnęki PASS to otwór korytarza)
+  const back = (t, y) => p(t, y).add(inward.clone().multiplyScalar(-ND));
+  quad(p(t0, y0), back(t0, y0), back(t0, y1), p(t0, y1), lessMat, 0.4); quad(p(t1, y0), back(t1, y0), back(t1, y1), p(t1, y1), lessMat, 0.4);
+  quad(p(t0, y1), p(t1, y1), back(t1, y1), back(t0, y1), lessMat, 0.4); quad(p(t0, y0), p(t1, y0), back(t1, y0), back(t0, y0), stoneMat, 0.6);
+  if (i !== PASS) { const bk = quad(back(t0, y0), back(t1, y0), back(t1, y1), back(t0, y1), lessMat, 0.4); niches.push({ i, mesh: bk, mid: mid.clone().add(inward.clone().multiplyScalar(-ND / 2)).setY(1.2), inward }); }
+  else niches.push({ i, mesh: null, mid: mid.clone().add(inward.clone().multiplyScalar(-ND / 2)).setY(1.2), inward, dir, A, B, t0, t1, p, back });
 }
-const floor = new THREE.Mesh(new THREE.CircleGeometry(R, N), new THREE.MeshStandardMaterial({ map: stoneTex, roughness: 1, color: 0x6d665c })); floor.rotation.x = -Math.PI / 2; floor.rotation.z = Math.PI / N; scene.add(floor);
-const ceil = new THREE.Mesh(new THREE.ConeGeometry(R * 1.02, 1.6, N, 1, true), lessMat); ceil.position.y = H + 0.8; ceil.rotation.y = Math.PI / N; ceil.material = ceil.material.clone(); ceil.material.side = THREE.BackSide; scene.add(ceil);
+// sufit i podłoga z tych samych narożników: wachlarz trójkątów, bez szpar
+function fan(y, apexY, mat, flip) { const g = new THREE.BufferGeometry(); const pos = []; const uv = []; for (let i = 0; i < N; i++) { const a = corners[i], b = corners[(i + 1) % N]; const tri = flip ? [[0, apexY, 0], [b.x, y, b.z], [a.x, y, a.z]] : [[0, apexY, 0], [a.x, y, a.z], [b.x, y, b.z]]; pos.push(...tri.flat()); uv.push(0.5, 0.5, (a.x / R + 1) / 2, (a.z / R + 1) / 2, (b.x / R + 1) / 2, (b.z / R + 1) / 2); } g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2)); g.computeVertexNormals(); const m = new THREE.Mesh(g, mat); scene.add(m); return m; }
+const floor = fan(0, 0, floorMat, false); pickables.push(floor);
+const ceilMat = lessMat.clone(); ceilMat.map = lessTex.clone(); ceilMat.map.repeat.set(2, 2); ceilMat.map.needsUpdate = true;
+fan(H, H + 1.1, ceilMat, true);
+// żebra sufitu: siedem belek dębowych od narożników do klucza
+const beamMat = new THREE.MeshStandardMaterial({ color: 0x4a3a28, roughness: 0.9 });
+for (let i = 0; i < N; i++) { const c = corners[i]; const len = Math.hypot(c.x, c.z, 1.1); const beam = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.18, len), beamMat); beam.position.set(c.x / 2, H + 0.5, c.z / 2); beam.lookAt(0, H + 1.05, 0); scene.add(beam); }
+const key = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.3, N), stoneMat); key.position.y = H + 0.95; scene.add(key);
 
-// cokół: siedmioboczny graniastosłup, na nim krzemień
-const plinth = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.62, 0.9, N), stoneMat); plinth.position.y = 0.45; scene.add(plinth);
-const flint = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.19, 0.08, N), flintMat); flint.position.y = 0.94; flint.rotation.y = 0.3; scene.add(flint);
-// napis na murze: dwa słowa jako wyżłobione kreski (nieczytelne)
-const scratch = new THREE.Group(); const w0 = walls.children[0];
-for (let k = 0; k < 9; k++) { const m = new THREE.Mesh(new THREE.BoxGeometry(0.06 + Math.random() * 0.12, 0.012, 0.01), new THREE.MeshStandardMaterial({ color: 0x2a2419 })); m.position.set(-0.4 + k * 0.1 + (k > 4 ? 0.12 : 0), 1.1 + (k % 2) * 0.03, 0); scratch.add(m); }
-scratch.position.copy(w0.position).multiplyScalar(0.97); scratch.position.y = 0; scratch.lookAt(0, 0, 0); scene.add(scratch);
-// kaganek w pierwszej niszy
-const lampN = niches[3]; const lamp = new THREE.PointLight(0xffb070, 14, 12, 1.4); lamp.position.copy(lampN.mesh.position).multiplyScalar(0.9); lamp.position.y = 1.5; scene.add(lamp);
-const flame = new THREE.Mesh(new THREE.SphereGeometry(0.035, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffd9a0 })); flame.position.copy(lamp.position); scene.add(flame);
-scene.add(new THREE.AmbientLight(0x8a7a5a, 0.9));
-const top = new THREE.PointLight(0xc9a86a, 6, 9, 1.6); top.position.set(0, 2.6, 0); scene.add(top);
+// ---------- cokół, płyta, krzemień, świeca ----------
+const plinth = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.7, 0.8, N), stoneMat); plinth.position.y = 0.4; scene.add(plinth); pickables.push(plinth);
+const slab = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.12, 0.8), new THREE.MeshStandardMaterial({ map: slabTex, roughness: 0.9, color: 0x9a948a })); slab.position.y = 0.86; slab.rotation.y = 0.25; scene.add(slab); pickables.push(slab);
+const flint = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 0.06, N), new THREE.MeshStandardMaterial({ map: flintTex, roughness: 0.5 })); flint.position.set(0.55, 0.95, 0.1); flint.rotation.y = 0.4; scene.add(flint); pickables.push(flint);
+const candle = new THREE.Group(); const cBody = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.028, 0.14, 10), new THREE.MeshStandardMaterial({ color: 0xe9dfc6, roughness: 0.8 })); cBody.position.y = 0.07; candle.add(cBody);
+const cFlame = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffd9a0 })); cFlame.position.y = 0.17; candle.add(cFlame); const cLight = new THREE.PointLight(0xffb070, 5, 7, 1.6); cLight.position.y = 0.2; candle.add(cLight);
+candle.position.set(-0.6, 0.92, -0.15); scene.add(candle); pickables.push(cBody);
+// napis wyżłobiony w lessie na ścianie 0, na wysokości oczu
+const scratch = new THREE.Group(); for (let k = 0; k < 11; k++) { const m = new THREE.Mesh(new THREE.BoxGeometry(0.05 + Math.random() * 0.1, 0.012, 0.015), new THREE.MeshStandardMaterial({ color: 0x2a2419 })); m.position.set(-0.5 + k * 0.1 + (k > 5 ? 0.1 : 0), 1.55 + (k % 2) * 0.03, 0); scratch.add(m); }
+{ const nch = niches[1]; scratch.position.copy(nch.mid).setY(0).add(nch.inward.clone().multiplyScalar(-0.3)); scratch.lookAt(0, 0, 0); scratch.position.x += 1.2; }
+scene.add(scratch); scratch.children.forEach((m) => pickables.push(m));
 
-// pył lessowy: tysiąc ziaren, dryf w dół
-const pg = new THREE.BufferGeometry(); const pn = 1000; const pp = new Float32Array(pn * 3);
+// ---------- przedmioty we wnękach ----------
+function jar(x, z, y, s = 1) { const j = new THREE.Mesh(new THREE.CylinderGeometry(0.07 * s, 0.065 * s, 0.16 * s, 10), new THREE.MeshStandardMaterial({ color: 0x6b5a3a, roughness: 0.3, transparent: true, opacity: 0.85 })); j.position.set(x, y, z); scene.add(j); return j; }
+const lampNiche = niches.find((n) => n.i === 3); const lamp = new THREE.PointLight(0xffb070, 12, 12, 1.4); lamp.position.copy(lampNiche.mid).setY(1.35); scene.add(lamp);
+const lampFlame = new THREE.Mesh(new THREE.SphereGeometry(0.03, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffd9a0 })); lampFlame.position.copy(lamp.position); scene.add(lampFlame);
+const lampBowl = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.04, 0.05, 10), ironMat); lampBowl.position.copy(lamp.position).setY(1.3); scene.add(lampBowl); pickables.push(lampBowl);
+{ const n = niches.find((n) => n.i === 1); const j1 = jar(n.mid.x, n.mid.z, NY + 0.08); const j2 = jar(n.mid.x + 0.12 * n.inward.z, n.mid.z - 0.12 * n.inward.x, NY + 0.07, 0.8); j1.userData.cap = ["słoik", "Kompot. Na etykiecie ołówkiem: 1998. Zakręcony dobrze. Nikt nie otwierał."]; j2.userData.cap = j1.userData.cap; pickables.push(j1, j2); }
+{ const n = niches.find((n) => n.i === 5); const rope = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.035, 8, 20), new THREE.MeshStandardMaterial({ color: 0x8a7a5a, roughness: 1 })); rope.position.copy(n.mid).setY(NY + 0.04); rope.rotation.x = Math.PI / 2; scene.add(rope); rope.userData.cap = ["sznur", "Zwój sznura. Suchy, ale nie stary. Jeden koniec przecięty, nie przetarty."]; pickables.push(rope); }
+{ const n = niches.find((n) => n.i === 6); const book = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.04, 0.3), new THREE.MeshStandardMaterial({ color: 0x3a2e24, roughness: 1 })); book.position.copy(n.mid).setY(NY + 0.02); book.rotation.y = 0.3; scene.add(book); book.userData.cap = ["notatnik", "Notatnik terenowy. Okładka w lessie. Nie otwieraj tutaj: światło za słabe, kartki za cienkie."]; pickables.push(book); }
+// luźne cegły i kamienie na posadzce
+for (let k = 0; k < 9; k++) { const a = Math.random() * Math.PI * 2, r = 1.4 + Math.random() * 2.2; const b = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.07, 0.11), brickMat); b.position.set(Math.cos(a) * r, 0.035, Math.sin(a) * r); b.rotation.y = Math.random() * Math.PI; scene.add(b); }
+
+// ---------- korytarz z wnęki PASS: w prawo, do zawaliska i kraty ----------
+const pass = niches.find((n) => n.i === PASS);
+const CW = 1.1, CH = 2.1, CL = 9; // korytarz: szerokość, wysokość, długość
+const cx = pass.mid.clone().setY(0).add(pass.inward.clone().multiplyScalar(-ND)); // początek korytarza = tył wnęki
+const cdir = pass.inward.clone().multiplyScalar(-1); const cright = new THREE.Vector3(-cdir.z, 0, cdir.x);
+const cp = (s, side, y) => cx.clone().add(cdir.clone().multiplyScalar(s)).add(cright.clone().multiplyScalar(side)).setY(y);
+quad(cp(0, -CW / 2, 0), cp(CL, -CW / 2, 0), cp(CL, -CW / 2, CH), cp(0, -CW / 2, CH), brickMat, 0.5); quad(cp(0, CW / 2, 0), cp(CL, CW / 2, 0), cp(CL, CW / 2, CH), cp(0, CW / 2, CH), brickMat, 0.5);
+quad(cp(0, -CW / 2, CH), cp(CL, -CW / 2, CH), cp(CL, CW / 2, CH), cp(0, CW / 2, CH), brickMat, 0.5); const cfloor = quad(cp(0, -CW / 2, 0), cp(CL, -CW / 2, 0), cp(CL, CW / 2, 0), cp(0, CW / 2, 0), floorMat, 0.5); pickables.push(cfloor);
+// próg wnęki do korytarza: otwór w tylnej ścianie wnęki ma rozmiar wnęki, korytarz szerszy, więc dwa płaty maskujące
+quad(pass.back(pass.t0, pass.p(0, 0).y), pass.back(pass.t0, NY), pass.back(pass.t1, NY), pass.back(pass.t1, 0), stoneMat, 0.6);
+// zawalisko: rumowisko cegieł i lessu w 2/3 długości, po nim krata
+const rubble = new THREE.Group(); for (let k = 0; k < 140; k++) { const sz = 0.05 + Math.random() * 0.13; const m = new THREE.Mesh(k % 3 ? new THREE.BoxGeometry(sz * 1.6, sz * 0.6, sz) : new THREE.DodecahedronGeometry(sz * 0.6), k % 2 ? brickMat : lessMat); const s = CL * 0.62 + Math.random() * 1.6, side = (Math.random() - 0.5) * (CW - 0.1); const y = Math.random() * Math.min(1.5, (s - CL * 0.6) * 0.9); m.position.copy(cp(s, side, y + sz / 2)); m.rotation.set(Math.random(), Math.random(), Math.random()); rubble.add(m); } scene.add(rubble); rubble.children.forEach((m) => { m.userData.cap = ["zawalisko", "Cegła i less, zmieszane. Zawaliło się od góry, nie od boku: spoiny wyrwane w dół. Dalej tylko na czworakach."]; pickables.push(m); });
+// krata na końcu korytarza
+const grate = new THREE.Group(); for (let k = 0; k < 6; k++) { const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, CH, 8), ironMat); bar.position.copy(cp(CL - 0.4, -CW / 2 + 0.1 + k * (CW - 0.2) / 5, CH / 2)); grate.add(bar); } for (let k = 0; k < 3; k++) { const bar = new THREE.Mesh(new THREE.BoxGeometry(CW, 0.04, 0.04), ironMat); bar.position.copy(cp(CL - 0.4, 0, 0.4 + k * 0.65)); bar.lookAt(bar.position.clone().add(cdir)); grate.add(bar); } scene.add(grate); grate.children.forEach((m) => { m.userData.cap = ["krata", "Krata. Kute pręty, nowsze niż mur. Zamek bez dziurki na klucz: otwiera się z drugiej strony."]; pickables.push(m); });
+quad(cp(CL, -CW / 2, 0), cp(CL, CW / 2, 0), cp(CL, CW / 2, CH), cp(CL, -CW / 2, CH), darkMat); // ciemność za kratą
+for (const sPos of [CL * 0.22, CL * 0.48]) { const l = new THREE.PointLight(0xffb070, 7, 7, 1.5); l.position.copy(cp(sPos, -CW / 2 + 0.12, 1.7)); scene.add(l); const f = new THREE.Mesh(new THREE.SphereGeometry(0.025, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffd9a0 })); f.position.copy(l.position); scene.add(f); const br = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.12, 0.05), ironMat); br.position.copy(l.position).setY(1.58); scene.add(br); }
+const farLight = new THREE.PointLight(0x7a9ab0, 5, 7, 1.5); farLight.position.copy(cp(CL + 0.6, 0, 1.2)); scene.add(farLight);
+
+scene.add(new THREE.AmbientLight(0x8a7a5a, 0.7));
+const top = new THREE.PointLight(0xc9a86a, 4, 9, 1.6); top.position.set(0, 2.6, 0); scene.add(top);
+
+// pył lessowy
+const pg = new THREE.BufferGeometry(); const pn = 1200; const pp = new Float32Array(pn * 3);
 for (let i = 0; i < pn; i++) { pp[i * 3] = (Math.random() - 0.5) * R * 1.6; pp[i * 3 + 1] = Math.random() * H; pp[i * 3 + 2] = (Math.random() - 0.5) * R * 1.6; }
-pg.setAttribute("position", new THREE.BufferAttribute(pp, 3));
-const dust = new THREE.Points(pg, new THREE.PointsMaterial({ color: 0xe8e0cf, size: 0.008, transparent: true, opacity: 0.5 })); scene.add(dust);
+pg.setAttribute("position", new THREE.BufferAttribute(pp, 3)); scene.add(new THREE.Points(pg, new THREE.PointsMaterial({ color: 0xe8e0cf, size: 0.008, transparent: true, opacity: 0.5 })));
 
-// ---------- kamera: żyroskop albo przeciąganie; ruch po szynach ----------
-const spots = [ { p: new THREE.Vector3(0, 1.55, 3.1), k: "wejście", t: "Korytarz kończy się tu. Powietrze stoi. Pył nie opada, tylko wisi." },
-  { p: new THREE.Vector3(0, 1.5, 1.4), k: "cokół", t: "Siedmioboczny cokół z kamienia, którego nie ma w okolicy. Na nim krzemień, pasy zbite po jednej stronie." },
-  { p: new THREE.Vector3(lamp.position.x * 0.55, 1.5, lamp.position.z * 0.55), k: "nisza", t: "Kaganek. Ktoś go zapalił niedawno. Olej jeszcze nie stężał." } ];
+// ---------- punkty, do których można podejść ----------
+spots.push({ p: new THREE.Vector3(0, 1.55, 3.0), k: "wejście", t: "Korytarz kończy się tu. Powietrze stoi. Pył nie opada, tylko wisi. Siedem wnęk dookoła, w środku cokół." });
+spots.push({ p: new THREE.Vector3(0.2, 1.5, 1.5), k: "cokół", t: "Siedmioboczny cokół z kamienia, którego nie ma w okolicy. Na nim płyta, pęknięta w poprzek, z wyrytym siedmiobokiem. Obok krzemień i świeca, która jeszcze nie dopaliła się do końca." });
+spots.push({ p: lampNiche.mid.clone().multiplyScalar(0.6).setY(1.5), k: "nisza z kagankiem", t: "Kaganek na żelaznej miseczce. Ktoś go zapalił niedawno: olej nie stężał." });
+spots.push({ p: pass.mid.clone().setY(1.5).add(pass.inward.clone().multiplyScalar(0.4)), look: cdir, k: "wnęka z przejściem", t: "Po wejściu na prawo. Tył tej wnęki nie jest ścianą. Jest otworem." });
+spots.push({ p: cp(CL * 0.35, 0, 1.5), look: cdir, k: "korytarz", t: "Cegła zamiast lessu. Ktoś ten korytarz murował, nie kopał. Spoiny równe, sklepienie czyste. Dalej ciemno i chłodniej." });
+spots.push({ p: cp(CL * 0.56, 0, 1.5), look: cdir, k: "zawalisko", t: "Rumowisko do połowy wysokości. Za nim coś, co odbija światło. Pręty." });
 let spot = 0; const camPos = spots[0].p.clone(); camera.position.copy(camPos);
 let yaw = 0, pitch = -0.08, gyro = false, q = new THREE.Quaternion();
 const euler = new THREE.Euler(); const zee = new THREE.Vector3(0, 0, 1); const q1 = new THREE.Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5)); const q0 = new THREE.Quaternion();
@@ -105,25 +174,29 @@ addEventListener("pointermove", (e) => { if (!drag) return; const dx = e.clientX
 addEventListener("pointerup", (e) => { if (drag && !drag.moved) tap(e); drag = null; });
 const ray = new THREE.Raycaster(); const ndc = new THREE.Vector2();
 function tap(e) { ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera);
-  const hit = ray.intersectObjects([plinth, flint, floor, lampN.mesh, ...scratch.children], false)[0]; if (!hit) return;
-  if (hit.object === floor) { const p = hit.point; let best = 0, bd = 1e9; spots.forEach((s, i) => { const d = s.p.distanceTo(new THREE.Vector3(p.x, s.p.y, p.z)); if (d < bd) { bd = d; best = i; } }); goTo(best); return; }
-  if (hit.object === plinth || hit.object === flint) caption("cokół", "Kamień jest ciepły. Nie od kaganka: kaganek jest po drugiej stronie.");
-  else if (hit.object === lampN.mesh) caption("nisza", "W niszy kaganek i słoik. Na słoiku data ołówkiem: 1998.");
+  const hit = ray.intersectObjects(pickables, false)[0]; if (!hit) return; const o = hit.object;
+  if (o === floor || o === cfloor) { const p = hit.point; let best = 0, bd = 1e9; spots.forEach((s, i) => { const d = s.p.distanceTo(new THREE.Vector3(p.x, s.p.y, p.z)); if (d < bd) { bd = d; best = i; } }); goTo(best); return; }
+  if (o.userData.cap) { caption(...o.userData.cap); return; }
+  if (o === plinth) caption("cokół", "Kamień jest ciepły. Nie od świecy: świeca stoi z boku.");
+  else if (o === slab) caption("płyta", "Płyta pęknięta w poprzek. Siedmiobok wyryty pośrodku, głęboko, jednym narzędziem. Na krawędzi ślad, jakby ktoś długo opierał o nią dłonie.");
+  else if (o === flint) caption("krzemień", "Siedmiobok. Pasy zbite po jednej stronie, po drugiej rozchodzą się. Taki sam jak twój.");
+  else if (o === cBody) caption("świeca", "Wosk spłynął na płytę i zastygł. Ktoś tu stał dłużej niż chwilę.");
+  else if (o === lampBowl) caption("kaganek", "Żelazna miseczka, knot z lnu. Olej lniany, świeży.");
   else caption("mur", "Dwa słowa wyżłobione w lessie, na wysokości oczu. Nie da się ich przeczytać bez światła z boku.");
 }
-function goTo(i) { spot = i; caption(spots[i].k, spots[i].t); }
+function goTo(i) { spot = i; const s = spots[i]; const d = s.look ?? new THREE.Vector3(0, 0, -1); if (!gyro) { yaw = Math.atan2(-d.x, -d.z); pitch = -0.05; } caption(s.k, s.t); }
 document.getElementById("walk").addEventListener("click", () => goTo((spot + 1) % spots.length));
 const cap = document.getElementById("cap"); let capT;
-function caption(k, t) { document.getElementById("capk").textContent = k; document.getElementById("capt").textContent = t; cap.style.display = "block"; clearTimeout(capT); capT = setTimeout(() => (cap.style.display = "none"), 6000); }
-setTimeout(() => (document.getElementById("hint").style.opacity = "0"), 5000);
+function caption(k, t) { document.getElementById("capk").textContent = k; document.getElementById("capt").textContent = t; cap.style.display = "block"; clearTimeout(capT); capT = setTimeout(() => (cap.style.display = "none"), 7000); }
+setTimeout(() => (document.getElementById("hint").style.opacity = "0"), 6000);
 addEventListener("resize", () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 
-let t0 = performance.now();
+let t0 = performance.now(); const look = new THREE.Vector3();
 function frame(now) {
   const dt = Math.min(0.05, (now - t0) / 1000); t0 = now;
   camPos.lerp(spots[spot].p, 1 - Math.pow(0.02, dt)); camera.position.copy(camPos);
   if (gyro) camera.quaternion.slerp(q, 0.2); else { camera.rotation.set(0, 0, 0, "YXZ"); camera.rotation.y = yaw; camera.rotation.x = pitch; }
-  flame.scale.setScalar(0.9 + Math.sin(now / 90) * 0.08 + Math.sin(now / 37) * 0.05); lamp.intensity = 14 + Math.sin(now / 120) * 1.2;
+  const fl = 0.9 + Math.sin(now / 90) * 0.08 + Math.sin(now / 37) * 0.05; lampFlame.scale.setScalar(fl); cFlame.scale.setScalar(fl); lamp.intensity = 12 + Math.sin(now / 120) * 1.2; cLight.intensity = 5 + Math.sin(now / 70) * 0.6;
   const arr = pg.attributes.position.array; for (let i = 0; i < pn; i++) { arr[i * 3 + 1] -= dt * 0.03; arr[i * 3] += Math.sin(now / 1000 + i) * dt * 0.01; if (arr[i * 3 + 1] < 0) arr[i * 3 + 1] = H; } pg.attributes.position.needsUpdate = true;
   renderer.render(scene, camera); requestAnimationFrame(frame);
 }

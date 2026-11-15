@@ -171,3 +171,10 @@ button.body:hover, .btn.body:hover { box-shadow: 0 0 0 1px var(--sand), 0 0 20px
 .case-head > div { flex: 1; min-width: 0; }
 .case-head .vignette { width: 112px; height: auto; flex: none; margin-top: 0.4rem; color: var(--ink-faint); }
 @media (max-width: 360px) { .case-head .vignette { width: 84px; } }
+
+/* Ryciny rastrowe: wycinki papieru na tle strony, w obu trybach. */
+.plate { display: block; max-width: 100%; height: auto; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45)); }
+.plate.hero { width: 100%; margin: 0.4rem 0 1.2rem; }
+.case-head .plate.el { width: 128px; margin-top: 0.3rem; flex: none; }
+@media (max-width: 360px) { .case-head .plate.el { width: 96px; } }
+.plate.stone { width: 62%; max-width: 300px; margin: 0.4rem auto 1.2rem; }
