@@ -2,7 +2,7 @@ import { h, go, toast, back, next } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import { interludesFor } from "./interludes";
 import { icon, flint, flintSeed } from "./icons";
-import { hero, vignette, plate } from "./vignettes";
+import { hero, vignette } from "./vignettes";
 import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import { pickDaily, dayKey } from "../engine/daily";
 import { track } from "../engine/track";
@@ -575,7 +575,6 @@ export function viewAkta(app: App): HTMLElement {
     toast(msg); input.value = ""; go(c && !app.isSilentFor(c.gate) && app.passed() >= (c.requires.solvedCases ?? 0) ? `#/brama/${c.gate}` : "#/mapa");
   });
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") btn.click(); });
-  const stonePlate = plate("krzemien", "stone", "Krzemień pasiasty, siedmiobok, na otwartej dłoni"); if (stonePlate) sec.append(stonePlate);
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz pierwszy: kod z książki"), h("p", { class: "muted" }, "Każdy rozdział kończy się siedmiobokiem i jednym słowem. Wpisz je tutaj."), h("div", { class: "row" }, input, btn)));
 
   // Klucz 2: czas. Jeden kalendarz: sprawy jako odcinki. Rozdziały otwierają się kodem albo razem ze sprawą.

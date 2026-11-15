@@ -9,7 +9,7 @@ Zasada: generujemy **czarną kreskę na białym papierze**, bez koloru. Kolor (a
 ## STYL (wklej na początku każdego promptu)
 
 ```
-19th-century wood engraving and copperplate etching, in the manner of a geological atlas plate and a Polish interwar woodcut (Ostoja-Chrostowski), black ink on cream laid paper, fine cross-hatching and parallel hatching instead of shading, slightly trembling hand-cut contour line, printed with a worn block, visible plate tone and ink grain, high contrast monochrome, no color, no gradients, no digital smoothness, strong composition with generous empty paper, matter before scene: textures of loess layers, brick, oak beams, striped flint, stone floor seams, sand. Mood: quiet, cold, archival, foreboding; a document rather than a painting. Flat lighting as in a print. Plate framed by thin ruled border with a small plate number in the corner.
+19th-century wood engraving and copperplate etching, in the manner of a geological atlas plate and a Polish interwar woodcut (Ostoja-Chrostowski), black ink on cream laid paper, fine cross-hatching and parallel hatching instead of shading, slightly trembling hand-cut contour line, printed with a worn block, visible plate tone and ink grain, high contrast monochrome, no color, no gradients, no digital smoothness, strong composition with generous empty paper, matter before scene: textures of loess layers, brick, oak beams, striped flint, stone floor seams, sand. Mood: quiet, cold, archival, foreboding; a document rather than a painting. Flat lighting as in a print. The composition fills the whole rectangle and dissolves into blank paper at the edges with loosening hatching: no oval, no vignette, no frame, no border, no plate number.
 ```
 
 Po polsku, co to znaczy: drzeworyt i miedzioryt z atlasu geologicznego XIX wieku z domieszką polskiego drzeworytu międzywojennego; czarny atrament na kremowym papierze czerpanym; cień tylko szrafowaniem; kontur lekko drżący, jak z zużytego klocka; dużo pustego papieru; faktura materiału ważniejsza niż scena; nastrój cichy, zimny, archiwalny, złowróżbny; światło płaskie jak na odbitce; cienka ramka z numerem planszy.
@@ -17,7 +17,7 @@ Po polsku, co to znaczy: drzeworyt i miedzioryt z atlasu geologicznego XIX wieku
 ## NEGATYW (wklej na końcu albo w polu „negative prompt”)
 
 ```
-color, colour, gradient, glow, lens flare, photo, photorealistic, 3D render, CGI, smooth digital painting, anime, cartoon, vector icon, flat design, logo, fantasy magic, glowing runes, crystals, dragons, faces, portrait, eyes, text, letters, watermark, signature, blurry, low contrast, grey mush, halftone dots, comic style, symmetrical mandala
+color, colour, gradient, glow, lens flare, oval, vignette, frame, border, circular crop, photo, photorealistic, 3D render, CGI, smooth digital painting, anime, cartoon, vector icon, flat design, logo, fantasy magic, glowing runes, crystals, dragons, faces, portrait, eyes, text, letters, watermark, signature, blurry, low contrast, grey mush, halftone dots, comic style, symmetrical mandala
 ```
 
 ## Parametry
@@ -33,7 +33,7 @@ color, colour, gradient, glow, lens flare, photo, photorealistic, 3D render, CGI
 1. Zdjąć papier: progowanie do czystej czerni i bieli (Photoshop: Threshold 120–140; GIMP: Kolory → Próg) albo od razu wektoryzacja.
 2. Wektoryzacja: Illustrator Image Trace (preset „Black and White Logo”, Threshold 128, Paths 80%, Corners 60%, Noise 10 px) albo `potrace -s -t 5 --alphamax 0.8` z wiersza poleceń. Wynik: SVG z jedną ścieżką w kolorze czarnym.
 3. W SVG zamienić `fill="#000000"` na `fill="currentColor"`. Aplikacja nada kolor atramentu w obu trybach.
-4. Usunąć ramkę z numerem planszy (aplikacja ma własne ramy) albo zostawić, jeśli ładna; wtedy wszystkie dwadzieścia muszą ją mieć.
+4. Żadnych owali i ramek: obraz ma dochodzić do brzegów prostokąta i rozpuszczać się w papier szrafowaniem. Aplikacja sama zmiękcza brzeg. Jeśli generator uparcie robi owal, dopisz w prompcie „full-bleed, edges fade into blank paper, not an oval”.
 5. Nazwy i rozmiary jak w `docs/GRAFIKA.md`: `public/ryciny/01-panorama.svg` itd.
 
 ---
