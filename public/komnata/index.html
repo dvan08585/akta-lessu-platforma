@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Komnata</title>
+<meta name="robots" content="noindex">
+<style>
+  :root { --ink: #e8e0cf; --dim: #a39a86; --sand: #c9a86a; --bg: #0e0d0b; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: "Cormorant Garamond", Georgia, serif; overflow: hidden; user-select: none; -webkit-user-select: none; touch-action: none; }
+  canvas { display: block; }
+  /* Rycina na żywo: szrafowanie nałożone na obraz 3D. Tanie (CSS), bez shaderów. */
+  .hatch { position: fixed; inset: 0; pointer-events: none; mix-blend-mode: multiply; opacity: 0.35;
+    background: repeating-linear-gradient(-32deg, rgba(0,0,0,0.0) 0 2px, rgba(0,0,0,0.55) 2px 3px); }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: 0.18; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 55%, transparent 50%, rgba(0,0,0,0.6) 100%); }
+  .ui { position: fixed; left: 0; right: 0; bottom: 0; padding: 0.8rem 1rem calc(0.8rem + env(safe-area-inset-bottom)); display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; z-index: 5; }
+  .ui a, .ui button { font: inherit; font-size: 0.95rem; color: var(--ink); background: rgba(14,13,11,0.6); border: 1px solid var(--dim); border-radius: 6px; padding: 0.5rem 0.9rem; text-decoration: none; backdrop-filter: blur(4px); }
+  .kicker { position: fixed; top: calc(0.8rem + env(safe-area-inset-top)); left: 1rem; right: 1rem; z-index: 5; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); }
+  .kicker b { display: block; font-weight: 400; font-size: 1.3rem; letter-spacing: 0; text-transform: none; color: var(--ink); margin-top: 0.2rem; }
+  .cap { position: fixed; left: 1rem; right: 1rem; bottom: 4.6rem; z-index: 5; background: #f1ebdd; color: #1e1a14; border-radius: 2px; padding: 0.8rem 1rem; font-size: 1.05rem; line-height: 1.4; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: rotate(-0.4deg); display: none; }
+  .cap small { display: block; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: #6b5a40; margin-bottom: 0.3rem; }
+  .hint { position: fixed; left: 0; right: 0; top: 45%; text-align: center; color: var(--dim); font-size: 0.95rem; letter-spacing: 0.08em; z-index: 4; pointer-events: none; transition: opacity 1s; }
+</style>
+<script type="importmap">{ "imports": { "three": "../vendor/three.module.js" } }</script>
+</head>
+<body>
+<div class="kicker">Próba · komnata pod Collegium<b>Komnata</b></div>
+<div class="hint" id="hint">Obracaj telefonem. Dotknij podłogi, żeby podejść.</div>
+<div class="hatch"></div><div class="grain"></div><div class="vignette"></div>
+<div class="cap" id="cap"><small id="capk"></small><span id="capt"></span></div>
+<div class="ui"><a href="../#/akta">← Wróć</a><button id="gyro">Żyroskop</button><button id="walk">Podejdź</button></div>
+<script type="module">
+import * as THREE from "three";
+
+// ---------- scena: siedmiobok z lessu, cokół, siedem nisz ----------
+const R = 4.2, H = 3.1, N = 7;
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "low-power" });
+renderer.setPixelRatio(Math.min(2, devicePixelRatio)); renderer.setSize(innerWidth, innerHeight); renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.6;
+document.body.prepend(renderer.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0b0a08); scene.fog = new THREE.FogExp2(0x0b0a08, 0.07);
+const camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 0.05, 50);
+
+// tekstury proceduralne: less (warstwy + ziarno), kamień cokołu, krzemień (pasy)
+function canvasTex(w, h, draw, repeat = [1, 1]) { const c = document.createElement("canvas"); c.width = w; c.height = h; const x = c.getContext("2d"); draw(x, w, h); const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(...repeat); t.colorSpace = THREE.SRGBColorSpace; return t; }
+const rnd = (seed) => { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; };
+const lessTex = canvasTex(512, 512, (x, w, h) => {
+  const r = rnd(7); x.fillStyle = "#8e7f62"; x.fillRect(0, 0, w, h);
+  for (let i = 0; i < 26000; i++) { const g = 110 + r() * 70; x.fillStyle = `rgb(${g + 20},${g + 6},${g - 20})`; x.fillRect(r() * w, r() * h, 1.5, 1.5); }
+  for (let y = 0; y < h; y += 7 + r() * 9) { x.strokeStyle = `rgba(40,30,18,${0.15 + r() * 0.25})`; x.lineWidth = 0.8 + r(); x.beginPath(); for (let px = 0; px <= w; px += 16) { x.lineTo(px, y + Math.sin(px / 37 + y) * 2.2 + (r() - 0.5) * 2); } x.stroke(); }
+}, [3, 1.5]);
+const stoneTex = canvasTex(256, 256, (x, w, h) => { const r = rnd(3); x.fillStyle = "#5b5650"; x.fillRect(0, 0, w, h); for (let i = 0; i < 9000; i++) { const g = 70 + r() * 50; x.fillStyle = `rgb(${g},${g - 3},${g - 8})`; x.fillRect(r() * w, r() * h, 2, 2); } for (let i = 0; i < 30; i++) { x.strokeStyle = "rgba(20,18,14,0.35)"; x.beginPath(); x.moveTo(r() * w, r() * h); x.lineTo(r() * w, r() * h); x.stroke(); } });
+const flintTex = canvasTex(256, 256, (x, w, h) => { const r = rnd(11); x.fillStyle = "#3a3630"; x.fillRect(0, 0, w, h); const tones = ["#d6c8a6", "#4e473d", "#b9a98a", "#3b3630", "#8f8470"]; for (let i = 34; i >= 0; i--) { const t = i / 33; x.strokeStyle = tones[i % 5]; x.lineWidth = 1 + t * 2; x.beginPath(); x.ellipse(80 + t * 60, 90 + t * 50, 6 + i * 6 + t * t * 40, 6 + i * 4.5 + t * 12, -0.3, 0, Math.PI * 2); x.stroke(); } });
+
+const lessMat = new THREE.MeshStandardMaterial({ map: lessTex, roughness: 1, metalness: 0, color: 0xb8a98c });
+const stoneMat = new THREE.MeshStandardMaterial({ map: stoneTex, roughness: 0.95, color: 0x9a948a });
+const flintMat = new THREE.MeshStandardMaterial({ map: flintTex, roughness: 0.5, color: 0xffffff });
+
+// ściany: siedem płaszczyzn, każda z niszą
+const walls = new THREE.Group(); scene.add(walls);
+const niches = [];
+for (let i = 0; i < N; i++) {
+  const a = (i / N) * Math.PI * 2 + Math.PI / N; const side = 2 * R * Math.sin(Math.PI / N);
+  const wall = new THREE.Mesh(new THREE.PlaneGeometry(side, H, 1, 1), lessMat);
+  wall.position.set(Math.cos(a) * R * Math.cos(Math.PI / N), H / 2, Math.sin(a) * R * Math.cos(Math.PI / N)); wall.lookAt(0, H / 2, 0); walls.add(wall);
+  // nisza: ciemny prostokąt wpuszczony w ścianę
+  const niche = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.9, 0.5), new THREE.MeshStandardMaterial({ color: 0x1a1612, roughness: 1 }));
+  niche.position.copy(wall.position).multiplyScalar(1.05); niche.position.y = 1.4; niche.lookAt(0, 1.4, 0); walls.add(niche); niches.push({ mesh: niche, i });
+}
+const floor = new THREE.Mesh(new THREE.CircleGeometry(R, N), new THREE.MeshStandardMaterial({ map: stoneTex, roughness: 1, color: 0x6d665c })); floor.rotation.x = -Math.PI / 2; floor.rotation.z = Math.PI / N; scene.add(floor);
+const ceil = new THREE.Mesh(new THREE.ConeGeometry(R * 1.02, 1.6, N, 1, true), lessMat); ceil.position.y = H + 0.8; ceil.rotation.y = Math.PI / N; ceil.material = ceil.material.clone(); ceil.material.side = THREE.BackSide; scene.add(ceil);
+
+// cokół: siedmioboczny graniastosłup, na nim krzemień
+const plinth = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.62, 0.9, N), stoneMat); plinth.position.y = 0.45; scene.add(plinth);
+const flint = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.19, 0.08, N), flintMat); flint.position.y = 0.94; flint.rotation.y = 0.3; scene.add(flint);
+// napis na murze: dwa słowa jako wyżłobione kreski (nieczytelne)
+const scratch = new THREE.Group(); const w0 = walls.children[0];
+for (let k = 0; k < 9; k++) { const m = new THREE.Mesh(new THREE.BoxGeometry(0.06 + Math.random() * 0.12, 0.012, 0.01), new THREE.MeshStandardMaterial({ color: 0x2a2419 })); m.position.set(-0.4 + k * 0.1 + (k > 4 ? 0.12 : 0), 1.1 + (k % 2) * 0.03, 0); scratch.add(m); }
+scratch.position.copy(w0.position).multiplyScalar(0.97); scratch.position.y = 0; scratch.lookAt(0, 0, 0); scene.add(scratch);
+// kaganek w pierwszej niszy
+const lampN = niches[3]; const lamp = new THREE.PointLight(0xffb070, 14, 12, 1.4); lamp.position.copy(lampN.mesh.position).multiplyScalar(0.9); lamp.position.y = 1.5; scene.add(lamp);
+const flame = new THREE.Mesh(new THREE.SphereGeometry(0.035, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffd9a0 })); flame.position.copy(lamp.position); scene.add(flame);
+scene.add(new THREE.AmbientLight(0x8a7a5a, 0.9));
+const top = new THREE.PointLight(0xc9a86a, 6, 9, 1.6); top.position.set(0, 2.6, 0); scene.add(top);
+
+// pył lessowy: tysiąc ziaren, dryf w dół
+const pg = new THREE.BufferGeometry(); const pn = 1000; const pp = new Float32Array(pn * 3);
+for (let i = 0; i < pn; i++) { pp[i * 3] = (Math.random() - 0.5) * R * 1.6; pp[i * 3 + 1] = Math.random() * H; pp[i * 3 + 2] = (Math.random() - 0.5) * R * 1.6; }
+pg.setAttribute("position", new THREE.BufferAttribute(pp, 3));
+const dust = new THREE.Points(pg, new THREE.PointsMaterial({ color: 0xe8e0cf, size: 0.008, transparent: true, opacity: 0.5 })); scene.add(dust);
+
+// ---------- kamera: żyroskop albo przeciąganie; ruch po szynach ----------
+const spots = [ { p: new THREE.Vector3(0, 1.55, 3.1), k: "wejście", t: "Korytarz kończy się tu. Powietrze stoi. Pył nie opada, tylko wisi." },
+  { p: new THREE.Vector3(0, 1.5, 1.4), k: "cokół", t: "Siedmioboczny cokół z kamienia, którego nie ma w okolicy. Na nim krzemień, pasy zbite po jednej stronie." },
+  { p: new THREE.Vector3(lamp.position.x * 0.55, 1.5, lamp.position.z * 0.55), k: "nisza", t: "Kaganek. Ktoś go zapalił niedawno. Olej jeszcze nie stężał." } ];
+let spot = 0; const camPos = spots[0].p.clone(); camera.position.copy(camPos);
+let yaw = 0, pitch = -0.08, gyro = false, q = new THREE.Quaternion();
+const euler = new THREE.Euler(); const zee = new THREE.Vector3(0, 0, 1); const q1 = new THREE.Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5)); const q0 = new THREE.Quaternion();
+function onOrient(e) { if (e.alpha === null) return; const a = THREE.MathUtils.degToRad(e.alpha), b = THREE.MathUtils.degToRad(e.beta), g = THREE.MathUtils.degToRad(e.gamma); const o = THREE.MathUtils.degToRad(screen.orientation?.angle ?? 0);
+  euler.set(b, a, -g, "YXZ"); q.setFromEuler(euler); q.multiply(q1); q.multiply(q0.setFromAxisAngle(zee, -o)); gyro = true; }
+document.getElementById("gyro").addEventListener("click", async () => { try { const DO = DeviceOrientationEvent; if (DO.requestPermission) { const r = await DO.requestPermission(); if (r !== "granted") throw 0; } addEventListener("deviceorientation", onOrient); document.getElementById("gyro").textContent = "Żyroskop działa"; } catch { document.getElementById("gyro").textContent = "Bez żyroskopu: przeciągaj"; } });
+let drag = null; renderer.domElement.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, yaw, pitch, moved: false }; });
+addEventListener("pointermove", (e) => { if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 6) drag.moved = true; yaw = drag.yaw - dx * 0.004; pitch = THREE.MathUtils.clamp(drag.pitch - dy * 0.004, -1.2, 1.2); });
+addEventListener("pointerup", (e) => { if (drag && !drag.moved) tap(e); drag = null; });
+const ray = new THREE.Raycaster(); const ndc = new THREE.Vector2();
+function tap(e) { ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera);
+  const hit = ray.intersectObjects([plinth, flint, floor, lampN.mesh, ...scratch.children], false)[0]; if (!hit) return;
+  if (hit.object === floor) { const p = hit.point; let best = 0, bd = 1e9; spots.forEach((s, i) => { const d = s.p.distanceTo(new THREE.Vector3(p.x, s.p.y, p.z)); if (d < bd) { bd = d; best = i; } }); goTo(best); return; }
+  if (hit.object === plinth || hit.object === flint) caption("cokół", "Kamień jest ciepły. Nie od kaganka: kaganek jest po drugiej stronie.");
+  else if (hit.object === lampN.mesh) caption("nisza", "W niszy kaganek i słoik. Na słoiku data ołówkiem: 1998.");
+  else caption("mur", "Dwa słowa wyżłobione w lessie, na wysokości oczu. Nie da się ich przeczytać bez światła z boku.");
+}
+function goTo(i) { spot = i; caption(spots[i].k, spots[i].t); }
+document.getElementById("walk").addEventListener("click", () => goTo((spot + 1) % spots.length));
+const cap = document.getElementById("cap"); let capT;
+function caption(k, t) { document.getElementById("capk").textContent = k; document.getElementById("capt").textContent = t; cap.style.display = "block"; clearTimeout(capT); capT = setTimeout(() => (cap.style.display = "none"), 6000); }
+setTimeout(() => (document.getElementById("hint").style.opacity = "0"), 5000);
+addEventListener("resize", () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+
+let t0 = performance.now();
+function frame(now) {
+  const dt = Math.min(0.05, (now - t0) / 1000); t0 = now;
+  camPos.lerp(spots[spot].p, 1 - Math.pow(0.02, dt)); camera.position.copy(camPos);
+  if (gyro) camera.quaternion.slerp(q, 0.2); else { camera.rotation.set(0, 0, 0, "YXZ"); camera.rotation.y = yaw; camera.rotation.x = pitch; }
+  flame.scale.setScalar(0.9 + Math.sin(now / 90) * 0.08 + Math.sin(now / 37) * 0.05); lamp.intensity = 14 + Math.sin(now / 120) * 1.2;
+  const arr = pg.attributes.position.array; for (let i = 0; i < pn; i++) { arr[i * 3 + 1] -= dt * 0.03; arr[i * 3] += Math.sin(now / 1000 + i) * dt * 0.01; if (arr[i * 3 + 1] < 0) arr[i * 3 + 1] = H; } pg.attributes.position.needsUpdate = true;
+  renderer.render(scene, camera); requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

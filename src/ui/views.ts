@@ -602,7 +602,7 @@ export function viewAkta(app: App): HTMLElement {
   // Narzędzia
   sec.append(h("h3", {}, "Narzędzia"),
     h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Miasto w trzech wymiarach z otwartych danych: siedem wzgórz z rzeźbą terenu, kamienice jako bryły, bramy pod wzgórzami. Z GPS i kompasem zawieszka grzeje w stronę bramy."),
-      h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "miasto/" }, "Miasto"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "sceny/?plik=rynek.splat" }, "Scena z Rynku"))),
+      h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "miasto/" }, "Miasto"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "sceny/?plik=rynek.splat" }, "Scena z Rynku"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "komnata/" }, "Komnata (próba)"))),
     h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Siedmiobok na końcu rozdziału pod kamerą: nad stroną unosi się przekrój z tą jedną bramą. Bez aplikacji."),
       h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "ar/" }, "Kamera"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "ar/druk.html", target: "_blank" }, "Znaczniki do druku"))),
     h("p", { class: "faint" }, h("a", { href: "#/o-ciele" }, "Co robi z tobą ta gra: oddech, nucenie, dudnienie, bezruch, źródła.")));
