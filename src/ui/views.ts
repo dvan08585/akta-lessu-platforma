@@ -246,8 +246,8 @@ export function dailyBox(app: App): HTMLElement {
 }
 
 export function readingBox(app: App, hill?: number): HTMLElement {
-  const input = h("input", { type: "text", placeholder: "ODCZYT", "aria-label": "Odczyt cudzej zawieszki", style: "text-transform:none;letter-spacing:0.1em" }) as HTMLInputElement;
-  const btn = h("button", {}, "Przyjmij");
+  const input = h("input", { type: "text", placeholder: "odczyt biegłego", "aria-label": "Odczyt cudzej zawieszki", style: "text-transform:none;letter-spacing:0.1em" }) as HTMLInputElement;
+  const btn = h("button", { class: "primary" }, "Przyjmij");
   btn.addEventListener("click", async () => {
     const r = parseReading(input.value);
     if (!r || !(await verifyCheck(r.token))) { toast("To nie jest odczyt zawieszki. Siedem znaków, cyfra wzgórza na początku."); return; }
@@ -358,7 +358,13 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       const hidden = h("input", { type: "hidden", name: q.id, value: "0" }) as HTMLInputElement;
       const render = () => {
         sentence.replaceChildren();
-        parts.forEach((t, k) => { sentence.append(t); if (k < nSlots) { const slot = h("button", { class: `slot ${chosen[k] ? "set" : ""}`, type: "button", onclick: () => { chosen[k] = null; render(); } }, chosen[k] ?? "·····"); sentence.append(slot); } });
+        parts.forEach((t, k) => {
+          // interpunkcja tuż po luce (przecinek, kropka) zostaje przy niej: luka i znak to jedna niełamliwa jednostka
+          const lead = k > 0 ? (t.match(/^[,.;:!?)]+/)?.[0] ?? "") : "";
+          if (lead) { sentence.lastElementChild?.append(lead); t = t.slice(lead.length); }
+          sentence.append(t);
+          if (k < nSlots) { const slot = h("button", { class: `slot ${chosen[k] ? "set" : ""}`, type: "button", "aria-label": chosen[k] ? `Luka ${k + 1}: ${chosen[k]}, dotknij, by wyczyścić` : `Luka ${k + 1}, pusta`, onclick: () => { chosen[k] = null; render(); } }, chosen[k] ?? "\u00a0"); sentence.append(h("span", { class: "nw" }, slot)); }
+        });
         bank.querySelectorAll("button").forEach((b) => { (b as HTMLButtonElement).disabled = chosen.includes(b.textContent); });
         hidden.value = String(encodeFill(q.bank!, chosen.map((w) => w ?? "")));
       };
@@ -571,8 +577,8 @@ export function viewNotebook(app: App): HTMLElement {
   }
   const code = exportCode(app.state);
   const pre = h("pre", { class: "mono", style: "white-space:pre-wrap;word-break:break-all;display:none" }, code);
-  const inp2 = h("input", { type: "text", placeholder: "KOD", "aria-label": "Kod wznowienia", style: "text-transform:none;letter-spacing:0" }) as HTMLInputElement;
-  const b2 = h("button", { onclick: () => { const st = importCode(inp2.value); if (!st) { toast("Nieprawidłowy kod."); return; } Object.assign(app.state, st); save(app.state); toast("Wznowiono."); go("#/mapa"); } }, "Wznów");
+  const inp2 = h("input", { type: "text", placeholder: "kod wznowienia", "aria-label": "Kod wznowienia", style: "text-transform:none;letter-spacing:0" }) as HTMLInputElement;
+  const b2 = h("button", { class: "primary", onclick: () => { const st = importCode(inp2.value); if (!st) { toast("Nieprawidłowy kod."); return; } Object.assign(app.state, st); save(app.state); toast("Wznowiono."); go("#/mapa"); } }, "Wznów");
   const b2box = h("div", { class: "gatebox resume" }, h("h3", {}, "Wznowienie"), h("p", { class: "muted" }, "Przeglądarka może zapomnieć tę stronę. Kod nie."),
     h("div", { class: "verdict" }, h("button", { class: "primary", onclick: async () => { try { await navigator.clipboard.writeText(code); toast("Skopiowano kod wznowienia."); } catch { pre.style.display = ""; toast("Zaznacz i skopiuj ręcznie."); } } }, "Skopiuj kod")), pre,
     h("p", { class: "muted", style: "margin-top:1.2rem" }, "Masz kod z innego urządzenia?"), h("div", { class: "row" }, inp2, b2));
@@ -583,7 +589,7 @@ export function viewNotebook(app: App): HTMLElement {
 export function viewAkta(app: App): HTMLElement {
   const sec = h("section", { class: "fade-in" }, topbar(app, "#/akta"), h("h2", { class: "sr-only" }, "Akta"));
   // Klucz 1: kod z książki
-  const input = h("input", { type: "text", placeholder: "KOD", "aria-label": "Kod z książki", autocomplete: "off", autocapitalize: "characters" }) as HTMLInputElement;
+  const input = h("input", { type: "text", placeholder: "kod z rozdziału", "aria-label": "Kod z książki", autocomplete: "off", autocapitalize: "characters" }) as HTMLInputElement;
   const btn = h("button", { class: "primary" }, "Otwórz");
   btn.addEventListener("click", async () => {
     const val = input.value.trim(); if (!val) return;
@@ -745,7 +751,7 @@ export function viewOnboarding(app: App): HTMLElement {
           setTimeout(() => {
             // Forma zwracania się: jedyne, o co gra pyta. Bez imienia, bez danych. Komenda pisze „Szanowna Pani, Szanowny Panie" i musi wiedzieć, jak dalej.
             const pick = (a: "f" | "m") => { app.state.address = a; finishOnboarding(); };
-            stage.append(cue("Zlecenie jest zaadresowane do biegłej albo biegłego. Jak mamy pisać?"), h("div", { class: "verdict choice fade-in" }, h("button", { class: "primary big", onclick: () => pick("f") }, "Szanowna Pani"), h("button", { class: "primary big", onclick: () => pick("m") }, "Szanowny Panie")));
+            stage.append(cue("Zlecenie jest zaadresowane do biegłej albo biegłego. Jak mamy pisać?"), h("div", { class: "verdict choice seg fade-in", role: "group", "aria-label": "Forma" }, h("button", { class: "primary big", onclick: () => pick("f") }, "Szanowna Pani"), h("button", { class: "primary big", onclick: () => pick("m") }, "Szanowny Panie")));
           }, 5700);
         }
       }, 100);
@@ -763,15 +769,15 @@ export function viewSettings(app: App): HTMLElement {
   const setTheme = (t: "sun" | "light" | "dark") => { app.state.theme = t; save(app.state); go("#/akta"); };
   const cur = app.state.theme ?? "sun";
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Światło"), h("p", { class: "muted" }, "Za słońcem: ciemno od zachodu do wschodu nad Sandomierzem, jasno w dzień."),
-    h("div", { class: "verdict choice" }, h("button", { class: cur === "sun" ? "primary" : "", onclick: () => setTheme("sun") }, "Za słońcem"), h("button", { class: cur === "light" ? "primary" : "", onclick: () => setTheme("light") }, "Jasno"), h("button", { class: cur === "dark" ? "primary" : "", onclick: () => setTheme("dark") }, "Ciemno"))));
+    h("div", { class: "verdict choice seg", role: "group", "aria-label": "Światło" }, h("button", { class: cur === "sun" ? "primary" : "", onclick: () => setTheme("sun") }, "Za słońcem"), h("button", { class: cur === "light" ? "primary" : "", onclick: () => setTheme("light") }, "Jasno"), h("button", { class: cur === "dark" ? "primary" : "", onclick: () => setTheme("dark") }, "Ciemno"))));
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Forma"), h("p", { class: "muted" }, "Jak gra ma się do Ciebie zwracać. Nic poza tym nie zapisujemy."),
-    h("div", { class: "verdict choice" }, h("button", { class: app.state.address === "f" ? "primary" : "", onclick: () => { app.state.address = "f"; save(app.state); go("#/akta"); } }, "Szanowna Pani"), h("button", { class: app.state.address === "m" ? "primary" : "", onclick: () => { app.state.address = "m"; save(app.state); go("#/akta"); } }, "Szanowny Panie"))));
+    h("div", { class: "verdict choice seg", role: "group", "aria-label": "Forma" }, h("button", { class: app.state.address === "f" ? "primary" : "", onclick: () => { app.state.address = "f"; save(app.state); go("#/akta"); } }, "Szanowna Pani"), h("button", { class: app.state.address === "m" ? "primary" : "", onclick: () => { app.state.address = "m"; save(app.state); go("#/akta"); } }, "Szanowny Panie"))));
   // Narzędzia
   sec.append(h("h3", {}, "Narzędzia"),
     h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Miasto w trzech wymiarach z otwartych danych: siedem wzgórz z rzeźbą terenu, kamienice jako bryły, bramy pod wzgórzami. Z GPS i kompasem zawieszka grzeje w stronę bramy."),
-      h("div", { class: "verdict choice" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "miasto/?b=" + __BUILD__ }, "Miasto"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "sceny/?plik=rynek.splat" }, "Scena z Rynku"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "komnata/?b=" + __BUILD__ }, "Komnata (próba)"))),
+      h("div", { class: "verdict choice grid" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "miasto/?b=" + __BUILD__ }, "Miasto"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "sceny/?plik=rynek.splat" }, "Scena z Rynku"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "komnata/?b=" + __BUILD__ }, "Komnata (próba)"))),
     h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Siedmiobok na końcu rozdziału pod kamerą: nad stroną unosi się przekrój z tą jedną bramą. Bez aplikacji."),
-      h("div", { class: "verdict choice" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "ar/?b=" + __BUILD__ }, "Kamera"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "ar/druk.html", target: "_blank" }, "Znaczniki do druku"))),
+      h("div", { class: "verdict choice grid" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "ar/?b=" + __BUILD__ }, "Kamera"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "ar/druk.html", target: "_blank" }, "Znaczniki do druku"))),
     h("p", { class: "faint" }, h("a", { href: "#/o-ciele" }, "Co robi z tobą ta gra: oddech, nucenie, dudnienie, bezruch, źródła.")));
   sec.append(h("div", { class: "danger-zone" }, h("button", { class: "ghost danger", onclick: () => { if (confirm("Wyczyścić cały postęp na tym urządzeniu? Tego nie da się cofnąć.")) { reset(); location.reload(); } } }, "Zacznij od nowa"), h("p", { class: "faint" }, "Usuwa cały postęp z tego urządzenia. Zostaje tylko to, co zapiszesz wcześniej jako kod wznowienia w zeszycie.")));
   return sec;

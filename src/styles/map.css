@@ -37,7 +37,7 @@
 .gate-row .n { font-family: var(--font-mono); color: var(--ink-faint); }
 .gate-row .t { display: flex; flex-direction: column; }
 .gate-row .t small { color: var(--ink-faint); }
-.gate-row .s { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); }
+.gate-row .s { font-size: 0.85rem; font-style: italic; letter-spacing: 0.02em; color: var(--ink-dim); }
 .gate-row[data-status="solved"] .s { color: var(--sand); }
 .gate-row[data-status="locked"] { opacity: 0.8; }
 .gate-row[data-status="locked"] .t { color: var(--ink-dim); }

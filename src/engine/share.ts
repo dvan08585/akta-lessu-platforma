@@ -4,7 +4,7 @@ export function shareCard(opts: { solved: number[]; unstable?: number[]; attempt
   const passed = opts.passed ?? opts.solved.length;
   const head = `Akta Lessu · ${passed}/7`;
   const tries = opts.attempts === 1 ? "za pierwszym razem" : `${opts.attempts} próby`;
-  const tokens = [opts.readings?.length ? `odczyt: ${opts.readings.join(" ")}` : "", opts.halfKey ? `klucz: ${opts.halfKey}` : ""].filter(Boolean).join("\n");
+  const tokens = [opts.readings?.length ? `odczyt: ${opts.readings.join(" ")}\n(wpisuje go inny biegły, u którego to wzgórze milczy)` : "", opts.halfKey ? `klucz: ${opts.halfKey}\n(połowa; druga jest u kogoś po sześciu bramach)` : ""].filter(Boolean).join("\n");
   return `${head}\n${row}\n${tries}\n${opts.hashtag} ${opts.url}${tokens ? "\n\n" + tokens : ""}`;
 }
 
