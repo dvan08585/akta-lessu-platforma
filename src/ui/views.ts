@@ -77,7 +77,9 @@ export function viewMap(app: App): HTMLElement {
   fetchWisla().then((w) => { const mean = monthlyMean(); const diff = w.cm - mean; wisla.append(item("river", `Wisła ${w.cm} cm${w.live ? "" : " (średnia)"}`, diff < -40 ? "Nisko. Krypty zalewa przy niskiej wodzie." : diff > 60 ? "Wysoko." : "Stan zwykły.")); // „krypty zalewa przy niskiej wodzie" to wniosek sprawy 3: mapa mówi to dopiero, gdy gracz sam to ustalił
     const c3 = app.caseForGate(2); const knows = !!c3 && app.state.solvedCases.includes(c3.n);
     if (diff < -40) wisla.append(h("span", { class: "dl note" }, knows ? "nisko: krypty zalewa przy niskiej wodzie" : "nisko")); else if (diff > 60) wisla.append(h("span", { class: "dl note" }, "wysoko")); });
-  const legend = app.silent.length ? h("p", { class: "silent-note" }, `Zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. Tam potrzebny jest cudzy odczyt.`) : null;
+  // O milczących wzgórzach mapa mówi dopiero, gdy gracz sam tego doświadczył w bramie (odkrycie, nie instrukcja).
+  const stillSilent = app.silent.filter((g) => !app.state.readings[String(g)]);
+  const legend = app.state.metSilent && stillSilent.length ? h("p", { class: "silent-note" }, `Zawieszka milczy na ${stillSilent.length === 1 ? "wzgórzu" : "wzgórzach"} ${stillSilent.join(" i ")}. Tam dopełnia sprawę cudzy odczyt.`) : null;
   sec.append(wisla); if (legend) sec.append(legend);
   if (isSnowSeason()) sec.classList.add("snow");
   fetchPogoda().then((w) => { if (!w) return; wisla.append(item("temp", `${w.tempC.toFixed(0)}°C${w.snowing ? ", śnieg" : ""}`)); if (w.snowing) { wisla.append(h("span", { class: "dl note" }, "na Pimpo Limpo są sanki")); sec.classList.add("sanki"); } });
@@ -108,7 +110,7 @@ export function viewMap(app: App): HTMLElement {
     list.append(h("div", { class: "gate-row", "data-status": st, role: "button", tabindex: "0", onclick: () => go(`#/brama/${g.n}`), onkeydown: (e: Event) => { if ((e as KeyboardEvent).key === "Enter" || (e as KeyboardEvent).key === " ") { e.preventDefault(); go(`#/brama/${g.n}`); } } },
       h("span", { class: "n" }, String(g.n)),
       h("span", { class: "t" }, g.name, h("small", {}, `żywioł: ${g.element}${c && c.title.toLowerCase() !== g.element ? " · " + c.title : ""}`)),
-      h("span", { class: "s" }, st === "locked" && c ? lockedWhy(app, c) : st === "solved" && app.awaitingGesture(g.n) ? "czeka na gest" : statusLabel(st))));
+      h("span", { class: "s" }, st === "locked" && c ? lockedWhy(app, c) : st === "solved" && app.awaitingGesture(g.n) ? "czeka na gest" : statusLabel(st) + (app.state.metSilent && app.isSilentFor(g.n) && st !== "locked" ? " · milczy" : ""))));
   }
   sec.append(app.state.sawFooter ? h("h3", {}, "Rejestr statusów — ", h("a", { href: import.meta.env.BASE_URL + "fundacja/", style: "color:var(--blood)" }, "Fundacja Sandomierska Memoria")) : h("h3", {}, "Rejestr statusów"), list);
   sec.append(dailyBox(app));
@@ -186,6 +188,7 @@ export function viewGate(app: App, n: number): HTMLElement {
     app.unsealCase(c.n).then((ok) => { if (ok) { go(`#/brama/${n}`); return; } wait.replaceWith(h("p", { class: "muted" }, `Akta są zapieczętowane. Otwiera je kod z rozdziału ${c.requires.chapter} albo dzień publikacji${c.requires.release && releaseDate(app.cfg, c.requires.release) ? ` (${releaseDate(app.cfg, c.requires.release)!.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })})` : ""}.`), h("div", { class: "verdict" }, next("Wpisz kod z książki", "#/akta"), back("Mapa"))); });
     return sec;
   }
+  if (silentHere && !app.state.metSilent) { app.state.metSilent = true; save(app.state); }
   if (silentHere) sec.append(h("div", { class: "gatebox silent-box" }, h("p", { class: "kicker" }, "Zawieszka milczy"),
     h("p", { class: "muted" }, "Na tym wzgórzu twoja zawieszka nie reaguje. Dokumenty czytasz i wniosek ustalasz sam. Odczyt z karty innego biegłego dopełnia sprawę: dodaje linię, której nie ma w aktach. Jeśli nikt nie przyjdzie w trzy doby, odczyt przyjdzie z archiwum."),
     readingBox(app, n)));
@@ -617,7 +620,7 @@ export function viewAkta(app: App): HTMLElement {
   sec.append(box3);
 
   // Klucz czwarty: mapa 5/7
-  const silentTxt = app.silent.length ? `Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. ` : "";
+  const silentTxt = app.state.metSilent && app.silent.length ? `Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. ` : "";
   const have = Object.keys(app.state.readings).map(Number);
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz czwarty: odczyt"),
     h("p", { class: "muted" }, `${silentTxt}Nikt nie ma pełnej mapy sam. Odczyty z kart innych biegłych otwierają to, co u ciebie milczy.${have.length ? ` Masz odczyty: ${have.join(", ")}.` : ""}`),

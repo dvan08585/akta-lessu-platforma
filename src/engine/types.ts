@@ -76,6 +76,8 @@ export interface SaveState {
   month: number;
   /** Czy gracz już zobaczył, kto wysyła akta (po sprawie 4). */
   sawFooter: boolean;
+  /** Gracz wszedł już do bramy na milczącym wzgórzu i zobaczył, że zawieszka tam nie reaguje. Od tej chwili mapa i Akta mogą o tym mówić. */
+  metSilent?: boolean;
   /** Odczyty cudzych zawieszek: wzgórze -> token dawcy. Otwierają wzgórza, na których własna zawieszka milczy. */
   readings: Record<string, string>;
   /** Czy gracz zostawił siódmą pozycję pustą (finał). */
