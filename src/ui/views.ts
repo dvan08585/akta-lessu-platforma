@@ -119,6 +119,20 @@ export function viewMap(app: App): HTMLElement {
     }
     sec.append(h("div", { class: "interludes-group" }, h("h3", {}, "Rozmowy"), il));
   }
+  // Poza aktami: Amor, Kompas, Widmo, Lustro, Ton dolny. Zwinięte, żeby mapa nie była menu; otwarte, gdy jest coś nowego.
+  const apo = interludesFor(app).filter((i) => i.place === "apokryf");
+  if (apo.length) {
+    const il = h("div", { class: "gates-list" });
+    const row = (id: string, type: string, title: string, sub: string, status: string, done: boolean) => il.append(h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${id}`), onkeydown: (e: Event) => { if ((e as KeyboardEvent).key === "Enter" || (e as KeyboardEvent).key === " ") { e.preventDefault(); go(`#/miedzy/${id}`); } } }, h("span", { class: "ico" }, icon(type)), h("span", { class: "t" }, title, h("small", {}, sub)), h("span", { class: "s" }, status)));
+    // Amor jako jeden wiersz (następne nieprzeczytane spotkanie), reszta po jednym
+    const amor = apo.filter((i) => i.type === "amor"); const amorDone = amor.filter((i) => app.state.interludesDone.includes(i.id)).length; const nextAmor = amor.find((i) => !app.state.interludesDone.includes(i.id)) ?? amor[amor.length - 1];
+    if (amor.length) row(nextAmor.id, "amor", "Amor", `${amor.length} ${plural(amor.length, "spotkanie", "spotkania", "spotkań")} · pies`, amorDone ? `${amorDone}/${amor.length}` : "", amorDone === amor.length);
+    for (const i of apo.filter((i) => i.type !== "amor")) { const done = app.state.interludesDone.includes(i.id); row(i.id, i.type, i.title, i.type === "compass" ? "na miejscu, w Sandomierzu" : i.type === "spectro" ? "patrz, nie słuchaj" : i.type === "mirror" ? "lustro" : "słuchawki", done ? "przebyte" : "", done); }
+    const fresh = apo.filter((i) => !app.state.interludesDone.includes(i.id)).length;
+    const det = h("details", { class: "interludes-group beyond" }, h("summary", {}, h("h3", {}, "Poza aktami"), h("span", { class: "s" }, fresh ? `${fresh} ${plural(fresh, "nowa", "nowe", "nowych")}` : "")), h("p", { class: "muted" }, "Pies, kompas, nagranie, kartka w odbiciu, ton w słuchawkach. Nie są dowodami. Są Sandomierzem."), il);
+    if (fresh) det.setAttribute("open", "");
+    sec.append(det);
+  }
   return sec;
 }
 
@@ -533,19 +547,14 @@ export function viewNotebook(app: App): HTMLElement {
   for (const e of [...app.state.notebook].reverse()) {
     sec.append(h("div", { class: "entry" }, h("div", { class: "meta" }, `${new Date(e.at).toLocaleString("pl-PL")} · ${e.meta}`), h("div", {}, e.text)));
   }
-  const apo = interludesFor(app).filter((i) => i.place === "apokryf");
-  if (apo.length) {
-    const il = h("div", { class: "gates-list" });
-    for (const i of apo) { const done = app.state.interludesDone.includes(i.id); il.append(h("div", { class: "gate-row inter", role: "button", tabindex: "0", "data-status": done ? "solved" : "open", onclick: () => go(`#/miedzy/${i.id}`) }, h("span", { class: "ico" }, icon(i.type)), h("span", { class: "t" }, i.title), h("span", { class: "s" }, done ? "przeczytane" : ""))); }
-    sec.append(h("h3", {}, "Apokryfy"), h("p", { class: "muted" }, "Kartki, których nie ma w aktach. Przychodzą z bramami."), il);
-  }
   const code = exportCode(app.state);
   const pre = h("pre", { class: "mono", style: "white-space:pre-wrap;word-break:break-all;display:none" }, code);
   const inp2 = h("input", { type: "text", placeholder: "KOD", "aria-label": "Kod wznowienia", style: "text-transform:none;letter-spacing:0" }) as HTMLInputElement;
-  const b2 = h("button", { class: "ghost", onclick: () => { const st = importCode(inp2.value); if (!st) { toast("Nieprawidłowy kod."); return; } Object.assign(app.state, st); save(app.state); toast("Wznowiono."); go("#/mapa"); } }, "Wznów");
-  sec.append(h("h3", {}, "Kod wznowienia"), h("p", { class: "muted" }, "Przeglądarka może zapomnieć tę stronę. Kod nie."),
+  const b2 = h("button", { onclick: () => { const st = importCode(inp2.value); if (!st) { toast("Nieprawidłowy kod."); return; } Object.assign(app.state, st); save(app.state); toast("Wznowiono."); go("#/mapa"); } }, "Wznów");
+  const b2box = h("div", { class: "gatebox resume" }, h("h3", {}, "Wznowienie"), h("p", { class: "muted" }, "Przeglądarka może zapomnieć tę stronę. Kod nie."),
     h("div", { class: "verdict" }, h("button", { class: "primary", onclick: async () => { try { await navigator.clipboard.writeText(code); toast("Skopiowano kod wznowienia."); } catch { pre.style.display = ""; toast("Zaznacz i skopiuj ręcznie."); } } }, "Skopiuj kod")), pre,
-    h("p", { class: "faint", style: "margin-top:1.4rem" }, "Masz kod z innego urządzenia?"), h("div", { class: "row" }, inp2, b2));
+    h("p", { class: "muted", style: "margin-top:1.2rem" }, "Masz kod z innego urządzenia?"), h("div", { class: "row" }, inp2, b2));
+  sec.append(b2box);
   return sec;
 }
 
