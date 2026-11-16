@@ -10,6 +10,7 @@ const P: Record<string, string> = {
   "nav-listy": "M3 6h18v12H3zM3 7l9 6 9-6",
   "nav-zeszyt": "M6 3h12v18H6zM9 3v18M12 8h4M12 12h4",
   "nav-akta": "M3 7h6l2 2h10v11H3zM14 13a2 2 0 1 0 4 0 2 2 0 0 0-4 0",
+  pair: "M8 6l4 2 1 4-3 3H6l-2-3 1-4zM16 9l4 2 1 4-3 3h-4l-2-3 1-4zM12 15v4",            // dwie zawieszki, jedna podaje drugiej
   talk: "M4 5h16v10H9l-5 4z",                                                           // dymek
   plate: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12h8M12 8v8",                           // płyta
   beat: "M3 12h3l2-5 3 10 3-8 2 3h5",                                                    // fala

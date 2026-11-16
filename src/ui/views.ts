@@ -61,7 +61,7 @@ export function viewIntro(app: App): HTMLElement {
     h("h1", {}, "Akta Lessu"),
     h("p", { class: "quote" }, "Less nie był pyłem. Less był materią, która pamięta. ", h("em", {}, "Jak skóra okładki, jak wosk na pieczęci, jak zapach jabłek w piwnicy.")),
     solved ? null : letter,
-    h("p", { class: "muted" }, solved ? "Śledztwo trwa. Mapa pokazuje tylko to, co już wiesz." : "Jesteś biegłym. Dostajesz akta. Siedem wzgórz, siedem wniosków. Twoja zawieszka reaguje na pięciu z nich. Na dwóch milczy: tam potrzebujesz odczytu od innego biegłego."),
+    h("p", { class: "muted" }, solved ? "Śledztwo trwa. Mapa pokazuje tylko to, co już wiesz." : "Jesteś biegłym. Dostajesz akta. Siedem wzgórz, siedem wniosków."),
     h("div", { class: "cta" },
       solved ? next("Do mapy", "#/mapa") : next("Przyjmij zlecenie", "#/brama/4"),
       h("button", { onclick: () => go("#/akta") }, "Mam kod")),
@@ -79,7 +79,7 @@ export function viewMap(app: App): HTMLElement {
     if (diff < -40) wisla.append(h("span", { class: "dl note" }, knows ? "nisko: krypty zalewa przy niskiej wodzie" : "nisko")); else if (diff > 60) wisla.append(h("span", { class: "dl note" }, "wysoko")); });
   // O milczących wzgórzach mapa mówi dopiero, gdy gracz sam tego doświadczył w bramie (odkrycie, nie instrukcja).
   const stillSilent = app.silent.filter((g) => !app.state.readings[String(g)]);
-  const legend = app.state.metSilent && stillSilent.length ? h("p", { class: "silent-note" }, `Zawieszka milczy na ${stillSilent.length === 1 ? "wzgórzu" : "wzgórzach"} ${stillSilent.join(" i ")}. Tam dopełnia sprawę cudzy odczyt.`) : null;
+  const legend = app.state.metSilent && stillSilent.length ? h("div", { class: "callout", role: "note" }, h("span", { class: "ico" }, icon("pair")), h("p", {}, `Zawieszka milczy na ${stillSilent.length === 1 ? "wzgórzu" : "wzgórzach"} ${stillSilent.join(" i ")}. Tam dopełnia sprawę cudzy odczyt.`)) : null;
   sec.append(wisla); if (legend) sec.append(legend);
   if (isSnowSeason()) sec.classList.add("snow");
   fetchPogoda().then((w) => { if (!w) return; wisla.append(item("temp", `${w.tempC.toFixed(0)}°C${w.snowing ? ", śnieg" : ""}`)); if (w.snowing) { wisla.append(h("span", { class: "dl note" }, "na Pimpo Limpo są sanki")); sec.classList.add("sanki"); } });
@@ -95,7 +95,7 @@ export function viewMap(app: App): HTMLElement {
     if (!st) return;
     const rows = [1, 2, 3, 4, 5, 6, 7].map((n) => { const g = st.gates[String(n)] ?? { solved: 0, gesture: 0 }; return h("p", { class: "mono" }, `${n}  ${"●".repeat(Math.min(10, Math.round((g.gesture / Math.max(1, st.players)) * 10)))}${"○".repeat(10 - Math.min(10, Math.round((g.gesture / Math.max(1, st.players)) * 10)))}  ${g.gesture} przebyło`); });
     const seventh = st.seventh.total ? ` Siódmą pozycję zostawiło pustą ${Math.round((st.seventh.empty / st.seventh.total) * 100)}% z ${st.seventh.total}.` : "";
-    const box = h("div", { class: "gatebox community" }, h("h3", {}, "Społeczność"), h("p", { class: "muted" }, `${st.players} biegłych. Nikt nie ma pełnej mapy sam.${seventh}`), ...rows);
+    const box = h("div", { class: "gatebox community" }, h("h3", {}, "Społeczność"), h("p", { class: "muted" }, `${st.players} biegłych.${app.state.metSilent ? " Nikt nie ma pełnej mapy sam." : ""}${seventh}`), ...rows);
     wisla.after(box);
   });
   sec.append(renderMap({
@@ -617,12 +617,12 @@ export function viewAkta(app: App): HTMLElement {
   const qr = placeFromUrl(location.search);
   const box3 = h("div", { class: "gatebox" }, h("h3", {}, "Klucz trzeci: miejsce"), h("p", { class: "muted" }, qr ? `Jesteś przy punkcie „${qr}”. Zapisano w zeszycie.` : "Kody QR w Sandomierzu otwierają dokumenty, których nie ma w trybie domowym."));
   if (app.state.placeVisits.length) box3.append(h("p", { class: "faint" }, `Odwiedzone punkty: ${app.state.placeVisits.join(", ")}`));
-  sec.append(box3);
+  if (qr || app.state.placeVisits.length || app.state.solvedCases.length) sec.append(box3);
 
   // Klucz czwarty: mapa 5/7
   const silentTxt = app.state.metSilent && app.silent.length ? `Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. ` : "";
   const have = Object.keys(app.state.readings).map(Number);
-  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz czwarty: odczyt"),
+  if (app.state.metSilent || have.length) sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz czwarty: odczyt"),
     h("p", { class: "muted" }, `${silentTxt}Nikt nie ma pełnej mapy sam. Odczyty z kart innych biegłych otwierają to, co u ciebie milczy.${have.length ? ` Masz odczyty: ${have.join(", ")}.` : ""}`),
     readingBox(app)));
 
@@ -730,7 +730,7 @@ export function viewOnboarding(app: App): HTMLElement {
         if (sN >= 7 && !done) {
           done = true; clearInterval(iv);
           // Najpierw zdanie, czytelne przez dwie sekundy przy pulsującym kamieniu. Potem ciepło rozlewa się z kamienia na cały ekran i zabiera wszystko. Potem czysty ekran i zlecenie.
-          txt.replaceWith(line("Zawieszka. Ciepła. Od teraz jesteś w sieci."));
+          txt.replaceWith(line("Zawieszka. Ciepła."));
           const r = pend.getBoundingClientRect(); const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
           const glow = h("div", { class: "glow", style: `--cx:${cx}px;--cy:${cy}px` });
           setTimeout(() => { document.body.append(glow); }, 2200);

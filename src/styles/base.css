@@ -213,4 +213,8 @@ button.slot.locked { border-color: transparent; background: transparent; color: 
 /* Nad mapą: odczyty jak w datowniku; notka o milczących wzgórzach w piasku, z lewą kreską. */
 .dateline.reads { margin: 0 0 0.8rem; }
 .dateline .dl.note { color: var(--ink-faint); font-style: italic; letter-spacing: 0; text-transform: none; }
-.silent-note { margin: 0 0 1.2rem; padding: 0.5rem 0.8rem; border-left: 2px solid var(--sand); color: var(--ink-dim); font-size: 0.95rem; }
+/* Ramka informacyjna z ikoną (notki o mechanice, które gracz już odkrył). */
+.callout { display: flex; gap: 0.7rem; align-items: flex-start; margin: 0 0 1.2rem; padding: 0.7rem 0.9rem; border: 1px solid var(--line); border-left: 2px solid var(--sand); border-radius: var(--radius); background: var(--bg-2); color: var(--ink-dim); font-size: 0.95rem; }
+.callout .ico { flex: none; color: var(--sand); margin-top: 0.1rem; }
+.callout .ico svg { width: 22px; height: 22px; }
+.callout p { margin: 0; }
