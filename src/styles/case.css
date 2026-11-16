@@ -28,6 +28,8 @@ h3.ustal { margin: 2.4rem 0 0.9rem; padding-top: 1.6rem; border-top: 1px solid v
 .verdict > .back, .verdict > .ghost { order: 0; margin-right: auto; }
 .verdict > .primary, .verdict > .next, .verdict > .body { order: 2; margin-left: auto; }
 .verdict > :not(.back):not(.ghost):not(.primary):not(.next):not(.body) { order: 1; }
+/* Grupa wyboru (opcje równorzędne, zestaw linków): kolejność z kodu, bez przesuwania na boki. */
+.verdict.choice > * { order: 0; margin: 0; }
 
 .solution { margin: 2rem 0; padding: 2rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 1.2rem; line-height: 1.6; }
 .share { display: grid; gap: 0.75rem; }

@@ -17,10 +17,10 @@
       "source": "Akt notarialny. Umowa sprzedaży nieruchomości: kamienica przy ul. Opatowskiej, Sandomierz. Wyciąg, dane osobowe usunięte.",
       "style": "mono",
       "paragraphs": [
-        "SPRZEDAJĄCY: osoba fizyczna, spadkobierczyni po Helenie S., zmarłej w Sandomierzu. Data sprzedaży: trzy miesiące po śmierci spadkodawczyni. Cena: poniżej wartości rynkowej o ok. 30%. Sprzedająca oświadcza, że „chce zakończyć sprawę szybko”.",
+        "SPRZEDAJĄCA: osoba fizyczna, spadkobierczyni Heleny S., zmarłej w Sandomierzu. Do aktu wpisano oświadczenie Sprzedającej, że „chce zakończyć sprawę szybko”. Uwagi do wyciągu: sprzedaż trzy miesiące po śmierci spadkodawczyni; cena niższa od rynkowej o ok. 30%.",
         "KUPUJĄCY: Memoria Nieruchomości sp. z o.o., Sandomierz. Reprezentowana przez prezesa zarządu. Jedyny wspólnik: Fundacja Sandomierska Memoria.",
-        "§ 7. Kupujący zobowiązuje się nie zmieniać przeznaczenia piwnic ani nie udostępniać ich osobom trzecim bez pisemnej zgody zarządu Fundacji. Sprzedająca nie wnosi o wykreślenie tego zapisu, choć notariusz zwraca uwagę, że jest nietypowy.",
-        "Załącznik: inwentarz piwnic. „Pomieszczenie C: ściana wschodnia zamurowana cegłą nowszą niż pozostałe. Stan dobry. Nie naruszać.”"
+        "§ 7. Kupujący zobowiązuje się nie zmieniać przeznaczenia piwnic ani nie udostępniać ich osobom trzecim bez pisemnej zgody zarządu Fundacji. Notariusz pouczył strony o nietypowym charakterze tego zapisu. Sprzedająca nie wnosi o jego wykreślenie.",
+        "Załącznik: inwentarz piwnic. „Pomieszczenie C: ściana wschodnia zamurowana cegłą nowszą niż reszta murów. Stan dobry. Nie naruszać.”"
       ]
     },
     {
@@ -41,7 +41,7 @@
       "source": "Faktura VAT. Wystawca: biegły geolog, Kraków. Nabywca: Fundacja Sandomierska Memoria. Kopia z adnotacją.",
       "style": "mono",
       "paragraphs": [
-        "Usługa: konsultacja geologiczna, ocena stabilności korytarzy, Sandomierz, siedem punktów, wzgórze po wzgórzu. Wartość: wg umowy.",
+        "Usługa: konsultacja geologiczna, ocena stabilności korytarzy, Sandomierz, siedem punktów, wzgórze po wzgórzu. Wartość: zgodnie z umową.",
         "Adnotacja ręczna na kopii: „Biegły sądzi, że pracuje dla komisarza. Nie wyprowadzać z błędu. Materiały wysyłać dalej w kopertach z nadrukiem programu, jak dotąd. — S.”"
       ]
     },
@@ -61,13 +61,13 @@
     {
       "id": "u1",
       "kind": "fill",
-      "text": "Kamienicę Heleny S. na Opatowskiej kupiła ___, przez spółkę, z zapisem, by nie naruszać ___. Biegły z Krakowa pracuje dla ___, choć sądzi, że dla ___, a jego wnioski, wzgórze po wzgórzu, zasilają ___. Koperty z aktami od pierwszego dnia nosiły ___. Biegłym jesteś ___.",
+      "text": "Kamienicę Heleny S. na Opatowskiej kupiła ___, przez spółkę, z zapisem, by nie naruszać ___. Biegły z Krakowa pracuje dla ___, choć sądzi, że dla ___, a jego wnioski, wzgórze po wzgórzu, zasilają ___. Koperty z aktami od pierwszego dnia nosiły ___. Biegły w tym rejestrze to ___.",
       "options": [],
       "answer": -1,
       "bank": [
         "Fundacja Sandomierska Memoria",
         "gmina Sandomierz",
-        "Hotel Pod Ciżemką",
+        "kapituła katedralna",
         "spadkobierczyni Heleny",
         "zamurowanej ściany w piwnicy",
         "dachu i więźby",
@@ -106,7 +106,7 @@
     }
   ],
   "solution": [
-    "Szanowna Pani, Szanowny Panie, Zarząd potwierdza przyjęcie wniosków dotyczących czterech punktów programu „Sandomierz Pod Spodem”. Wnioski zostały wprowadzone do rejestru statusów.",
+    "Szanowna Pani, Szanowny Panie, zarząd potwierdza przyjęcie wniosków dotyczących czterech punktów programu „Sandomierz Pod Spodem”. Wnioski zostały wprowadzone do rejestru statusów.",
     "Uprzejmie informujemy, że komisarz Zieliński nie jest stroną programu i nie ma dostępu do rejestru. Prosimy o kierowanie dalszej korespondencji wyłącznie w kopertach z nadrukiem programu, jak dotąd.",
     "Pozostałe trzy punkty czekają. Zarząd ma nadzieję, że Pani/Pana kwalifikacje pozwolą zamknąć rejestr przed Świętem Młodego Wina. Partnerem wydarzenia jest Fundacja."
   ],

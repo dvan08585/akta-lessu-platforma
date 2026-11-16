@@ -607,12 +607,6 @@ export function viewAkta(app: App): HTMLElement {
     toast(msg); input.value = ""; go(c && !app.isSilentFor(c.gate) && app.passed() >= (c.requires.solvedCases ?? 0) ? `#/brama/${c.gate}` : "#/mapa");
   });
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") btn.click(); });
-  const setTheme = (t: "sun" | "light" | "dark") => { app.state.theme = t; save(app.state); go("#/akta"); };
-  const cur = app.state.theme ?? "sun";
-  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Światło"), h("p", { class: "muted" }, "Za słońcem: ciemno od zachodu do wschodu nad Sandomierzem, jasno w dzień."),
-    h("div", { class: "verdict" }, h("button", { class: cur === "sun" ? "primary" : "", onclick: () => setTheme("sun") }, "Za słońcem"), h("button", { class: cur === "light" ? "primary" : "", onclick: () => setTheme("light") }, "Jasno"), h("button", { class: cur === "dark" ? "primary" : "", onclick: () => setTheme("dark") }, "Ciemno"))));
-  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Forma"), h("p", { class: "muted" }, "Jak gra ma się do Ciebie zwracać. Nic poza tym nie zapisujemy."),
-    h("div", { class: "verdict" }, h("button", { class: app.state.address === "f" ? "primary" : "", onclick: () => { app.state.address = "f"; save(app.state); go("#/akta"); } }, "Szanowna Pani"), h("button", { class: app.state.address === "m" ? "primary" : "", onclick: () => { app.state.address = "m"; save(app.state); go("#/akta"); } }, "Szanowny Panie"))));
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz pierwszy: kod z książki"), h("p", { class: "muted" }, "Każdy rozdział kończy się siedmiobokiem i jednym słowem. Wpisz je tutaj."), h("div", { class: "row" }, input, btn)));
 
   // Klucz 2: czas. Jeden kalendarz: sprawy jako odcinki. Rozdziały otwierają się kodem albo razem ze sprawą.
@@ -637,14 +631,7 @@ export function viewAkta(app: App): HTMLElement {
 
   { const nb = newsletterBox(app, "Nowe sprawy przychodzą co dwa tygodnie. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
 
-  // Narzędzia
-  sec.append(h("h3", {}, "Narzędzia"),
-    h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Miasto w trzech wymiarach z otwartych danych: siedem wzgórz z rzeźbą terenu, kamienice jako bryły, bramy pod wzgórzami. Z GPS i kompasem zawieszka grzeje w stronę bramy."),
-      h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "miasto/?b=" + __BUILD__ }, "Miasto"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "sceny/?plik=rynek.splat" }, "Scena z Rynku"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "komnata/?b=" + __BUILD__ }, "Komnata (próba)"))),
-    h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Siedmiobok na końcu rozdziału pod kamerą: nad stroną unosi się przekrój z tą jedną bramą. Bez aplikacji."),
-      h("div", { class: "verdict" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "ar/?b=" + __BUILD__ }, "Kamera"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "ar/druk.html", target: "_blank" }, "Znaczniki do druku"))),
-    h("p", { class: "faint" }, h("a", { href: "#/o-ciele" }, "Co robi z tobą ta gra: oddech, nucenie, dudnienie, bezruch, źródła.")));
-  sec.append(h("p", { style: "margin-top:2rem" }, h("button", { class: "ghost", onclick: () => { if (confirm("Wyczyścić cały postęp na tym urządzeniu?")) { reset(); location.reload(); } } }, "Zacznij od nowa")));
+  sec.append(h("p", { class: "faint", style: "margin-top:2rem" }, h("a", { href: "#/ustawienia" }, "Ustawienia: światło, forma, narzędzia, zaczęcie od nowa →")));
   return sec;
 }
 
@@ -749,7 +736,7 @@ export function viewOnboarding(app: App): HTMLElement {
           setTimeout(() => {
             // Forma zwracania się: jedyne, o co gra pyta. Bez imienia, bez danych. Komenda pisze „Szanowna Pani, Szanowny Panie" i musi wiedzieć, jak dalej.
             const pick = (a: "f" | "m") => { app.state.address = a; finishOnboarding(); };
-            stage.append(cue("Zlecenie jest zaadresowane do biegłej albo biegłego. Jak mamy pisać?"), h("div", { class: "verdict fade-in" }, h("button", { class: "primary big", onclick: () => pick("f") }, "Szanowna Pani"), h("button", { class: "primary big", onclick: () => pick("m") }, "Szanowny Panie")));
+            stage.append(cue("Zlecenie jest zaadresowane do biegłej albo biegłego. Jak mamy pisać?"), h("div", { class: "verdict choice fade-in" }, h("button", { class: "primary big", onclick: () => pick("f") }, "Szanowna Pani"), h("button", { class: "primary big", onclick: () => pick("m") }, "Szanowny Panie")));
           }, 5700);
         }
       }, 100);
@@ -758,5 +745,25 @@ export function viewOnboarding(app: App): HTMLElement {
     add(h("div", { class: "holdwrap" }, txt, hold), 4200);
   });
   add(btn, 5600);
+  return sec;
+}
+
+/** Ustawienia: światło, forma, narzędzia poza grą, początek od nowa. Osobno od Akt, bo Akta to klucze, a to jest obsługa. */
+export function viewSettings(app: App): HTMLElement {
+  const sec = h("section", { class: "fade-in" }, topbar(app, "#/akta"), h("p", { class: "kicker" }, "Akta"), h("h2", {}, "Ustawienia"));
+  const setTheme = (t: "sun" | "light" | "dark") => { app.state.theme = t; save(app.state); go("#/akta"); };
+  const cur = app.state.theme ?? "sun";
+  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Światło"), h("p", { class: "muted" }, "Za słońcem: ciemno od zachodu do wschodu nad Sandomierzem, jasno w dzień."),
+    h("div", { class: "verdict choice" }, h("button", { class: cur === "sun" ? "primary" : "", onclick: () => setTheme("sun") }, "Za słońcem"), h("button", { class: cur === "light" ? "primary" : "", onclick: () => setTheme("light") }, "Jasno"), h("button", { class: cur === "dark" ? "primary" : "", onclick: () => setTheme("dark") }, "Ciemno"))));
+  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Forma"), h("p", { class: "muted" }, "Jak gra ma się do Ciebie zwracać. Nic poza tym nie zapisujemy."),
+    h("div", { class: "verdict choice" }, h("button", { class: app.state.address === "f" ? "primary" : "", onclick: () => { app.state.address = "f"; save(app.state); go("#/akta"); } }, "Szanowna Pani"), h("button", { class: app.state.address === "m" ? "primary" : "", onclick: () => { app.state.address = "m"; save(app.state); go("#/akta"); } }, "Szanowny Panie"))));
+  // Narzędzia
+  sec.append(h("h3", {}, "Narzędzia"),
+    h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Miasto w trzech wymiarach z otwartych danych: siedem wzgórz z rzeźbą terenu, kamienice jako bryły, bramy pod wzgórzami. Z GPS i kompasem zawieszka grzeje w stronę bramy."),
+      h("div", { class: "verdict choice" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "miasto/?b=" + __BUILD__ }, "Miasto"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "sceny/?plik=rynek.splat" }, "Scena z Rynku"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "komnata/?b=" + __BUILD__ }, "Komnata (próba)"))),
+    h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Siedmiobok na końcu rozdziału pod kamerą: nad stroną unosi się przekrój z tą jedną bramą. Bez aplikacji."),
+      h("div", { class: "verdict choice" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "ar/?b=" + __BUILD__ }, "Kamera"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "ar/druk.html", target: "_blank" }, "Znaczniki do druku"))),
+    h("p", { class: "faint" }, h("a", { href: "#/o-ciele" }, "Co robi z tobą ta gra: oddech, nucenie, dudnienie, bezruch, źródła.")));
+  sec.append(h("p", { style: "margin-top:2rem" }, h("button", { class: "ghost", onclick: () => { if (confirm("Wyczyścić cały postęp na tym urządzeniu?")) { reset(); location.reload(); } } }, "Zacznij od nowa")));
   return sec;
 }

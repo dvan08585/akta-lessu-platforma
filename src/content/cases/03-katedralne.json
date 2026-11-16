@@ -14,13 +14,13 @@
     {
       "id": "martyrologium",
       "title": "Dokument I",
-      "source": "Opis cyklu Martyrologium Romanum w katedrze sandomierskiej. Karol de Prevot, XVIII w. Karta inwentarzowa, do weryfikacji na miejscu.",
+      "source": "Opis cyklu Martyrologium Romanum w katedrze sandomierskiej. Karol de Prevot, XVIII w. Karta z przewodnika po katedrze, z dopiskami. Do weryfikacji na miejscu.",
       "style": "plain",
       "paragraphs": [
         "Dwanaście obrazów na ścianach nawy, po jednym na każdy miesiąc roku. Każdy przedstawia męczeństwa świętych wspominanych w danym miesiącu. Pod obrazami nazwy miesięcy.",
         "Legenda miejska: kto przyjdzie w dniu urodzin i odnajdzie swój miesiąc, odczyta z obrazu rodzaj własnej śmierci. Przewodnicy opowiadają ją z uśmiechem. Nikt nie szuka swojego miesiąca na głos.",
         "Trzynasty obraz, bez miesiąca, w nawie zachodniej: Męczeństwo Sandomierzan 1260. Tatarzy, kościół św. Jakuba, dominikanie. Jedyny obraz cyklu, który dzieje się tu, pod tą posadzką, a nie w Rzymie.",
-        "Obraz „listopad” wisi najbliżej zejścia do krypt. Kościelny mówi, że posadzka przy nim jest cieplejsza od ogrzewania."
+        "Obraz „listopad” wisi najbliżej zejścia do krypt. Kościelny tłumaczy, że posadzka przy nim jest cieplejsza, bo tam grzeje ogrzewanie."
       ]
     },
     {
@@ -31,17 +31,17 @@
       "paragraphs": [
         "Poziom wody w kryptach: 42 cm. Poziom Wisły w tym samym dniu: 180 cm na wodowskazie Sandomierz.",
         "Temperatura wody w kryptach: 14,8°C.",
-        "Kierunek napływu: od spodu, przez spoiny posadzki w komorze południowej, pod obrazem XI. Nie od ściany, nie od rzeki.",
+        "Kierunek napływu: od spodu, przez spoiny posadzki w komorze południowej, pod obrazem XI. Śladów napływu przez ściany nie stwierdzono; związku ze stanem rzeki nie stwierdzono.",
         "Zalecenie: odpompować, osuszyć, monitorować. Nie badać źródła napływu bez ekspertyzy geologicznej."
       ]
     },
     {
       "id": "wodowskaz",
       "title": "Dokument III",
-      "source": "Wodowskaz Sandomierz, stany miesięczne Wisły, średnie z dziesięciu lat. IMGW.",
+      "source": "Wodowskaz Sandomierz, stany miesięczne Wisły, średnie z dziesięciu lat. IMGW. Z dopiskiem.",
       "style": "mono",
       "paragraphs": [
-        "I 231 · II 248 · III 312 · IV 338 · V 301 · VI 290 · VII 276 · VIII 221 · IX 198 · X 187 · XI 210 · XII 224 (cm, średnie miesięczne z dziesięciu lat).",
+        "I 231 · II 248 · III 312 · IV 338 · V 301 · VI 290 · VII 276 · VIII 221 · IX 198 · X 187 · XI 210 · XII 224 (cm).",
         "Zalania krypt odnotowane w ostatnich latach: maj, wrzesień, listopad."
       ]
     },
@@ -108,16 +108,16 @@
         "wysoko",
         "jak zwykle w maju",
         "pięć",
-        "dwa",
+        "osiem",
         "dziesięć",
-        "pół",
+        "trzy",
         "listopad",
         "maj",
         "kwiecień",
         "trzynastym, bez miesiąca",
         "bez grzejników",
         "z grzejnikami",
-        "przy zejściu do krypt",
+        "od rzeki",
         "ekspertyzę geologiczną",
         "odpompowanie i osuszenie",
         "zamknięcie krypt",
