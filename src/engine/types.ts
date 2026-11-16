@@ -80,6 +80,8 @@ export interface SaveState {
   metSilent?: boolean;
   /** Forma, w jakiej gra zwraca się do biegłego: "f" (Pani) albo "m" (Pan). Brak = jeszcze nie wybrano, formy neutralne. */
   address?: "f" | "m";
+  /** Motyw: "sun" (ciemny od zachodu do wschodu nad Sandomierzem), "light", "dark". Brak = sun. */
+  theme?: "sun" | "light" | "dark";
   /** Odczyty cudzych zawieszek: wzgórze -> token dawcy. Otwierają wzgórza, na których własna zawieszka milczy. */
   readings: Record<string, string>;
   /** Czy gracz zostawił siódmą pozycję pustą (finał). */

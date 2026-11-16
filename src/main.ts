@@ -3,6 +3,7 @@ import { startLess } from "./ui/less";
 import { viewIntro, viewMap, viewGate, viewNotebook, viewAkta, viewBody, viewInbox, viewOnboarding } from "./ui/views";
 import { viewInterlude } from "./ui/interludes";
 import { installAnalytics } from "./engine/track";
+import { isNight } from "./engine/sun";
 import { leaveView } from "./ui/dom";
 
 const app = new App();
@@ -10,7 +11,16 @@ installAnalytics(app.cfg.analyticsDomain);
 const root = document.getElementById("app")!;
 startLess(document.getElementById("less") as HTMLCanvasElement);
 
+/** Motyw: za słońcem Sandomierza, chyba że gracz wybrał ręcznie. */
+export function applyTheme(): void {
+  const t = app.state.theme ?? "sun";
+  const dark = t === "dark" || (t === "sun" && isNight());
+  document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+}
+setInterval(applyTheme, 60000);
+
 function route() {
+  applyTheme();
   const hash = location.hash || "#/";
   const m = /^#\/brama\/(\d+)/.exec(hash);
   const mi = /^#\/miedzy\/([a-z0-9-]+)/.exec(hash);

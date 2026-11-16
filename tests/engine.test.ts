@@ -218,3 +218,14 @@ describe("ustalenie z lukami", () => {
     expect(fillGaps(q, enc2(bank, ["b", "d", "f"]))).toEqual({ ok: 0, total: 3 });
   });
 });
+
+import { sunrise as sr2, sunset as ss2, isNight } from "../src/engine/sun";
+describe("słońce nad Sandomierzem", () => {
+  it("zachód po wschodzie, noc o północy, dzień w południe", () => {
+    const d = new Date("2026-11-16T12:00:00+01:00");
+    expect(ss2(d).getTime()).toBeGreaterThan(sr2(d).getTime());
+    expect(isNight(new Date("2026-11-16T00:30:00+01:00"))).toBe(true);
+    expect(isNight(new Date("2026-11-16T12:00:00+01:00"))).toBe(false);
+    expect(isNight(new Date("2026-06-21T20:30:00+02:00"))).toBe(false); // czerwiec: zachód po 20:40
+  });
+});

@@ -68,7 +68,7 @@ export function viewIntro(app: App): HTMLElement {
     h("div", { class: "cta" },
       solved ? next("Do mapy", "#/mapa") : next("Przyjmij zlecenie", "#/brama/4"),
       h("button", { onclick: () => go("#/akta") }, "Mam kod")),
-    h("p", { class: "faint" }, "Dodatek do powieści „Siedem Bram Lessu”. Nic tutaj nie zdradza zakończenia."));
+    h("p", { class: "faint colophon" }, "Dodatek do powieści „Siedem Bram Lessu”.", h("br"), "Nic tutaj nie zdradza zakończenia."));
 }
 
 export function viewMap(app: App): HTMLElement {
@@ -607,6 +607,10 @@ export function viewAkta(app: App): HTMLElement {
     toast(msg); input.value = ""; go(c && !app.isSilentFor(c.gate) && app.passed() >= (c.requires.solvedCases ?? 0) ? `#/brama/${c.gate}` : "#/mapa");
   });
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") btn.click(); });
+  const setTheme = (t: "sun" | "light" | "dark") => { app.state.theme = t; save(app.state); go("#/akta"); };
+  const cur = app.state.theme ?? "sun";
+  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Światło"), h("p", { class: "muted" }, "Za słońcem: ciemno od zachodu do wschodu nad Sandomierzem, jasno w dzień."),
+    h("div", { class: "verdict" }, h("button", { class: cur === "sun" ? "primary" : "", onclick: () => setTheme("sun") }, "Za słońcem"), h("button", { class: cur === "light" ? "primary" : "", onclick: () => setTheme("light") }, "Jasno"), h("button", { class: cur === "dark" ? "primary" : "", onclick: () => setTheme("dark") }, "Ciemno"))));
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Forma"), h("p", { class: "muted" }, "Jak gra ma się do Ciebie zwracać. Nic poza tym nie zapisujemy."),
     h("div", { class: "verdict" }, h("button", { class: app.state.address === "f" ? "primary" : "", onclick: () => { app.state.address = "f"; save(app.state); go("#/akta"); } }, "Szanowna Pani"), h("button", { class: app.state.address === "m" ? "primary" : "", onclick: () => { app.state.address = "m"; save(app.state); go("#/akta"); } }, "Szanowny Panie"))));
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz pierwszy: kod z książki"), h("p", { class: "muted" }, "Każdy rozdział kończy się siedmiobokiem i jednym słowem. Wpisz je tutaj."), h("div", { class: "row" }, input, btn)));
