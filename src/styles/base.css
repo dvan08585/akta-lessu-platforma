@@ -61,8 +61,18 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .intro .cta { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 
 .pendant {
-  display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--ink-dim);
+  display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); flex: none;
 }
+.pendant[data-heat="3"] .pstate, .pendant[data-heat="4"] .pstate { color: var(--sand); }
+/* Karta zawieszki pod ustaleniem */
+.pendant-card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-2); padding: 1rem 1.1rem; margin: 1.4rem 0 1rem; }
+.pendant-card .pc-row { display: flex; align-items: center; gap: 1.1rem; }
+.pendant-card .pc-text { flex: 1; min-width: 0; }
+.pendant-card .pc-text .kicker { margin: 0 0 0.25rem; }
+.pendant-card .verdict-text { margin: 0; min-height: 0; }
+.pendant-card .pc-actions { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--line); }
+.pendant-card .pc-actions button { width: 100%; }
+.pendant-card[data-done] .pc-actions { display: none; }
 @keyframes pulse { 50% { box-shadow: 0 0 6px rgba(255,156,74,0.5); } }
 
 /* Jeden rodzaj pudełka (.card / .gatebox / .next-step dzielą styl); .accent = jedno na ekran, to, co trzeba zrobić. */
@@ -198,3 +208,5 @@ button.slot.locked { border-color: transparent; background: transparent; color: 
 .beyond summary h3::before { content: "▸ "; color: var(--ink-faint); font-size: 0.8em; }
 .beyond[open] summary h3::before { content: "▾ "; }
 .beyond summary .s { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sand); }
+.case-head .el-icon { flex: none; color: var(--ink-faint); margin-top: 0.3rem; }
+.case-head .el-icon svg { width: 56px; height: 56px; display: block; }

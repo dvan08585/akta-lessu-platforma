@@ -6,7 +6,7 @@
 import { s, h } from "./dom";
 
 /** Ryciny dostarczone (public/ryciny). Gdy plik jest na liście, zastępuje kreskę z kodu. Dodawaj po jednej, bez czekania na komplet. */
-const PLATES: Record<string, string> = { panorama: "01-panorama.webp", ziemia: "03-ziemia.webp", woda: "04-woda.webp", "dźwięk": "05-dzwiek.webp" };
+const PLATES: Record<string, string> = {}; // puste: ryciny rastrowe zdjęte do czasu wyboru stylu; wrócą po jednej do public/ryciny
 export function plate(key: string, cls: string, alt = ""): HTMLImageElement | null {
   const f = PLATES[key]; if (!f) return null;
   return h("img", { src: import.meta.env.BASE_URL + "ryciny/" + f, class: `rycina ${cls}`, alt, loading: "lazy", decoding: "async" });

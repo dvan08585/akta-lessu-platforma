@@ -68,3 +68,22 @@ export function flint(size = 96, seed = 7): HTMLElement {
   wrap.append(img, heat);
   return wrap;
 }
+
+/** Ikona żywiołu bramy: jedna kreska, 56×56, bez wypełnień. */
+const EL: Record<string, string> = {
+  ziemia: "M4 44h48M10 44V22c0-10 36-10 36 0v22M18 44V30h20v14",                       // łuk korytarza w ziemi
+  woda: "M8 24c6-6 12-6 18 0s12 6 18 0M8 34c6-6 12-6 18 0s12 6 18 0M8 44c6-6 12-6 18 0s12 6 18 0",
+  dźwięk: "M28 6c-9 0-12 12-13 24l-5 6h36l-5-6C40 18 37 6 28 6zM28 40v4M14 48q14 8 28 0",   // dzwon i fala w dół
+  ogień: "M28 6c4 8 12 12 12 24a12 12 0 0 1-24 0c0-6 4-8 4-14 4 2 6 6 8 8 0-6-2-10 0-18zM28 48v2",
+  zimno: "M28 8v40M8 28h40M14 14l28 28M42 14L14 42",
+  ciemność: "M30 8a20 20 0 1 0 18 24c-10 3-20-6-18-24z",
+  powietrze: "M28 8l18 9 5 20-10 15H15L5 37l5-20z M28 20v16M20 28h16",                     // siedmiobok z krzyżem oddechu
+};
+export function elementIcon(element: string): SVGSVGElement {
+  const key = element.replace(/^żywioł:\s*/, "").split(/\s|,/)[0].toLowerCase();
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 56 56"); svg.setAttribute("width", "56"); svg.setAttribute("height", "56"); svg.setAttribute("aria-hidden", "true");
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", EL[key] ?? EL.ziemia); path.setAttribute("fill", "none"); path.setAttribute("stroke", "currentColor"); path.setAttribute("stroke-width", "1.4"); path.setAttribute("stroke-linecap", "round"); path.setAttribute("stroke-linejoin", "round");
+  svg.append(path); return svg;
+}

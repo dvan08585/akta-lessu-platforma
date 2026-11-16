@@ -2,7 +2,7 @@ import { h, go, toast, back, next } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import { interludesFor } from "./interludes";
 import { icon, flint, flintSeed } from "./icons";
-import { hero, vignette } from "./vignettes";
+import { elementIcon } from "./icons";
 import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import { pickDaily, dayKey } from "../engine/daily";
 import { track } from "../engine/track";
@@ -19,7 +19,7 @@ import { codeMatches, placeFromUrl, releaseDate } from "../engine/unlock";
 import { exportCode, importCode, save, reset } from "../engine/state";
 
 export function pendant(heat: 0 | 1 | 2 | 3 | 4, label?: string, seed = 7): HTMLElement {
-  return h("span", { class: "pendant", "data-heat": String(heat), "aria-live": "polite" }, flint(30, seed), label ?? `zawieszka: ${heatLabel[heat]}`);
+  return h("span", { class: "pendant", "data-heat": String(heat), "aria-live": "polite" }, flint(44, seed), h("span", { class: "pstate" }, (label ?? `zawieszka: ${heatLabel[heat]}`).replace(/^zawieszka:\s*/, "")));
 }
 
 export function topbar(app: App, active: string): HTMLElement {
@@ -58,7 +58,6 @@ export function viewIntro(app: App): HTMLElement {
     h("div", { class: "footer" }, "Przekazano przez: Program edukacyjny „Sandomierz Pod Spodem”. Partner: Fundacja Sandomierska Memoria."));
   return h("section", { class: "intro fade-in" },
     dateline(),
-    hero(),
     h("h1", {}, "Akta Lessu"),
     h("p", { class: "quote" }, "Less nie był pyłem. Less był materią, która pamięta. ", h("em", {}, "Jak skóra okładki, jak wosk na pieczęci, jak zapach jabłek w piwnicy.")),
     solved ? null : letter,
@@ -281,7 +280,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   // Nadtytuł (brama i wzgórze) + tytuł + motto. Podtytuł sprawy nie powtarza wzgórza: zostaje tylko to, czego nie ma w nadtytule.
   const g = app.map.gates.find((x) => x.n === c.gate);
   const sub = c.subtitle.split(" · ").filter((part) => !(g && (part.includes(g.name.replace("Wzgórze ", "")) || part.startsWith("żywioł")))).join(" · ");
-  sec.append(h("div", { class: "case-head" }, h("div", {}, h("p", { class: "kicker" }, `Brama ${c.gate} · ${g?.name ?? ""}`), h("h2", {}, c.title), h("p", { class: "muted" }, [g ? `żywioł: ${g.element}` : "", sub].filter(Boolean).join(" · "))), g ? vignette(g.element) : null));
+  sec.append(h("div", { class: "case-head" }, h("div", {}, h("p", { class: "kicker" }, `Brama ${c.gate} · ${g?.name ?? ""}`), h("h2", {}, c.title), h("p", { class: "muted" }, [g ? `żywioł: ${g.element}` : "", sub].filter(Boolean).join(" · "))), g ? h("span", { class: "el-icon", "aria-hidden": "true" }, elementIcon(g.element)) : null));
   sec.append(h("p", { class: "faint epigraph" }, c.epigraph));
 
   // Dokumenty: nawigacja zakładkami, jeden na ekran (telefon).
@@ -366,8 +365,9 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   sec.append(h("h3", {}, "Ustal"), grid);
 
   const fs = flintSeed(app.state.seed); const pend = pendant(0, undefined, fs);
-  const verdictText = h("p", { class: "verdict-text muted", "aria-live": "polite" });
-  const result = h("div", { class: "verdict" }, pend);
+  const verdictText = h("p", { class: "verdict-text muted", "aria-live": "polite" }, "Wypełnij luki i sprawdź. Kamień grzeje od tego, co się zgadza; nie mówi, co nie.");
+  // Karta zawieszki: kamień, stan i słowo zawieszki obok, przycisk pod spodem. Jeden element, nie trzy rzucone pod tekstem.
+  const result = h("div", { class: "pendant-card" }, h("div", { class: "pc-row" }, pend, h("div", { class: "pc-text" }, h("p", { class: "kicker" }, "Zawieszka"), verdictText)));
   const btn = h("button", { class: "primary" }, "Sprawdź zawieszką") as HTMLButtonElement;
   btn.addEventListener("click", async () => {
     const answers = c.questions.map((q) => {
@@ -386,7 +386,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     save(app.state);
     const cold = c.gate === 5; // Brama Zamkowa: żywioł zimno. Zawieszka ziębi zamiast grzać.
     pend.replaceWith(pendant(v.heat, cold ? `zawieszka: ${["zimna", "zimniejsza", "lodowata", "parzy zimnem", "zamarza"][v.heat]}` : undefined, fs));
-    if (v.solved) { verdictText.textContent = ""; lockAnswers(); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
+    if (v.solved) { verdictText.textContent = "Pulsuje. Wszystko się zgadza."; lockAnswers(); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
     else {
       const tries = (app.state.attempts[c.id] ?? []).length;
       const rejectMissed = c.questions.some((q, i) => q.kind === "reject" && !v.perQuestion[i]);
@@ -396,15 +396,16 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       toast(`Zawieszka: ${heatLabel[v.heat]}.`);
     }
   });
-  sec.append(result, verdictText, btn, solutionBox);
+  result.append(h("div", { class: "pc-actions" }, btn));
+  sec.append(result, solutionBox);
   /** Po rozpoznaniu bramy ustalenie zostaje jako tekst: luki zamrożone, bank i przycisk znikają, zawieszka pulsuje. */
   function lockAnswers() {
     grid.querySelectorAll(".q").forEach((el) => el.classList.add("ok"));
     grid.querySelectorAll<HTMLElement>(".bank, select, .opts").forEach((el) => (el.style.display = "none"));
     grid.querySelectorAll<HTMLButtonElement>("button.slot").forEach((b) => { b.disabled = true; b.classList.add("locked"); });
-    btn.remove();
+    btn.remove(); result.setAttribute("data-done", "");
   }
-  if (solvedAlready) { pend.replaceWith(pendant(4, undefined, fs)); lockAnswers(); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
+  if (solvedAlready) { pend.replaceWith(pendant(4, undefined, fs)); verdictText.textContent = "Pulsuje. Brama rozpoznana."; lockAnswers(); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
   return sec;
 
   function renderDecision() {
