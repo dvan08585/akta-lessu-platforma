@@ -77,6 +77,11 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     }, ms);
   }
   function renderBody() {
+  renderKind();
+  // Zawsze da się wyjść bez domykania: cichy „Wróć do mapy" na dole, o ile ekran nie ma już własnego.
+  if (!done && !sec.querySelector("button.back")) sec.append(h("div", { class: "verdict exit" }, back()));
+  }
+  function renderKind() {
   if (it.type === "amor") renderAmor(); else if (it.type === "talk") renderTalk(); else if (it.type === "beat") renderBeat(); else if (it.type === "still") renderStill(); else if (it.type === "breath") renderBreath(); else if (it.type === "fire") renderFire(); else if (it.type === "dark") renderDark(); else if (it.type === "earth") renderEarth(); else if (it.type === "spectro") renderSpectro(); else if (it.type === "compass") renderCompass(); else if (it.type === "whistle") renderWhistle(); else if (it.type === "touch7") renderTouch7(); else if (it.type === "hold") renderHold(); else if (it.type === "mirror") renderMirror(); else if (it.type === "trace") renderTrace(); else if (it.type === "steps") renderSteps(); else if (it.type === "duet") renderDuet(); else renderPlate();
   }
 
