@@ -180,3 +180,5 @@ button.body:hover, .btn.body:hover { box-shadow: 0 0 0 1px var(--sand), 0 0 20px
 .rycina.hero { width: 100%; margin: 0.4rem 0 1.2rem; }
 .case-head .rycina.el { width: 124px; margin-top: 0.3rem; flex: none; }
 @media (max-width: 360px) { .case-head .rycina.el { width: 92px; } }
+/* Zamrożone luki po rozpoznaniu: słowo w zdaniu, bez ramki przycisku. */
+button.slot.locked { border-color: transparent; background: transparent; color: var(--sand); padding: 0 0.1em; min-height: 0; cursor: default; opacity: 1; }

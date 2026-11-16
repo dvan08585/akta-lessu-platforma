@@ -318,6 +318,8 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     } else if (q.kind === "fill" && q.bank) {
       // Zdanie z lukami i bank słów (Golden Idol): stuknij słowo, wchodzi w pierwszą wolną lukę; stuknij lukę, żeby ją opróżnić.
       const parts = q.text.split("___"); const nSlots = parts.length - 1; const chosen: (string | null)[] = Array(nSlots).fill(null);
+      // zapisane luki (zakodowane jako jedna liczba) wracają do zdania, np. po rozpoznaniu bramy
+      if (saved[qi] > 0) { const N = q.bank.length + 1; let v = saved[qi]; for (let k = 0; k < nSlots; k++) { const i = v % N; v = Math.floor(v / N); chosen[k] = i > 0 ? q.bank[i - 1] : null; } }
       const sentence = h("p", { class: "fill" }); const bank = h("div", { class: "bank" });
       const hidden = h("input", { type: "hidden", name: q.id, value: "0" }) as HTMLInputElement;
       const render = () => {
@@ -367,7 +369,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     save(app.state);
     const cold = c.gate === 5; // Brama Zamkowa: żywioł zimno. Zawieszka ziębi zamiast grzać.
     pend.replaceWith(pendant(v.heat, cold ? `zawieszka: ${["zimna", "zimniejsza", "lodowata", "parzy zimnem", "zamarza"][v.heat]}` : undefined, fs));
-    if (v.solved) { verdictText.textContent = ""; grid.querySelectorAll(".q").forEach((el) => el.classList.add("ok")); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
+    if (v.solved) { verdictText.textContent = ""; lockAnswers(); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
     else {
       const tries = (app.state.attempts[c.id] ?? []).length;
       const rejectMissed = c.questions.some((q, i) => q.kind === "reject" && !v.perQuestion[i]);
@@ -378,7 +380,14 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     }
   });
   sec.append(result, verdictText, btn, solutionBox);
-  if (solvedAlready) { pend.replaceWith(pendant(4, undefined, fs)); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
+  /** Po rozpoznaniu bramy ustalenie zostaje jako tekst: luki zamrożone, bank i przycisk znikają, zawieszka pulsuje. */
+  function lockAnswers() {
+    grid.querySelectorAll(".q").forEach((el) => el.classList.add("ok"));
+    grid.querySelectorAll<HTMLElement>(".bank, select, .opts").forEach((el) => (el.style.display = "none"));
+    grid.querySelectorAll<HTMLButtonElement>("button.slot").forEach((b) => { b.disabled = true; b.classList.add("locked"); });
+    btn.remove();
+  }
+  if (solvedAlready) { pend.replaceWith(pendant(4, undefined, fs)); lockAnswers(); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
   return sec;
 
   function renderDecision() {
