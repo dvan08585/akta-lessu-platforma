@@ -362,7 +362,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     }
     grid.append(block);
   });
-  sec.append(h("h3", {}, "Ustal"), grid);
+  sec.append(h("h3", { class: "ustal" }, "Ustal"), grid);
 
   const fs = flintSeed(app.state.seed); const pend = pendant(0, undefined, fs);
   const verdictText = h("p", { class: "verdict-text muted", "aria-live": "polite" }, "Wypełnij luki i sprawdź. Kamień grzeje od tego, co się zgadza; nie mówi, co nie.");

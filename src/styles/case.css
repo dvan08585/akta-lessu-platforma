@@ -12,7 +12,9 @@
 .doc-nav button { padding: 0.35rem 0.7rem; min-height: 36px; font-size: 0.82rem; }
 .doc-nav button[aria-current="true"] { border-color: var(--sand); color: var(--sand); }
 
-.grid { display: grid; gap: 1rem; margin: 2.6rem 0 1.5rem; padding-top: 1.6rem; border-top: 1px solid var(--line); }
+.grid { display: grid; gap: 1rem; margin: 0 0 1.5rem; }
+/* „Ustal": linia nad nagłówkiem zamyka dokumenty, nagłówek siedzi tuż nad zdaniem. */
+h3.ustal { margin: 2.4rem 0 0.9rem; padding-top: 1.6rem; border-top: 1px solid var(--line); }
 .q { border-top: 1px solid var(--line); padding-top: 0.9rem; }
 .grid .q:first-child { border-top: 0; padding-top: 0; }
 .q .qt { margin-bottom: 0.5rem; }
