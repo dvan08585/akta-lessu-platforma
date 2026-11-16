@@ -74,7 +74,9 @@ export function viewMap(app: App): HTMLElement {
   // Nad mapą: rząd odczytów z ikonami (Wisła, pogoda) i jedno zdanie o milczących wzgórzach. Kierunki mówi sama mapa etykietami na krawędziach.
   const item = (type: string, text: string, title = "") => h("span", { class: "dl live", title }, icon(type), text);
   const wisla = h("div", { class: "dateline reads", role: "group", "aria-label": "Sandomierz teraz" });
-  fetchWisla().then((w) => { const mean = monthlyMean(); const diff = w.cm - mean; wisla.append(item("river", `Wisła ${w.cm} cm${w.live ? "" : " (średnia)"}`, diff < -40 ? "Nisko. Krypty zalewa przy niskiej wodzie." : diff > 60 ? "Wysoko." : "Stan zwykły.")); if (diff < -40) wisla.append(h("span", { class: "dl note" }, "nisko: krypty zalewa przy niskiej wodzie")); });
+  fetchWisla().then((w) => { const mean = monthlyMean(); const diff = w.cm - mean; wisla.append(item("river", `Wisła ${w.cm} cm${w.live ? "" : " (średnia)"}`, diff < -40 ? "Nisko. Krypty zalewa przy niskiej wodzie." : diff > 60 ? "Wysoko." : "Stan zwykły.")); // „krypty zalewa przy niskiej wodzie" to wniosek sprawy 3: mapa mówi to dopiero, gdy gracz sam to ustalił
+    const c3 = app.caseForGate(2); const knows = !!c3 && app.state.solvedCases.includes(c3.n);
+    if (diff < -40) wisla.append(h("span", { class: "dl note" }, knows ? "nisko: krypty zalewa przy niskiej wodzie" : "nisko")); else if (diff > 60) wisla.append(h("span", { class: "dl note" }, "wysoko")); });
   const legend = app.silent.length ? h("p", { class: "silent-note" }, `Zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. Tam potrzebny jest cudzy odczyt.`) : null;
   sec.append(wisla); if (legend) sec.append(legend);
   if (isSnowSeason()) sec.classList.add("snow");
