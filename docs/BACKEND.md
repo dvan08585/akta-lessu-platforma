@@ -15,7 +15,7 @@ Po `deploy` wrangler wypisze adres w stylu `https://akta-lessu-wspolny.<konto>.w
 ## Rejestr na żywo w dniu premiery
 ```bash
 curl -X PUT "$URL/rejestr" -H "Authorization: Bearer $ADMIN_TOKEN" -H "content-type: application/json" \
-  -d '{"active":true,"header":"Rejestr statusów — Fundacja Sandomierska Memoria","lines":["1. Żmigród — nieznany","7. Świętopawłowskie — [puste]"]}'
+  -d '{"active":true,"header":"Rejestr statusów — Fundacja Sandomierska Memoria","lines":["1. Wzgórze Żmigrodzkie — nieznany","7. Świętopawelskie — [puste]"]}'
 ```
 Co godzinę inne `lines`. Strona pobiera co minutę. Plik `public/live/rejestr.json` zostaje jako zapas, gdy backend nie odpowiada.
 

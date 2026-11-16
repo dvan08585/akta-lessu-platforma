@@ -33,7 +33,7 @@
   <a-marker type="pattern" url="./znacznik-4.patt" data-brama="4" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3" minConfidence="0.6">
     <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" material="shader: flat; transparent: true; opacity: 0.96"></a-plane>
     <a-entity geometry="primitive: cylinder; radius: 0.07; height: 0.03; segmentsRadial: 7" material="color: #c9a86a; shader: flat" position="-0.537 0.297 0.06" rotation="90 0 0" animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1100; loop: true; easing: easeInOutSine"></a-entity>
-    <a-entity text="value: Brama 4: Staromiejskie; color: #e8e0cf; align: center; width: 1.8; font: roboto" position="0 1.2 0.02"></a-entity>
+    <a-entity text="value: Brama 4: Świętojakubskie; color: #e8e0cf; align: center; width: 1.8; font: roboto" position="0 1.2 0.02"></a-entity>
   </a-marker>
   <a-marker type="pattern" url="./znacznik-5.patt" data-brama="5" smooth="true" smoothCount="8" smoothTolerance="0.01" smoothThreshold="3" minConfidence="0.6">
     <a-plane src="#mapa" width="2.0" height="1.0" position="0 0.6 0" material="shader: flat; transparent: true; opacity: 0.96"></a-plane>
@@ -62,7 +62,7 @@
 <script>
   const q = new URLSearchParams(location.search);
   const brama = Number(q.get("brama") || 0);
-  const names = { 1: "Żmigród", 2: "Wzgórze Katedralne", 3: "Wzgórze Miejskie", 4: "Staromiejskie", 5: "Wzgórze Zamkowe", 6: "Collegium", 7: "Świętopawłowskie" };
+  const names = { 1: "Wzgórze Żmigrodzkie", 2: "Wzgórze Katedralne", 3: "Wzgórze Miejskie", 4: "Wzgórze Świętojakubskie", 5: "Wzgórze Zamkowe", 6: "Collegium", 7: "Wzgórze Świętopawelskie" };
   // pozycje bram na przekroju (2.0 szer., 1.0 wys.; obraz 1024x512): x = (px/1024-0.5)*2, y = 0.6 + (0.5 - py/512)*1.0
   const px = { 7: [102, 436], 4: [237, 411], 1: [384, 396], 5: [525, 426], 2: [666, 416], 3: [806, 406], 6: [941, 431] };
   const el = { 1: "ziemia", 2: "woda", 3: "dzwiek", 4: "ogien", 5: "zimno", 6: "ciemnosc", 7: "powietrze" };

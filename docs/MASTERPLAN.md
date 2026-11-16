@@ -104,8 +104,8 @@ Karta udostępnienia pokazuje warstwy, nie ranking. Nie ma licznika „% graczy 
 ## 6. Sandomierz jako plansza
 
 **Trasa siedmiu bram** (około 5,5 km, 2,5–3,5 h z obrzędami; wózek: bramy 2, 3, 6, 7 po asfalcie i kostce, pozostałe z zapasem wnętrzowym u strażnika):
-1. Świętopawłowskie, początek szlaku na Góry Pieprzowe: dotyk lessu w skarpie przy szlaku, nie na zabytku.
-2. Staromiejskie, skwer przed św. Jakubem: oddech. Nie wewnątrz, nigdy w czasie liturgii.
+1. Świętopawelskie, początek szlaku na Góry Pieprzowe: dotyk lessu w skarpie przy szlaku, nie na zabytku.
+2. Świętojakubskie, skwer przed św. Jakubem: oddech. Nie wewnątrz, nigdy w czasie liturgii.
 3. Żmigród: nucenie w zagłębieniu ulicy.
 4. Zamkowe, dziedziniec: bezruch na ławce, w godzinach otwarcia muzeum.
 5. Katedralne i Podziemna Trasa (Rynek 10): 60 s ciemności w ostatniej komorze, w ramach biletu i za zgodą przewodnika (umowa z SCK). Zapas: piwnica lokalu na Rynku.

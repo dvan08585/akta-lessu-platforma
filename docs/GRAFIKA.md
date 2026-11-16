@@ -17,7 +17,7 @@ Drzeworyt i rycina z XIX-wiecznego atlasu geologicznego, w którym ktoś zostawi
 
 | # | Co | Gdzie | Wymiar (px, @2x) | Uwagi |
 |---|---|---|---|---|
-| 1 | **Panorama siedmiu wzgórz nad Wisłą** z przekrojem lessu pod spodem, dzwonnicą katedry i św. Jakubem, gołąb nad Staromiejskim | wejście (`viewIntro`), dziś `hero()` | 1200×440, przezroczyste tło | najważniejsza grafika, pierwsze, co widzi czytelnik |
+| 1 | **Panorama siedmiu wzgórz nad Wisłą** z przekrojem lessu pod spodem, dzwonnicą katedry i św. Jakubem, gołąb nad Świętojakubskim | wejście (`viewIntro`), dziś `hero()` | 1200×440, przezroczyste tło | najważniejsza grafika, pierwsze, co widzi czytelnik |
 | 2 | Krzemień pasiasty, siedmiobok, w dłoni (dłoń od spodu, bez twarzy) | wejście, ekran „Połóż palec na kamieniu” | 800×800 | dziś kamień rysowany kodem (`flint()`); ilustracja może go zastąpić jako tło z przezroczystością |
 | 3–9 | **Siedem winiet żywiołów**: ziemia (łuk korytarza, less sypie się z łuku, cegła wysunięta), woda (spoiny posadzki, kręgi od spodu), dźwięk (dzwon, kręgi w dół, w ziemię), ogień (kamień z pasami, smuga czerwieni), zimno (sklepienie piwnicy, szron), ciemność (kartka, litery gasną, zdmuchnięta świeca), powietrze (siedem punktów, dwie dłonie, dwa puste) | nagłówek sprawy (`case-head`), lista bram | 480×330 każda | dziś `vignette()` w kodzie, do zastąpienia 1:1 |
 | 10 | Dziedziniec św. Jakuba z góry: warstwa II pod trawnikiem, sondaż S-3 przy skarpie | sprawa 1, Dokument V (na miejscu) | 900×600 | plan jak z protokołu archeologicznego, ręcznie kreskowany |

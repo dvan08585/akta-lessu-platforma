@@ -28,13 +28,13 @@ Każda brama ma żywioł z książki. Każdy żywioł dostaje JEDEN gest ciała,
 
 | Brama | Żywioł | Gest gracza | Co robi telefon | Zdanie w grze (nie instrukcja) | Zapas |
 |-------|--------|-------------|-----------------|-------------------------------|-------|
-| 4 Staromiejskie | **ogień / ziemia** | Przykłada kamerę do czegoś czerwonego (szalik, jabłko, własna dłoń pod światło) | Kamera mierzy dominujący kolor; czerwień = „krew na kamieniu” | „Kamień odpowiada na krew. Nie musi być twoja.” | wybór koloru palcem |
+| 4 Świętojakubskie | **ogień / ziemia** | Przykłada kamerę do czegoś czerwonego (szalik, jabłko, własna dłoń pod światło) | Kamera mierzy dominujący kolor; czerwień = „krew na kamieniu” | „Kamień odpowiada na krew. Nie musi być twoja.” | wybór koloru palcem |
 | 3 Miejskie | **dźwięk** | Nuci ton (JEST) + słucha przez słuchawki | Płyta Chladniego (jest). NOWE: dudnienie różnicowe: lewe ucho 200 Hz, prawe 218 Hz → mózg „słyszy” 18 Hz, których głośnik nie odda | „Tego się nie nuci. To się nosi. Załóż słuchawki.” | wibracja 18 Hz |
 | 2 Katedralne | **woda** | Dmucha w mikrofon, długo i równo | Mikrofon mierzy głośność szumu (nie ton): równy wydech = tafla wody się wygładza i odsłania dno krypty | „Woda w krypcie jest spokojna tylko wtedy, kiedy ty jesteś.” | przytrzymanie palca |
 | 5 Zamkowe | **zimno** | Trzyma telefon NIERUCHOMO przez 30 s | Akcelerometr: drżenie rąk = hipotermia. Każde drgnięcie cofa pasek. Im dłużej, tym trudniej (ręce naprawdę zaczynają drżeć) | „Przy 33 stopniach drżenie jest silne. Przy 31 ustaje. To zły znak.” | przycisk „trzymam” |
 | 6 Collegium | **ciemność** | Zakrywa kamerę dłonią albo gasi światło | Kamera mierzy jasność: dokument czyta się tylko w ciemności (tekst pojawia się, gdy lux spada) | „Mniej widzisz, więcej rozumiesz.” | przycisk „ciemno” |
 | 1 Żmigród | **ziemia** | Przechyla telefon, less sypie się z góry ekranu; musi trzymać poziomo, żeby nie zasypać cegły | Żyroskop: kąt = sypanie. Zbyt szybki ruch = zasypanie | „Nie tędy. Trzymaj równo.” | suwak |
-| 7 Świętopawłowskie | **powietrze** | Dwie osoby, jeden telefon: oddychają w mikrofon NA ZMIANĘ. Jeśli dwa oddechy nałożą się, tlen spada | Mikrofon: detekcja dwóch naprzemiennych wydechów (szum, pauza, szum). Rytm = przejście korytarza | „Nie można oddychać samemu w miejscu, które zabiera powietrze.” | połówki klucza (jest) |
+| 7 Świętopawelskie | **powietrze** | Dwie osoby, jeden telefon: oddychają w mikrofon NA ZMIANĘ. Jeśli dwa oddechy nałożą się, tlen spada | Mikrofon: detekcja dwóch naprzemiennych wydechów (szum, pauza, szum). Rytm = przejście korytarza | „Nie można oddychać samemu w miejscu, które zabiera powietrze.” | połówki klucza (jest) |
 
 Wszystko powyżej działa w Safari i Chrome bez aplikacji, przez HTTPS, za zgodą na mikrofon/kamerę/ruch. Koszt: 1–2 dni na gest. Największy efekt za najmniej pieniędzy w całym projekcie.
 
