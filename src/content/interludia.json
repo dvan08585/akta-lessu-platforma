@@ -79,7 +79,7 @@
       },
       {
         "q": "Skąd te blizny na dłoniach?",
-        "a": "Od pilnika. Od kwasu. Od srebra, które pryska, jak się je leje za szybko. Pięćdziesiąt lat przy stole. Pan patrzy na blizny, a ja patrzę na pana paznokcie: mówią, że pan też pracuje rękami, tylko w ziemi, nie w metalu."
+        "a": "Od pilnika. Od kwasu. Od srebra, które pryska, jak się je leje za szybko. Pięćdziesiąt lat przy stole. {Pani patrzy|Pan patrzy} na blizny, a ja patrzę na {pani|pana} paznokcie: mówią, że {pani|pan} też pracuje rękami, tylko w ziemi, nie w metalu."
       },
       {
         "q": "Co jest w pana piwnicy?",
@@ -87,12 +87,12 @@
       },
       {
         "q": "Dlaczego pan ciągle pociera kciukiem o palec?",
-        "a": "Nie zauważyłem. Nawyk. Pan ma swoje, ja mam swoje. Mój ojciec też tak robił, więc może to jest dziedziczne, jak nos. Niech pan nie pyta, co sprawdzam. Sam nie wiem."
+        "a": "Nie zauważyłem. Nawyk. Pan ma swoje, ja mam swoje. Mój ojciec też tak robił, więc może to jest dziedziczne, jak nos. Niech {pani|pan} nie pyta, co sprawdzam. Sam nie wiem."
       }
     ],
     "lie": 1,
     "reveal": "Profesor dzwonił do niego trzy razy w ostatnim tygodniu życia. Jest w rejestrze połączeń, o którym Jaromin nie wie. Kłamie, bo profesor zostawił u niego coś pod ladą i kazał to komuś oddać. Jeszcze nie wie komu.",
-    "wrong": "Jaromin podnosi lupę na czoło. „To akurat prawda. Niech pan zapyta o coś innego.”",
+    "wrong": "Jaromin podnosi lupę na czoło. „To akurat prawda. Niech {pani|pan} zapyta o coś innego.”",
     "level": "średnio",
     "cue": "Pięć pytań. Jedna odpowiedź jest kłamstwem.",
     "place": "rozmowa"
@@ -157,12 +157,12 @@
       },
       {
         "q": "Co to znaczy: oprawa prowadzi, kamień trzyma?",
-        "a": "Tyle mi przekazano i tyle przekazuję. Nie wiem, czy to nie jest odwrotnie. Trzydzieści pokoleń to dużo okazji, żeby ktoś pomylił kolejność. Dlatego mówię to panu wprost, a nie jako prawdę: to są słowa, nie wiedza."
+        "a": "Tyle mi przekazano i tyle przekazuję. Nie wiem, czy to nie jest odwrotnie. Trzydzieści pokoleń to dużo okazji, żeby ktoś pomylił kolejność. Dlatego mówię to {pani|panu} wprost, a nie jako prawdę: to są słowa, nie wiedza."
       }
     ],
     "lie": 2,
     "reveal": "Buty. Pod habitem Anzelm ma buty z lessem w szwach, suchym, jasnym, takim, który nie wchodzi w skórę na powierzchni. Był na dole. Może nie raz. Reguła zabrania, a on pamięta za dobrze jak na kogoś, kto tylko słuchał.",
-    "wrong": "Anzelm dolewa herbaty. „Prawda. Chociaż rozumiem, czemu pan pyta.”",
+    "wrong": "Anzelm dolewa herbaty. „Prawda. Chociaż rozumiem, czemu {pani|pan} pyta.”",
     "level": "średnio",
     "cue": "Pięć pytań. Jedna odpowiedź jest kłamstwem.",
     "place": "rozmowa"
@@ -211,7 +211,7 @@
       },
       {
         "q": "Dlaczego pan prostuje te krawędzie?",
-        "a": "Bo są krzywe. Nie są? To będą. Mój ojciec robił to samo, dziadek też. Pan się śmieje. Niech pan sobie wyobrazi siedemset lat pilnowania, żeby coś leżało równo i nikt tego nie ruszał. Potem niech pan spróbuje nie prostować."
+        "a": "Bo są krzywe. Nie są? To będą. Mój ojciec robił to samo, dziadek też. {Pani się śmieje|Pan się śmieje}. Niech {pani|pan} sobie wyobrazi siedemset lat pilnowania, żeby coś leżało równo i nikt tego nie ruszał. Potem niech {pani|pan} spróbuje nie prostować."
       },
       {
         "q": "Co pan wie o Fundacji?",
