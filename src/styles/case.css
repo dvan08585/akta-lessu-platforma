@@ -6,13 +6,13 @@
 .doc.mono { font-family: var(--font-mono); font-size: 0.86rem; line-height: 1.5; }
 .doc.hand { font-style: italic; }
 /* Inicjał na dwie linie, jak w starych drukach. */
-.doc.chronicle p:first-of-type::first-letter { font-size: 3.4em; line-height: 0.74; float: left; padding: 0.05em 0.12em 0 0; margin-bottom: -0.12em; color: #5a4a32; font-weight: 500; }
+.doc.chronicle p:first-of-type::first-letter { font-size: 3.75em; line-height: 0.7; float: left; padding: 0.05em 0.12em 0 0; margin-bottom: -0.12em; color: #5a4a32; font-weight: 500; }
 .doc .redact { background: #1e1a14; color: #1e1a14; }
 .doc-nav { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
 .doc-nav button { padding: 0.35rem 0.7rem; min-height: 36px; font-size: 0.82rem; }
 .doc-nav button[aria-current="true"] { border-color: var(--sand); color: var(--sand); }
 
-.grid { display: grid; gap: 1rem; margin: 1.5rem 0; }
+.grid { display: grid; gap: 1rem; margin: 2.6rem 0 1.5rem; padding-top: 1.6rem; border-top: 1px solid var(--line); }
 .q { border-top: 1px solid var(--line); padding-top: 0.9rem; }
 .q .qt { margin-bottom: 0.5rem; }
 .q .opts { display: grid; gap: 0.4rem; }
@@ -124,3 +124,4 @@ input[type="color"] { width: 44px; height: 44px; border: 1px solid var(--line); 
 .doc.letter-card h4, .doc.letter-card .src, .doc.letter-card .reply { font-family: var(--font-serif); font-size: 0.78rem; }
 .doc.letter-card .reply { font-size: 1rem; }
 @media (prefers-reduced-motion: reduce) { .doc { transform: none !important; } }
+.doc-nav button.locked { opacity: 0.45; border-style: dashed; }

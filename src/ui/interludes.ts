@@ -477,13 +477,20 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const toRad = (d: number) => (d * Math.PI) / 180;
     const bearing = (a: { lat: number; lon: number }, b: { lat: number; lon: number }) => { const y = Math.sin(toRad(b.lon - a.lon)) * Math.cos(toRad(b.lat)); const x = Math.cos(toRad(a.lat)) * Math.sin(toRad(b.lat)) - Math.sin(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.cos(toRad(b.lon - a.lon)); return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360; };
     const dist = (a: { lat: number; lon: number }, b: { lat: number; lon: number }) => { const R = 6371000; const dLat = toRad(b.lat - a.lat), dLon = toRad(b.lon - a.lon); const s1 = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLon / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(s1)); };
-    const onOrient = (e: DeviceOrientationEvent & { webkitCompassHeading?: number }) => { if (typeof e.webkitCompassHeading === "number") heading = e.webkitCompassHeading; else if (e.absolute && e.alpha !== null) heading = (360 - e.alpha) % 360; };
+    // iOS: webkitCompassHeading. Android: zdarzenie „absolute" daje alpha względem północy; zwykłe deviceorientation jest względne (od chwili startu), ale lepsze niż cisza.
+    let relative = false;
+    const onOrient = (e: DeviceOrientationEvent & { webkitCompassHeading?: number }) => {
+      if (typeof e.webkitCompassHeading === "number") { heading = e.webkitCompassHeading; relative = false; return; }
+      if (e.alpha === null) return;
+      const abs = e.type === "deviceorientationabsolute" || e.absolute;
+      if (abs || heading === null) { heading = (360 - e.alpha + (screen.orientation?.angle ?? 0)) % 360; relative = !abs; }
+    };
     let ticks = 0;
     function tick() {
       ticks++;
       if (!pos || heading === null) {
         const gps = pos ? "GPS: jest" : ticks > 60 ? "GPS: brak sygnału. Wyjdź spod dachu, włącz lokalizację dla przeglądarki." : "GPS: szukam…";
-        const cmp = heading !== null ? "kompas: jest" : ticks > 20 ? "kompas: cisza. Obróć telefon ósemką, żeby obudzić magnetometr." : "kompas: czekam na obrót";
+        const cmp = heading !== null ? "kompas: jest" : ticks > 20 ? "kompas: cisza. Zakreśl telefonem w powietrzu ósemkę (tak kalibruje się kompas w telefonie) i wyjdź spod dachu." : "kompas: czekam na obrót";
         status.textContent = `${gps} · ${cmp}`;
       }
       if (pos && heading !== null) {
@@ -492,7 +499,8 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         const heat = diff < 12 ? 4 : diff < 25 ? 3 : diff < 50 ? 2 : diff < 90 ? 1 : 0;
         pend.setAttribute("data-heat", String(heat));
         status.textContent = `najbliżej: ${near.g.name}, ${near.d.toFixed(0)} m · kierunek ${near.b.toFixed(0)}° · ty ${heading.toFixed(0)}°`;
-        if (near.d > 1500 && !app.state.testMode) status.textContent += " · jesteś daleko od Sandomierza";
+        if (near.d > 1500 && !app.state.testMode) status.textContent = `jesteś ${(near.d / 1000).toFixed(near.d > 20000 ? 0 : 1)} km od najbliższej bramy (${near.g.name}). Zawieszka grzeje tylko w Sandomierzu; tu pokazuje kierunek, nie ciepło.`;
+        else if (relative) status.textContent += " · kompas względny: obróć się raz dookoła, żeby złapał północ";
         hot = heat === 4 && (near.d <= 1500 || app.state.testMode) ? hot + 1 : 0;
         if (hot > 12 && !finished) { finished = true; reveal(verdict, `${it.title}: ${near.g.name}.`); try { navigator.vibrate?.(300); } catch { /* */ } }
       }

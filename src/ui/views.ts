@@ -293,7 +293,8 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   // Zakładki w kolejności akt. Dokument „tylko na miejscu" zostaje na swoim miejscu, ale nieaktywny: pokazuje, nie tłumaczy.
   for (const d of c.docs) {
     const i = docs.indexOf(d);
-    docNav.append(i >= 0 ? h("button", { role: "tab", onclick: () => show(i) }, d.title.replace("Dokument ", "")) : h("button", { role: "tab", disabled: true, title: "Tylko na miejscu, w Sandomierzu" }, d.title.replace("Dokument ", "")));
+    // Dokument „tylko na miejscu": zakładka wyblakła, ale dotknięcie tłumaczy, gdzie i jak go otworzyć (kod QR u strażnika / w lokalu), zamiast milczeć.
+    docNav.append(i >= 0 ? h("button", { role: "tab", onclick: () => show(i) }, d.title.replace("Dokument ", "")) : h("button", { role: "tab", class: "locked", "aria-disabled": "true", onclick: () => { docBox.replaceChildren(h("article", { class: "doc hand" }, h("h4", {}, d.title), h("div", { class: "src" }, d.source), h("p", {}, "Ta kartka nie przyjdzie pocztą. Leży tam, gdzie została napisana. W Sandomierzu, w tym miejscu, jest kod: zeskanuj go telefonem, a dokument otworzy się tutaj. Nie jest potrzebny do ustalenia. Jest nagrodą za drogę."))); docNav.querySelectorAll("button").forEach((b) => b.setAttribute("aria-current", "false")); } }, d.title.replace("Dokument ", "")));
   }
   show(0);
   sec.append(h("h3", {}, "Dokumenty"), docNav, docBox);
