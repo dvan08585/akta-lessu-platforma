@@ -40,7 +40,9 @@ function fnv(str: string): string { let h = 0x811c9dc5; for (let i = 0; i < str.
 export function exportCode(s: SaveState): string {
   const slim = { v: 2, u: s.unlockedChapters, s: s.solvedCases, c: s.chapterCursor, x: s.unstableGates, e: s.seed, m: s.month, r: s.readings, f: s.sawFooter,
     i: s.interludesDone, p: s.placeVisits, o: s.onboarded ? 1 : 0, n: s.leftSeventhEmpty ? 1 : 0, y: s.daily, q: s.metSilent ? 1 : 0, g: s.address ?? "",
-    b: { s: Object.fromEntries(Object.entries(s.inbox?.scheduled ?? {}).map(([k, v]) => [k, Math.round(v / 60000)])), r: s.inbox?.read ?? [], a: s.inbox?.replies ?? {} } };
+    b: { s: Object.fromEntries(Object.entries(s.inbox?.scheduled ?? {}).map(([k, v]) => [k, Math.round(v / 60000)])), r: s.inbox?.read ?? [], a: s.inbox?.replies ?? {} },
+    // zeszyt: ostatnie 60 zapisków (minuty od epoki, tekst, meta); starsze zostają tylko na starym urządzeniu
+    k: s.notebook.slice(-60).map((e) => [Math.round(e.at / 60000), e.text, e.meta]) };
   const json = JSON.stringify(slim);
   const body = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
   return body + "." + fnv(body);
@@ -53,12 +55,13 @@ export function importCode(code: string): SaveState | null {
     const b64 = body.replace(/-/g, "+").replace(/_/g, "/");
     const json = decodeURIComponent(escape(atob(b64 + "===".slice((b64.length + 3) % 4))));
     const slim = JSON.parse(json) as { u: number[]; s: number[]; c: number; x?: number[]; e?: string; m?: number; r?: Record<string, string>; f?: boolean;
-      i?: string[]; p?: string[]; o?: number; n?: number; y?: Record<string, boolean>; q?: number; g?: string; b?: { s: Record<string, number>; r: string[]; a: Record<string, number> } };
+      i?: string[]; p?: string[]; o?: number; n?: number; y?: Record<string, boolean>; q?: number; g?: string; b?: { s: Record<string, number>; r: string[]; a: Record<string, number> }; k?: [number, string, string][] };
     const s = emptyState();
     s.unlockedChapters = slim.u ?? []; s.solvedCases = slim.s ?? []; s.chapterCursor = slim.c ?? 0;
     s.unstableGates = slim.x ?? []; if (slim.e) s.seed = slim.e; s.month = slim.m ?? 0; s.readings = slim.r ?? {}; s.sawFooter = slim.f ?? false;
     s.interludesDone = slim.i ?? []; s.placeVisits = slim.p ?? []; s.onboarded = !!slim.o; s.leftSeventhEmpty = !!slim.n; s.daily = slim.y ?? {}; s.metSilent = !!slim.q; if (slim.g === "f" || slim.g === "m") s.address = slim.g;
     if (slim.b) s.inbox = { scheduled: Object.fromEntries(Object.entries(slim.b.s ?? {}).map(([k, v]) => [k, v * 60000])), read: slim.b.r ?? [], replies: slim.b.a ?? {} };
+    if (slim.k) s.notebook = slim.k.map(([at, text, meta]) => ({ at: at * 60000, text, meta }));
     return s;
   } catch { return null; }
 }

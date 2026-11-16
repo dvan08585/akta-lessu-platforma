@@ -60,10 +60,12 @@ describe("stan: kod wznowienia i seria", () => {
   it("eksport/import zachowuje postęp", () => {
     const s = emptyState(); s.unlockedChapters = [0, 1]; s.solvedCases = [1]; s.chapterCursor = 1; s.interludesDone = ["ogien"]; s.placeVisits = ["katedra"]; s.onboarded = true;
     s.inbox = { scheduled: { "w-wanda-1": 1800000000000 }, read: ["w-wanda-1"], replies: { "w-wanda-1": 2 } };
+    s.notebook = [{ at: 1800000000000, text: "Brama 4: rozpoznana.", meta: "sprawa" }];
     const code = exportCode(s); const back = importCode(code)!;
     expect(back.unlockedChapters).toEqual([0, 1]); expect(back.solvedCases).toEqual([1]); expect(back.chapterCursor).toBe(1);
     expect(back.interludesDone).toEqual(["ogien"]); expect(back.placeVisits).toEqual(["katedra"]); expect(back.onboarded).toBe(true);
     expect(back.inbox!.scheduled["w-wanda-1"]).toBe(1800000000000); expect(back.inbox!.replies["w-wanda-1"]).toBe(2);
+    expect(back.notebook[0].text).toBe("Brama 4: rozpoznana."); expect(back.notebook[0].meta).toBe("sprawa");
     expect(importCode(code.slice(0, -1) + "0")).toBeNull(); // literówka w sumie kontrolnej
   });
   it("seria rośnie dzień po dniu i wybacza jedną przerwę w tygodniu", () => {
