@@ -21,7 +21,7 @@
 .map-wrap .gate:hover circle { stroke: var(--ink); }
 .map-wrap .aneta { fill: var(--ink); }
 .map-wrap .amor { fill: var(--ink-dim); }
-.map-wrap .marker-label { font-size: 14px; fill: var(--ink-dim); text-anchor: middle; }
+.map-wrap .marker-label { font-size: 14px; fill: #e8e0cf; text-anchor: middle; paint-order: stroke; stroke: #1a1813; stroke-width: 3px; }
 
 .chapter-slider { display: flex; align-items: center; gap: 0.75rem; margin: 0.5rem 0 1.5rem; }
 .chapter-slider input[type="range"] { flex: 1; accent-color: var(--sand); }
