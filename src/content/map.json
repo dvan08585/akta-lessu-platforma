@@ -24,7 +24,7 @@
     {
       "n": 7,
       "id": "swietopawlowskie",
-      "name": "Świętopawłowskie",
+      "name": "Wzgórze Świętopawelskie",
       "element": "powietrze",
       "x": 80,
       "peak": 160,
@@ -38,7 +38,7 @@
     {
       "n": 4,
       "id": "staromiejskie",
-      "name": "Staromiejskie",
+      "name": "Wzgórze Świętojakubskie",
       "element": "ogień",
       "x": 185,
       "peak": 130,
@@ -52,7 +52,7 @@
     {
       "n": 1,
       "id": "zmigrod",
-      "name": "Żmigród",
+      "name": "Wzgórze Żmigrodzkie",
       "element": "ziemia",
       "x": 300,
       "peak": 150,

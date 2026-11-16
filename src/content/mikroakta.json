@@ -26,19 +26,6 @@
     "answer": 1
   },
   {
-    "id": "m03",
-    "title": "Siedem złotych",
-    "doc": "Kasa w drewnianej budce przy wejściu na Góry Pieprzowe. Bilet: siedem złotych. W internecie ludzie piszą, że to zdzierstwo, i podają dziki punkt widokowy za krzakami. Tablica: łupki kambryjskie, pięćset milionów lat, najstarsza ziemia w Polsce.",
-    "q": "Ile kosztuje stanięcie na najstarszej ziemi w kraju?",
-    "options": [
-      "Nic, za krzakami",
-      "Siedem złotych",
-      "Pięćset milionów lat",
-      "Tyle co kawa z automatu"
-    ],
-    "answer": 1
-  },
-  {
     "id": "m04",
     "title": "Trzy obroty",
     "doc": "Cocker, trzynaście kilogramów, biała plamka na piersi. Przed położeniem się obraca się trzy razy. Nigdy dwa. Nigdy cztery. Na kocu, na bruku, na kamiennej posadzce krypty. Trzy.",
@@ -275,7 +262,7 @@
   {
     "id": "m22",
     "title": "Dziewięć pokoi",
-    "doc": "Profesor mieszkał w siódemce dwa tygodnie, płacił gotówką z góry, nie jadał śniadań. Schodził do piwnicy po słoiki kompotu. Pani Wanda mówi, że po kompot Heleny.",
+    "doc": "Profesor mieszkał dwa tygodnie w pokoju przy schodach, po drodze do siódemki. Płacił gotówką z góry, nie jadał śniadań. Schodził do piwnicy po słoiki kompotu. Pani Wanda mówi, że po kompot Heleny.",
     "q": "Co w tym nie gra?",
     "options": [
       "Nic",
@@ -287,8 +274,8 @@
   },
   {
     "id": "m23",
-    "title": "Czterdziestu dziewięciu",
-    "doc": "Kościół św. Jakuba, 1260: przeor Sadok i czterdziestu dziewięciu braci śpiewało Salve Regina, gdy wyważano drzwi. Dominikanie śpiewają to samo co wieczór, od siedmiuset lat.",
+    "title": "Czterdziestu ośmiu",
+    "doc": "Kościół św. Jakuba, 1260: przeor Sadok i czterdziestu ośmiu braci śpiewało Salve Regina, gdy wyważano drzwi. Dominikanie śpiewali to co wieczór do kasaty w 1864. Wrócili w 2001. Śpiewają dalej, jakby nie było przerwy.",
     "q": "Dlaczego śpiewają dalej?",
     "options": [
       "Z pobożności",
@@ -470,7 +457,7 @@
   {
     "id": "m37",
     "title": "Lapidarium",
-    "doc": "Pod zewnętrznymi schodami Ratusza metalowe drzwi obok lapidarium. Za nimi schody kamienne w górę, do Ratusza, i w dół, na trasę turystyczną. Klucz ma Krzysztof Maj.",
+    "doc": "Pod zewnętrznymi schodami Ratusza metalowe drzwi obok lapidarium. Za nimi schody kamienne w górę, do Ratusza, i w dół, na trasę turystyczną. Klucz ma pan Krzysiek Maj.",
     "q": "Dokąd prowadzą schody w dół?",
     "options": [
       "Do piwnicy Ratusza",

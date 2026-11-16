@@ -22,11 +22,11 @@
     "questions": [
       {
         "q": "Kto mieszkał w pokoju numer siedem przede mną?",
-        "a": "Przed {panią|panem} ta geolożka, z psem. A przed nią profesor. Dwa tygodnie. Płacił gotówką, z góry, jak ludzie, którzy nie chcą, żeby ktoś widział wyciąg. Śniadania nie jadał. Schodził do piwnicy po słoiki kompotu, mówił, że pani Helena robiła najlepszy w mieście. A pani Helena nie żyje od dwudziestu lat, więc skąd on ten kompot brał, to ja nie wiem."
+        "a": "Przed {panią|panem} ta geolożka, z psem. Profesor nie w siódemce, w tym przy schodach, po drodze do niej. Dwa tygodnie. Płacił gotówką, z góry, jak ludzie, którzy nie chcą, żeby ktoś widział wyciąg. Śniadania nie jadał. Schodził do piwnicy po słoiki kompotu, mówił, że pani Helena robiła najlepszy w mieście. A pani Helena nie żyje od dwudziestu lat, więc skąd on ten kompot brał, to ja nie wiem."
       },
       {
         "q": "Co jest pod hotelem?",
-        "a": "Piwnice. Kupieckie, szesnastowieczne, trzy poziomy, w przewodniku jest. Niżej nic. Ja tam schodzę z praniem dwa razy w tygodniu i nic tam nie ma oprócz wilgoci i pana Krzysia z kluczami."
+        "a": "Piwnice. Kupieckie, szesnastowieczne, trzy poziomy, w przewodniku jest. Niżej nic. Ja tam schodzę z praniem dwa razy w tygodniu i nic tam nie ma oprócz wilgoci i pana Krzyśka Maja z kluczami."
       },
       {
         "q": "Zna pani Fundację Sandomierska Memoria?",
@@ -141,7 +141,7 @@
     "questions": [
       {
         "q": "Co zginęło w tym kościele w 1260 roku?",
-        "a": "Czterdziestu dziewięciu braci i trzystu ludzi, którzy myśleli, że cegła ich uratuje. Cegła nie pali się, to prawda. Ale drzwi są z drewna. Sadok śpiewał Salve Regina. My śpiewamy to samo co wieczór, od siedmiuset lat, w tym samym miejscu. Nie z pobożności. Z pamięci."
+        "a": "Sadok i czterdziestu ośmiu braci, i trzystu ludzi, którzy myśleli, że cegła ich uratuje. Cegła nie pali się, to prawda. Ale drzwi są z drewna. Sadok śpiewał Salve Regina. Śpiewali to do kasaty, śpiewamy od powrotu. Sto czterdzieści lat przerwy w środku, ale pamięć nie liczy lat. Nie z pobożności. Z pamięci."
       },
       {
         "q": "Skąd brat wie o korytarzach?",
@@ -149,14 +149,14 @@
       },
       {
         "q": "Czy brat kiedykolwiek był na dole?",
-        "a": "Nigdy. Zakon zabrania. Reguła jest jasna: strażnik pamięci nie schodzi. Schodzą inni. Ja tylko pamiętam i przekazuję. Siedemdziesiąt lat w tym klasztorze i ani razu nie postawiłem stopy niżej niż krypta."
+        "a": "Nigdy. Zakon zabrania. Reguła jest jasna: strażnik pamięci nie schodzi. Schodzą inni. Ja tylko pamiętam i przekazuję. Dwadzieścia lat w tym klasztorze, przedtem czterdzieści w innych, i ani razu nie postawiłem stopy niżej niż krypta."
       },
       {
         "q": "Po co braciom płyta z piaskiem?",
         "a": "Żeby pokazać, nie tłumaczyć. Smyczek po krawędzi, piasek układa się w kształt. Kształt zależy od tonu. Sandomierz stoi na kwarcu, pięćset milionów lat. Katedra stoi na Sandomierzu. Ludzie nazywają to wiarą. Ja nazywam to fizyką i modlę się dalej, jedno drugiemu nie przeszkadza."
       },
       {
-        "q": "Co to znaczy: oprawa otwiera, kamień zamyka?",
+        "q": "Co to znaczy: oprawa prowadzi, kamień trzyma?",
         "a": "Tyle mi przekazano i tyle przekazuję. Nie wiem, czy to nie jest odwrotnie. Trzydzieści pokoleń to dużo okazji, żeby ktoś pomylił kolejność. Dlatego mówię to panu wprost, a nie jako prawdę: to są słowa, nie wiedza."
       }
     ],
@@ -196,7 +196,7 @@
   {
     "id": "berbec",
     "type": "talk",
-    "after": 4,
+    "after": 6,
     "title": "Rozmowa: Berbeć senior",
     "intro": "Archiwum miejskie, pokój na zapleczu. Berbeć prostuje krawędź teczki, która już jest prosta. Potem drugą. Nie patrzy na ciebie, patrzy na krawędzie.",
     "person": "Berbeć",
@@ -472,19 +472,19 @@
     "level": "wejście",
     "intro": "Kartka z notatnika profesora, przepisana w odbiciu. Profesor pisał tak, kiedy nie chciał, żeby ktoś czytał mu przez ramię.",
     "secret": [
-      "Siedem punktów. Nie szukać ósmego. Ósmy to mit Florka: Wzgórze Salve Regina, którego nie ma.",
+      "Siedem punktów. Nie szukać ósmego. Ósmy to mit.",
       "Klasa S, wariant K. S jak struktura. Nikomu.",
       "Jeśli to czytasz w lustrze, to znaczy, że masz czas. Ja nie mam."
     ],
-    "q": "Które wzgórze profesor nazywa mitem?",
+    "q": "Czego profesor każe nie szukać?",
     "options": [
-      "Żmigród",
-      "Salve Regina",
-      "Collegium",
-      "Zamkowe"
+      "Ósmego punktu",
+      "Klasy S",
+      "Fundacji",
+      "Czasu"
     ],
-    "answer": 1,
-    "reveal": "Wzgórze Salve Regina: archeolodzy spierali się o nie przez dekady, a Florek w 2003 roku napisał, że to mit. Profesor wiedział. Ósmego punktu nie ma. Siedem wystarczy.",
+    "answer": 0,
+    "reveal": "Ósmego punktu nie ma. Profesor wiedział, że ktoś będzie liczył dalej, i zostawił to zdanie dla tego kogoś. Siedem wystarczy.",
     "cue": "Podejdź do lustra. Albo włącz aparat z przodu i patrz na ekran w jego odbiciu.",
     "place": "apokryf"
   },

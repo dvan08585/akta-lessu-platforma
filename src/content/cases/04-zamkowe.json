@@ -3,7 +3,7 @@
   "id": "partner-wydarzenia",
   "gate": 5,
   "title": "Partner wydarzenia",
-  "subtitle": "Wzgórze Zamkowe · żywioł: zimno · akty, faktury, gala",
+  "subtitle": "Wzgórze Zamkowe · żywioł: zimno · akty, umowy, gala",
   "epigraph": "Zarząd dziękuje biegłym za dotychczasowe wnioski. Rejestr jest uzupełniany na bieżąco.",
   "requires": {
     "solvedCases": 3,
@@ -36,12 +36,12 @@
       ]
     },
     {
-      "id": "faktura",
+      "id": "umowa",
       "title": "Dokument III",
-      "source": "Faktura VAT. Wystawca: biegły geolog, Kraków. Nabywca: Fundacja Sandomierska Memoria. Kopia z adnotacją.",
+      "source": "Umowa o dzieło: konsultacja geologiczna. Zamawiający: Fundacja Sandomierska Memoria. Wykonawca: biegły geolog, Kraków. Kopia z adnotacją.",
       "style": "mono",
       "paragraphs": [
-        "Usługa: konsultacja geologiczna, ocena stabilności korytarzy, Sandomierz, siedem punktów, wzgórze po wzgórzu. Wartość: zgodnie z umową.",
+        "Przedmiot: konsultacja geologiczna, ocena stabilności korytarzy, Sandomierz, siedem punktów, wzgórze po wzgórzu. Wynagrodzenie: według zlecenia nr 7/G. Płatnik: Zamawiający.",
         "Adnotacja ręczna na kopii: „Biegły sądzi, że pracuje dla komisarza. Nie wyprowadzać z błędu. Materiały wysyłać dalej w kopertach z nadrukiem programu, jak dotąd. — S.”"
       ]
     },

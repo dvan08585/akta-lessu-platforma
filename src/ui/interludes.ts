@@ -1,5 +1,5 @@
 import { h, go, toast, back, next, onLeave, grabMedia, listen } from "./dom";
-import { topbar, addrText } from "./views";
+import { topbar, addrText, crumb } from "./views";
 import type { App } from "../app";
 import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
@@ -50,7 +50,8 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   const sec = h("section", { class: "fade-in interlude" }, topbar(app, "#/mapa"));
   if (!found) { sec.append(h("p", {}, "Nie ma takiego przerywnika.")); return sec; }
   const it: Interlude = withAddress(app, found);
-  if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} ${plural(it.after ?? 0, "przebytej bramie", "przebytych bramach", "przebytych bramach")}.`), back("Mapa")); return sec; }
+  sec.append(crumb(it.place === "rozmowa" ? "Rozmowa" : it.place === "apokryf" ? "Apokryf" : it.gate !== undefined ? `Brama ${it.gate}` : "Między sprawami"));
+  if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} ${plural(it.after ?? 0, "przebytej bramie", "przebytych bramach", "przebytych bramach")}.`)); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   let alive = true; onLeave(() => { alive = false; });
   const acs: AudioContext[] = []; onLeave(() => { for (const a of acs) a.close().catch(() => { /* */ }); });
@@ -132,7 +133,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   function renderAmor() {
     const art = h("div", { class: "amor-text" });
     it.lines!.forEach((l, i) => { const p = h("p", { style: `animation-delay:${i * 1.2}s` }, l); art.append(p); });
-    sec.append(art, h("div", { class: "verdict" }, next("Ruszaj dalej", "#/mapa")));
+    sec.append(art, h("div", { class: "verdict" }, back(), next("Ruszaj dalej", "#/mapa")));
     finish(`${it.title}.`);
   }
 

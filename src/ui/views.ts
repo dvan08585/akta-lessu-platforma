@@ -25,6 +25,9 @@ export function pendant(heat: 0 | 1 | 2 | 3 | 4, label?: string, seed = 7): HTML
 /** Zwrot do biegłego według wybranej formy; bez wyboru: obie formy, jak w piśmie urzędowym. */
 export function addr(app: App, f: string, m: string, both = `${f}/${m}`): string { return app.state.address === "f" ? f : app.state.address === "m" ? m : both; }
 /** Znacznik rodzaju w treściach JSON: `{forma żeńska|forma męska}` → wybrana forma (bez wyboru: obie, jak w piśmie urzędowym). */
+export function fmtWhen(d: Date): string { return `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "long" })}, ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`; }
+/** Wiersz powrotu pod nawigacją: „← Mapa · Brama 4”. Pierwsze wyjście jest na górze, nie po przewinięciu całej sprawy. */
+export function crumb(label: string, to = "#/mapa", toLabel = "Mapa"): HTMLElement { return h("p", { class: "crumb" }, h("a", { href: to }, "← " + toLabel), label ? h("span", {}, " · " + label) : null); }
 export function addrText(app: App, t: string): string { return t.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, f, m) => addr(app, f, m)); }
 
 export function topbar(app: App, active: string): HTMLElement {
@@ -110,12 +113,13 @@ export function viewMap(app: App): HTMLElement {
     onCursor: (n) => { app.state.chapterCursor = n; save(app.state); },
   }));
   const list = h("div", { class: "gates-list" });
-  for (const g of app.map.gates) {
+  const rank = (st: string) => (st === "open" || st === "unstable" ? 0 : st === "solved" ? 1 : 2);
+  for (const g of [...app.map.gates].sort((a, b) => rank(app.gateStatus(a.n)) - rank(app.gateStatus(b.n)) || a.n - b.n)) {
     const st = app.gateStatus(g.n);
     const c = app.caseForGate(g.n);
     list.append(h("div", { class: "gate-row", "data-status": st, role: "button", tabindex: "0", onclick: () => go(`#/brama/${g.n}`), onkeydown: (e: Event) => { if ((e as KeyboardEvent).key === "Enter" || (e as KeyboardEvent).key === " ") { e.preventDefault(); go(`#/brama/${g.n}`); } } },
       h("span", { class: "n" }, String(g.n)),
-      h("span", { class: "t" }, g.name, h("small", {}, `żywioł: ${g.element}${c && c.title.toLowerCase() !== g.element ? " · " + c.title : ""}`)),
+      h("span", { class: "t" }, g.name, h("small", {}, `${g.element}${c && c.title.toLowerCase() !== g.element ? " · " + c.title : ""}`)),
       h("span", { class: "s" }, st === "locked" && c ? lockedWhy(app, c) : st === "solved" && app.awaitingGesture(g.n) ? "czeka na gest" : statusLabel(st) + (app.state.metSilent && app.isSilentFor(g.n) && st !== "locked" ? " · milczy" : ""))));
   }
   sec.append(app.state.sawFooter ? h("h3", {}, "Rejestr statusów — ", h("a", { href: import.meta.env.BASE_URL + "fundacja/", style: "color:var(--blood)" }, "Fundacja Sandomierska Memoria")) : h("h3", {}, "Rejestr statusów"), list);
@@ -160,7 +164,7 @@ function lockedWhy(app: App, c: CaseData): string {
   const need = c.requires.solvedCases ?? 0;
   if (app.passed() < need) return `po ${need} ${plural(need, "bramie", "bramach", "bramach")}`;
   const rel = c.requires.release ? releaseDate(app.cfg, c.requires.release) : null;
-  if (rel && rel.getTime() > Date.now()) return `od ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "short" })} lub kod`;
+  if (rel && rel.getTime() > Date.now()) return `od ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "long" })}`;
   return "kod z książki";
 }
 
@@ -170,6 +174,7 @@ export function viewGate(app: App, n: number): HTMLElement {
   if (!g) { sec.append(h("p", {}, "Nie ma takiej bramy.")); return sec; }
   const c = app.caseForGate(n);
   const st = app.gateStatus(n);
+  sec.append(crumb(`Brama ${n}`));
   const head = () => h("p", { class: "kicker" }, `Brama ${n} · ${g.name} · żywioł: ${g.element}`);
   const silentHere = !!c && app.isSilentFor(n);
   if (!c) {
@@ -535,7 +540,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
         const art = h("article", { class: "doc hand", style: "display:none" }, h("h4", {}, r.title), h("div", { class: "src" }, r.note));
         for (const p of r.paragraphs) art.append(h("p", {}, addrText(app, p)));
         const open = h("a", { href: "#", class: "reward-link", onclick: (e: Event) => { e.preventDefault(); art.style.display = ""; open.remove(); } }, r.title);
-        tail.append(h("p", { class: "muted" }, "Nagroda: ", open), art);
+        tail.append(h("p", { class: "muted" }, "Nagroda · ", open), art);
       }
     }
     if (gestureDoneNow) {
@@ -562,7 +567,7 @@ export function viewNotebook(app: App): HTMLElement {
   sec.append(h("p", { class: "muted" }, `Przebyte bramy: ${app.passed()}/7${app.state.unstableGates.length ? ` · niestabilne: ${app.state.unstableGates.join(", ")}` : ""}`));
   if (!app.state.notebook.length) sec.append(h("p", { class: "faint" }, "Pusty. Geolożka szukała nazwy."));
   for (const e of [...app.state.notebook].reverse()) {
-    sec.append(h("div", { class: "entry" }, h("div", { class: "meta" }, `${new Date(e.at).toLocaleString("pl-PL")} · ${e.meta}`), h("div", {}, e.text)));
+    sec.append(h("div", { class: "entry" }, h("div", { class: "meta" }, `${fmtWhen(new Date(e.at))} · ${e.meta}`), h("div", {}, e.text)));
   }
   const code = exportCode(app.state);
   const pre = h("pre", { class: "mono", style: "white-space:pre-wrap;word-break:break-all;display:none" }, code);
@@ -672,26 +677,28 @@ export function viewBody(app: App): HTMLElement {
 export function viewInbox(app: App): HTMLElement {
   schedule(app.state, app.messages); save(app.state);
   const inbox = ensureInbox(app.state);
-  const sec = h("section", { class: "fade-in inbox" }, topbar(app, "#/wiadomosci"), h("h2", { class: "sr-only" }, "Listy"));
   const arrived = due(app.state, app.messages).reverse();
+  const fresh = new Set(arrived.filter((m) => !inbox.read.includes(m.id)).map((m) => m.id));
+  for (const m of arrived) if (!m.reply && fresh.has(m.id)) inbox.read.push(m.id); // list bez pytania jest przeczytany z chwilą otwarcia; nawigacja liczy po tym
+  const sec = h("section", { class: "fade-in inbox" }, topbar(app, "#/wiadomosci"), h("h2", { class: "sr-only" }, "Listy"));
   const waiting = pending(app.state, app.messages);
   if (!arrived.length && !waiting.length) sec.append(h("p", { class: "faint" }, "Nikt jeszcze nie napisał. Ludzie w Sandomierzu piszą po tym, co zrobisz, nie przed."));
   for (const m of arrived) {
-    const unread = !inbox.read.includes(m.id);
-    const card = h("article", { class: `doc letter-card ${unread ? "unread" : ""}` }, h("h4", {}, m.from), h("div", { class: "src" }, new Date(inbox.scheduled[m.id]).toLocaleString("pl-PL", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })), h("p", {}, addrText(app, m.text)));
+    const unread = fresh.has(m.id);
+    const card = h("article", { class: `doc letter-card ${unread ? "unread" : ""}` }, h("h4", {}, m.from), h("div", { class: "src" }, fmtWhen(new Date(inbox.scheduled[m.id]))), h("p", {}, addrText(app, m.text)));
     if (m.reply) {
       const chosen = inbox.replies[m.id];
       if (chosen !== undefined) card.append(h("p", { class: "reply" }, "Ty: ", m.reply[chosen]));
       else { const row = h("div", { class: "reply-row" }, h("p", { class: "lbl" }, "Odpisz jednym zdaniem")); m.reply.forEach((r, i) => row.append(h("button", { onclick: () => { inbox.replies[m.id] = i; inbox.read.push(m.id); app.addNote(`Odpowiedź do ${m.from}: ${r}`, "list"); sendEvent(app.cfg.backendUrl, app.state, { type: "reply", id: m.id, option: i }); save(app.state); go("#/wiadomosci"); } }, r))); card.append(row); }
     }
     sec.append(card);
-    if (unread && !m.reply) inbox.read.push(m.id);
   }
   if (waiting.length) {
     const soon = waiting.sort((a, b) => inbox.scheduled[a.id] - inbox.scheduled[b.id])[0];
     const ms = inbox.scheduled[soon.id] - Date.now();
-    const when = ms < 3600000 ? `za ${Math.max(1, Math.round(ms / 60000))} min` : `za ${Math.round(ms / 3600000)} h`;
-    sec.append(h("div", { class: "pending", role: "status" }, h("span", { class: "dots", "aria-hidden": "true" }, h("i"), h("i"), h("i")), h("span", {}, `${soon.from} pisze. List przyjdzie ${when}. Ludzie w tym mieście nie odpowiadają od razu.`)));
+    const hrs = Math.round(ms / 3600000); const mins = Math.max(1, Math.round(ms / 60000));
+    const when = ms < 3600000 ? `za ${mins} ${plural(mins, "minutę", "minuty", "minut")}` : `za ${hrs} ${plural(hrs, "godzinę", "godziny", "godzin")}`;
+    sec.append(h("div", { class: "pending", role: "status" }, h("span", {}, `List od: ${soon.from}. Przyjdzie ${when}. Ludzie w tym mieście nie odpowiadają od razu.`)));
   }
   save(app.state);
   return sec;
@@ -752,7 +759,7 @@ export function viewOnboarding(app: App): HTMLElement {
 
 /** Ustawienia: światło, forma, narzędzia poza grą, początek od nowa. Osobno od Akt, bo Akta to klucze, a to jest obsługa. */
 export function viewSettings(app: App): HTMLElement {
-  const sec = h("section", { class: "fade-in" }, topbar(app, "#/akta"), h("p", { class: "kicker" }, "Akta"), h("h2", {}, "Ustawienia"));
+  const sec = h("section", { class: "fade-in" }, topbar(app, "#/akta"), crumb("Ustawienia", "#/akta", "Akta"), h("h2", {}, "Ustawienia"));
   const setTheme = (t: "sun" | "light" | "dark") => { app.state.theme = t; save(app.state); go("#/akta"); };
   const cur = app.state.theme ?? "sun";
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Światło"), h("p", { class: "muted" }, "Za słońcem: ciemno od zachodu do wschodu nad Sandomierzem, jasno w dzień."),
@@ -766,6 +773,6 @@ export function viewSettings(app: App): HTMLElement {
     h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Siedmiobok na końcu rozdziału pod kamerą: nad stroną unosi się przekrój z tą jedną bramą. Bez aplikacji."),
       h("div", { class: "verdict choice" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "ar/?b=" + __BUILD__ }, "Kamera"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "ar/druk.html", target: "_blank" }, "Znaczniki do druku"))),
     h("p", { class: "faint" }, h("a", { href: "#/o-ciele" }, "Co robi z tobą ta gra: oddech, nucenie, dudnienie, bezruch, źródła.")));
-  sec.append(h("p", { style: "margin-top:2rem" }, h("button", { class: "ghost", onclick: () => { if (confirm("Wyczyścić cały postęp na tym urządzeniu?")) { reset(); location.reload(); } } }, "Zacznij od nowa")));
+  sec.append(h("div", { class: "danger-zone" }, h("button", { class: "ghost danger", onclick: () => { if (confirm("Wyczyścić cały postęp na tym urządzeniu? Tego nie da się cofnąć.")) { reset(); location.reload(); } } }, "Zacznij od nowa"), h("p", { class: "faint" }, "Usuwa cały postęp z tego urządzenia. Zostaje tylko to, co zapiszesz wcześniej jako kod wznowienia w zeszycie.")));
   return sec;
 }

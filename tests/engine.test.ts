@@ -66,7 +66,7 @@ describe("stan: kod wznowienia i seria", () => {
     expect(back.interludesDone).toEqual(["ogien"]); expect(back.placeVisits).toEqual(["katedra"]); expect(back.onboarded).toBe(true);
     expect(back.inbox!.scheduled["w-wanda-1"]).toBe(1800000000000); expect(back.inbox!.replies["w-wanda-1"]).toBe(2);
     expect(back.notebook[0].text).toBe("Brama 4: rozpoznana."); expect(back.notebook[0].meta).toBe("sprawa");
-    expect(importCode(code.slice(0, -1) + "0")).toBeNull(); // literówka w sumie kontrolnej
+    expect(importCode(code.slice(0, -1) + (code.endsWith("0") ? "1" : "0"))).toBeNull(); // literówka w sumie kontrolnej
   });
   it("seria rośnie dzień po dniu i wybacza jedną przerwę w tygodniu", () => {
     const s = emptyState();

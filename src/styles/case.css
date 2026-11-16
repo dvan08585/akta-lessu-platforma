@@ -9,7 +9,7 @@
 .doc.chronicle p:first-of-type::first-letter { font-size: 3.75em; line-height: 0.7; float: left; padding: 0.05em 0.12em 0 0; margin-bottom: -0.12em; color: #5a4a32; font-weight: 500; }
 .doc .redact { background: #1e1a14; color: #1e1a14; }
 .doc-nav { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
-.doc-nav button { padding: 0.35rem 0.7rem; min-height: 36px; font-size: 0.82rem; }
+.doc-nav button { padding: 0.35rem 0.7rem; min-height: 44px; font-size: 0.82rem; }
 .doc-nav button[aria-current="true"] { border-color: var(--sand); color: var(--sand); }
 
 .grid { display: grid; gap: 1rem; margin: 0 0 1.5rem; }
