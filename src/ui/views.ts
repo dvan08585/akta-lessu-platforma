@@ -71,12 +71,14 @@ export function viewIntro(app: App): HTMLElement {
 export function viewMap(app: App): HTMLElement {
   const sec = h("section", { class: "fade-in" }, topbar(app, "#/mapa"));
   sec.append(h("h2", { class: "sr-only" }, "Mapa"));
-  const wisla = h("p", { class: "faint wisla" }, "Wisła: …");
-  fetchWisla().then((w) => { const mean = monthlyMean(); const diff = w.cm - mean; wisla.textContent = `Wisła, wodowskaz Sandomierz: ${w.cm} cm${w.live ? "" : " (średnia miesięczna, API nie odpowiada)"}. ${diff < -40 ? "Nisko. Krypty zalewa przy niskiej wodzie." : diff > 40 ? "Wysoko. Nikt nie patrzy, co jest niżej." : "Jak zwykle o tej porze."}` + (isSnowSeason() ? " Śnieg na lessie." : ""); });
-  const legend = h("p", { class: "faint" }, app.silent.length ? `Zachód po lewej, Wisła na dole. Twoja zawieszka milczy na wzgórzach ${app.silent.join(" i ")}: tam potrzebny jest cudzy odczyt.` : "Zachód po lewej, Wisła na dole.");
-  sec.append(legend, wisla);
+  // Nad mapą: rząd odczytów z ikonami (Wisła, pogoda) i jedno zdanie o milczących wzgórzach. Kierunki mówi sama mapa etykietami na krawędziach.
+  const item = (type: string, text: string, title = "") => h("span", { class: "dl live", title }, icon(type), text);
+  const wisla = h("div", { class: "dateline reads", role: "group", "aria-label": "Sandomierz teraz" });
+  fetchWisla().then((w) => { const mean = monthlyMean(); const diff = w.cm - mean; wisla.append(item("river", `Wisła ${w.cm} cm${w.live ? "" : " (średnia)"}`, diff < -40 ? "Nisko. Krypty zalewa przy niskiej wodzie." : diff > 60 ? "Wysoko." : "Stan zwykły.")); if (diff < -40) wisla.append(h("span", { class: "dl note" }, "nisko: krypty zalewa przy niskiej wodzie")); });
+  const legend = app.silent.length ? h("p", { class: "silent-note" }, `Zawieszka milczy na wzgórzach ${app.silent.join(" i ")}. Tam potrzebny jest cudzy odczyt.`) : null;
+  sec.append(wisla); if (legend) sec.append(legend);
   if (isSnowSeason()) sec.classList.add("snow");
-  fetchPogoda().then((w) => { if (!w) return; const line = h("p", { class: "faint pogoda" }, `Sandomierz teraz: ${w.tempC.toFixed(0)}°C${w.snowing ? ". Pada śnieg. Na Pimpo Limpo są sanki." : "."}`); wisla.after(line); if (w.snowing) sec.classList.add("sanki"); });
+  fetchPogoda().then((w) => { if (!w) return; wisla.append(item("temp", `${w.tempC.toFixed(0)}°C${w.snowing ? ", śnieg" : ""}`)); if (w.snowing) { wisla.append(h("span", { class: "dl note" }, "na Pimpo Limpo są sanki")); sec.classList.add("sanki"); } });
   // Rejestr na żywo (dzień premiery): najpierw backend, potem plik public/live/rejestr.json jako zapas
   const showLive = (j: { active?: boolean; header?: string; lines?: string[]; updatedAt?: string } | null) => {
     if (!j || !j.active || !j.lines) return false;

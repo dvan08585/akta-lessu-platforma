@@ -210,3 +210,7 @@ button.slot.locked { border-color: transparent; background: transparent; color: 
 .beyond summary .s { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sand); }
 .case-head .el-icon { flex: none; color: var(--ink-faint); margin-top: 0.3rem; }
 .case-head .el-icon svg { width: 56px; height: 56px; display: block; }
+/* Nad mapą: odczyty jak w datowniku; notka o milczących wzgórzach w piasku, z lewą kreską. */
+.dateline.reads { margin: 0 0 0.8rem; }
+.dateline .dl.note { color: var(--ink-faint); font-style: italic; letter-spacing: 0; text-transform: none; }
+.silent-note { margin: 0 0 1.2rem; padding: 0.5rem 0.8rem; border-left: 2px solid var(--sand); color: var(--ink-dim); font-size: 0.95rem; }
