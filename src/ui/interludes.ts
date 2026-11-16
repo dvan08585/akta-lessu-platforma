@@ -163,7 +163,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
           } else {
             tr.n += 1;
             if (tr.n >= 3) { tr.until = Date.now() + LOCK_H * 3600000; save(app.state); renderLocked(); }
-            else { save(app.state); toast(it.wrong!); renderPick(); }
+            else { save(app.state); renderPick(); qs.prepend(h("p", { class: "talk-wrong" }, it.wrong!)); }
           }
         } }, `Odpowiedź ${i + 1}`));
       });

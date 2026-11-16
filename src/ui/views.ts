@@ -22,6 +22,9 @@ export function pendant(heat: 0 | 1 | 2 | 3 | 4, label?: string, seed = 7): HTML
   return h("span", { class: "pendant", "data-heat": String(heat), "aria-live": "polite" }, flint(44, seed), h("span", { class: "pstate" }, (label ?? `zawieszka: ${heatLabel[heat]}`).replace(/^zawieszka:\s*/, "")));
 }
 
+/** Zwrot do biegłego według wybranej formy; bez wyboru: obie formy, jak w piśmie urzędowym. */
+export function addr(app: App, f: string, m: string, both = `${f}/${m}`): string { return app.state.address === "f" ? f : app.state.address === "m" ? m : both; }
+
 export function topbar(app: App, active: string): HTMLElement {
   const nav = h("nav");
   const unread = unreadCount(app.state, app.messages);
@@ -50,10 +53,10 @@ export function viewIntro(app: App): HTMLElement {
   const letter = h("article", { class: "doc mono letter" },
     h("h4", {}, "Komenda Powiatowa Policji w Sandomierzu"),
     h("div", { class: "src" }, "Zlecenie nr 7/G. Do rąk własnych. Biegły z zakresu geologii, Kraków."),
-    h("p", {}, "Szanowna Pani, Szanowny Panie,"),
+    h("p", {}, addr(app, "Szanowna Pani,", "Szanowny Panie,", "Szanowna Pani, Szanowny Panie,")),
     h("p", {}, "w związku z postępowaniem w sprawie śmierci prof. W. oraz częściowego zawalenia korytarza pod Wzgórzem Miejskim zwracam się o ocenę stabilności podziemi pod siedmioma wzgórzami miasta. Dotychczasowy biegły wyłączył się ze sprawy z powodu konfliktu interesów."),
     h("p", {}, "Materiały źródłowe (odpisy kronik, protokoły, inwentarze, pomiary) będą przekazywane partiami, w kopertach, za pośrednictwem miejskiego programu edukacyjnego, który dysponuje archiwum. Proszę o wnioski w formie ustrukturyzowanej, wzgórze po wzgórzu."),
-    h("p", {}, "Nikt w mieście nie ma Pani/Pana kwalifikacji."),
+    h("p", {}, `Nikt w mieście nie ma ${addr(app, "Pani", "Pana")} kwalifikacji.`),
     h("p", {}, "kom. Zieliński"),
     h("div", { class: "footer" }, "Przekazano przez: Program edukacyjny „Sandomierz Pod Spodem”. Partner: Fundacja Sandomierska Memoria."));
   return h("section", { class: "intro fade-in" },
@@ -136,7 +139,7 @@ export function viewMap(app: App): HTMLElement {
     if (amor.length) row(nextAmor.id, "amor", "Amor", `${amor.length} ${plural(amor.length, "spotkanie", "spotkania", "spotkań")} · pies`, amorDone ? `${amorDone}/${amor.length}` : "", amorDone === amor.length);
     for (const i of apo.filter((i) => i.type !== "amor")) { const done = app.state.interludesDone.includes(i.id); row(i.id, i.type, i.title, i.type === "compass" ? "na miejscu, w Sandomierzu" : i.type === "spectro" ? "patrz, nie słuchaj" : i.type === "mirror" ? "lustro" : "słuchawki", done ? "przebyte" : "", done); }
     const fresh = apo.filter((i) => !app.state.interludesDone.includes(i.id)).length;
-    const det = h("details", { class: "interludes-group beyond" }, h("summary", {}, h("h3", {}, "Poza aktami"), h("span", { class: "s" }, fresh ? `${fresh} ${plural(fresh, "nowa", "nowe", "nowych")}` : "")), h("p", { class: "muted" }, "Pies, kompas, nagranie, kartka w odbiciu, ton w słuchawkach. Nie są dowodami. Są Sandomierzem."), il);
+    const det = h("details", { class: "interludes-group beyond" }, h("summary", {}, h("h3", {}, "Poza aktami"), h("span", { class: "s" }, fresh ? `${fresh} ${plural(fresh, "nowa", "nowe", "nowych")}` : "")), il);
     if (fresh) det.setAttribute("open", "");
     sec.append(det);
   }
@@ -604,6 +607,8 @@ export function viewAkta(app: App): HTMLElement {
     toast(msg); input.value = ""; go(c && !app.isSilentFor(c.gate) && app.passed() >= (c.requires.solvedCases ?? 0) ? `#/brama/${c.gate}` : "#/mapa");
   });
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") btn.click(); });
+  sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Forma"), h("p", { class: "muted" }, "Jak gra ma się do Ciebie zwracać. Nic poza tym nie zapisujemy."),
+    h("div", { class: "verdict" }, h("button", { class: app.state.address === "f" ? "primary" : "", onclick: () => { app.state.address = "f"; save(app.state); go("#/akta"); } }, "Szanowna Pani"), h("button", { class: app.state.address === "m" ? "primary" : "", onclick: () => { app.state.address = "m"; save(app.state); go("#/akta"); } }, "Szanowny Panie"))));
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz pierwszy: kod z książki"), h("p", { class: "muted" }, "Każdy rozdział kończy się siedmiobokiem i jednym słowem. Wpisz je tutaj."), h("div", { class: "row" }, input, btn)));
 
   // Klucz 2: czas. Jeden kalendarz: sprawy jako odcinki. Rozdziały otwierają się kodem albo razem ze sprawą.
@@ -679,7 +684,8 @@ export function viewInbox(app: App): HTMLElement {
   if (!arrived.length && !waiting.length) sec.append(h("p", { class: "faint" }, "Nikt jeszcze nie napisał. Ludzie w Sandomierzu piszą po tym, co zrobisz, nie przed."));
   for (const m of arrived) {
     const unread = !inbox.read.includes(m.id);
-    const card = h("article", { class: `doc letter-card ${unread ? "unread" : ""}` }, h("h4", {}, m.from), h("div", { class: "src" }, new Date(inbox.scheduled[m.id]).toLocaleString("pl-PL", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })), h("p", {}, m.text));
+    const addrText = (t: string) => t.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, f, mm) => addr(app, f, mm));
+    const card = h("article", { class: `doc letter-card ${unread ? "unread" : ""}` }, h("h4", {}, m.from), h("div", { class: "src" }, new Date(inbox.scheduled[m.id]).toLocaleString("pl-PL", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })), h("p", {}, addrText(m.text)));
     if (m.reply) {
       const chosen = inbox.replies[m.id];
       if (chosen !== undefined) card.append(h("p", { class: "reply" }, "Ty: ", m.reply[chosen]));
@@ -736,7 +742,11 @@ export function viewOnboarding(app: App): HTMLElement {
           setTimeout(() => { document.body.append(glow); }, 2200);
           setTimeout(() => { stage.replaceChildren(); glow.classList.add("out"); }, 3700);
           setTimeout(() => { glow.remove(); stage.append(line("Komisarz Zieliński potrzebuje biegłego z zakresu geologii. Nikt w mieście nie ma twoich kwalifikacji.")); }, 4700);
-          setTimeout(() => { stage.append(h("button", { class: "primary big fade-in", onclick: () => finishOnboarding() }, "Przyjmij zlecenie")); }, 5700);
+          setTimeout(() => {
+            // Forma zwracania się: jedyne, o co gra pyta. Bez imienia, bez danych. Komenda pisze „Szanowna Pani, Szanowny Panie" i musi wiedzieć, jak dalej.
+            const pick = (a: "f" | "m") => { app.state.address = a; finishOnboarding(); };
+            stage.append(cue("Zlecenie jest zaadresowane do biegłej albo biegłego. Jak mamy pisać?"), h("div", { class: "verdict fade-in" }, h("button", { class: "primary big", onclick: () => pick("f") }, "Szanowna Pani"), h("button", { class: "primary big", onclick: () => pick("m") }, "Szanowny Panie")));
+          }, 5700);
         }
       }, 100);
     });

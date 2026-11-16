@@ -218,3 +218,4 @@ button.slot.locked { border-color: transparent; background: transparent; color: 
 .callout .ico { flex: none; color: var(--sand); margin-top: 0.1rem; }
 .callout .ico svg { width: 22px; height: 22px; }
 .callout p { margin: 0; }
+.talk-wrong { margin: 0 0 0.9rem; padding: 0.6rem 0.9rem; border-left: 2px solid var(--ink-faint); color: var(--ink-dim); font-style: italic; }

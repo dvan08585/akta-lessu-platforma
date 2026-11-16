@@ -78,6 +78,8 @@ export interface SaveState {
   sawFooter: boolean;
   /** Gracz wszedł już do bramy na milczącym wzgórzu i zobaczył, że zawieszka tam nie reaguje. Od tej chwili mapa i Akta mogą o tym mówić. */
   metSilent?: boolean;
+  /** Forma, w jakiej gra zwraca się do biegłego: "f" (Pani) albo "m" (Pan). Brak = jeszcze nie wybrano, formy neutralne. */
+  address?: "f" | "m";
   /** Odczyty cudzych zawieszek: wzgórze -> token dawcy. Otwierają wzgórza, na których własna zawieszka milczy. */
   readings: Record<string, string>;
   /** Czy gracz zostawił siódmą pozycję pustą (finał). */
