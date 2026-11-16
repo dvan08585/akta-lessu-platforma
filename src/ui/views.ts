@@ -25,8 +25,10 @@ export function pendant(heat: 0 | 1 | 2 | 3 | 4, label?: string, seed = 7): HTML
 export function topbar(app: App, active: string): HTMLElement {
   const nav = h("nav");
   const unread = unreadCount(app.state, app.messages);
-  for (const [hash, name] of [["#/mapa", "Mapa"], ["#/wiadomosci", unread ? `Listy (${unread})` : "Listy"], ["#/zeszyt", "Zeszyt"], ["#/akta", "Akta"]]) {
-    nav.append(h("button", { class: (active === hash ? "" : "ghost") + (hash === "#/wiadomosci" && unread ? " badge" : ""), onclick: () => go(hash), "aria-current": active === hash ? "page" : "false" }, name));
+  // Ikona z podpisem pod spodem; nieprzeczytane jako plakietka przy ikonie, nigdy w tekście.
+  for (const [hash, name, ic] of [["#/mapa", "Mapa", "nav-mapa"], ["#/wiadomosci", "Listy", "nav-listy"], ["#/zeszyt", "Zeszyt", "nav-zeszyt"], ["#/akta", "Akta", "nav-akta"]]) {
+    const badge = hash === "#/wiadomosci" && unread ? h("span", { class: "nbadge", "aria-label": `${unread} nieprzeczytane` }, String(unread)) : null;
+    nav.append(h("button", { class: "tab" + (active === hash ? " on" : ""), onclick: () => go(hash), "aria-current": active === hash ? "page" : "false" }, h("span", { class: "ico" }, icon(ic), badge), h("span", { class: "lbl" }, name)));
   }
   return h("header", { class: "topbar" }, h("a", { class: "skip-link", href: "#tresc" }, "Do treści"), h("a", { class: "brand", href: "#/" }, app.cfg.title), nav);
 }

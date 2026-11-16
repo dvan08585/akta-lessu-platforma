@@ -45,8 +45,15 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
   padding: 0.9rem 0; border-bottom: 1px solid var(--line); margin-bottom: 1.5rem;
 }
 .topbar .brand { letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.8rem; color: var(--ink-dim); text-decoration: none; }
-.topbar nav { display: flex; gap: 0.5rem; }
-.topbar nav button { padding: 0.4rem 0.7rem; min-height: 44px; font-size: 0.85rem; }
+.topbar nav { display: flex; gap: 0.15rem; }
+.topbar nav button.tab { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; padding: 0.35rem 0.55rem; min-width: 52px; min-height: 48px; border-color: transparent; background: transparent; color: var(--ink-faint); border-radius: var(--radius); }
+.topbar nav button.tab .ico { position: relative; display: block; width: 22px; height: 22px; }
+.topbar nav button.tab .ico svg { width: 22px; height: 22px; }
+.topbar nav button.tab .lbl { font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.topbar nav button.tab.on { color: var(--ink); }
+.topbar nav button.tab.on .lbl { color: var(--sand); }
+.topbar nav button.tab:hover { border-color: transparent; color: var(--ink); }
+.nbadge { position: absolute; top: -6px; right: -9px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--sand); color: #1e1a14; font-size: 0.62rem; line-height: 16px; text-align: center; letter-spacing: 0; font-family: var(--font-serif); }
 
 .intro { min-height: 80dvh; display: flex; flex-direction: column; justify-content: center; gap: 1.5rem; }
 .intro .quote { font-size: 1.25rem; line-height: 1.5; max-width: 34rem; }
