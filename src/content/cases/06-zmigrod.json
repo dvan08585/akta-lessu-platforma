@@ -4,7 +4,7 @@
   "gate": 1,
   "title": "Nie tędy",
   "subtitle": "Żmigród · żywioł: ziemia · zamurowany korytarz",
-  "epigraph": "Zawieszka na tym wzgórzu milczy. To nie znaczy, że nic tu nie ma.",
+  "epigraph": "Wizyta 3, przy murze, dłoń na wysuniętej cegle: nic.",
   "type": "decision",
   "requires": {
     "solvedCases": 5,

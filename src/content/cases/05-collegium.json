@@ -4,7 +4,7 @@
   "gate": 6,
   "title": "Fałszywa strona",
   "subtitle": "Collegium · żywioł: ciemność · pięć stron z notatnika profesora",
-  "epigraph": "Mniej wiesz, więcej rozumiesz. Jedna z tych stron kłamie. Dopóki jej nie odrzucisz, nic się nie zgadza.",
+  "epigraph": "Wymyśliłem, żeby móc o tym pisać bez pisania.",
   "requires": {
     "solvedCases": 4,
     "chapter": 17,

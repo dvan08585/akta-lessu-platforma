@@ -24,6 +24,8 @@ export function pendant(heat: 0 | 1 | 2 | 3 | 4, label?: string, seed = 7): HTML
 
 /** Zwrot do biegłego według wybranej formy; bez wyboru: obie formy, jak w piśmie urzędowym. */
 export function addr(app: App, f: string, m: string, both = `${f}/${m}`): string { return app.state.address === "f" ? f : app.state.address === "m" ? m : both; }
+/** Znacznik rodzaju w treściach JSON: `{forma żeńska|forma męska}` → wybrana forma (bez wyboru: obie, jak w piśmie urzędowym). */
+export function addrText(app: App, t: string): string { return t.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, f, m) => addr(app, f, m)); }
 
 export function topbar(app: App, active: string): HTMLElement {
   const nav = h("nav");
@@ -54,9 +56,10 @@ export function viewIntro(app: App): HTMLElement {
     h("h4", {}, "Komenda Powiatowa Policji w Sandomierzu"),
     h("div", { class: "src" }, "Zlecenie nr 7/G. Do rąk własnych. Biegły z zakresu geologii, Kraków."),
     h("p", {}, addr(app, "Szanowna Pani,", "Szanowny Panie,", "Szanowna Pani, Szanowny Panie,")),
-    h("p", {}, "w związku z postępowaniem w sprawie śmierci prof. W. oraz częściowego zawalenia korytarza pod Wzgórzem Miejskim zwracam się o ocenę stabilności podziemi pod siedmioma wzgórzami miasta. Dotychczasowy biegły wyłączył się ze sprawy z powodu konfliktu interesów."),
+    h("p", {}, "w związku z postępowaniem w sprawie śmierci prof. W. oraz częściowego zawalenia korytarza pod Wzgórzem Miejskim zwracam się z prośbą o sporządzenie opinii o stabilności podziemi pod siedmioma wzgórzami miasta. Dotychczasowy biegły został wyłączony ze sprawy z powodu konfliktu interesów."),
     h("p", {}, "Materiały źródłowe (odpisy kronik, protokoły, inwentarze, pomiary) będą przekazywane partiami, w kopertach, za pośrednictwem miejskiego programu edukacyjnego, który dysponuje archiwum. Proszę o wnioski w formie ustrukturyzowanej, wzgórze po wzgórzu."),
     h("p", {}, `Nikt w mieście nie ma ${addr(app, "Pani", "Pana")} kwalifikacji.`),
+    h("p", {}, "Z poważaniem,"),
     h("p", {}, "kom. Zieliński"),
     h("div", { class: "footer" }, "Przekazano przez: Program edukacyjny „Sandomierz Pod Spodem”. Partner: Fundacja Sandomierska Memoria."));
   return h("section", { class: "intro fade-in" },
@@ -213,7 +216,7 @@ export function dailyBox(app: App): HTMLElement {
   const m = pickDaily(app.mikro);
   const key = dayKey();
   const done = app.state.daily[key];
-  const doc = h("article", { class: "doc hand" }, h("h4", {}, m.title), h("p", {}, m.doc));
+  const doc = h("article", { class: "doc hand" }, h("h4", {}, m.title), h("p", {}, addrText(app, m.doc)));
   const box = h("div", { class: "gatebox daily" }, h("h3", {}, "Mikro-akta na dziś"), doc);
   if (done !== undefined) {
     doc.append(h("span", { class: `stamp ${done ? "" : "cold"}`, "aria-label": done ? "rozpoznane" : "nie dziś" }, done ? "Rozpoznane" : "Nie dziś"));
@@ -224,14 +227,14 @@ export function dailyBox(app: App): HTMLElement {
   const ask = h("button", { class: "ghost" }, "Ustal");
   ask.addEventListener("click", () => {
     const opts = h("div", { class: "opts", role: "radiogroup" });
-    m.options.forEach((o, i) => { const inp = h("input", { type: "radio", name: "daily", value: String(i) }); opts.append(h("label", {}, inp, o)); });
+    m.options.forEach((o, i) => { const inp = h("input", { type: "radio", name: "daily", value: String(i) }); opts.append(h("label", {}, inp, addrText(app, o))); });
     const btn = h("button", { class: "primary" }, "Sprawdź");
     btn.addEventListener("click", () => {
       const el = box.querySelector<HTMLInputElement>('input[name="daily"]:checked'); if (!el) { toast("Wybierz odpowiedź."); return; }
       const ok = Number(el.value) === m.answer; app.state.daily[key] = ok; save(app.state); track("daily", { ok: ok ? 1 : 0 });
       box.replaceWith(dailyBox(app)); toast(ok ? "Zawieszka ciepła." : "Zawieszka zimna. Jutro następne.");
     });
-    ask.replaceWith(h("div", { class: "q" }, h("div", { class: "qt" }, m.q), opts), btn);
+    ask.replaceWith(h("div", { class: "q" }, h("div", { class: "qt" }, addrText(app, m.q)), opts), btn);
   });
   box.append(ask);
   return box;
@@ -266,7 +269,7 @@ function docEl(app: App, d: Doc): HTMLElement {
     el.append(h("p", { class: "faint" }, "Berbeć zobaczył znak o świcie. W dzień nikt nie uwierzy."));
     return el;
   }
-  for (const p of d.paragraphs) el.append(h("p", {}, p));
+  for (const p of d.paragraphs) el.append(h("p", {}, addrText(app, p)));
   if (d.audio) {
     const audio = h("audio", { controls: true, preload: "none", src: import.meta.env.BASE_URL + d.audio }) as HTMLAudioElement;
     // Synestezja jako interfejs: ton, którego nie słychać, czuć w dłoni.
@@ -291,7 +294,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   const g = app.map.gates.find((x) => x.n === c.gate);
   const sub = c.subtitle.split(" · ").filter((part) => !(g && (part.includes(g.name.replace("Wzgórze ", "")) || part.startsWith("żywioł")))).join(" · ");
   sec.append(h("div", { class: "case-head" }, h("div", {}, h("p", { class: "kicker" }, `Brama ${c.gate} · ${g?.name ?? ""}`), h("h2", {}, c.title), h("p", { class: "muted" }, [g ? `żywioł: ${g.element}` : "", sub].filter(Boolean).join(" · "))), g ? h("span", { class: "el-icon", "aria-hidden": "true" }, elementIcon(g.element)) : null));
-  sec.append(h("p", { class: "faint epigraph" }, c.epigraph));
+  sec.append(h("p", { class: "faint epigraph" }, addrText(app, c.epigraph)));
 
   // Dokumenty: nawigacja zakładkami, jeden na ekran (telefon).
   const docs = visibleDocs(app, c);
@@ -420,7 +423,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
 
   function renderDecision() {
     const d = c.decision!;
-    const box = h("div", { class: "decision" }, h("p", { class: "quote" }, d.prompt),
+    const box = h("div", { class: "decision" }, h("p", { class: "quote" }, addrText(app, d.prompt)),
       h("p", { class: "faint" }, "To nie jest pytanie. To jest decyzja. Brama, którą otworzysz, zostaje w twojej karcie na zawsze, a droga do siódmej będzie wtedy dłuższa."));
     const open = h("button", {}, d.open);
     const leave = h("button", {}, d.leave);
@@ -442,7 +445,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   function renderBuried() {
     const d = c.decision!;
     const art = h("div", { class: "buried" });
-    for (const p of d.buried) art.append(h("p", {}, p));
+    for (const p of d.buried) art.append(h("p", {}, addrText(app, p)));
     const cover = h("div", { class: "less-cover" });
     const box = h("div", { class: "buried-wrap" }, art, cover);
     sec.append(h("h3", {}, "Status: niestabilna"), box, h("p", { class: "faint" }, "Ta brama zostanie w twojej karcie jako ▲. Na zawsze. Liczy się jako przebyta, ale droga do siódmej będzie dłuższa: tam zabraknie ci jednego oddechu i będziesz potrzebować dwóch osób."),
@@ -453,7 +456,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   function renderPair() {
     const p = c.pair!;
     const needTwo = app.state.unstableGates.length > 0;
-    const box = h("div", { class: "pair" }, h("p", { class: "quote" }, needTwo ? p.promptUnstable : p.prompt));
+    const box = h("div", { class: "pair" }, h("p", { class: "quote" }, addrText(app, needTwo ? p.promptUnstable : p.prompt)));
     const mine = h("span", { class: "mono" }, "…");
     halfKey(app.state.seed).then((k) => (mine.textContent = k));
     box.append(h("p", { class: "muted" }, "Twoja połowa klucza: ", mine, ". Jest też w twojej karcie udostępnienia."));
@@ -465,7 +468,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       if (parts.length < (needTwo ? 2 : 1)) { toast(needTwo ? "Otworzyłeś, czego nie trzeba było. Tym razem potrzebujesz dwóch oddechów." : "Wpisz połowę klucza z czyjejś karty."); return; }
       for (const v of parts) {
         if (!looksLikeHalfKey(v) || !(await verifyCheck(v))) { toast("To nie jest połowa klucza. Siedem znaków, z czyjejś karty, nie zmyślone."); return; }
-        if (v === own) { toast(p.refuse); return; }
+        if (v === own) { toast(addrText(app, p.refuse)); return; }
       }
       if (new Set(parts).size !== parts.length) { toast("Dwa razy ten sam oddech to jeden oddech."); return; }
       app.addNote(`Brama ${c.gate}: oddech we ${needTwo ? "troje" : "dwoje"}. Klucze: ${parts.join(", ")}.`, "para");
@@ -488,7 +491,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     for (const line of p.register.split("\n")) reg.append(h("p", {}, line));
     const yes = h("button", {}, p.yes);
     const no = h("button", { class: "primary" }, p.no);
-    const box = h("div", { class: "pair" }, reg, h("p", { class: "quote" }, p.registerQuestion), h("div", { class: "verdict" }, no, yes));
+    const box = h("div", { class: "pair" }, reg, h("p", { class: "quote" }, addrText(app, p.registerQuestion)), h("div", { class: "verdict" }, no, yes));
     yes.addEventListener("click", () => { toast(p.yesRefused); yes.classList.add("shake"); });
     no.addEventListener("click", () => {
       app.state.leftSeventhEmpty = true; sendEvent(app.cfg.backendUrl, app.state, { type: "seventh_empty" }); markSolved(); app.addNote("Siódma pozycja: pusta. Zostawiona.", "finał"); box.remove();
@@ -518,9 +521,9 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
 
     // 1. Rozwiązanie: proza.
     const sol = h("div", { class: "solution fade-in" });
-    if (c.solutionDoc) { const art = h("article", { class: `doc ${c.solutionDoc.style ?? "hand"}` }, h("h4", {}, c.solutionDoc.title), h("div", { class: "src" }, c.solutionDoc.source)); for (const p of c.solution) art.append(h("p", {}, p)); sol.append(art); }
-    else for (const p of c.solution) sol.append(h("p", {}, p));
-    if (c.pair) for (const p of c.pair.finale) sol.append(h("p", { class: "finale" }, p));
+    if (c.solutionDoc) { const art = h("article", { class: `doc ${c.solutionDoc.style ?? "hand"}` }, h("h4", {}, c.solutionDoc.title), h("div", { class: "src" }, c.solutionDoc.source)); for (const p of c.solution) art.append(h("p", {}, addrText(app, p))); sol.append(art); }
+    else for (const p of c.solution) sol.append(h("p", {}, addrText(app, p)));
+    if (c.pair) for (const p of c.pair.finale) sol.append(h("p", { class: "finale" }, addrText(app, p)));
 
     // 2. Jeden blok: stan bramy, nagroda jako link tekstowy, karta (tylko gdy prawdziwa), dwa przyciski.
     const tail = h("div", { class: "next-step" });
@@ -530,7 +533,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       const r = app.rewards[c.reward.file];
       if (r) {
         const art = h("article", { class: "doc hand", style: "display:none" }, h("h4", {}, r.title), h("div", { class: "src" }, r.note));
-        for (const p of r.paragraphs) art.append(h("p", {}, p));
+        for (const p of r.paragraphs) art.append(h("p", {}, addrText(app, p)));
         const open = h("a", { href: "#", class: "reward-link", onclick: (e: Event) => { e.preventDefault(); art.style.display = ""; open.remove(); } }, r.title);
         tail.append(h("p", { class: "muted" }, "Nagroda: ", open), art);
       }
@@ -675,8 +678,7 @@ export function viewInbox(app: App): HTMLElement {
   if (!arrived.length && !waiting.length) sec.append(h("p", { class: "faint" }, "Nikt jeszcze nie napisał. Ludzie w Sandomierzu piszą po tym, co zrobisz, nie przed."));
   for (const m of arrived) {
     const unread = !inbox.read.includes(m.id);
-    const addrText = (t: string) => t.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, f, mm) => addr(app, f, mm));
-    const card = h("article", { class: `doc letter-card ${unread ? "unread" : ""}` }, h("h4", {}, m.from), h("div", { class: "src" }, new Date(inbox.scheduled[m.id]).toLocaleString("pl-PL", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })), h("p", {}, addrText(m.text)));
+    const card = h("article", { class: `doc letter-card ${unread ? "unread" : ""}` }, h("h4", {}, m.from), h("div", { class: "src" }, new Date(inbox.scheduled[m.id]).toLocaleString("pl-PL", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })), h("p", {}, addrText(app, m.text)));
     if (m.reply) {
       const chosen = inbox.replies[m.id];
       if (chosen !== undefined) card.append(h("p", { class: "reply" }, "Ty: ", m.reply[chosen]));
@@ -719,7 +721,7 @@ export function viewOnboarding(app: App): HTMLElement {
     const txt = cue("Połóż palec na kamieniu i nie puszczaj.");
     const hold = h("div", { class: "holdzone fade-in" }, pend);
     let t0 = 0, iv: number | undefined, done = false;
-    const stop = () => { if (iv) clearInterval(iv); iv = undefined; if (!done) { pend.dataset.heat = "0"; txt.textContent = "Puściłeś. Jeszcze raz. Kamień grzeje się od dłoni, nie od pośpiechu."; } };
+    const stop = () => { if (iv) clearInterval(iv); iv = undefined; if (!done) { pend.dataset.heat = "0"; txt.textContent = "Puszczone. Jeszcze raz. Kamień grzeje się od dłoni, nie od pośpiechu."; } };
     hold.addEventListener("pointerdown", (e) => {
       e.preventDefault(); t0 = Date.now(); txt.textContent = "Trzymaj.";
       iv = window.setInterval(() => {

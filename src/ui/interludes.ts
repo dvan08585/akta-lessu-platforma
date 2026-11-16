@@ -1,5 +1,5 @@
 import { h, go, toast, back, next, onLeave, grabMedia, listen } from "./dom";
-import { topbar } from "./views";
+import { topbar, addrText } from "./views";
 import type { App } from "../app";
 import { save } from "../engine/state";
 import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
@@ -22,6 +22,19 @@ export interface Interlude {
   targetHz?: number; tolerance?: number;
 }
 
+/** Kopia przerywnika z podstawionym znacznikiem rodzaju `{f|m}` we wszystkich polach tekstowych czytanych przez gracza. */
+export function withAddress(app: App, i: Interlude): Interlude {
+  const t = (s: string | undefined) => (s === undefined ? s : addrText(app, s));
+  const arr = (a: string[] | undefined) => a?.map((s) => addrText(app, s));
+  return {
+    ...i,
+    intro: t(i.intro), cue: t(i.cue), reveal: t(i.reveal), wrong: t(i.wrong), q: t(i.q),
+    secret: arr(i.secret), lines: arr(i.lines), options: arr(i.options),
+    questions: i.questions?.map((qa) => ({ q: addrText(app, qa.q), a: addrText(app, qa.a) })),
+    rite: i.rite ? { ...i.rite, opening: addrText(app, i.rite.opening), rigid: addrText(app, i.rite.rigid), body: addrText(app, i.rite.body), closing: addrText(app, i.rite.closing) } : undefined,
+  };
+}
+
 export function interludeAvailable(app: App, i: Interlude): boolean {
   if (app.state.testMode) return true;
   if (i.place === "laboratorium") return false;
@@ -36,7 +49,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   const found = (app.interludes as Interlude[]).find((i) => i.id === id);
   const sec = h("section", { class: "fade-in interlude" }, topbar(app, "#/mapa"));
   if (!found) { sec.append(h("p", {}, "Nie ma takiego przerywnika.")); return sec; }
-  const it: Interlude = found;
+  const it: Interlude = withAddress(app, found);
   if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} ${plural(it.after ?? 0, "przebytej bramie", "przebytych bramach", "przebytych bramach")}.`), back("Mapa")); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   let alive = true; onLeave(() => { alive = false; });
@@ -590,7 +603,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const verdict = h("div");
     sec.append(h("div", { class: "verdict" }, btn), status, verdict);
     let t0 = 0, iv: number | undefined, finished = done;
-    const stop = () => { if (iv) clearInterval(iv); iv = undefined; if (!finished) { status.textContent = `0 / ${total} s. Puściłeś.`; btn.textContent = "Trzymaj"; } };
+    const stop = () => { if (iv) clearInterval(iv); iv = undefined; if (!finished) { status.textContent = `0 / ${total} s. Puszczone.`; btn.textContent = "Trzymaj"; } };
     btn.addEventListener("pointerdown", (e) => { e.preventDefault(); t0 = Date.now(); btn.textContent = "…"; iv = window.setInterval(() => { const sec_ = (Date.now() - t0) / 1000; status.textContent = `${sec_.toFixed(0)} / ${total} s`; if (sec_ >= total && !finished) { finished = true; clearInterval(iv); reveal(verdict, `${it.title}: ${total} sekund.`); } }, 250); });
     ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => btn.addEventListener(ev, stop));
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));

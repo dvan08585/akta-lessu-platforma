@@ -10,6 +10,6 @@
   { "id": "w-berbec-1", "after": "case:5", "delayMin": 90, "from": "Berbeć", "text": "Strona z datą czternastego. Dobrze, że pan ją odrzucił. Mój ojciec nie odrzuciłby. Prostowałby krawędź i czytał dalej. Jedno zdanie, bo więcej nie umiem: nie tędy." },
   { "id": "w-stanczyk-2", "after": "case:5", "delayMin": 600, "from": "S.", "text": "Collegium czeka." },
   { "id": "w-marek-1", "after": "case:6", "delayMin": 30, "from": "Marek Berbeć", "text": "Nie znamy się. Jestem synem. Ojciec powiedział, że pan zostawił mur. Chciałem tylko napisać, że to jest pierwszy raz od siedmiuset lat, kiedy ktoś spoza rodziny zostawił. Nie wiem, co to znaczy. Chyba dobrze." },
-  { "id": "w-wanda-3", "after": "start", "delayMin": 1440, "from": "Pani Wanda", "text": "Doba w Sandomierzu. Proszę pamiętać: pies pierwszy wie, kiedy nie schodzić. Ludzie dowiadują się później. Kompot w piwnicy, słoik z dziewięćdziesiątego ósmego, proszę nie otwierać przed grudniem." },
+  { "id": "w-wanda-3", "after": "start", "delayMin": 1440, "from": "Pani Wanda", "text": "Doba w Sandomierzu. Pies pierwszy wie, kiedy nie schodzić. Kompot w piwnicy, słoik z dziewięćdziesiątego ósmego, proszę nie otwierać przed grudniem." },
   { "id": "w-ziel-3", "after": "finale", "delayMin": 5, "from": "kom. Zieliński", "text": "Siódma pozycja. Wiem, że pan jej nie dostarczył. Nie pytam dlaczego. Zapraszam na kawę, czwartek, Ciżemka. Obracam filiżankę uchem w lewo, pozna mnie pan." }
 ]

@@ -15,8 +15,8 @@
   {
     "id": "m02",
     "title": "Karcer",
-    "doc": "Brama Opatowska, mury grube na trzy metry. W środku dawniej karcer. Więzień słyszał targ za ścianą: ceny jabłek, targowanie, kłótnię o wagę. Zapis z 1611: „więzień Jakub skarżył się nie na głód, a na to, że słyszy, czego nie widzi”.",
-    "q": "Co w tym zapisie powtarza się siedemset lat później?",
+    "doc": "Brama Opatowska, mury grube na trzy metry. W środku dawniej karcer. Więzień słyszał targ za ścianą: ceny jabłek, targowanie, kłótnię o wagę. Zapis z 1611: „więzień Jakub skarżył się nie na głód, lecz na to, że słyszy, czego nie widzi”.",
+    "q": "Co w tym zapisie powtarza się czterysta lat później?",
     "options": [
       "Ceny jabłek",
       "Słyszeć to, czego nie można zmierzyć",
@@ -66,14 +66,14 @@
   },
   {
     "id": "m06",
-    "title": "Pięć faz",
+    "title": "Trzy progi",
     "doc": "Z podręcznika medycyny ratunkowej: 36,6 → 35 lekkie drżenie. 33: silne drżenie, dezorientacja. 31: drżenie ustaje. To jest zły znak, nie dobry. Ciało przestaje walczyć o ciepło.",
-    "q": "Kiedy w hipotermii przestać się cieszyć, że ktoś przestał drżeć?",
+    "q": "Co znaczy, że drżenie ustało?",
     "options": [
-      "Zawsze, drżenie jest dobre",
-      "Przy 31 stopniach: ustanie drżenia znaczy, że ciało się poddaje",
-      "Przy 35 stopniach",
-      "Nigdy, drżenie jest złe"
+      "Że jest lepiej",
+      "Że ciało przestało walczyć o ciepło",
+      "Że jest 35 stopni",
+      "Nic"
     ],
     "answer": 1
   },
@@ -84,7 +84,7 @@
     "q": "Skoro srebro nie poprawia głosu, po co je wrzucano?",
     "options": [
       "Z próżności",
-      "Bo ktoś kiedyś wiedział, że chodzi nie o głos, a o rezonans, i zwyczaj przeżył wiedzę",
+      "Bo zwyczaj przeżył wiedzę, z której wyrósł",
       "Żeby dzwon był cięższy",
       "Nie wiadomo"
     ],
@@ -93,7 +93,7 @@
   {
     "id": "m08",
     "title": "Keylogger",
-    "doc": "Laptop geologa, zamknięty od tygodnia. Ktoś zainstalował program, który czyta każdy klawisz. Raport o korytarzach jest na tym dysku. Geolog pisze teraz w zeszycie, ołówkiem, pismem pochyłym.",
+    "doc": "Laptop geolożki, zamknięty od tygodnia. Ktoś zainstalował program, który czyta każdy klawisz. Raport o korytarzach jest na tym dysku. Geolożka pisze teraz w zeszycie, ołówkiem, pismem pochyłym.",
     "q": "Co jest bezpieczniejsze od szyfrowania?",
     "options": [
       "Hasło",
@@ -149,7 +149,7 @@
     "q": "Co się dzieje, gdy tysiące stóp przez wieki naciska na krzemień?",
     "options": [
       "Kruszy się",
-      "Ściera się do połysku i każdy krok jest małym naciskiem na kamień, który odpowiada",
+      "Ściera się do połysku",
       "Nic",
       "Zmienia kolor"
     ],
@@ -158,7 +158,7 @@
   {
     "id": "m13",
     "title": "Jedenaście osób",
-    "doc": "Pogrzeb profesora. Czwartek. Jedenaście osób. Ktoś stał z boku, między matczynym grodem a obcą ziemią, i nie płakał. Śledztwo wstrzymywało wydanie ciała przez tygodnie, bo toksykologia rtęciowa trwa.",
+    "doc": "Pogrzeb profesora. Czwartek. Jedenaście osób. Ktoś stał z boku, przy murze, i nie płakał. Śledztwo wstrzymywało wydanie ciała przez tygodnie, bo toksykologia rtęciowa trwa.",
     "q": "Dlaczego pogrzeb był tak późno?",
     "options": [
       "Bo nikt nie chciał przyjść",
@@ -176,7 +176,7 @@
     "options": [
       "Kolor",
       "Wartość",
-      "To, co w nim jest: nikt w rodzinie nie powiedział, co",
+      "To, co w nim jest",
       "Nic, to zabobon"
     ],
     "answer": 2
@@ -211,14 +211,14 @@
     "id": "m17",
     "title": "Kaufland, Biedronka, apteka",
     "doc": "Obwodnica Sandomierza wygląda jak każda obwodnica w Polsce. Między hurtowniami domy ludzi, którzy mieszkali tu, zanim ulica stała się obwodnicą. Nic z tego nie przypomina miasta na wzgórzach.",
-    "q": "Gdzie zaczyna się Sandomierz?",
+    "q": "Kto mieszka między hurtowniami?",
     "options": [
-      "Na obwodnicy",
-      "Tam, gdzie kończą się sady, a zaczynają jabłonie przy drodze",
-      "Przy Bramie Opatowskiej",
-      "Na Rynku"
+      "Nikt",
+      "Ludzie, którzy byli tu przed obwodnicą",
+      "Kierowcy",
+      "Właściciele hurtowni"
     ],
-    "answer": 2
+    "answer": 1
   },
   {
     "id": "m18",
@@ -279,7 +279,7 @@
     "q": "Co w tym nie gra?",
     "options": [
       "Nic",
-      "Helena nie żyje od dwudziestu lat, a kompot stoi w jej piwnicy trzy domy dalej, nie w hotelu",
+      "Kompot stoi trzy domy dalej, nie w hotelu",
       "Profesor nie lubił kompotu",
       "Piwnica hotelu jest zamknięta"
     ],
@@ -380,12 +380,12 @@
     "id": "m30",
     "title": "Teleboga",
     "doc": "Grudzień 1287, chan Teleboga za Wisłą, setki ognisk. Oddział oblężniczy na Starym Wzgórzu, przy zgliszczach św. Jakuba. Nowy gród trzymał, bo nikt już nie otwierał wrót.",
-    "q": "Ile trzymałby gród?",
+    "q": "Dlaczego nowy gród trzymał?",
     "options": [
-      "Rok",
-      "Tydzień, może dwa",
-      "Do wiosny",
-      "Wiecznie"
+      "Bo mury były wyższe",
+      "Bo nikt już nie otwierał wrót",
+      "Bo Tatarzy odeszli przed świtem",
+      "Bo Wisła zamarzła"
     ],
     "answer": 1
   },
@@ -406,12 +406,12 @@
     "id": "m32",
     "title": "Biały na białym, część druga",
     "doc": "Less jest biały. Śnieg jest biały. Pierwszy śnieg na lessie znika, zanim dotknie ziemi, a potem zostaje. Z góry nie widać, gdzie kończy się jedno, a zaczyna drugie.",
-    "q": "Kiedy przychodzi pierwszy śnieg w Sandomierzu?",
+    "q": "Co robi pierwszy śnieg na lessie?",
     "options": [
-      "We wrześniu",
-      "W listopadzie, zwykle mokry",
-      "W styczniu",
-      "Nigdy"
+      "Leży",
+      "Znika, a potem zostaje",
+      "Topnieje do rana",
+      "Nic"
     ],
     "answer": 1
   },
@@ -419,12 +419,12 @@
     "id": "m33",
     "title": "Dwadzieścia lat",
     "doc": "Aneta była w Sandomierzu ostatni raz na pogrzebie babci Heleny. Miała siedemnaście lat i czarną sukienkę pożyczoną od matki, za dużą w ramionach. Matka sprzedała kamienicę trzy miesiące później.",
-    "q": "Co zabrała matka?",
+    "q": "Ile lat miała Aneta na pogrzebie babci?",
     "options": [
-      "Wszystko",
-      "Tylko to, co zmieściło się w samochodzie",
-      "Nic",
-      "Słoiki"
+      "Siedem",
+      "Siedemnaście",
+      "Dwadzieścia",
+      "Trzydzieści"
     ],
     "answer": 1
   },
@@ -458,12 +458,12 @@
     "id": "m36",
     "title": "Witamina Jazz",
     "doc": "Festiwal na Rynku w październiku: scena, kable po bruku, food trucki, kawa z papieru. Hałas dobry, gęsty, przykrywający. W niedzielę po festiwalu zostają prostokątne ślady po stojakach.",
-    "q": "Co przykrywał hałas festiwalu?",
+    "q": "Co zostaje po festiwalu w niedzielę?",
     "options": [
       "Nic",
-      "Zejście pod Ratusz",
-      "Dzwon",
-      "Psa"
+      "Prostokątne ślady po stojakach",
+      "Kable po bruku",
+      "Kawa z papieru"
     ],
     "answer": 1
   },
@@ -496,15 +496,15 @@
   {
     "id": "m39",
     "title": "4,1 ppm",
-    "doc": "Miernik siarkowodoru przy kracie: 4,1 ppm, gradient rosnący. Próg bezpieczeństwa zawodowego piętnaście. Maska z filtrem zamówiona w Kielcach, dostawa poniedziałek.",
-    "q": "Dlaczego Aneta zeszła bez maski?",
+    "doc": "Miernik siarkowodoru przy kracie: 4,1 ppm, gradient rosnący. Próg zawodowy: dziesięć, chwilowo. Maska z filtrem zamówiona w Kielcach, dostawa poniedziałek.",
+    "q": "Kiedy przyjedzie maska?",
     "options": [
-      "Z odwagi",
-      "Z kalkulacji: czas pod ziemią jest krótki, ciało daje sygnały",
-      "Zapomniała",
-      "Nie wiedziała o gazie"
+      "W poniedziałek",
+      "Dziś",
+      "Za tydzień",
+      "Nie przyjedzie"
     ],
-    "answer": 1
+    "answer": 0
   },
   {
     "id": "m40",
@@ -536,12 +536,12 @@
     "id": "m42",
     "title": "Klucz Heleny",
     "doc": "Klucz babci, zawinięty w płótno lniane, ciasno, z węzłem. W lewej kieszeni kurtki. Do czego pasuje, Aneta dowiedziała się dopiero pod ziemią.",
-    "q": "Dlaczego w płótnie?",
+    "q": "Gdzie Aneta nosi klucz?",
     "options": [
-      "Żeby nie brzęczał",
-      "Żeby nie dotykać metalu",
-      "Bo tak zostawiła Helena",
-      "Z przesądu"
+      "Na szyi",
+      "W plecaku",
+      "W lewej kieszeni kurtki",
+      "W prawej kieszeni"
     ],
     "answer": 2
   },
@@ -578,7 +578,7 @@
     "q": "Co znaczy „prostowanie” w tej rodzinie?",
     "options": [
       "Nawyk",
-      "Siedemset lat pilnowania, żeby coś leżało równo i nikt tego nie ruszał",
+      "Siedemset lat pilnowania",
       "Zawód",
       "Nerwy"
     ],
@@ -717,11 +717,11 @@
   {
     "id": "m56",
     "title": "Amor, biała plamka",
-    "doc": "Cocker, trzynaście kilogramów, biała plamka na piersi. Jak kot Haliny. Nikt tego nie zauważył. Amor nie zna Haliny. Halina nie znała Amora.",
+    "doc": "Cocker, trzynaście kilogramów, biała plamka na piersi. Jak kot Haliny. Amor nie zna Haliny. Halina nie znała Amora.",
     "q": "Co łączy psa z kotem sprzed siedmiuset lat?",
     "options": [
       "Nic",
-      "Biała plamka na piersi, którą zauważa tylko ten, kto czyta uważnie",
+      "Biała plamka na piersi",
       "Imię",
       "Właściciel"
     ],
@@ -750,19 +750,6 @@
       "Barwę dźwięku",
       "Nic",
       "Tylko dzwon"
-    ],
-    "answer": 1
-  },
-  {
-    "id": "m59",
-    "title": "Jedno słowo",
-    "doc": "Rozdział dwudziesty pierwszy kończy się jednym słowem powiedzianym cicho na Rynku, z Amorem przy nodze, z lessem na butach.",
-    "q": "Jakie to słowo?",
-    "options": [
-      "Wracam",
-      "Słyszę",
-      "Boję się",
-      "Mamo"
     ],
     "answer": 1
   },
