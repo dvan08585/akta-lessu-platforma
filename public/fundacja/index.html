@@ -16,9 +16,13 @@
  .partner{display:inline-block;background:#f3f5f7;padding:6px 10px;margin:4px 4px 0 0;font-size:13px;border-radius:3px}
  footer{color:#777;font-size:12px;padding:24px 16px;border-top:1px solid #eee;margin-top:40px}
  .muted{color:#666;font-size:13px}
+ .komunikaty{list-style:none;padding:0;margin:0;font-size:14px}
+ .komunikaty li{padding:8px 0;border-bottom:1px solid #eee}
+ .komunikaty .data{display:inline-block;min-width:11em;color:#666}
+ .zywo{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2e8b57;margin-right:6px;vertical-align:middle}
 </style></head>
 <body>
-<header><h1>Fundacja Sandomierska Memoria</h1><small>Pamięć miasta. Odpowiedzialnie.</small><br><nav><a href="#o">O Fundacji</a><a href="#program">Program „Sandomierz Pod Spodem”</a><a href="#rejestr">Rejestr statusów</a><a href="#partnerzy">Partnerzy</a><a href="#kontakt">Kontakt</a></nav></header>
+<header><h1>Fundacja Sandomierska Memoria</h1><small>Pamięć miasta. Odpowiedzialnie.</small><br><nav><a href="#o">O Fundacji</a><a href="#program">Program „Sandomierz Pod Spodem”</a><a href="#rejestr">Rejestr statusów</a><a href="#komunikaty">Komunikaty</a><a href="#partnerzy">Partnerzy</a><a href="#kontakt">Kontakt</a></nav></header>
 <main>
 <h2 id="o">O Fundacji</h2>
 <p>Fundacja Sandomierska Memoria działa na rzecz ochrony dziedzictwa materialnego i niematerialnego Sandomierza. Wspieramy badania, odnawiamy zabytki ruchome, finansujemy programy edukacyjne i współpracujemy z instytucjami miasta. Fundator: osoba prywatna. Zarząd: jednoosobowy.</p>
@@ -35,11 +39,35 @@
 <tr><td>6</td><td>Wzgórze Collegium</td><td>nieznany</td><td>brak reakcji przyrządów</td></tr>
 <tr><td>7</td><td>Wzgórze Świętopawelskie</td><td></td><td></td></tr>
 </table>
-<p class="muted">Rejestr aktualizowany po otrzymaniu wniosków biegłego. Ostatnia aktualizacja: w toku.</p>
+<p class="muted" id="rejestr-stopka">Rejestr aktualizowany po otrzymaniu wniosków biegłego. Ostatnia aktualizacja: w toku.</p>
+<h2 id="komunikaty">Komunikaty zarządu</h2>
+<ul id="komunikaty-lista" class="komunikaty">
+<li><span class="data">[data premiery]</span> Program „Sandomierz Pod Spodem” rozpoczęty. Materiały pierwszego punktu przekazane biegłemu. Dziękujemy. Pięknie.</li>
+<li><span class="data">[tydzień po premierze]</span> Wniosek dotyczący punktu 4 wprowadzony do rejestru. Zarząd nie komentuje treści wniosków.</li>
+<li><span class="data">[dzień Nocy]</span> Siódma pozycja rejestru oczekuje na wniosek do końca dnia. Dwa słowa wystarczą.</li>
+</ul>
 <h2 id="partnerzy">Partnerzy i wydarzenia</h2>
 <span class="partner">Święto Młodego Wina</span><span class="partner">Muzeum Zamkowe, odnowienie spinek herbowych</span><span class="partner">Memoria Nieruchomości sp. z o.o.</span>
 <h2 id="kontakt">Kontakt</h2>
 <p>Biuro: Sandomierz, Rynek. Korespondencję w sprawie programu prosimy kierować przez program edukacyjny. Zarząd przyjmuje w czwartki, po uprzednim umówieniu. Dwa słowa wystarczą.</p>
 </main>
 <footer>Fundacja Sandomierska Memoria jest organizacją fikcyjną, częścią powieści „Siedem Bram Lessu” i gry „Akta Lessu”. Wszelkie podobieństwo do istniejących fundacji jest przypadkowe. <a href="../">Wróć do akt</a></footer>
+<script>
+(function(){
+  // Rejestr na żywo: ten sam plik, który w dniu premiery czyta gra. Gdy active=false, zostaje tabela statyczna.
+  fetch('../live/rejestr.json?t=' + Date.now(), { cache: 'no-store' }).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
+    if (!j || !j.active || !Array.isArray(j.lines)) return;
+    var rows = document.querySelectorAll('#rejestr + table tr');
+    j.lines.forEach(function(line){
+      var m = /^(\d)\.\s*(.*?):\s*(.*)$/.exec(line); if (!m) return;
+      var tr = rows[Number(m[1])]; if (!tr) return;
+      tr.children[1].textContent = m[2].replace(/^Wzg\.\s*/, 'Wzgórze ');
+      tr.children[2].textContent = m[3];
+    });
+    var f = document.getElementById('rejestr-stopka');
+    if (f) f.innerHTML = '<span class="zywo"></span>Rejestr aktualizowany na bieżąco. Ostatnia aktualizacja: ' + (j.updatedAt ? new Date(j.updatedAt).toLocaleString('pl-PL', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }) : 'dziś') + '.';
+    if (Array.isArray(j.notices)) { var ul = document.getElementById('komunikaty-lista'); if (ul) { ul.innerHTML = ''; j.notices.forEach(function(n){ var li = document.createElement('li'); var d = document.createElement('span'); d.className = 'data'; d.textContent = n.date || ''; li.appendChild(d); li.appendChild(document.createTextNode(' ' + (n.text || ''))); ul.appendChild(li); }); } }
+  }).catch(function(){});
+})();
+</script>
 </body></html>

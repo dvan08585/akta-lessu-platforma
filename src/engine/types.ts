@@ -86,6 +86,8 @@ export interface SaveState {
   readings: Record<string, string>;
   /** Czy gracz zostawił siódmą pozycję pustą (finał). */
   leftSeventhEmpty: boolean;
+  /** Kiedy siódma pozycja została zostawiona pusta (ms); z tego liczy się kod biegłego i kohorta „Pierwszy tydzień”. */
+  finaleAt?: number;
   /** Przerywniki między sprawami, które gracz już przeszedł. */
   interludesDone: string[];
   /** Rozmowy: liczba nietrafionych wskazań i blokada (ms) po trzech. */

@@ -24,6 +24,21 @@ export async function halfKey(seed: string): Promise<string> {
 }
 export function looksLikeHalfKey(v: string): boolean { return /^k[0-9a-f]{6}$/i.test(v.trim()); }
 
+/**
+ * Kod biegłego: dowód ukończenia (siódma pozycja rozstrzygnięta) z datą, bez danych osobowych.
+ * Format: „b" + 4 hex z ziarna + 3 znaki base36 (dni od 1 I 2027) + 2 znaki sumy. Data pozwala wyznaczyć kohortę „Pierwszy tydzień" w regulaminie.
+ */
+const EPOCH = Date.UTC(2027, 0, 1);
+export async function expertCode(seed: string, at: number): Promise<string> {
+  const day = Math.max(0, Math.floor((at - EPOCH) / 86400000));
+  return withCheck("b" + (await sha("akta-lessu:expert:" + seed)).slice(0, 4) + day.toString(36).padStart(3, "0"));
+}
+export async function parseExpertCode(v: string): Promise<{ at: Date } | null> {
+  const t = v.trim().toLowerCase();
+  if (!/^b[0-9a-f]{4}[0-9a-z]{3}[0-9a-f]{2}$/.test(t) || !(await verifyCheck(t))) return null;
+  return { at: new Date(EPOCH + parseInt(t.slice(5, 8), 36) * 86400000) };
+}
+
 /** Mapa 5/7: dwa wzgórza, na których zawieszka TEGO gracza milczy. Deterministyczne z ziarna. Nigdy 4 (pierwsza sprawa) ani 7 (finał). */
 export async function silentHills(seed: string): Promise<[number, number]> {
   const pool = [1, 2, 3, 5, 6];

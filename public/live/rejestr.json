@@ -11,5 +11,11 @@
     "6. Wzg. Collegium: nieznany",
     "7. Wzg. Świętopawelskie: [puste]"
   ],
-  "note": "W dniu premiery ustaw active: true i podmieniaj lines co godzinę (commit + push, deploy ~1 min)."
+  "note": "W dniu premiery ustaw active: true i podmieniaj lines co godzinę (commit + push, deploy ~1 min). notices to komunikaty zarządu na stronie Fundacji (data, text), w dwóch słowach Stańczyka. Plik idzie zawsze z sieci (service worker nie trzyma go w pamięci).",
+  "notices": [
+    {
+      "date": "[data premiery]",
+      "text": "Program „Sandomierz Pod Spodem” rozpoczęty. Dziękujemy. Pięknie."
+    }
+  ]
 }

@@ -13,7 +13,7 @@ import { due, pending, unreadCount, ensureInbox, schedule } from "../engine/mess
 import type { App } from "../app";
 import type { CaseData, Doc } from "../engine/types";
 import { evaluate, heatLabel, recordAttempt, encodeFill, GESTURE_OF } from "../engine/cases";
-import { halfKey, looksLikeHalfKey, verifyCheck, readingToken, parseReading } from "../engine/pair";
+import { halfKey, looksLikeHalfKey, verifyCheck, readingToken, parseReading, expertCode } from "../engine/pair";
 import { shareCard, shareText } from "../engine/share";
 import { codeMatches, placeFromUrl, releaseDate } from "../engine/unlock";
 import { exportCode, importCode, save, reset } from "../engine/state";
@@ -503,7 +503,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     const box = h("div", { class: "pair" }, reg, h("p", { class: "quote" }, addrText(app, p.registerQuestion)), h("div", { class: "verdict" }, no, yes));
     yes.addEventListener("click", () => { toast(p.yesRefused); yes.classList.add("shake"); });
     no.addEventListener("click", () => {
-      app.state.leftSeventhEmpty = true; sendEvent(app.cfg.backendUrl, app.state, { type: "seventh_empty" }); markSolved(); app.addNote("Siódma pozycja: pusta. Zostawiona.", "finał"); box.remove();
+      app.state.leftSeventhEmpty = true; app.state.finaleAt = Date.now(); sendEvent(app.cfg.backendUrl, app.state, { type: "seventh_empty" }); markSolved(); app.addNote("Siódma pozycja: pusta. Zostawiona.", "finał"); box.remove();
       // Ciało kończy to, co zaczęło: telefon ekranem w dół na dwadzieścia sekund. Less opada. Dopiero potem ostatnie zdanie.
       const dark = h("div", { class: "facedown" }, h("p", {}, "Połóż telefon ekranem w dół."), h("p", { class: "faint" }, "Dwadzieścia sekund. Less opada."));
       sec.insertBefore(dark, solutionBox);
@@ -550,8 +550,9 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     if (gestureDoneNow) {
       const build = async () => {
         const hk = app.passed() >= 6 ? await halfKey(app.state.seed) : undefined;
+        const ex = app.state.leftSeventhEmpty ? await expertCode(app.state.seed, app.state.finaleAt ?? Date.now()) : undefined;
         const readings = await Promise.all(app.solvedGates().filter((g) => !app.silent.includes(g) && g !== 7).map((g) => readingToken(app.state.seed, g)));
-        return shareCard({ solved: app.solvedGates(), unstable: app.state.unstableGates, silent: app.silent.filter((g) => !app.state.readings[String(g)]), attempts: tries, streak: 0, url: app.cfg.share.url, hashtag: app.cfg.share.hashtag, passed: app.passed(), halfKey: hk, readings });
+        return shareCard({ solved: app.solvedGates(), unstable: app.state.unstableGates, silent: app.silent.filter((g) => !app.state.readings[String(g)]), attempts: tries, streak: 0, url: app.cfg.share.url, hashtag: app.cfg.share.hashtag, passed: app.passed(), halfKey: hk, readings, expert: ex });
       };
       const pre = h("pre", {}, "…"); build().then((card) => (pre.textContent = card));
       tail.append(pre, h("div", { class: "verdict" },
@@ -642,6 +643,15 @@ export function viewAkta(app: App): HTMLElement {
     h("p", { class: "muted" }, `${silentTxt}Nikt nie ma pełnej mapy sam. Odczyty z kart innych biegłych otwierają to, co u ciebie milczy.${have.length ? ` Masz odczyty: ${have.join(", ")}.` : ""}`),
     readingBox(app)));
 
+  // Klucz piąty: kod biegłego po rozstrzygnięciu siódmej pozycji (dowód z datą do Rejestru biegłych w bibliotece)
+  if (app.state.leftSeventhEmpty) {
+    const codeEl = h("code", { class: "expert-code" }, "…");
+    expertCode(app.state.seed, app.state.finaleAt ?? Date.now()).then((c) => { codeEl.textContent = c; });
+    sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz piąty: kod biegłego"),
+      h("p", { class: "muted" }, "Siedem bram rozstrzygniętych. Ten kod jest dowodem: bez imienia, z datą. Okazany w bibliotece w Sandomierzu albo wysłany organizatorowi daje wpis do Rejestru biegłych pod wybranym pseudonimem."),
+      h("p", {}, codeEl),
+      h("div", { class: "verdict" }, h("button", { class: "primary", onclick: async () => { try { await navigator.clipboard.writeText(codeEl.textContent ?? ""); toast("Skopiowano kod biegłego."); } catch { toast("Zaznacz i skopiuj ręcznie."); } } }, "Skopiuj"))));
+  }
   { const nb = newsletterBox(app, "Nowe sprawy przychodzą co tydzień. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
 
   sec.append(h("p", { class: "faint build" }, `wersja ${__BUILD__}`));

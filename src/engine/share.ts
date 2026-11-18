@@ -1,10 +1,10 @@
 /** Karta do udostępnienia bez spoilerów: siedem wzgórz, zapalone bramy, próby, seria. */
-export function shareCard(opts: { solved: number[]; unstable?: number[]; attempts: number; streak?: number; url: string; hashtag: string; caseN?: number; passed?: number; halfKey?: string; readings?: string[]; silent?: number[] }): string {
+export function shareCard(opts: { solved: number[]; unstable?: number[]; attempts: number; streak?: number; url: string; hashtag: string; caseN?: number; passed?: number; halfKey?: string; readings?: string[]; silent?: number[]; expert?: string }): string {
   const row = [1, 2, 3, 4, 5, 6, 7].map((n) => (opts.unstable?.includes(n) ? "▲" : opts.solved.includes(n) ? "●" : opts.silent?.includes(n) ? "◌" : "○")).join(" ");
   const passed = opts.passed ?? opts.solved.length;
   const head = `Akta Lessu · ${passed}/7`;
   const tries = opts.attempts === 1 ? "za pierwszym razem" : `${opts.attempts} próby`;
-  const tokens = [opts.readings?.length ? `odczyt: ${opts.readings.join(" ")}\n(wpisuje go inny biegły, u którego to wzgórze milczy)` : "", opts.halfKey ? `klucz: ${opts.halfKey}\n(połowa; druga jest u kogoś po sześciu bramach)` : ""].filter(Boolean).join("\n");
+  const tokens = [opts.readings?.length ? `odczyt: ${opts.readings.join(" ")}\n(wpisuje go inny biegły, u którego to wzgórze milczy)` : "", opts.halfKey ? `klucz: ${opts.halfKey}\n(połowa; druga jest u kogoś po sześciu bramach)` : "", opts.expert ? `biegły: ${opts.expert}\n(dowód siedmiu bram, z datą; do Rejestru biegłych)` : ""].filter(Boolean).join("\n");
   return `${head}\n${row}\n${tries}\n${opts.hashtag} ${opts.url}${tokens ? "\n\n" + tokens : ""}`;
 }
 

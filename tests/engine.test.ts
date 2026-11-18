@@ -91,7 +91,16 @@ describe("nowe typy spraw", () => {
   });
 });
 
-import { halfKey, verifyCheck, silentHills, readingToken, parseReading, looksLikeHalfKey } from "../src/engine/pair";
+import { halfKey, verifyCheck, silentHills, readingToken, parseReading, looksLikeHalfKey, expertCode, parseExpertCode } from "../src/engine/pair";
+
+describe("kod biegłego", () => {
+  it("niesie datę z dokładnością do dnia i wykrywa literówkę", async () => {
+    const at = Date.UTC(2027, 9, 25, 14, 30); const c = await expertCode("seed-z", at);
+    expect(c).toMatch(/^b[0-9a-f]{4}[0-9a-z]{3}[0-9a-f]{2}$/);
+    const p = await parseExpertCode(c); expect(p).not.toBeNull(); expect(p!.at.toISOString().slice(0, 10)).toBe("2027-10-25");
+    expect(await parseExpertCode(c.slice(0, -1) + (c.endsWith("0") ? "1" : "0"))).toBeNull();
+  });
+});
 describe("klucze między ludźmi", () => {
   it("połowa klucza ma sumę kontrolną, losowy hex jej nie ma", async () => {
     const k = await halfKey("seed-a");
