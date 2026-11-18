@@ -47,3 +47,26 @@ app.ready.then(route);
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   navigator.serviceWorker.register(import.meta.env.BASE_URL + "sw.js").catch(() => {});
 }
+
+// Nowa wersja na serwerze: karta otwarta od dawna (albo ekran początkowy) nie robi nawigacji, więc sama by jej nie zobaczyła.
+// Porównujemy version.json ze znacznikiem wbudowanym w ten plik; różnica to pasek z jednym przyciskiem. Bez pytania o nic.
+let askedForReload = false;
+async function checkVersion(): Promise<void> {
+  if (!import.meta.env.PROD || askedForReload) return;
+  try {
+    const r = await fetch(import.meta.env.BASE_URL + "version.json?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) return;
+    const j = (await r.json()) as { build?: string };
+    if (j.build && j.build !== __BUILD__) {
+      askedForReload = true;
+      const bar = document.createElement("div"); bar.className = "update-bar"; bar.setAttribute("role", "status");
+      bar.append("Akta zostały uzupełnione. ");
+      const b = document.createElement("button"); b.className = "primary"; b.textContent = "Odśwież";
+      b.addEventListener("click", () => location.reload());
+      bar.append(b); document.body.append(bar);
+    }
+  } catch { /* bez sieci: nic */ }
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") checkVersion(); });
+setInterval(checkVersion, 10 * 60 * 1000);
+setTimeout(checkVersion, 15000);

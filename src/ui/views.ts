@@ -644,6 +644,7 @@ export function viewAkta(app: App): HTMLElement {
 
   { const nb = newsletterBox(app, "Nowe sprawy przychodzą co tydzień. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
 
+  sec.append(h("p", { class: "faint build" }, `wersja ${__BUILD__}`));
   sec.append(h("p", { class: "faint", style: "margin-top:2rem" }, h("a", { href: "#/ustawienia" }, "Ustawienia: światło, forma, narzędzia, zaczęcie od nowa →")));
   return sec;
 }
