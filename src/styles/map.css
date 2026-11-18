@@ -40,7 +40,7 @@
 .gate-row .t small { color: var(--ink-dim); }
 .gate-row .s { font-size: 0.85rem; font-style: italic; letter-spacing: 0.02em; color: var(--ink-dim); }
 .gate-row[data-status="solved"] .s { color: var(--sand); }
-.gate-row[data-status="locked"] { opacity: 1; }
+.gate-row[data-status="locked"] { opacity: 0.62; } /* zamknięte wycieniowane: pełny kontrast mają tylko bramy czynne (decyzja autora, świadomie ponad progiem axe dla tych wierszy) */
 .gate-row[data-status="locked"] .t { color: var(--ink-dim); }
 .snow .map-wrap .hill { fill: #2e2b25; stroke: rgba(232,224,207,0.35); }
 .snow .map-wrap svg { background: linear-gradient(to bottom, rgba(232,224,207,0.04), transparent 40%); }
