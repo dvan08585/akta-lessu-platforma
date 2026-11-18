@@ -1,4 +1,4 @@
-import { h, go, toast, back, next } from "./dom";
+import { h, go, toast, back, next, arrow, isIOS, isStandalone } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import { interludesFor } from "./interludes";
 import { icon, flint, flintSeed } from "./icons";
@@ -27,7 +27,7 @@ export function addr(app: App, f: string, m: string, both = `${f}/${m}`): string
 /** Znacznik rodzaju w treściach JSON: `{forma żeńska|forma męska}` → wybrana forma (bez wyboru: obie, jak w piśmie urzędowym). */
 export function fmtWhen(d: Date): string { return `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "long" })}, ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`; }
 /** Wiersz powrotu pod nawigacją: „← Mapa · Brama 4”. Pierwsze wyjście jest na górze, nie po przewinięciu całej sprawy. */
-export function crumb(label: string, to = "#/mapa", toLabel = "Mapa"): HTMLElement { return h("p", { class: "crumb" }, h("a", { href: to }, "← " + toLabel), label ? h("span", {}, " · " + label) : null); }
+export function crumb(label: string, to = "#/mapa", toLabel = "Mapa"): HTMLElement { return h("p", { class: "crumb" }, h("a", { href: to }, arrow("l"), " " + toLabel), label ? h("span", {}, " · " + label) : null); }
 export function addrText(app: App, t: string): string { return t.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, f, m) => addr(app, f, m)); }
 
 export function topbar(app: App, active: string): HTMLElement {
@@ -42,14 +42,14 @@ export function topbar(app: App, active: string): HTMLElement {
 }
 
 /** Datownik: miasto żyje, zanim cokolwiek klikniesz. Data, pogoda, Wisła, wschód. Dane dochodzą, gdy są; bez nich zostaje data. */
-export function dateline(): HTMLElement {
+export function dateline(riverNote?: (cm: number) => string | null): HTMLElement {
   const now = new Date();
   const date = now.toLocaleDateString("pl-PL", { weekday: "long", day: "numeric", month: "long" });
   const sr = sunrise(now).toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
   const item = (type: string | null, text: string, cls = "") => h("span", { class: `dl ${cls}` }, type ? icon(type) : null, text);
   const el = h("div", { class: "dateline", role: "group", "aria-label": "Sandomierz dziś" }, item(null, `Sandomierz · ${date}`, "date"), item("sunrise", `wschód ${sr}`));
   fetchPogoda().then((w) => { if (w) el.append(item("temp", `${w.tempC.toFixed(0)}°C${w.snowing ? ", śnieg" : ""}`, "live")); });
-  fetchWisla().then((w) => { if (w.live) el.append(item("river", `Wisła ${w.cm} cm`, "live")); });
+  fetchWisla().then((w) => { if (w.live || riverNote) el.append(item("river", `Wisła ${w.cm} cm${w.live ? "" : " (średnia)"}`, "live")); const note = riverNote?.(w.cm); if (note) el.append(h("span", { class: "dl note" }, note)); });
   return el;
 }
 
@@ -81,17 +81,14 @@ export function viewMap(app: App): HTMLElement {
   const sec = h("section", { class: "fade-in" }, topbar(app, "#/mapa"));
   sec.append(h("h2", { class: "sr-only" }, "Mapa"));
   // Nad mapą: rząd odczytów z ikonami (Wisła, pogoda) i jedno zdanie o milczących wzgórzach. Kierunki mówi sama mapa etykietami na krawędziach.
-  const item = (type: string, text: string, title = "") => h("span", { class: "dl live", title }, icon(type), text);
-  const wisla = h("div", { class: "dateline reads", role: "group", "aria-label": "Sandomierz teraz" });
-  fetchWisla().then((w) => { const mean = monthlyMean(); const diff = w.cm - mean; wisla.append(item("river", `Wisła ${w.cm} cm${w.live ? "" : " (średnia)"}`, diff < -40 ? "Nisko. Krypty zalewa przy niskiej wodzie." : diff > 60 ? "Wysoko." : "Stan zwykły.")); // „krypty zalewa przy niskiej wodzie" to wniosek sprawy 3: mapa mówi to dopiero, gdy gracz sam to ustalił
-    const c3 = app.caseForGate(2); const knows = !!c3 && app.state.solvedCases.includes(c3.n);
-    if (diff < -40) wisla.append(h("span", { class: "dl note" }, knows ? "nisko: krypty zalewa przy niskiej wodzie" : "nisko")); else if (diff > 60) wisla.append(h("span", { class: "dl note" }, "wysoko")); });
+  // „krypty zalewa przy niskiej wodzie" to wniosek sprawy 3: mapa mówi to dopiero, gdy gracz sam to ustalił
+  const wisla = dateline((cm) => { const diff = cm - monthlyMean(); const c3 = app.caseForGate(2); const knows = !!c3 && app.state.solvedCases.includes(c3.n); return diff < -40 ? (knows ? "nisko: krypty zalewa przy niskiej wodzie" : "nisko") : diff > 60 ? "wysoko" : null; });
   // O milczących wzgórzach mapa mówi dopiero, gdy gracz sam tego doświadczył w bramie (odkrycie, nie instrukcja).
   const stillSilent = app.silent.filter((g) => !app.state.readings[String(g)]);
   const legend = app.state.metSilent && stillSilent.length ? h("div", { class: "callout", role: "note" }, h("span", { class: "ico" }, icon("pair")), h("p", {}, `Zawieszka milczy na ${stillSilent.length === 1 ? "wzgórzu" : "wzgórzach"} ${stillSilent.join(" i ")}. Tam dopełnia sprawę cudzy odczyt.`)) : null;
   sec.append(wisla); if (legend) sec.append(legend);
   if (isSnowSeason()) sec.classList.add("snow");
-  fetchPogoda().then((w) => { if (!w) return; wisla.append(item("temp", `${w.tempC.toFixed(0)}°C${w.snowing ? ", śnieg" : ""}`)); if (w.snowing) { wisla.append(h("span", { class: "dl note" }, "na Pimpo Limpo są sanki")); sec.classList.add("sanki"); } });
+  fetchPogoda().then((w) => { if (w?.snowing) { wisla.append(h("span", { class: "dl note" }, "na Pimpo Limpo są sanki")); sec.classList.add("sanki"); } });
   // Rejestr na żywo (dzień premiery): najpierw backend, potem plik public/live/rejestr.json jako zapas
   const showLive = (j: { active?: boolean; header?: string; lines?: string[]; updatedAt?: string } | null) => {
     if (!j || !j.active || !j.lines) return false;
@@ -113,8 +110,7 @@ export function viewMap(app: App): HTMLElement {
     onCursor: (n) => { app.state.chapterCursor = n; save(app.state); },
   }));
   const list = h("div", { class: "gates-list" });
-  const rank = (st: string) => (st === "open" || st === "unstable" ? 0 : st === "solved" ? 1 : 2);
-  for (const g of [...app.map.gates].sort((a, b) => rank(app.gateStatus(a.n)) - rank(app.gateStatus(b.n)) || a.n - b.n)) {
+  for (const g of app.map.gates) { // kolejność jak na mapie, stała: otwarcie bramy nie przestawia listy
     const st = app.gateStatus(g.n);
     const c = app.caseForGate(g.n);
     list.append(h("div", { class: "gate-row", "data-status": st, role: "button", tabindex: "0", onclick: () => go(`#/brama/${g.n}`), onkeydown: (e: Event) => { if ((e as KeyboardEvent).key === "Enter" || (e as KeyboardEvent).key === " ") { e.preventDefault(); go(`#/brama/${g.n}`); } } },
@@ -188,10 +184,10 @@ export function viewGate(app: App, n: number): HTMLElement {
     const need = c.requires.solvedCases !== undefined && app.passed() < c.requires.solvedCases
       ? `Ta sprawa otwiera się po ${c.requires.solvedCases} ${plural(c.requires.solvedCases, "przebytej bramie", "przebytych bramach", "przebytych bramach")}. Masz ${app.passed()}.`
       : rel && rel.getTime() > Date.now()
-        ? `Te akta przyjdą ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}. Wcześniej otwiera je tylko kod z rozdziału ${c.requires.chapter}.`
+        ? `Te akta przyjdą ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}, za ${Math.ceil((rel.getTime() - Date.now()) / 864e5)} ${plural(Math.ceil((rel.getTime() - Date.now()) / 864e5), "dzień", "dni", "dni")}. Wcześniej otwiera je tylko kod z rozdziału ${c.requires.chapter}.`
         : `Ta sprawa wymaga rozdziału ${c.requires.chapter}.`;
     sec.append(head(), h("h2", {}, c.title), h("p", { class: "muted" }, need),
-      h("div", { class: "verdict" }, app.now().getTime() >= new Date(app.cfg.premiereDate).getTime() ? next("Wpisz kod z książki", "#/akta") : null, back("Mapa")));
+      app.now().getTime() >= new Date(app.cfg.premiereDate).getTime() ? h("div", { class: "verdict" }, next("Wpisz kod z książki", "#/akta")) : "");
     return sec;
   }
   if (c.sealed) {
@@ -579,7 +575,8 @@ export function viewNotebook(app: App): HTMLElement {
   const pre = h("pre", { class: "mono", style: "white-space:pre-wrap;word-break:break-all;display:none" }, code);
   const inp2 = h("input", { type: "text", placeholder: "kod wznowienia", "aria-label": "Kod wznowienia", style: "text-transform:none;letter-spacing:0" }) as HTMLInputElement;
   const b2 = h("button", { class: "primary", onclick: () => { const st = importCode(inp2.value); if (!st) { toast("Nieprawidłowy kod."); return; } Object.assign(app.state, st); save(app.state); toast("Wznowiono."); go("#/mapa"); } }, "Wznów");
-  const b2box = h("div", { class: "gatebox resume" }, h("h3", {}, "Wznowienie"), h("p", { class: "muted" }, "Przeglądarka może zapomnieć tę stronę. Kod nie."),
+  const b2box = h("div", { class: "gatebox resume" }, h("h3", {}, "Wznowienie"), h("p", { class: "muted" }, "Przeglądarka może zapomnieć tę stronę. Kod nie. Po każdej przebytej bramie skopiuj go i zapisz tam, gdzie trzymasz notatki."),
+    isIOS() && !isStandalone() ? h("div", { class: "callout", role: "note" }, h("span", { class: "ico" }, icon("nav-zeszyt")), h("p", {}, "Na iPhonie Safari kasuje zapis strony po siedmiu dniach bez wizyty. To zasada Apple, nie gry. Zapis zostaje, jeśli dodasz stronę do ekranu początkowego (Udostępnij, potem „Do ekranu początkowego”). Inaczej trzymaj kod wznowienia poza grą.")) : null,
     h("div", { class: "verdict" }, h("button", { class: "primary", onclick: async () => { try { await navigator.clipboard.writeText(code); toast("Skopiowano kod wznowienia."); } catch { pre.style.display = ""; toast("Zaznacz i skopiuj ręcznie."); } } }, "Skopiuj kod")), pre,
     h("p", { class: "muted", style: "margin-top:1.2rem" }, "Masz kod z innego urządzenia?"), h("div", { class: "row" }, inp2, b2));
   sec.append(b2box);
@@ -704,7 +701,7 @@ export function viewInbox(app: App): HTMLElement {
     const ms = inbox.scheduled[soon.id] - Date.now();
     const hrs = Math.round(ms / 3600000); const mins = Math.max(1, Math.round(ms / 60000));
     const when = ms < 3600000 ? `za ${mins} ${plural(mins, "minutę", "minuty", "minut")}` : `za ${hrs} ${plural(hrs, "godzinę", "godziny", "godzin")}`;
-    sec.append(h("div", { class: "pending", role: "status" }, h("span", {}, `List od: ${soon.from}. Przyjdzie ${when}. Ludzie w tym mieście nie odpowiadają od razu.`)));
+    sec.append(h("div", { class: "pending", role: "status" }, h("span", { class: "ico" }, icon("nav-listy")), h("span", {}, `List od: ${soon.from}. Przyjdzie ${when}. Ludzie w tym mieście nie odpowiadają od razu.`)));
   }
   save(app.state);
   return sec;

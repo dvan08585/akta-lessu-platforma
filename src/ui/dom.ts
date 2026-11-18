@@ -23,8 +23,19 @@ export function toast(msg: string): void {
 }
 export function go(hash: string): void { if (location.hash === hash) dispatchEvent(new HashChangeEvent("hashchange")); else location.hash = hash; }
 /** Przyciski nawigacji: „wstecz” zawsze cichy ze strzałką w lewo, „dalej” zawsze główny ze strzałką w prawo. Jeden język na całej stronie. */
-export function back(label = "Wróć do mapy", to = "#/mapa"): HTMLButtonElement { return h("button", { class: "ghost back", onclick: () => go(to) }, `← ${label}`); }
-export function next(label: string, to: string, cls = "primary"): HTMLButtonElement { return h("button", { class: `${cls} next`, onclick: () => go(to) }, `${label} →`); }
+/** Strzałka jako rysunek, nie znak z czcionki: na Androidzie „←” z zapasowego kroju wyglądało jak kreska ze strzałką. */
+export function arrow(dir: "l" | "r"): SVGSVGElement {
+  const NS = "http://www.w3.org/2000/svg"; const s = document.createElementNS(NS, "svg");
+  s.setAttribute("viewBox", "0 0 24 24"); s.setAttribute("class", "arr"); s.setAttribute("aria-hidden", "true");
+  const p = document.createElementNS(NS, "path"); p.setAttribute("d", dir === "l" ? "M19 12H6M11 6l-6 6 6 6" : "M5 12h13M13 6l6 6-6 6");
+  p.setAttribute("fill", "none"); p.setAttribute("stroke", "currentColor"); p.setAttribute("stroke-width", "1.6"); p.setAttribute("stroke-linecap", "round"); p.setAttribute("stroke-linejoin", "round");
+  s.append(p); return s;
+}
+export function back(label = "Wróć do mapy", to = "#/mapa"): HTMLButtonElement { return h("button", { class: "ghost back", onclick: () => go(to) }, arrow("l"), ` ${label}`); }
+export function next(label: string, to: string, cls = "primary"): HTMLButtonElement { return h("button", { class: `${cls} next`, onclick: () => go(to) }, `${label} `, arrow("r")); }
+/** iPhone/iPad: Safari kasuje zapis strony po 7 dniach bez wizyty, chyba że strona jest na ekranie początkowym. */
+export function isIOS(): boolean { return /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); }
+export function isStandalone(): boolean { return matchMedia("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true; }
 
 /** Cykl życia widoku: każdy renderer rejestruje sprzątanie (strumienie, czujniki, pętle), router woła je przed podmianą ekranu. */
 const leaveFns: (() => void)[] = [];

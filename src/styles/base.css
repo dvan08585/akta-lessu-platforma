@@ -102,7 +102,7 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 /* Datownik: miasto żyje. Rząd krótkich odczytów z ikonami w piasku, nie zdanie. */
 .dateline { display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; align-items: center; font-size: 0.8rem; letter-spacing: 0.06em; color: var(--ink-dim); margin: 0 0 1rem; }
 .dateline .dl { display: inline-flex; align-items: center; gap: 0.35rem; white-space: nowrap; }
-.dateline .dl.date { font-style: italic; letter-spacing: 0.02em; font-size: 0.85rem; color: var(--ink-faint); }
+.dateline .dl.date { font-style: italic; letter-spacing: 0.02em; font-size: 0.85rem; color: var(--ink-faint); flex-basis: 100%; } /* miasto i data w swoim wierszu, odczyty pod spodem */
 .dateline svg { width: 16px; height: 16px; color: var(--sand); flex: none; }
 .dateline .dl.live { animation: dl-in 0.6s ease-out both; }
 @keyframes dl-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
@@ -147,6 +147,8 @@ button.danger { color: var(--blood); border-color: var(--blood); }
 
 /* Nawigacja: wstecz = cicho, w lewo; dalej = główny, w prawo; „ciałem” = coś ekstra, w piasku z poświatą. */
 button.back { padding-left: 0.6rem; }
+.arr { width: 1em; height: 1em; vertical-align: -0.15em; }
+.crumb .arr { vertical-align: -0.12em; }
 button.body, .btn.body { background: var(--ink); color: var(--bg); border-color: var(--sand); box-shadow: 0 0 0 1px var(--sand), 0 0 14px rgba(201,168,106,0.28); }
 button.body:hover, .btn.body:hover { box-shadow: 0 0 0 1px var(--sand), 0 0 20px rgba(201,168,106,0.45); }
 /* Odsłona po geście: sterowanie znika, ciepło przechodzi przez ekran, tekst przyjeżdża na środek. */
@@ -164,6 +166,8 @@ button.body:hover, .btn.body:hover { box-shadow: 0 0 0 1px var(--sand), 0 0 20px
 .next-daily::before { content: ""; width: 1.6rem; height: 1px; background: var(--ink-faint); }
 /* Listy: coś się dzieje w toku, nie zwykły akapit. */
 .pending { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.5rem; padding: 0.7rem 0.9rem; border: 1px dashed var(--line); border-radius: var(--radius); color: var(--ink-dim); font-size: 0.9rem; }
+.pending .ico { flex: none; color: var(--sand); display: flex; }
+.pending .ico svg { width: 20px; height: 20px; }
 .pending .dots { display: inline-flex; gap: 3px; flex: none; }
 .pending .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--sand); animation: dot 1.4s infinite; }
 .pending .dots i:nth-child(2) { animation-delay: 0.2s; } .pending .dots i:nth-child(3) { animation-delay: 0.4s; }
@@ -211,6 +215,8 @@ button.slot.locked { border-color: transparent; background: transparent; color: 
 /* Zeszyt: wznowienie jako osobna karta z odstępem; „Poza aktami" na mapie jako zwijana sekcja. */
 .notebook .resume { margin-top: 2.4rem; }
 .notebook .resume .row { margin-top: 0.5rem; }
+.notebook .resume .verdict > .primary { margin-left: 0; }
+.notebook .resume .callout { margin: 0.8rem 0; }
 .beyond summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; }
 .beyond summary::-webkit-details-marker { display: none; }
 .beyond summary h3 { margin: 1.4rem 0 0.4rem; }

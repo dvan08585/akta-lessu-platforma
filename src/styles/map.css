@@ -34,7 +34,7 @@
 .gate-row .ico { color: var(--ink-dim); display: flex; align-items: center; }
 .gate-row[data-status="solved"] .ico { color: var(--sand); }
 .gate-row:hover { border-color: var(--ink-dim); }
-.gate-row .n { font-family: var(--font-mono); color: var(--ink-faint); }
+.gate-row .n { font-family: var(--font-serif); font-style: italic; font-size: 1.5rem; line-height: 1; color: var(--sand); text-align: center; }
 .gate-row .t { display: flex; flex-direction: column; }
 .gate-row .t small { color: var(--ink-faint); }
 .gate-row .s { font-size: 0.85rem; font-style: italic; letter-spacing: 0.02em; color: var(--ink-dim); }

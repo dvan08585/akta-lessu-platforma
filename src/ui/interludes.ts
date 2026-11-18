@@ -6,7 +6,7 @@ import { detectPitch, closeness, PitchSmoother } from "../engine/pitch";
 import { detectDuet } from "../engine/duet";
 import { sendEvent, fetchStats, sendHum } from "../engine/wspolny";
 import { plural } from "./views";
-import { flint, flintSeed } from "./icons";
+import { flint, flintSeed, icon } from "./icons";
 
 export interface Interlude {
   id: string; type: "amor" | "talk" | "plate" | "beat" | "still" | "breath" | "fire" | "dark" | "earth" | "spectro" | "compass" | "whistle" | "touch7" | "hold" | "mirror" | "trace" | "steps" | "duet"; after?: number; gate?: number; title: string; level?: string; place?: "brama" | "rozmowa" | "apokryf" | "laboratorium";
@@ -165,7 +165,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     if (tr.until > Date.now()) { renderLocked(); }
     function renderLocked() {
       const hrs = Math.max(1, Math.ceil((tr.until - Date.now()) / 3600000));
-      qs.replaceChildren(h("p", { class: "muted" }, `${it.person} nie ma dziś więcej czasu. Trzy razy wskazane na ślepo to nie rozmowa. Wróć za ${hrs} ${plural(hrs, "godzinę", "godziny", "godzin")}, przeczytaj rozmowę jeszcze raz.`), h("div", { class: "verdict" }, back()));
+      qs.replaceChildren(h("div", { class: "callout", role: "status" }, h("span", { class: "ico" }, icon("talk")), h("p", {}, `${it.person} nie ma dziś więcej czasu. Trzy razy wskazane na ślepo to nie rozmowa. Wróć za ${hrs} ${plural(hrs, "godzinę", "godziny", "godzin")} i przeczytaj rozmowę jeszcze raz.`)), h("div", { class: "verdict" }, back()));
     }
     function renderPick() {
       if (tr.until > Date.now()) { renderLocked(); return; }

@@ -21,6 +21,7 @@ setInterval(applyTheme, 60000);
 
 function route() {
   applyTheme();
+  navigator.storage?.persist?.().catch(() => { /* przeglądarka bez trwałego zapisu */ });
   const hash = location.hash || "#/";
   const m = /^#\/brama\/(\d+)/.exec(hash);
   const mi = /^#\/miedzy\/([a-z0-9-]+)/.exec(hash);
