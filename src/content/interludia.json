@@ -101,7 +101,7 @@
     "id": "plyta",
     "type": "plate",
     "title": "Płyta Chladniego",
-    "intro": "Klasztor św. Jakuba, cela Anzelma. Na stole metalowa płyta, na niej piasek. Anzelm nie tłumaczy. Pokazuje. „Sandomierz stoi na rezonatorze. Znajdź ton.”",
+    "intro": "Klasztor św. Jakuba, cela Anzelma. Na stole metalowa płyta o siedmiu bokach, na niej piasek. Anzelm nie tłumaczy. Pokazuje. „Sandomierz stoi na rezonatorze. Znajdź ton.”",
     "targetHz": 196,
     "tolerance": 6,
     "reveal": "Siedem ramion. G, ton główny dzwonu Piotra. Anzelm kiwa głową. „Pięćset milionów lat kwarcu pod lessem. Ludzie budują nad tym katedry i nazywają to wiarą. To fizyka.” A potem, ciszej: „Ton dolny też jest. Tego nie zanucisz. Tego się nie nuci. To się nosi.”",
@@ -311,7 +311,7 @@
     "place": "brama",
     "rite": {
       "opening": "Przy trzydziestu trzech stopniach drżenie jest silne. Przy trzydziestu jeden ustaje.",
-      "word": "Helena",
+      "word": "dwa stopnie",
       "minutes": 1,
       "rigid": "Trzydzieści sekund bez ruchu, mierzone twoimi dłońmi, nie cudzymi. Pierwsze pięć sekund telefon uczy się twojego drżenia. Po dwóch drgnięciach robi się łagodniejszy.",
       "body": "telefon w obu dłoniach, albo na stole z dłonią na nim",
@@ -366,7 +366,7 @@
     "intro": "Collegium. Punkt szósty nie reaguje na pomiary. Kartka z notatnika profesora, której nie było w aktach, czyta się tylko wtedy, kiedy nie widzisz nic innego.",
     "secret": [
       "Punkt 6. Nie mierzyć. Mierzenie jest tu rodzajem patrzenia, a to, co pod Collegium, reaguje na patrzenie tak, jak less reaguje na wodę: osiada.",
-      "Mniej wiesz, więcej rozumiesz. Nie pisałem tego dla uczelni. Pisałem dla kogoś, kto przyjedzie i nie będzie chciał wiedzieć, a będzie musiał.",
+      "Mniej wiesz, więcej rozumiesz. Nie pisałem tego dla uczelni. Pisałem dla kogoś, kto nie będzie chciał wiedzieć, a będzie musiał.",
       "Kto nosi krzemień, ten jest w sieci. H. nosiła."
     ],
     "reveal": "Kiedy wróciło światło, kartki już nie było. Trzy zdania. Tyle wystarczy.",
@@ -387,7 +387,7 @@
     "id": "ziemia",
     "type": "earth",
     "title": "Ziemia",
-    "intro": "Korytarz pod Żmigrodem. Less sypie się z łuku przy każdym kroku. Nie tędy, mówił Berbeć. Tędy, ale równo.",
+    "intro": "Korytarz pod Żmigrodem. Less sypie się z łuku przy każdym kroku. Nie tędy, mówi kartka. Tędy, ale równo.",
     "steps": 777,
     "reveal": "Siedemset siedemdziesiąt siedem kroków. Less na butach, nie na cegle. Mur stoi, cegła wysunięta o centymetr jest ciepła, i nic nie {zrobiłaś|zrobiłeś}. Ziemia nie wymaga odwagi. Wymaga, żeby nie drgnąć.",
     "gate": 1,
@@ -395,7 +395,7 @@
     "cue": "Trzymaj telefon płasko, jak tacę z wodą, i idź. Siedemset siedemdziesiąt siedem kroków. Przechylisz, less zsunie się na cegłę i wracasz.",
     "place": "brama",
     "rite": {
-      "opening": "Nie tędy, mówił Berbeć. Tędy, ale równo.",
+      "opening": "Nie tędy, mówi kartka. Tędy, ale równo.",
       "word": "nie tędy",
       "minutes": 8,
       "rigid": "Siedemset siedemdziesiąt siedem kroków z telefonem płasko, jak z tacą wody. Przechylisz, less zsuwa się na cegłę i wracasz. To jest najdłuższy obrzęd, bo ziemia nie wymaga odwagi, wymaga czasu.",
@@ -451,18 +451,18 @@
     "title": "Siedem punktów",
     "level": "we dwoje",
     "intro": "Anzelm kładzie dłoń na stole, palce rozstawione. „Pięć. Za mało na siedem bram.” Patrzy na twoją drugą rękę, potem na drzwi.",
-    "reveal": "Pięć palców dwojga ludzi na siedmiu punktach. Dwa zostały puste: to są te, na których milczy zawieszka. Jedna dłoń nie wystarczy. To jest liczba palców.",
+    "reveal": "Pięć palców na pięciu z siedmiu punktów. Dwa zostały puste: to są te, na których milczy zawieszka. Telefon nie policzy, czyje to były palce. Ty wiesz.",
     "cue": "Połóż telefon na stole. Potrzebujesz drugiej osoby: pięć palców dwojga ludzi na pięciu z siedmiu punktów naraz, przez trzy sekundy. Telefon nie zliczy więcej, i o to chodzi: zostają dwa puste punkty.",
-    "gate": 7,
     "place": "brama",
     "rite": {
       "opening": "„Pięć. Za mało na siedem bram.”",
       "word": "pięć",
       "minutes": 1,
-      "rigid": "Pięć palców dwojga ludzi na pięciu z siedmiu punktów naraz, trzy sekundy. Telefon nie zliczy więcej, i o to chodzi.",
+      "rigid": "Pięć palców na pięciu z siedmiu punktów naraz, trzy sekundy. Telefon nie zliczy więcej i nie sprawdzi, czyje.",
       "body": "druga osoba obok; bez niej: rozmowa z kimś przez siedem minut, a potem jedna dłoń",
-      "closing": "Zapisano: pięć palców, dwoje ludzi, dwa puste punkty. Jedna dłoń nie wystarczy. Nie jestem sama."
-    }
+      "closing": "Zapisano: pięć palców, dwoje ludzi, dwa puste punkty."
+    },
+    "gate": 7
   },
   {
     "id": "lustro",

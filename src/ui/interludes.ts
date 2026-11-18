@@ -38,6 +38,8 @@ export function withAddress(app: App, i: Interlude): Interlude {
 export function interludeAvailable(app: App, i: Interlude): boolean {
   if (app.state.testMode) return true;
   if (i.place === "laboratorium") return false;
+  // obrzęd siódmej bramy (pięć palców dwojga) jest drugą drogą do rejestru, więc otwiera się po sześciu bramach, nie po rozwiązaniu sprawy 7
+  if (i.id === "siedem-palcow") return app.passed() >= 6;
   if (i.gate !== undefined) { const c = app.caseForGate(i.gate); return !!c && (app.state.solvedCases.includes(c.n) || app.state.testMode); }
   return (i.after ?? 0) <= app.passed();
 }
@@ -85,7 +87,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     setTimeout(() => {
       if (!alive || app.state.interludesDone.includes(it.id)) return;
       const box = h("div", { class: "gatebox pledge" }, h("p", { class: "kicker" }, "Brama drgnęła"),
-        h("p", { class: "muted" }, "Nie otworzyła się. Czujnik nie jest sędzią: możesz spróbować jeszcze raz albo przyjąć tę bramę na słowo. W rejestrze będzie to widać. To nie wstyd, to inny zapis."),
+        h("p", { class: "muted" }, "Nie otworzyła się. Czujnik nie jest sędzią: możesz spróbować jeszcze raz albo przyjąć tę bramę na słowo. W zeszycie będzie to widać. To nie wstyd, to inny zapis."),
         h("div", { class: "verdict" }, h("button", { onclick: () => { const v = h("div"); sec.append(v); box.remove(); reveal(v, `${it.title}: przyjęto na słowo.`); } }, "Przyjmuję na słowo")));
       sec.append(box);
     }, ms);
@@ -321,7 +323,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         running = false;
         // Liczy się oddech, nie czas: tafla musi być gładka. Bez wydechu (mikrofon) albo palca na tafli przy wydechu „calm" nie urośnie.
         if (calm >= 0.7) { finished = true; phaseEl.textContent = "cisza"; count.textContent = `${cycles} / ${cycles} · siedem sekund ciszy`; setTimeout(() => reveal(verdict, `${it.title}: siedem oddechów.`, [h("p", { class: "faint" }, "Dlaczego to działa: ", h("a", { href: "#/o-ciele" }, "co robi z tobą ta gra"))]), 7000); }
-        else { calm = 0; done_cycles = 0; count.textContent = `0 / ${cycles}`; start.disabled = false; start.textContent = "Jeszcze raz"; toast("Tafla drży. Oddychałeś z nią, czy tylko czekałeś? Wydech ma być słyszalny albo palec na tafli."); }
+        else { calm = 0; done_cycles = 0; count.textContent = `0 / ${cycles}`; start.disabled = false; start.textContent = "Jeszcze raz"; toast("Tafla drży. Wydech ma być słyszalny albo palec na tafli."); }
       }
       if (alive) requestAnimationFrame(draw);
     }
@@ -561,7 +563,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
           fill.style.width = `${Math.min(100, (held / 3) * 100)}%`;
           if (held >= 3 && !finished) { finished = true; reveal(verdict, `${it.title}: czysty ton.`); }
         }, 100);
-      } catch { toast("Bez mikrofonu nie da się gwizdać do telefonu. Wróć, kiedy będziesz mógł."); }
+      } catch { toast("Bez mikrofonu nie da się gwizdać do telefonu. Wróć, kiedy będzie mikrofon."); }
     });
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));
   }
@@ -648,7 +650,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       if (!onPath) { reset("Ściana. Wracasz na Opatowską."); return; }
       if (Math.hypot(p.x - 540, p.y - 520) < 30 && !finished) { finished = true; tracing = false; reveal(verdict, `${it.title}: komnata.`); }
     });
-    ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => canvas.addEventListener(ev, () => { if (tracing && !finished) reset("Puściłeś. Wracasz na Opatowską."); }));
+    ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => canvas.addEventListener(ev, () => { if (tracing && !finished) reset("Palec w górze. Powrót na Opatowską."); }));
     function draw() {
       const dark = tracing ? Math.min(0.85, progress / (path.length - 1)) : 0;
       ctx.fillStyle = "#171511"; ctx.fillRect(0, 0, 600, 600);
@@ -674,7 +676,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const verdict = h("div");
     sec.append(bar, status, h("div", { class: "verdict" }, start), verdict);
     let last = 0, lastStep = 0, finished = done || (app.state.steps ?? 0) >= total;
-    const update = () => { const n = app.state.steps ?? 0; fill.style.width = `${Math.min(100, (n / total) * 100)}%`; status.textContent = `${n} / ${total} kroków${n > total - 200 && n < total ? " · powietrze rzednie" : ""}`; document.body.style.filter = n > total - 200 && n < total ? `brightness(${1 - ((n - (total - 200)) / 200) * 0.6})` : ""; if (n >= total && !finished) { finished = true; document.body.style.filter = ""; reveal(verdict, `${it.title}: dotarłeś.`); } };
+    const update = () => { const n = app.state.steps ?? 0; fill.style.width = `${Math.min(100, (n / total) * 100)}%`; status.textContent = `${n} / ${total} kroków${n > total - 200 && n < total ? " · powietrze rzednie" : ""}`; document.body.style.filter = n > total - 200 && n < total ? `brightness(${1 - ((n - (total - 200)) / 200) * 0.6})` : ""; if (n >= total && !finished) { finished = true; document.body.style.filter = ""; reveal(verdict, `${it.title}: na miejscu.`); } };
     const onMotion = (e: DeviceMotionEvent) => { const a = e.accelerationIncludingGravity; if (!a) return; const mag = Math.sqrt((a.x ?? 0) ** 2 + (a.y ?? 0) ** 2 + (a.z ?? 0) ** 2); const now = Date.now(); if (last && mag - last > 1.6 && now - lastStep > 320) { lastStep = now; app.state.steps = (app.state.steps ?? 0) + 1; if (app.state.steps % 10 === 0) save(app.state); update(); } last = mag; };
     start.addEventListener("click", async () => {
       try { const DM = DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> }; if (DM.requestPermission) { const r = await DM.requestPermission(); if (r !== "granted") throw new Error("denied"); } listen("devicemotion", onMotion as EventListener); start.disabled = true; start.textContent = "Liczę kroki"; }

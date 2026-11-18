@@ -56,7 +56,7 @@ export class App {
       if (this.state.readings[String(g)]) continue;
       const c = this.caseForGate(g); if (!c || !this.state.solvedCases.includes(c.n)) continue;
       const when = [...this.state.attempts[c.id] ?? []].reverse().find((a) => a.correct === a.total)?.at ?? 0;
-      if (when && Date.now() - when > 72 * 3600000) { this.state.readings[String(g)] = "archiwum"; this.addNote(`Odczyt wzgórza ${g} z archiwum Fundacji: nikt nie przyszedł, ktoś zostawił.`, "mapa 5/7"); }
+      if (when && Date.now() - when > 72 * 3600000) { this.state.readings[String(g)] = "archiwum"; this.addNote(`Odczyt wzgórza ${g} z archiwum programu: nikt nie przyszedł, ktoś zostawił.`, "mapa 5/7"); }
     }
   }
   isUnlocked(n: number): boolean { const ch = this.chapters.find((c) => c.n === n); return ch ? isChapterUnlocked(this.state, this.cfg, ch, this.now()) : false; }

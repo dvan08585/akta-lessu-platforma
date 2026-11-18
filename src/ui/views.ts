@@ -100,7 +100,7 @@ export function viewMap(app: App): HTMLElement {
   fetchStats(app.cfg.backendUrl).then((st) => {
     if (!st) return;
     const rows = [1, 2, 3, 4, 5, 6, 7].map((n) => { const g = st.gates[String(n)] ?? { solved: 0, gesture: 0 }; return h("p", { class: "mono" }, `${n}  ${"●".repeat(Math.min(10, Math.round((g.gesture / Math.max(1, st.players)) * 10)))}${"○".repeat(10 - Math.min(10, Math.round((g.gesture / Math.max(1, st.players)) * 10)))}  ${g.gesture} przebyło`); });
-    const seventh = st.seventh.total ? ` Siódmą pozycję zostawiło pustą ${Math.round((st.seventh.empty / st.seventh.total) * 100)}% z ${st.seventh.total}.` : "";
+    const seventh = st.seventh.total && (app.passed() >= 6 || app.state.leftSeventhEmpty) ? ` Siódmą pozycję zostawiło pustą ${Math.round((st.seventh.empty / st.seventh.total) * 100)}% z ${st.seventh.total}.` : "";
     const box = h("div", { class: "gatebox community" }, h("h3", {}, "Społeczność"), h("p", { class: "muted" }, `${st.players} biegłych.${app.state.metSilent ? " Nikt nie ma pełnej mapy sam." : ""}${seventh}`), ...rows);
     wisla.after(box);
   });
@@ -197,7 +197,7 @@ export function viewGate(app: App, n: number): HTMLElement {
   }
   if (silentHere && !app.state.metSilent) { app.state.metSilent = true; save(app.state); }
   if (silentHere) sec.append(h("div", { class: "gatebox silent-box" }, h("p", { class: "kicker" }, "Zawieszka milczy"),
-    h("p", { class: "muted" }, "Na tym wzgórzu twoja zawieszka nie reaguje. Dokumenty czytasz i wniosek ustalasz sam. Odczyt z karty innego biegłego dopełnia sprawę: dodaje linię, której nie ma w aktach. Jeśli nikt nie przyjdzie w trzy doby, odczyt przyjdzie z archiwum."),
+    h("p", { class: "muted" }, "Na tym wzgórzu twoja zawieszka nie reaguje. Dokumenty czytasz i wniosek ustalasz bez niej. Odczyt z karty innego biegłego dopełnia sprawę: dodaje linię, której nie ma w aktach. Jeśli nikt nie przyjdzie w trzy doby, odczyt przyjdzie z archiwum."),
     readingBox(app, n)));
   return viewCase(app, c, sec);
 }
@@ -472,7 +472,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     btn.addEventListener("click", async () => {
       const parts = input.value.trim().toLowerCase().split(/[\s,;]+/).filter(Boolean);
       const own = await halfKey(app.state.seed);
-      if (parts.length < (needTwo ? 2 : 1)) { toast(needTwo ? "Otworzyłeś, czego nie trzeba było. Tym razem potrzebujesz dwóch oddechów." : "Wpisz połowę klucza z czyjejś karty."); return; }
+      if (parts.length < (needTwo ? 2 : 1)) { toast(needTwo ? "Brama pod Żmigrodem stoi otwarta. Tym razem potrzeba dwóch oddechów." : "Wpisz połowę klucza z czyjejś karty."); return; }
       for (const v of parts) {
         if (!looksLikeHalfKey(v) || !(await verifyCheck(v))) { toast("To nie jest połowa klucza. Siedem znaków, z czyjejś karty, nie zmyślone."); return; }
         if (v === own) { toast(addrText(app, p.refuse)); return; }
@@ -495,7 +495,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   function renderRegister() {
     const p = c.pair!;
     const reg = h("article", { class: "doc mono" }, h("h4", {}, "Rejestr statusów"), h("div", { class: "src" }, "Fundacja Sandomierska Memoria. Do uzupełnienia przez biegłego."));
-    for (const line of p.register.split("\n")) reg.append(h("p", {}, line));
+    for (const line of p.register.split("\n")) reg.append(h("p", {}, line.startsWith("1.") && app.state.unstableGates.includes(1) ? "1. Punkt 1, Brama Pierwsza (Wzg. Żmigrodzkie): otwarty przez biegłego (niestabilny)" : line));
     const yes = h("button", {}, p.yes);
     const no = h("button", { class: "primary" }, p.no);
     const box = h("div", { class: "pair" }, reg, h("p", { class: "quote" }, addrText(app, p.registerQuestion)), h("div", { class: "verdict" }, no, yes));
@@ -640,7 +640,7 @@ export function viewAkta(app: App): HTMLElement {
     h("p", { class: "muted" }, `${silentTxt}Nikt nie ma pełnej mapy sam. Odczyty z kart innych biegłych otwierają to, co u ciebie milczy.${have.length ? ` Masz odczyty: ${have.join(", ")}.` : ""}`),
     readingBox(app)));
 
-  { const nb = newsletterBox(app, "Nowe sprawy przychodzą co dwa tygodnie. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
+  { const nb = newsletterBox(app, "Nowe sprawy przychodzą co tydzień. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
 
   sec.append(h("p", { class: "faint", style: "margin-top:2rem" }, h("a", { href: "#/ustawienia" }, "Ustawienia: światło, forma, narzędzia, zaczęcie od nowa →")));
   return sec;
@@ -654,7 +654,7 @@ export function viewBody(app: App): HTMLElement {
   sec.append(
     P("Kilka scen prosi twoje ciało o coś, czego zwykle nie robisz: nucisz, oddychasz wolniej, trzymasz ręce nieruchomo, słuchasz dwoma uszami naraz. Nie obiecujemy, że to leczy. Piszemy, co o tym wiadomo."),
     h("h3", {}, "Oddech (Woda)"),
-    P("Oddech w tempie około sześciu na minutę synchronizuje rytm serca z oddechem i daje największą zmienność rytmu serca. Przegląd badań z 2018 roku i metaanaliza z 2024 roku na 1133 osobach wiążą wolny oddech z niższym napięciem i stresem. Scena „Woda” prowadzi dokładnie to tempo: pięć sekund wdech, pięć wydech, dziesięć razy."),
+    P("Oddech w tempie około sześciu na minutę synchronizuje rytm serca z oddechem i daje największą zmienność rytmu serca. Przegląd badań z 2018 roku i metaanaliza z 2024 roku na 1133 osobach wiążą wolny oddech z niższym napięciem i stresem. Scena „Woda” prowadzi dokładnie to tempo: pięć sekund wdech, pięć wydech, siedem razy i siedem sekund ciszy."),
     h("h3", {}, "Nucenie (Płyta Chladniego)"),
     P("Nucenie zwiększa ilość tlenku azotu w nosie kilkunastokrotnie w porównaniu ze zwykłym wydechem (badanie na dziesięciu osobach z 2002 roku). Czy to ma znaczenie dla zdrowia, nie wiadomo. Wiadomo, że nucenie to wydłużony wydech przez nos, czyli znów wolny oddech."),
     h("h3", {}, "Dudnienie różnicowe (Ton dolny)"),
@@ -726,7 +726,7 @@ export function viewOnboarding(app: App): HTMLElement {
     bell = new Audio(import.meta.env.BASE_URL + "audio/dzwon-piotr.mp3"); bell.volume = 0.7; bell.play().catch(() => { /* bez dźwięku też przejdzie */ });
     try { navigator.vibrate?.([120, 880, 120, 880, 120]); } catch { /* */ }
     btn.remove();
-    add(line("Sandomierz. Październik. Dzwon Piotr uderza dwanaście razy dziennie w coś, co odpowiada z dołu."));
+    add(line("Sandomierz. Październik. Dzwon Piotr uderza dwanaście razy. Pies kładzie uszy przy dziewiątym."));
     const pend = h("div", { class: "pendant big", "data-heat": "0" }, flint(104, flintSeed(app.state.seed)));
     const txt = cue("Połóż palec na kamieniu i nie puszczaj.");
     const hold = h("div", { class: "holdzone fade-in" }, pend);

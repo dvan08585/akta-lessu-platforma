@@ -28,7 +28,7 @@
   {
     "id": "m04",
     "title": "Trzy obroty",
-    "doc": "Cocker, trzynaście kilogramów, biała plamka na piersi. Przed położeniem się obraca się trzy razy. Nigdy dwa. Nigdy cztery. Na kocu, na bruku, na kamiennej posadzce krypty. Trzy.",
+    "doc": "Cocker, trzynaście kilogramów, biała plamka na piersi. Przed położeniem się obraca się trzy razy. Nigdy dwa. Nigdy cztery. Na kocu, na bruku, na kamiennej posadzce krypty. Trzy. Raz nie położył się wcale: na schodach w dół przy Ratuszu stanął i nie poszedł.",
     "q": "Gdzie Amor nie obrócił się ani razu?",
     "options": [
       "Na kocu w samochodzie",
@@ -41,7 +41,7 @@
   {
     "id": "m05",
     "title": "Ucho Igielne",
-    "doc": "Furta Dominikańska, wąskie przejście w murze, zwane Uchem Igielnym. Jeden człowiek na raz. Przewodnicy: „kto przejdzie, temu odpuszczone”. Halina w 1287 prowadziła trzystu korytarzem na dwóch ludzi szerokości.",
+    "doc": "Furta Dominikańska, wąskie przejście w murze, zwane Uchem Igielnym. Jeden człowiek na raz. Przewodnicy: „kto przejdzie, temu odpuszczone”. Halina w 1287 prowadziła trzystu korytarzem na jednego człowieka szerokości.",
     "q": "Co łączy furtę z korytarzem?",
     "options": [
       "Obie są z cegły",
@@ -171,8 +171,8 @@
   {
     "id": "m15",
     "title": "Łupki",
-    "doc": "Góry Pieprzowe: łupki kambryjskie, pięćset milionów lat. Pod butami trzeszczą jak pieprz w młynku. Stąd nazwa. Babcia Helena: „stoisz na najstarszej ziemi w tym kraju, dziecko”.",
-    "q": "Dlaczego Pieprzowe?",
+    "doc": "Góry Pieprzowe: łupki kambryjskie, pięćset milionów lat. Pod butami trzeszczą jak pieprz w młynku. Babcia Helena mówiła, że stąd nazwa; przewodniki mówią, że od wyglądu zwietrzeliny. Babcia Helena: „stoisz na najstarszej ziemi w tym kraju, dziecko”.",
+    "q": "Skąd nazwa według babci Heleny?",
     "options": [
       "Od koloru",
       "Od dźwięku łupków pod stopami",
@@ -184,7 +184,7 @@
   {
     "id": "m16",
     "title": "Dzika róża",
-    "doc": "Przy ścieżce na Pieprzówki rosną dzikie róże, ostatnie kwitną w październiku. Podobno kiedyś było ich mnóstwo. Ktoś je policzył w 1958: tysiąc dwieście krzewów. Dziś kilkadziesiąt.",
+    "doc": "Przy ścieżce na Pieprzówki rosną dzikie róże, ostatnie kwitną w październiku. Podobno kiedyś było ich mnóstwo. Ktoś je policzył w 1958: tysiąc dwieście krzewów. Dziś mniej.",
     "q": "Co się stało z różami?",
     "options": [
       "Wymarzły",
@@ -214,7 +214,7 @@
     "q": "Skąd pani Wanda wie, że ktoś idzie?",
     "options": [
       "Ma kamerę",
-      "Nie śpi i słyszy schody",
+      "Nie wiadomo; w tym hotelu nikt o to nie pyta",
       "Zgaduje",
       "Pies ją uprzedza"
     ],
@@ -249,11 +249,11 @@
   {
     "id": "m21",
     "title": "Studnia bez wody",
-    "doc": "Na Rynku stoi drewniana studnia z kołowrotkiem i gontowym daszkiem. Atrapa: pod nią nie ma wody. Pod nią jest piaskowiec, pod piaskowcem korytarze, pod korytarzami głębiej.",
+    "doc": "Na Rynku stoi drewniana studnia z kołowrotkiem i gontowym daszkiem. Atrapa: pod nią nie ma wody. Pod nią jest less, pod lessem piaskowiec, w lessie korytarze, pod korytarzami głębiej.",
     "q": "Co jest pod studnią?",
     "options": [
       "Woda",
-      "Piaskowiec i korytarze",
+      "Less, korytarze i piaskowiec",
       "Skarb",
       "Beton"
     ],
@@ -261,8 +261,8 @@
   },
   {
     "id": "m22",
-    "title": "Dziewięć pokoi",
-    "doc": "Profesor mieszkał dwa tygodnie w pokoju przy schodach, po drodze do siódemki. Płacił gotówką z góry, nie jadał śniadań. Schodził do piwnicy po słoiki kompotu. Pani Wanda mówi, że po kompot Heleny.",
+    "title": "Pokój przy schodach",
+    "doc": "Profesor mieszkał dwa tygodnie w pokoju przy schodach, po drodze do siódemki. Płacił gotówką z góry, nie jadał śniadań. Schodził do piwnicy po słoiki kompotu. Pani Wanda mówi, że po kompot Heleny. Helena mieszkała na Opatowskiej, trzy domy dalej.",
     "q": "Co w tym nie gra?",
     "options": [
       "Nic",
@@ -305,7 +305,7 @@
     "q": "Po co kasztelan kazał zapisać gołębia?",
     "options": [
       "Bo liczył inwentarz",
-      "Żeby ktoś kiedyś zrozumiał, skąd przyszedł znak",
+      "Żeby ktoś kiedyś policzył to, co kasztelan policzył",
       "Bo gołąb był drogi",
       "Z nudów"
     ],
@@ -431,7 +431,7 @@
   {
     "id": "m35",
     "title": "Sto dwadzieścia trzy dni",
-    "doc": "Cztery miesiące od śmierci matki. Aneta nie liczyła. Dni liczyły się same. Głos matki zniknął z pamięci pierwszy, przed twarzą, przed zapachem.",
+    "doc": "Cztery miesiące od śmierci matki. Aneta nie liczyła. Dni liczyły się same. Głos matki zniknął z pamięci pierwszy, przed twarzą, przed zapachem. Pismo zostało: kartka w kieszeni.",
     "q": "Co zostaje najdłużej?",
     "options": [
       "Głos",
@@ -470,11 +470,11 @@
   {
     "id": "m38",
     "title": "470 metrów",
-    "doc": "Podziemna Trasa Turystyczna: 470 metrów, 34 komory, kilka metrów pod ziemią. Technicy policji przeszli ją całą. „Nic niezwykłego.” Profesor rysował tunele głębsze.",
+    "doc": "Podziemna Trasa Turystyczna: 470 metrów, 34 komory, kilka metrów pod ziemią. Technicy policji przeszli ją całą. Zawalisko w bocznym korytarzu zabezpieczyli, dalej nie weszli. Profesor rysował tunele głębsze.",
     "q": "Co policja sprawdziła, a czego nie?",
     "options": [
       "Wszystko",
-      "Trasę; szczelina za zawaleniem jest dwadzieścia metrów dalej i głębiej",
+      "Trasę; nie to, co profesor rysował niżej",
       "Nic",
       "Tylko bilety"
     ],
@@ -483,7 +483,7 @@
   {
     "id": "m39",
     "title": "4,1 ppm",
-    "doc": "Miernik siarkowodoru przy kracie: 4,1 ppm, gradient rosnący. Próg zawodowy: dziesięć, chwilowo. Maska z filtrem zamówiona w Kielcach, dostawa poniedziałek.",
+    "doc": "Miernik siarkowodoru przy kracie: 4,1 ppm, gradient rosnący. Próg zawodowy: dziesięć, chwilowo. Maska z filtrem na siarkowodór zamówiona w Kielcach, dostawa poniedziałek. Na brak tlenu filtr nic nie da, wie o tym.",
     "q": "Kiedy przyjedzie maska?",
     "options": [
       "W poniedziałek",
@@ -538,7 +538,7 @@
     "doc": "Ktoś zainstalował na laptopie geologa program czytający każdy klawisz. Raport o korytarzach leży na skompromitowanym dysku. Aneta nie otworzy laptopa. Pisze w zeszycie.",
     "q": "Kto mógł to zainstalować?",
     "options": [
-      "Pani Wanda",
+      "Komisarz Zieliński",
       "Ktoś, kto miał dostęp do pokoju, i wiedział, czego szukać",
       "Policja",
       "Nikt, to wirus"
@@ -548,7 +548,7 @@
   {
     "id": "m44",
     "title": "Rtęć",
-    "doc": "Toksykologia: rtęć, w małych dawkach, długo, w czymś, co profesor pił codziennie. Ktoś miał dostęp do jego kuchni w Krakowie. Analiza trwa tygodnie, pogrzeb czeka.",
+    "doc": "Toksykologia: rtęć, w małych dawkach, długo, w czymś, co profesor pił codziennie. Ktoś miał dostęp do jego kuchni w Krakowie. Analiza trwała tygodnie. Pogrzeb czekał.",
     "q": "Co zdradza sposób podania?",
     "options": [
       "Pośpiech",
@@ -561,7 +561,7 @@
   {
     "id": "m45",
     "title": "Sufragania",
-    "doc": "Marek Berbeć pracuje w sufraganii przy katedrze. Archiwum kościelne. Prostuje krawędzie dokumentów jak ojciec. Od trzech dni wie coś, czego nie powiedział.",
+    "doc": "Marek Berbeć pracuje w sufraganii przy katedrze. Archiwum kościelne. Prostuje krawędzie dokumentów jak ojciec, jak dziadek; w kronice z 1287 jest kasztelan Berbeć. Od trzech dni wie coś, czego nie powiedział.",
     "q": "Co znaczy „prostowanie” w tej rodzinie?",
     "options": [
       "Nawyk",
@@ -665,8 +665,8 @@
   {
     "id": "m53",
     "title": "Kwarc pod naciskiem",
-    "doc": "Kwarc ściskany daje napięcie. Piezoelektryczność. Od milionów lat, pod ziemią, w ciemności. Halina uderzyła krzemieniem o krawędź otworu z całej siły i kamień odpowiedział błyskiem.",
-    "q": "Co odpowiedziało Halinie?",
+    "doc": "Kwarc ściskany daje napięcie. Piezoelektryczność. Od milionów lat, pod ziemią, w ciemności. Krzemień uderzony z całej siły o krawędź kwarcu dostaje odpowiedź: błysk.",
+    "q": "Co odpowiada na uderzenie?",
     "options": [
       "Bóg",
       "Fizyka kwarcu",
@@ -678,11 +678,11 @@
   {
     "id": "m54",
     "title": "Obelisk",
-    "doc": "Komnata pod ziemią: obelisk z żyłkami krzemienia na cokole o siedmiu bokach. Nad nim owalny otwór w sklepieniu, w górę, w metry skały. Tamtędy wyleciał gołąb.",
+    "doc": "Komnata pod ziemią: obelisk z żyłkami krzemienia na cokole o siedmiu bokach. Nad nim owalny otwór w sklepieniu, w górę, w metry skały.",
     "q": "Dokąd prowadzi otwór?",
     "options": [
       "Na Rynek",
-      "Na powierzchnię, gdzieś nad Starym Wzgórzem",
+      "W górę, przez metry skały; nie wiadomo dokąd",
       "Do rzeki",
       "Nigdzie"
     ],
@@ -731,12 +731,12 @@
     "id": "m58",
     "title": "Barka",
     "doc": "Z rzeki dochodził dźwięk barki: niski, motorowy, z drżeniem, które miało barwę granatową i kształt podłużny. Woda niosła dźwięk inaczej niż powietrze: głębiej, z pogłosem w kościach stóp.",
-    "q": "Co słyszy geolożka po trzeciej bramie?",
+    "q": "Jak woda niesie dźwięk?",
     "options": [
-      "To samo co wszyscy",
-      "Barwę dźwięku",
-      "Nic",
-      "Tylko dzwon"
+      "Tak samo jak powietrze",
+      "Głębiej, z pogłosem w kościach stóp",
+      "Ciszej",
+      "Nie niesie"
     ],
     "answer": 1
   },
@@ -755,7 +755,7 @@
   },
   {
     "id": "m61",
-    "title": "Siedem złotych, raz jeszcze",
+    "title": "Kasa na Pieprzówkach",
     "doc": "Kasa na Pieprzówkach: kobieta w polarze, która nie podnosi wzroku od telefonu. Tablica wyblakła od słońca, mapa bez dolnego rogu. Luneta na słupku obrócona w stronę miasta.",
     "q": "Czego brakuje na mapie szlaków?",
     "options": [
