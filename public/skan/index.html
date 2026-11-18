@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skan</title>
+<meta name="robots" content="noindex">
+<style>
+  :root { color-scheme: dark; --bg: #0e0d0b; --ink: #e8e0cf; --dim: #a39a86; --sand: #c9a86a; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; overflow: hidden; }
+  #c { position: fixed; inset: 0; width: 100%; height: 100%; touch-action: none; }
+  #ui { position: fixed; left: 0; right: 0; top: 0; padding: calc(10px + env(safe-area-inset-top)) 14px 10px; background: linear-gradient(to bottom, rgba(14,13,11,0.92), rgba(14,13,11,0)); pointer-events: none; }
+  #ui * { pointer-events: auto; }
+  .kicker { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); margin: 0 0 4px; }
+  h1 { font-size: 1.1rem; font-weight: 400; margin: 0 0 8px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button, label.btn { font: inherit; font-size: 0.9rem; padding: 8px 12px; border: 1px solid var(--dim); border-radius: 6px; background: rgba(14,13,11,0.7); color: var(--ink); cursor: pointer; }
+  button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  input[type=file] { display: none; }
+  #status { font-size: 0.85rem; color: var(--dim); margin-top: 6px; min-height: 1.2em; }
+  #hint { position: fixed; left: 14px; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom)); font-size: 0.85rem; color: var(--dim); background: rgba(14,13,11,0.7); padding: 8px 10px; border-radius: 6px; }
+  a { color: var(--sand); }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">
+  <p class="kicker">Laboratorium · próba</p>
+  <h1>Skan miejsca w telefonie</h1>
+  <div class="row">
+    <button class="primary" id="demo">Symulacja: komnata</button>
+    <label class="btn" for="file">Wczytaj skan (.splat / .ply)</label>
+    <input type="file" id="file" accept=".splat,.ply">
+    <button id="reset">Widok od nowa</button>
+    <a href="../?b=skan" style="margin-left:auto">← Akta</a>
+  </div>
+  <div id="status">Nic nie wczytano.</div>
+</div>
+<div id="hint">Jeden palec obraca, dwa palce przesuwają i przybliżają. Skan robi się aplikacją na telefonie (Scaniverse, Polycam, Luma, KIRI), eksport jako .splat albo .ply; plik wczytuje się tutaj, bez wysyłania nigdzie.</div>
+<script type="module">
+import * as SPLAT from "../vendor/gsplat.js";
+
+const canvas = document.getElementById("c");
+const status = document.getElementById("status");
+const renderer = new SPLAT.WebGLRenderer(canvas);
+const scene = new SPLAT.Scene();
+const camera = new SPLAT.Camera();
+const controls = new SPLAT.OrbitControls(camera, canvas, 0.6, 0.15, 1.1); // kamera blisko środka: skan wnętrza ogląda się od środka
+controls.minZoom = 0.2; controls.maxZoom = 12; controls.zoomSpeed = 1.2;
+
+function frame() { controls.update(); renderer.render(scene, camera); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+addEventListener("resize", () => renderer.setSize(innerWidth, innerHeight));
+renderer.setSize(innerWidth, innerHeight);
+
+function resetView() { controls.setCameraTarget(new SPLAT.Vector3(0, 0, 0)); }
+document.getElementById("reset").addEventListener("click", resetView);
+
+// Plik ze skanera w telefonie. Nic nie opuszcza urządzenia.
+document.getElementById("file").addEventListener("change", async (e) => {
+  const f = e.target.files?.[0]; if (!f) return;
+  status.textContent = `Wczytuję ${f.name} (${(f.size / 1048576).toFixed(1)} MB)…`;
+  scene.reset();
+  try {
+    if (/\.ply$/i.test(f.name)) await SPLAT.PLYLoader.LoadFromFileAsync(f, scene, (p) => { status.textContent = `Wczytuję ${Math.round(p * 100)}%`; });
+    else await SPLAT.Loader.LoadFromFileAsync(f, scene, (p) => { status.textContent = `Wczytuję ${Math.round(p * 100)}%`; });
+    status.textContent = `${f.name}: ${scene.objects.reduce((a, o) => a + (o.data?.vertexCount ?? 0), 0).toLocaleString("pl-PL")} splatów.`;
+    resetView();
+  } catch (err) { status.textContent = "Nie udało się wczytać: " + (err?.message ?? err); }
+});
+
+// Symulacja: syntetyczny skan siedmiobocznej komnaty, żeby zobaczyć, jak taki model działa na telefonie, zanim ktoś cokolwiek nagra.
+// Format .splat: 32 bajty na splat: pozycja (3×float32), skala (3×float32), kolor RGBA (4×uint8), obrót jako kwaternion (4×uint8, 128 = 0).
+function demoSplat() {
+  const N = 7, R = 3.2, H = 2.6;
+  const out = [];
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const push = (x, y, z, s, r, g, b, a = 255) => {
+    out.push({ x, y, z, s, r, g, b, a });
+  };
+  // less: ciepły beż z ziarnem; podłoga kamienna: szarobrązowa; sklepienie ciemniejsze
+  for (let i = 0; i < N; i++) {
+    const a0 = (i / N) * Math.PI * 2, a1 = ((i + 1) / N) * Math.PI * 2;
+    const x0 = Math.cos(a0) * R, z0 = Math.sin(a0) * R, x1 = Math.cos(a1) * R, z1 = Math.sin(a1) * R;
+    for (let k = 0; k < 6000; k++) {
+      const t = Math.random(), y = rnd(0, H);
+      const nx = x0 + (x1 - x0) * t, nz = z0 + (z1 - z0) * t;
+      const jitter = rnd(-0.04, 0.04);
+      const tone = 150 + Math.floor(rnd(-25, 25)) + (Math.sin(y * 9) > 0.7 ? 18 : 0); // pasy lessu
+      // wnęka od podłogi do sklepienia w środku każdej ściany
+      const inNiche = Math.abs(t - 0.5) < 0.12;
+      const depth = inNiche ? 0.45 : 0;
+      const cx = nx * (1 + depth / R), cz = nz * (1 + depth / R);
+      push(cx + jitter, -(y - H / 2), cz + jitter, rnd(0.015, 0.035), tone + 20, tone, tone - 35);
+    }
+  }
+  for (let k = 0; k < 16000; k++) { // podłoga: płyty
+    const r = Math.sqrt(Math.random()) * R * 0.98, a = Math.random() * Math.PI * 2;
+    const x = Math.cos(a) * r, z = Math.sin(a) * r;
+    const seam = (Math.abs((x % 0.8 + 0.8) % 0.8 - 0.4) < 0.03 || Math.abs((z % 0.8 + 0.8) % 0.8 - 0.4) < 0.03) ? -30 : 0;
+    const tone = 105 + Math.floor(rnd(-15, 15)) + seam;
+    push(x, H / 2, z, rnd(0.015, 0.03), tone, tone - 5, tone - 15);
+  }
+  for (let k = 0; k < 6000; k++) { // sklepienie
+    const r = Math.sqrt(Math.random()) * R, a = Math.random() * Math.PI * 2;
+    const x = Math.cos(a) * r, z = Math.sin(a) * r, y = H + 0.6 * (1 - (r / R) ** 2);
+    const tone = 95 + Math.floor(rnd(-20, 20));
+    push(x, -(y - H / 2), z, rnd(0.02, 0.045), tone + 10, tone, tone - 20);
+  }
+  for (let k = 0; k < 900; k++) { // cokół z płytą na środku
+    const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * 0.55, y = rnd(0, 0.5);
+    const top = Math.random() < 0.35;
+    push(Math.cos(a) * (top ? r : 0.55), -(top ? 0.5 : y) + H / 2, Math.sin(a) * (top ? r : 0.55), rnd(0.02, 0.05), 120, 112, 98);
+  }
+  const buf = new ArrayBuffer(out.length * 32); const dv = new DataView(buf);
+  out.forEach((p, i) => {
+    const o = i * 32;
+    dv.setFloat32(o, p.x, true); dv.setFloat32(o + 4, p.y, true); dv.setFloat32(o + 8, p.z, true);
+    dv.setFloat32(o + 12, p.s, true); dv.setFloat32(o + 16, p.s, true); dv.setFloat32(o + 20, p.s, true);
+    dv.setUint8(o + 24, p.r); dv.setUint8(o + 25, p.g); dv.setUint8(o + 26, p.b); dv.setUint8(o + 27, p.a);
+    dv.setUint8(o + 28, 255); dv.setUint8(o + 29, 128); dv.setUint8(o + 30, 128); dv.setUint8(o + 31, 128);
+  });
+  return buf;
+}
+document.getElementById("demo").addEventListener("click", () => {
+  scene.reset();
+  const buf = demoSplat();
+  SPLAT.Loader.LoadFromArrayBuffer(buf, scene);
+  status.textContent = `Symulacja: ${(buf.byteLength / 32).toLocaleString("pl-PL")} splatów, wygenerowane w telefonie. Prawdziwy skan ma ich od 300 tysięcy do 2 milionów.`;
+  resetView();
+});
+const q = new URLSearchParams(location.search);
+if (q.get("f")) { status.textContent = "Wczytuję…"; SPLAT.Loader.LoadAsync(q.get("f"), scene, (p) => { status.textContent = `Wczytuję ${Math.round(p * 100)}%`; }).then(() => { status.textContent = "Wczytano."; resetView(); }).catch((e) => { status.textContent = "Nie udało się: " + e; }); }
+</script>
+</body>
+</html>
