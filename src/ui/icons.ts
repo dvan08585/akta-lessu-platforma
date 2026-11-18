@@ -8,7 +8,7 @@ const P: Record<string, string> = {
   // nawigacja: mapa (siedem wzgórz w profilu), listy (koperta), zeszyt (notes z paskiem), akta (teczka z pieczęcią)
   "nav-mapa": "M3 17c2-4 4-6 6-6s3 3 5 3 3-5 7-5M3 20h18",
   "nav-listy": "M3 6h18v12H3zM3 7l9 6 9-6",
-  klepsydra: "M7 3h10M7 21h10M8 3c0 5 4 5.5 4 9s-4 4-4 9M16 3c0 5-4 5.5-4 9s4 4 4 9M9.5 7.5h5", // klepsydra: list w drodze
+  klepsydra: "M5.5 2.5h13M5.5 21.5h13M7.5 2.5v1.2c0 3.6 2.2 5.6 3.6 7.3.5.6.5 1.4 0 2-1.4 1.7-3.6 3.7-3.6 7.3v1.2M16.5 2.5v1.2c0 3.6-2.2 5.6-3.6 7.3-.5.6-.5 1.4 0 2 1.4 1.7 3.6 3.7 3.6 7.3v1.2M12 12.5v4", // klepsydra: list w drodze
   "nav-zeszyt": "M6 3h12v18H6zM9 3v18M12 8h4M12 12h4",
   "nav-akta": "M3 7h6l2 2h10v11H3zM14 13a2 2 0 1 0 4 0 2 2 0 0 0-4 0",
   pair: "M8 6l4 2 1 4-3 3H6l-2-3 1-4zM16 9l4 2 1 4-3 3h-4l-2-3 1-4zM12 15v4",            // dwie zawieszki, jedna podaje drugiej
@@ -30,12 +30,17 @@ const P: Record<string, string> = {
   steps: "M7 20l2-6 3 1-2 6zM13 12l2-6 3 1-2 6z",                                         // kroki
   duet: "M9 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM12 15V4l7 2M19 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6z", // nuty
 };
+const F: Record<string, string> = {
+  klepsydra: "M9.2 20.3c0-2.6 1.4-4 2.8-5.6 1.4 1.6 2.8 3 2.8 5.6zM9.9 4.2h4.2c0 1.3-.6 2.1-2.1 3.3-1.5-1.2-2.1-2-2.1-3.3z",
+};
 export function icon(type: string): SVGSVGElement {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("viewBox", "0 0 24 24"); svg.setAttribute("width", "20"); svg.setAttribute("height", "20"); svg.setAttribute("aria-hidden", "true");
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   path.setAttribute("d", P[type] ?? P.plate); path.setAttribute("fill", "none"); path.setAttribute("stroke", "currentColor"); path.setAttribute("stroke-width", "1.5"); path.setAttribute("stroke-linecap", "round"); path.setAttribute("stroke-linejoin", "round");
-  svg.append(path); return svg;
+  svg.append(path);
+  if (F[type]) { const f = document.createElementNS("http://www.w3.org/2000/svg", "path"); f.setAttribute("d", F[type]); f.setAttribute("fill", "currentColor"); f.setAttribute("opacity", "0.85"); svg.append(f); }
+  return svg;
 }
 
 /**

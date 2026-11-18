@@ -18,6 +18,7 @@
 .map-wrap .gate.silent polygon { stroke-dasharray: 2 3; }
 .map-wrap .gate text { fill: #e8e0cf; font-size: 16px; text-anchor: middle; paint-order: stroke; stroke: #141210; stroke-width: 3px; } /* panel jest ciemny w obu trybach; numer zawsze jasny */
 .map-wrap .gate .hit { fill: transparent; }
+.map-wrap .gate .lock { fill: none; stroke: #e8e0cf; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: 0.75; paint-order: stroke; }
 .map-wrap .gate:hover circle { stroke: var(--ink); }
 .map-wrap .aneta { fill: var(--ink); }
 .map-wrap .amor { fill: var(--ink-dim); }

@@ -167,7 +167,7 @@ button.body:hover, .btn.body:hover { box-shadow: 0 0 0 1px var(--sand), 0 0 20px
 /* Listy: coś się dzieje w toku, nie zwykły akapit. */
 .pending { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.5rem; padding: 0.7rem 0.9rem; border: 1px dashed var(--line); border-radius: var(--radius); color: var(--ink-dim); font-size: 0.9rem; }
 .pending .ico { flex: none; color: var(--sand); display: flex; }
-.pending .ico svg { width: 20px; height: 20px; }
+.pending .ico svg { width: 26px; height: 26px; }
 .pending .dots { display: inline-flex; gap: 3px; flex: none; }
 .pending .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--sand); animation: dot 1.4s infinite; }
 .pending .dots i:nth-child(2) { animation-delay: 0.2s; } .pending .dots i:nth-child(3) { animation-delay: 0.4s; }

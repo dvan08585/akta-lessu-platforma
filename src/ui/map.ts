@@ -61,7 +61,9 @@ export function renderMap(ctx: MapCtx): HTMLElement {
     gate.append(s("rect", { class: "hit", x: "-28", y: "-28", width: "56", height: "56" }));
     gate.append(s("circle", { r: "22" }));
     gate.append(s("polygon", { points: hept(15) }));
-    gate.append(s("text", { y: "42" }, String(g.n)));
+    // Numer dopiero tam, gdzie brama jest otwarta; zamknięta pokazuje kłódkę (numer zostaje w opisie dla czytnika).
+    if (status === "locked") gate.append(s("path", { class: "lock", transform: "translate(-7.8 28.5) scale(0.65)", d: "M6 10V7a6 6 0 0 1 12 0v3M4 10h16v11H4zM12 14v3" }));
+    else gate.append(s("text", { y: "42" }, String(g.n)));
     gate.addEventListener("click", () => go(`#/brama/${g.n}`));
     gate.addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Enter") go(`#/brama/${g.n}`); });
     svg.append(gate);
