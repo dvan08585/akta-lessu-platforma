@@ -8,7 +8,7 @@ const P: Record<string, string> = {
   // nawigacja: mapa (siedem wzgórz w profilu), listy (koperta), zeszyt (notes z paskiem), akta (teczka z pieczęcią)
   "nav-mapa": "M3 17c2-4 4-6 6-6s3 3 5 3 3-5 7-5M3 20h18",
   "nav-listy": "M3 6h18v12H3zM3 7l9 6 9-6",
-  "list-czeka": "M3 6h11v4M3 6l7 5 4-2.6M3 6v12h9M15 12h6M15 21h6M16 12c0 3 4 3 4 6M20 12c0 3-4 3-4 6M16 21c0-3 4-3 4-6M20 21c0-3-4-3-4-6", // koperta i klepsydra: list w drodze
+  klepsydra: "M7 3h10M7 21h10M8 3c0 5 4 5.5 4 9s-4 4-4 9M16 3c0 5-4 5.5-4 9s4 4 4 9M9.5 7.5h5", // klepsydra: list w drodze
   "nav-zeszyt": "M6 3h12v18H6zM9 3v18M12 8h4M12 12h4",
   "nav-akta": "M3 7h6l2 2h10v11H3zM14 13a2 2 0 1 0 4 0 2 2 0 0 0-4 0",
   pair: "M8 6l4 2 1 4-3 3H6l-2-3 1-4zM16 9l4 2 1 4-3 3h-4l-2-3 1-4zM12 15v4",            // dwie zawieszki, jedna podaje drugiej

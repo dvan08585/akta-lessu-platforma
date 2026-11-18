@@ -701,7 +701,7 @@ export function viewInbox(app: App): HTMLElement {
     const ms = inbox.scheduled[soon.id] - Date.now();
     const hrs = Math.round(ms / 3600000); const mins = Math.max(1, Math.round(ms / 60000));
     const when = ms < 3600000 ? `za ${mins} ${plural(mins, "minutę", "minuty", "minut")}` : `za ${hrs} ${plural(hrs, "godzinę", "godziny", "godzin")}`;
-    sec.append(h("div", { class: "pending", role: "status" }, h("span", { class: "ico" }, icon("list-czeka")), h("span", {}, `List od: ${soon.from}. Przyjdzie ${when}. Ludzie w tym mieście nie odpowiadają od razu.`)));
+    sec.append(h("div", { class: "pending", role: "status" }, h("span", { class: "ico" }, icon("klepsydra")), h("span", {}, `List od: ${soon.from}. Przyjdzie ${when}. Ludzie w tym mieście nie odpowiadają od razu.`)));
   }
   save(app.state);
   return sec;
