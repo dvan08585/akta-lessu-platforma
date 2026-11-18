@@ -4,6 +4,6 @@ import { defineConfig } from "vite";
 export default defineConfig({
   base: "/akta-lessu-platforma/",
   define: { __BUILD__: JSON.stringify(Date.now().toString(36)) }, // znacznik budowy do linków poza aplikacją (omija pamięć podręczną HTML)
-  build: { target: "es2022", sourcemap: false },
+  build: { target: ["es2020", "safari14", "chrome90"], sourcemap: false },
   test: { environment: "node" },
 });

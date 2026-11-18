@@ -228,7 +228,7 @@ export function dailyBox(app: App): HTMLElement {
   const ask = h("button", { class: "next" }, "Ustal ", arrow("r")); // obrysowany przycisk ze strzałką, nie samo słowo
   ask.addEventListener("click", () => {
     const opts = h("div", { class: "opts", role: "radiogroup" });
-    m.options.forEach((o, i) => { const inp = h("input", { type: "radio", name: "daily", value: String(i) }); opts.append(h("label", {}, inp, addrText(app, o))); });
+    m.options.forEach((o, i) => { const inp = h("input", { type: "radio", name: "daily", value: String(i) }); const lab = h("label", {}, inp, addrText(app, o)); inp.addEventListener("change", () => { opts.querySelectorAll("label").forEach((l) => l.classList.remove("checked")); lab.classList.add("checked"); }); opts.append(lab); });
     const btn = h("button", { class: "primary" }, "Sprawdź");
     btn.addEventListener("click", () => {
       const el = box.querySelector<HTMLInputElement>('input[name="daily"]:checked'); if (!el) { toast("Wybierz odpowiedź."); return; }
@@ -278,7 +278,7 @@ function docEl(app: App, d: Doc): HTMLElement {
     el.append(h("div", { class: "audio" }, audio, h("div", { class: "src" }, "Jeśli nic nie słyszysz, połóż telefon na dłoni.")));
   }
   const footer = d.footer ?? app.cfg.footer;
-  if (footer) el.append(h("div", { class: `footer ${app.state.sawFooter ? "seen" : ""}` }, footer));
+  if (footer) { el.append(h("div", { class: `footer ${app.state.sawFooter ? "seen" : ""}` }, footer)); el.classList.add("stamped"); } // pieczęć z klasy, nie z :has()
   return el;
 }
 
@@ -376,7 +376,9 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       options.forEach((o, oi) => {
         const input = h("input", { type: "radio", name: q.id, value: String(oi) }) as HTMLInputElement;
         if (saved[qi] === oi) input.checked = true;
-        opts.append(h("label", {}, input, o));
+        const lab = h("label", { class: input.checked ? "checked" : "" }, input, o);
+        input.addEventListener("change", () => { opts.querySelectorAll("label").forEach((l) => l.classList.remove("checked")); lab.classList.add("checked"); });
+        opts.append(lab);
       });
       block.append(opts);
     }

@@ -4,7 +4,7 @@ body {
   font-family: var(--font-serif);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  min-height: 100dvh;
+  min-height: 100vh; min-height: 100dvh; /* vh jako zapas dla Safari < 15.4 */
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -55,7 +55,7 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .topbar nav button.tab:hover { border-color: transparent; color: var(--ink); }
 .nbadge { position: absolute; top: -6px; right: -9px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--sand); color: #1e1a14; font-size: 0.62rem; line-height: 16px; text-align: center; letter-spacing: 0; font-family: var(--font-serif); }
 
-.intro { min-height: 80dvh; display: flex; flex-direction: column; justify-content: center; gap: 1.5rem; }
+.intro { min-height: 80vh; min-height: 80dvh; display: flex; flex-direction: column; justify-content: center; gap: 1.5rem; }
 .intro .quote { font-size: 1.25rem; line-height: 1.5; max-width: 34rem; }
 .intro .quote em { font-style: normal; color: var(--sand); }
 .intro .cta { display: flex; gap: 0.75rem; flex-wrap: wrap; }
@@ -90,7 +90,7 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .fade-in { animation: fade 0.8s ease both; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-.onboard { min-height: 92dvh; display: flex; flex-direction: column; justify-content: center; position: relative; }
+.onboard { min-height: 92vh; min-height: 92dvh; display: flex; flex-direction: column; justify-content: center; position: relative; }
 .onboard .stage { display: flex; flex-direction: column; gap: 1.4rem; align-items: flex-start; max-width: 34rem; justify-content: flex-start; }
 .onboard .holdwrap { align-self: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; }
 
