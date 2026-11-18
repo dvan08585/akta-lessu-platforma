@@ -691,8 +691,8 @@ export function viewInbox(app: App): HTMLElement {
     const card = h("article", { class: `doc letter-card ${unread ? "unread" : ""}` }, h("h4", {}, m.from), h("div", { class: "src" }, fmtWhen(new Date(inbox.scheduled[m.id]))), h("p", {}, addrText(app, m.text)));
     if (m.reply) {
       const chosen = inbox.replies[m.id];
-      if (chosen !== undefined) card.append(h("p", { class: "reply" }, "Ty: ", m.reply[chosen]));
-      else { const row = h("div", { class: "reply-row" }, h("p", { class: "lbl" }, "Odpisz jednym zdaniem")); m.reply.forEach((r, i) => row.append(h("button", { onclick: () => { inbox.replies[m.id] = i; inbox.read.push(m.id); app.addNote(`Odpowiedź do ${m.from}: ${r}`, "list"); sendEvent(app.cfg.backendUrl, app.state, { type: "reply", id: m.id, option: i }); save(app.state); go("#/wiadomosci"); } }, r))); card.append(row); }
+      if (chosen !== undefined) card.append(h("p", { class: "reply" }, "Ty: ", addrText(app, m.reply[chosen])));
+      else { const row = h("div", { class: "reply-row" }, h("p", { class: "lbl" }, "Odpisz jednym zdaniem")); m.reply.forEach((r, i) => row.append(h("button", { onclick: () => { inbox.replies[m.id] = i; inbox.read.push(m.id); app.addNote(`Odpowiedź do ${m.from}: ${addrText(app, r)}`, "list"); sendEvent(app.cfg.backendUrl, app.state, { type: "reply", id: m.id, option: i }); save(app.state); go("#/wiadomosci"); } }, addrText(app, r)))); card.append(row); }
     }
     sec.append(card);
   }

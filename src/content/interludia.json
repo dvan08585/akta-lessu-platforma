@@ -22,19 +22,19 @@
     "questions": [
       {
         "q": "Kto mieszkał w pokoju numer siedem przede mną?",
-        "a": "Przed {panią|panem} ta geolożka, z psem. Profesor nie w siódemce, w tym przy schodach, po drodze do niej. Dwa tygodnie. Płacił gotówką, z góry, jak ludzie, którzy nie chcą, żeby ktoś widział wyciąg. Śniadania nie jadał. Schodził do piwnicy po słoiki kompotu, mówił, że pani Helena robiła najlepszy w mieście. A pani Helena nie żyje od dwudziestu lat, więc skąd on ten kompot brał, to ja nie wiem."
+        "a": "Przed {panią|panem} ta geolożka, z psem. Profesor nie w siódemce, w tym przy schodach, po drodze do siódemki. Dwa tygodnie. Płacił gotówką, z góry, jak ludzie, którzy nie chcą, żeby ktoś widział wyciąg. Śniadania nie jadał. Prosił o klucz do piwnicy, dawałam, bo płacił. Wynosił stamtąd słoiki kompotu, mówił, że pani Helena robiła najlepszy w mieście. A pani Helena nie żyje od dwudziestu lat i mieszkała na Opatowskiej, nie u mnie. Skąd on w mojej piwnicy brał jej słoiki, nie pytałam. Jeden zostawił na schodach."
       },
       {
         "q": "Co jest pod hotelem?",
-        "a": "Piwnice. Kupieckie, szesnastowieczne, trzy poziomy, w przewodniku jest. Niżej nic. Ja tam schodzę z praniem dwa razy w tygodniu i nic tam nie ma oprócz wilgoci i pana Krzyśka Maja z kluczami."
+        "a": "Piwnice. Kupieckie, szesnastowieczne, trzy poziomy, w przewodniku jest. Co jest niżej, to sprawa miasta, nie moja. Ja tam schodzę po wino do restauracji dwa razy w tygodniu i nic tam nie ma oprócz wilgoci i starych beczek."
       },
       {
         "q": "Zna pani Fundację Sandomierska Memoria?",
         "a": "Pan Stańczyk? Elegancki. Pije młode wino jak starsze, powoli. Rezerwuje salę na degustacje, płaci na czas, daje napiwki, których nie trzeba. Nie lubię go. Nie wiem dlaczego. Pies tej geolożki też go nie lubił, widziałam przez okno."
       },
       {
-        "q": "Dlaczego jej pies nie chciał wejść do piwnicy?",
-        "a": "Bo psy mają rozum. Ja też nie chcę, a wchodzę, bo pranie samo nie zejdzie. Ale jej pies to nie był pierwszy. Profesor miał kota, kot też nie schodził. Siedział na schodach i patrzył w dół jak na telewizor."
+        "q": "Dlaczego jej pies nie chciał zejść niżej niż pierwszy poziom?",
+        "a": "Bo psy mają rozum. Ja też nie chcę, a schodzę, bo wino samo nie wyjdzie. Ale jej pies to nie był pierwszy. Profesor dokarmiał kota z podwórka, kot też nie schodził niżej. Siedział na schodach i patrzył w dół jak na telewizor."
       },
       {
         "q": "Słyszy pani czasem coś w nocy?",
@@ -66,7 +66,7 @@
     "type": "talk",
     "after": 2,
     "title": "Rozmowa: Jaromin",
-    "intro": "Pracownia jubilerska na Opatowskiej. Lupa na czole, lampa nisko. Jaromin nie podaje ręki: ma ją zajętą. Kciuk pociera opuszkę palca, raz za razem, jakby sprawdzał powierzchnię, której nie ma.",
+    "intro": "Pracownia jubilerska na Opatowskiej. Lupa na czole, lampa nisko. Jaromin nie podaje ręki: ma ją zajętą. Kciuk pociera opuszkę palca, raz za razem, jakby sprawdzał powierzchnię, której nie ma. Pod ladą koperta, zaadresowana drobnym, pochyłym pismem; Jaromin odsuwa ją łokciem poza zasięg wzroku.",
     "person": "Jaromin",
     "questions": [
       {
@@ -87,11 +87,11 @@
       },
       {
         "q": "Dlaczego pan ciągle pociera kciukiem o palec?",
-        "a": "Nie zauważyłem. Nawyk. Pan ma swoje, ja mam swoje. Mój ojciec też tak robił, więc może to jest dziedziczne, jak nos. Niech {pani|pan} nie pyta, co sprawdzam. Sam nie wiem."
+        "a": "Nie zauważyłem. Nawyk. {Pani ma swoje|Pan ma swoje}, ja mam swoje. Mój ojciec też tak robił, więc może to jest dziedziczne, jak nos. Niech {pani|pan} nie pyta, co sprawdzam. Sam nie wiem."
       }
     ],
     "lie": 1,
-    "reveal": "Profesor dzwonił do niego trzy razy w ostatnim tygodniu życia. Jest w rejestrze połączeń, o którym Jaromin nie wie. Kłamie, bo profesor zostawił u niego coś pod ladą i kazał to komuś oddać. Jeszcze nie wie komu.",
+    "reveal": "Profesor był u niego trzy razy w ostatnim tygodniu życia i zostawił coś pod ladą, z poleceniem, żeby oddać komuś, kto przyjedzie. Ta koperta pod ladą: Jaromin odsunął ją, zanim padło pytanie. Kłamie, bo jeszcze nie wie, czy tym kimś {jest pani|jest pan}.",
     "wrong": "Jaromin podnosi lupę na czoło. „To akurat prawda. Niech {pani|pan} zapyta o coś innego.”",
     "level": "średnio",
     "cue": "Pięć pytań. Jedna odpowiedź jest kłamstwem.",
@@ -136,7 +136,7 @@
     "type": "talk",
     "after": 3,
     "title": "Rozmowa: brat Anzelm",
-    "intro": "Klasztor św. Jakuba, refektarz, zimno jak w kościele, bo to jest kościół. Anzelm nalewa herbatę z termosu, dwa kubki, jeden bez ucha. Mówi, jakby każde zdanie czytał z kartki, której nie ma.",
+    "intro": "Klasztor św. Jakuba, refektarz, zimno jak w kościele, bo ściana jest wspólna z kościołem. Anzelm nalewa herbatę z termosu, dwa kubki, jeden bez ucha. Mówi, jakby każde zdanie czytał z kartki, której nie ma.",
     "person": "Anzelm",
     "questions": [
       {
@@ -145,7 +145,7 @@
       },
       {
         "q": "Skąd brat wie o korytarzach?",
-        "a": "Z ust. Nie z papieru. Mój poprzednik od swojego, tamten od swojego. Głuchy telefon przez trzydzieści pokoleń. Część prawdy zgubiła się po drodze, część doszła zmieniona. Wiem, że są. Wiem, że mają wrota. Nie wiem, czy to, co wiem o wrotach, jest jeszcze prawdą."
+        "a": "Z ust. Nie z papieru. Mój poprzednik od swojego, tamten od swojego, a przez sto czterdzieści lat bez nas ktoś świecki, zakrystian albo organista, nie wiem kto. Głuchy telefon przez trzydzieści pokoleń. Część prawdy zgubiła się po drodze, część doszła zmieniona. Wiem, że są. Wiem, że mają wrota. Nie wiem, czy to, co wiem o wrotach, jest jeszcze prawdą."
       },
       {
         "q": "Czy brat kiedykolwiek był na dole?",
@@ -223,8 +223,8 @@
       }
     ],
     "lie": 1,
-    "reveal": "Pismo na karteczce jest drobne, prostokątne, wyrównane do krawędzi planu z dokładnością do milimetra. Nikt inny w tym mieście nie prostuje tak krawędzi. „Nie tędy” napisał Berbeć. Kłamie, bo powiedzieć, że wie, znaczyłoby powiedzieć, co jest za murem.",
-    "wrong": "Berbeć prostuje krawędź. „To prawda. Pan pyta dalej.”",
+    "reveal": "Pismo na karteczce jest drobne, prostokątne, wyrównane do krawędzi planu z dokładnością do milimetra. Tak prostuje tylko ta rodzina, a syn od trzech dni pilnuje czegoś innego niż planów. „Nie tędy” napisał Berbeć. Kłamie, bo powiedzieć, że wie, znaczyłoby powiedzieć, co jest za murem.",
+    "wrong": "Berbeć prostuje krawędź. „To prawda. {Pani pyta|Pan pyta} dalej.”",
     "level": "średnio",
     "cue": "Pięć pytań. Jedna odpowiedź jest kłamstwem.",
     "place": "rozmowa"
@@ -252,11 +252,11 @@
     "questions": [
       {
         "q": "Dlaczego cofnął pan zlecenie poprzedniemu biegłemu?",
-        "a": "Konflikt interesów. Nazwisko, które pojawiło się w notatniku profesora, było nazwiskiem biegłego. Nie oskarżam nikogo. Procedura. Potrzebowałem kogoś spoza miasta, bez nazwiska w tych papierach. Pan nie ma nazwiska w tych papierach. Sprawdziłem."
+        "a": "Konflikt interesów. Nazwisko, które pojawiło się w notatniku profesora, było nazwiskiem biegłego. Nie oskarżam nikogo. Procedura. Potrzebowałem kogoś spoza miasta, bez nazwiska w tych papierach. {Pani nie ma|Pan nie ma} nazwiska w tych papierach. Sprawdziłem."
       },
       {
         "q": "Co jest w notatniku profesora?",
-        "a": "Rysunki. Przekroje, tunele głębsze niż trasa turystyczna, siedem punktów. I jedno słowo, które nie jest terminem geologicznym. Nie powiem jakie, bo to materiał dowodowy. Nasi technicy przeszli trasę: 470 metrów, 34 komory, nic niezwykłego. Profesor rysował coś, czego nie znaleźliśmy."
+        "a": "Rysunki. Przekroje, tunele głębsze niż trasa turystyczna, siedem punktów. I jedno słowo, które nie jest terminem geologicznym. Nie powiem jakie, bo to materiał dowodowy. Nasi technicy przeszli trasę: 470 metrów, 34 komory. Zawalisko w bocznym korytarzu zabezpieczone, dalej nie weszli. Profesor rysował coś, czego nie znaleźliśmy."
       },
       {
         "q": "Jak zginął profesor?",
@@ -264,7 +264,7 @@
       },
       {
         "q": "Kto przekazuje mi akta?",
-        "a": "Program edukacyjny miasta, przez archiwum. Komenda nie ma ludzi do kopiowania kronik. Fundacja udostępniła materiały i koperty, to jest partner miasta, wszystko oficjalnie. Nie widzę w tym problemu. Pan widzi?"
+        "a": "Program edukacyjny miasta, przez archiwum. Komenda nie ma ludzi do kopiowania kronik. Fundacja udostępniła materiały i koperty, to jest partner miasta, wszystko oficjalnie. Nie widzę w tym problemu. {Pani widzi|Pan widzi}?"
       },
       {
         "q": "Czy policja wie, co jest poniżej 6 metrów pod św. Jakubem?",
@@ -272,7 +272,7 @@
       }
     ],
     "lie": 3,
-    "reveal": "„Nie widzę w tym problemu.” Widzi. Komisarz wie, kto płaci za koperty, bo faktura przeszła przez jego biurko, i wie, że biegły tego nie wie. Nie kłamie: pyta, czy {pani|pan} widzi. Przemilcza, bo bez Fundacji nie ma archiwum, a bez archiwum nie ma akt. Zieliński gra na dwie strony i obie o tym wiedzą oprócz {pani|pana}.",
+    "reveal": "„Nie widzę w tym problemu.” Widzi. Komisarz wie, kto płaci za koperty: umowa Fundacji nosi numer jego zlecenia, 7/G, a ten numer komenda dała nie Fundacji, tylko biegłemu. Wie też, że biegły tego nie wie. Nie kłamie: pyta, czy {pani|pan} widzi. Przemilcza, bo bez Fundacji nie ma archiwum, a bez archiwum nie ma akt. Zieliński gra na dwie strony i obie o tym wiedzą oprócz {pani|pana}.",
     "wrong": "Zieliński obraca filiżankę. „To była prawda. Ja nie kłamię, proszę {pani|pana}. Ja wybieram, co mówię.”",
     "level": "dla wytrwałych",
     "cue": "Pięć pytań. Komisarz nie kłamie. Jedna odpowiedź i tak jest nieprawdą.",
@@ -473,7 +473,7 @@
     "intro": "Kartka z notatnika profesora, przepisana w odbiciu. Profesor pisał tak, kiedy nie chciał, żeby ktoś czytał mu przez ramię.",
     "secret": [
       "Siedem punktów. Nie szukać ósmego. Ósmy to mit.",
-      "Klasa S, wariant K. S jak struktura. Nikomu.",
+      "Klasa S, wariant K. Nikomu.",
       "Jeśli to czytasz w lustrze, to znaczy, że masz czas. Ja nie mam."
     ],
     "q": "Czego profesor każe nie szukać?",

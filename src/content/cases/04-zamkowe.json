@@ -19,36 +19,37 @@
       "paragraphs": [
         "SPRZEDAJĄCA: osoba fizyczna, spadkobierczyni Heleny S., zmarłej w Sandomierzu. Do aktu wpisano oświadczenie Sprzedającej, że „chce zakończyć sprawę szybko”. Uwagi do wyciągu: sprzedaż trzy miesiące po śmierci spadkodawczyni; cena niższa od rynkowej o ok. 30%.",
         "KUPUJĄCY: Memoria Nieruchomości sp. z o.o., Sandomierz. Reprezentowana przez prezesa zarządu. Jedyny wspólnik: Fundacja Sandomierska Memoria.",
-        "§ 7. Kupujący zobowiązuje się nie zmieniać przeznaczenia piwnic ani nie udostępniać ich osobom trzecim bez pisemnej zgody zarządu Fundacji. Notariusz pouczył strony o nietypowym charakterze tego zapisu. Sprzedająca nie wnosi o jego wykreślenie.",
+        "§ 7. Kupujący zobowiązuje się wobec Sprzedającej nie zmieniać przeznaczenia piwnic ani nie udostępniać ich osobom trzecim. Kupujący oświadcza, że zgody na odstępstwo od tego zobowiązania udziela wyłącznie zarząd jego jedynego wspólnika. Notariusz pouczył strony o nietypowym charakterze tego zapisu. Sprzedająca nie wnosi o jego wykreślenie.",
         "Załącznik: inwentarz piwnic. „Pomieszczenie C: ściana wschodnia zamurowana cegłą nowszą niż reszta murów. Stan dobry. Nie naruszać.”"
       ]
     },
     {
       "id": "sprawozdanie-fundacji",
       "title": "Dokument II",
-      "source": "Sprawozdanie merytoryczne Fundacji Sandomierska Memoria za rok ubiegły. Fragment dotyczący programów edukacyjnych.",
+      "source": "Informacja zarządu Fundacji Sandomierska Memoria o programach edukacyjnych. Listopad, materiał do sprawozdania za rok bieżący. Fragment.",
       "style": "plain",
       "paragraphs": [
         "Program „Sandomierz Pod Spodem” to cykl materiałów edukacyjnych o podziemiach miasta, realizowany we współpracy z biegłymi z zakresu geologii, archeologii i historii. Program obejmuje siedem punktów na mapie miasta, odpowiadających siedmiu wzgórzom.",
         "Fundacja pozyskała do programu niezależnych ekspertów spoza Sandomierza, którzy otrzymują materiały źródłowe i przekazują wnioski w formie ustrukturyzowanej, wzgórze po wzgórzu. Wnioski te zasilają rejestr statusów punktów programu, prowadzony przez zarząd.",
-        "Fundacja była partnerem Święta Młodego Wina oraz współfinansowała odnowienie spinek herbowych w Muzeum Zamkowym.",
+        "Fundacja jest partnerem Święta Młodego Wina (w tym roku po raz drugi) oraz współfinansowała odnowienie spinek herbowych w Muzeum Zamkowym.",
         "Zarząd dziękuje biegłym za dotychczasowe wnioski. Rejestr jest uzupełniany na bieżąco."
       ]
     },
     {
       "id": "umowa",
       "title": "Dokument III",
-      "source": "Umowa o dzieło: konsultacja geologiczna. Zamawiający: Fundacja Sandomierska Memoria. Wykonawca: biegły geolog, Kraków. Kopia z adnotacją.",
+      "source": "Umowa o dzieło: konsultacja geologiczna. Zamawiający: Fundacja Sandomierska Memoria. Wykonawca: biegły geolog, Kraków. Kopia z adnotacją, dołożona do koperty inną ręką, bez stopki.",
       "style": "mono",
       "paragraphs": [
         "Przedmiot: konsultacja geologiczna, ocena stabilności korytarzy, Sandomierz, siedem punktów, wzgórze po wzgórzu. Wynagrodzenie: według zlecenia nr 7/G. Płatnik: Zamawiający.",
         "Adnotacja ręczna na kopii: „Biegły sądzi, że pracuje dla komisarza. Nie wyprowadzać z błędu. Materiały wysyłać dalej w kopertach z nadrukiem programu, jak dotąd. — S.”"
-      ]
+      ],
+      "footer": ""
     },
     {
       "id": "zdjecie-gala",
       "title": "Dokument IV",
-      "source": "Zdjęcie z gali Święta Młodego Wina, Hotel Pod Ciżemką. Opis dla osoby niewidzącej.",
+      "source": "Zdjęcie z gali Święta Młodego Wina, rok ubiegły, Hotel Pod Ciżemką. Opis dla osoby niewidzącej.",
       "style": "plain",
       "paragraphs": [
         "Sala restauracyjna, lampiony, stoły z kieliszkami. Na pierwszym planie mężczyzna w garniturze grafitowym, uśmiechnięty, z kieliszkiem młodego wina. Mankiet uniesiony do toastu. Spinka do mankietu: krzemień pasiasty, oprawiony w srebro, szlif siedmioboczny.",

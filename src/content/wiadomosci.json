@@ -1,7 +1,7 @@
 [
   {
     "id": "w-wanda-1",
-    "after": "case:1",
+    "after": "interlude:wanda",
     "delayMin": 25,
     "from": "Pani Wanda",
     "text": "Szklanki w kredensie znowu dzwoniły w nocy. Przestawiłam je dnem do góry: na dźwięk pomaga, na sen nie. Nie boi się {Pani|Pan} spać w tym mieście? Bo ja się boję od dwudziestu lat i jakoś nic. Śniadanie od siódmej.",
@@ -23,14 +23,21 @@
     "after": "case:2",
     "delayMin": 60,
     "from": "Jaromin",
-    "text": "Profesor pytał mnie o to samo, co pan: ile wrót. Odpowiedziałem, że nie wiem. To była prawda w tamtym tygodniu. W tym już nie. Niech pan nie dzwoni, niech pan przyjdzie. Opatowska, pracownia, po szesnastej."
+    "text": "Słyszałem, że liczy {pani|pan} wrota. Ja liczyłem pięćdziesiąt lat i nie wiem. To była prawda w tamtym tygodniu. W tym już nie. Niech {pani|pan} nie dzwoni, niech {pani|pan} przyjdzie. Opatowska, pracownia, po szesnastej."
+  },
+  {
+    "id": "w-jaromin-2",
+    "after": "interlude:jaromin",
+    "delayMin": 180,
+    "from": "Jaromin",
+    "text": "Powiedziałem, że go nie znałem. Był u mnie trzy razy w ostatnim tygodniu. Zostawił coś pod ladą i kazał oddać komuś, kto przyjedzie. Jeszcze nie wiem, czy to {pani|pan}."
   },
   {
     "id": "w-anzelm-1",
     "after": "interlude:plyta",
     "delayMin": 15,
     "from": "brat Anzelm",
-    "text": "Znalazł pan ton. Dobrze. Teraz proszę go nie szukać przez tydzień. Rezonator nie lubi, kiedy się go sprawdza codziennie. Ludzie też nie."
+    "text": "{Znalazła pani|Znalazł pan} ton. Dobrze. Teraz proszę go nie szukać przez tydzień. Rezonator nie lubi, kiedy się go sprawdza codziennie. Ludzie też nie."
   },
   {
     "id": "w-wanda-2",
@@ -44,11 +51,11 @@
     "after": "interlude:woda",
     "delayMin": 120,
     "from": "brat Anzelm",
-    "text": "Oddychał pan tak, jak oddycha woda. Zapamiętał pan tempo? Będzie potrzebne niżej. Nie pytam, kiedy pan schodzi. Pytam, z kim.",
+    "text": "{Oddychała pani|Oddychał pan} tak, jak oddycha woda. {Zapamiętała pani|Zapamiętał pan} tempo? Będzie potrzebne niżej. Nie pytam, kiedy {pani|pan} schodzi. Pytam, z kim.",
     "reply": [
-      "Sam.",
+      "{Sama|Sam}.",
       "Jeszcze nie wiem.",
-      "Z psem."
+      "Nie schodzę."
     ]
   },
   {
@@ -63,7 +70,7 @@
     "after": "case:4",
     "delayMin": 240,
     "from": "kom. Zieliński",
-    "text": "Otrzymałem informację, że pana wnioski trafiają również poza komendę. Nie komentuję. Proszę o kopię wszystkiego, co pan dotąd przekazał, bezpośrednio do mnie. Papier, nie mail."
+    "text": "Otrzymałem informację, że {pani|pana} wnioski trafiają również poza komendę. Nie komentuję. Proszę o kopię wszystkiego, co {pani|pan} dotąd {przekazała|przekazał}, bezpośrednio do mnie. Papier, nie mail."
   },
   {
     "id": "w-berbec-1",
@@ -84,20 +91,20 @@
     "after": "case:6",
     "delayMin": 30,
     "from": "Marek Berbeć",
-    "text": "Nie znamy się. Jestem synem. Ojciec powiedział, że pan zostawił mur. Chciałem tylko napisać, że to jest pierwszy raz od siedmiuset lat, kiedy ktoś spoza rodziny zostawił. Nie wiem, co to znaczy. Chyba dobrze."
+    "text": "Nie znamy się. Jestem synem. Ojciec powiedział, że {pani zostawiła|pan zostawił} mur. Chciałem tylko napisać, że to jest pierwszy raz od siedmiuset lat, kiedy ktoś spoza rodziny zostawił. Nie wiem, co to znaczy. Chyba dobrze."
   },
   {
     "id": "w-wanda-3",
     "after": "start",
     "delayMin": 1440,
     "from": "Pani Wanda",
-    "text": "Doba w Sandomierzu. Pies pierwszy wie, kiedy nie schodzić. Kompot w piwnicy, słoik z dziewięćdziesiątego ósmego, proszę nie otwierać przed grudniem."
+    "text": "Doba w Sandomierzu. Pies tej geolożki pierwszy wiedział, kiedy nie schodzić. Słoik, który profesor zostawił na schodach, stoi u mnie w kredensie. Etykieta ręką pani Heleny: nie otwierać przed grudniem. Nie otworzę."
   },
   {
     "id": "w-ziel-3",
     "after": "finale",
     "delayMin": 5,
     "from": "kom. Zieliński",
-    "text": "Siódma pozycja. Wiem, że pan jej nie dostarczył. Nie pytam dlaczego. Zapraszam na kawę, czwartek, Ciżemka. Obracam filiżankę uchem w lewo, pozna mnie pan."
+    "text": "Siódma pozycja. Wiem, że {pani|pan} jej nie {dostarczyła|dostarczył}. Nie pytam dlaczego. Zapraszam na kawę, czwartek, Ciżemka. Obracam filiżankę uchem w lewo, pozna mnie {pani|pan}."
   }
 ]
