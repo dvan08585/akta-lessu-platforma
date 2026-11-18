@@ -262,11 +262,11 @@
   {
     "id": "m22",
     "title": "Pokój przy schodach",
-    "doc": "Profesor mieszkał dwa tygodnie w pokoju przy schodach, po drodze do siódemki. Płacił gotówką z góry, nie jadał śniadań. Schodził do piwnicy po słoiki kompotu. Pani Wanda mówi, że po kompot Heleny. Helena mieszkała na Opatowskiej, trzy domy dalej.",
+    "doc": "Profesor mieszkał dwa tygodnie w pokoju przy schodach, po drodze do siódemki. Płacił gotówką z góry, nie jadał śniadań. Schodził do piwnicy po słoiki kompotu. Pani Wanda mówi, że po kompot Heleny. Helena mieszkała na Opatowskiej, po drugiej stronie Rynku.",
     "q": "Co w tym nie gra?",
     "options": [
       "Nic",
-      "Kompot stoi trzy domy dalej, nie w hotelu",
+      "Kompot stoi na Opatowskiej, nie w hotelu",
       "Profesor nie lubił kompotu",
       "Piwnica hotelu jest zamknięta"
     ],

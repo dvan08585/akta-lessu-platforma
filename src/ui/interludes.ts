@@ -35,6 +35,8 @@ export function withAddress(app: App, i: Interlude): Interlude {
   };
 }
 
+/** Początek odpowiedzi do listy wyboru kłamstwa: gracz widzi, o które zdanie chodzi, bez przewijania w górę. */
+function excerpt(t: string, max = 64): string { if (t.length <= max) return t; const cut = t.slice(0, max); return cut.slice(0, Math.max(cut.lastIndexOf(" "), 30)).replace(/[.,;:!?]+$/, "") + "…"; }
 export function interludeAvailable(app: App, i: Interlude): boolean {
   if (app.state.testMode) return true;
   if (i.place === "laboratorium") return false;
@@ -186,7 +188,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
             if (tr.n >= 3) { tr.until = Date.now() + LOCK_H * 3600000; save(app.state); renderLocked(); }
             else { save(app.state); renderPick(); qs.prepend(h("p", { class: "talk-wrong" }, it.wrong!)); }
           }
-        } }, `Odpowiedź ${i + 1}`));
+        } }, `Odpowiedź ${i + 1}`, h("small", {}, excerpt(q.a))));
       });
     }
   }
