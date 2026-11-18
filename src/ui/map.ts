@@ -38,10 +38,11 @@ export function renderMap(ctx: MapCtx): HTMLElement {
     const dy = i % 2 ? -40 : -16;
     const short = g.name.replace("Wzgórze ", "");
     // skrajne etykiety kotwiczone do środka rysunku, żeby nie wychodziły poza krawędź telefonu
-    const anchor = i === 0 ? "start" : i === map.gates.length - 1 ? "end" : "middle";
-    const lx = i === 0 ? g.x - 40 : i === map.gates.length - 1 ? g.x + 30 : g.x;
-    svg.append(s("text", { x: String(lx), y: String(g.peak + dy), "text-anchor": anchor }, short));
-    if (g.elev) svg.append(s("text", { x: String(lx), y: String(g.peak + dy + 16), "text-anchor": anchor, style: "font-size:14px;fill:var(--ink-faint)" }, `${g.elev} m`));
+    // nazwa i wysokość zawsze wyśrodkowane w jednej osi; przy krawędziach oś przesuwa się do środka tylko tyle, by napis się zmieścił (ok. 8,5 px na znak przy 17 px)
+    const half = short.length * 4.4 + 6;
+    const lx = Math.min(Math.max(g.x, half), 800 - half);
+    svg.append(s("text", { x: String(lx), y: String(g.peak + dy), "text-anchor": "middle" }, short));
+    if (g.elev) svg.append(s("text", { x: String(lx), y: String(g.peak + dy + 16), "text-anchor": "middle", style: "font-size:14px;fill:var(--ink-faint)" }, `${g.elev} m`));
   });
 
   // Korytarze (ujawniają się rozdziałem)

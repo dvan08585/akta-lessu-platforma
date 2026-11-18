@@ -115,7 +115,7 @@ export function viewMap(app: App): HTMLElement {
     const c = app.caseForGate(g.n);
     list.append(h("div", { class: "gate-row", "data-status": st, role: "button", tabindex: "0", onclick: () => go(`#/brama/${g.n}`), onkeydown: (e: Event) => { if ((e as KeyboardEvent).key === "Enter" || (e as KeyboardEvent).key === " ") { e.preventDefault(); go(`#/brama/${g.n}`); } } },
       h("span", { class: "n" }, String(g.n)),
-      h("span", { class: "t" }, g.name, h("small", {}, `${g.element}${c && c.title.toLowerCase() !== g.element ? " · " + c.title : ""}`)),
+      h("span", { class: "t" }, g.name, h("small", {}, st === "locked" ? (c?.title ?? "") : `${g.element}${c && c.title.toLowerCase() !== g.element ? " · " + c.title : ""}`)),
       h("span", { class: "s" }, st === "locked" && c ? lockedWhy(app, c) : st === "solved" && app.awaitingGesture(g.n) ? "czeka na gest" : statusLabel(st) + (app.state.metSilent && app.isSilentFor(g.n) && st !== "locked" ? " · milczy" : ""))));
   }
   sec.append(app.state.sawFooter ? h("h3", {}, "Rejestr statusów — ", h("a", { href: import.meta.env.BASE_URL + "fundacja/", style: "color:var(--blood)" }, "Fundacja Sandomierska Memoria")) : h("h3", {}, "Rejestr statusów"), list);
@@ -171,7 +171,7 @@ export function viewGate(app: App, n: number): HTMLElement {
   const c = app.caseForGate(n);
   const st = app.gateStatus(n);
   sec.append(crumb(`Brama ${n}`));
-  const head = () => h("p", { class: "kicker" }, `Brama ${n} · ${g.name} · żywioł: ${g.element}`);
+  const head = () => h("p", { class: "kicker" }, `Brama ${n} · ${g.name}`); // żywioł odsłania dopiero otwarta sprawa
   const silentHere = !!c && app.isSilentFor(n);
   if (!c) {
     sec.append(head(), h("h2", {}, g.silent ? "Zawieszka milczy." : "Status: nieznany"),
