@@ -116,6 +116,7 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .danger-zone { margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
 .danger-zone .faint { margin-top: 0.5rem; }
 button.danger { color: var(--blood); border-color: var(--blood); }
+:root:not([data-theme="light"]) button.danger { color: #d06a5c; border-color: #a8433a; } /* krew na czarnym tle nie ma kontrastu; w ciemnym trybie jaśniejsza */
 :root:not([data-theme="light"]) .doc:not(.darkpage) { background-color: #e6ddc8; } /* w ciemnym trybie papier o ton ciemniejszy, żeby karta nie była jasną plamą */
 
 .epigraph { font-style: italic; }

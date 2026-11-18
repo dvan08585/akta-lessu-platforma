@@ -9,7 +9,7 @@ export function renderMap(ctx: MapCtx): HTMLElement {
   const cursor = Math.min(state.chapterCursor, maxReadable(ctx));
   const ch = chapters[cursor] ?? chapters[0];
   const wrap = h("div", { class: "map-wrap" });
-  const svg = s("svg", { viewBox: map.viewBox, role: "img", "aria-label": "Mapa siedmiu wzgórz Sandomierza i przekrój pod nimi" });
+  const svg = s("svg", { viewBox: map.viewBox, role: "group", "aria-label": "Mapa siedmiu wzgórz Sandomierza i przekrój pod nimi" });
 
   // Niebo i horyzont
   svg.append(s("rect", { x: "0", y: "0", width: "800", height: "230", fill: "transparent" }));

@@ -29,12 +29,12 @@
     --ink: #1c1a16;
     --ink-dim: #4d4639;
     --ink-faint: #6e6655;
-    --sand: #8a6a2a;
+    --sand: #765520;
     --line: rgba(28, 26, 22, 0.14);
   }
 }
 :root[data-theme="light"] { color-scheme: light;
   --bg: #f1ece1; --bg-2: #e7e0d2; --bg-3: #dcd3c2;
-  --ink: #1c1a16; --ink-dim: #4d4639; --ink-faint: #6e6655; --sand: #8a6a2a;
+  --ink: #1c1a16; --ink-dim: #4d4639; --ink-faint: #6e6655; --sand: #765520;
   --line: rgba(28, 26, 22, 0.14);
 }
