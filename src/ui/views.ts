@@ -225,7 +225,7 @@ export function dailyBox(app: App): HTMLElement {
     return box;
   }
   // Pytanie dopiero po dotknięciu: mapa nie ma wyglądać jak quiz.
-  const ask = h("button", { class: "ghost" }, "Ustal");
+  const ask = h("button", { class: "next" }, "Ustal ", arrow("r")); // obrysowany przycisk ze strzałką, nie samo słowo
   ask.addEventListener("click", () => {
     const opts = h("div", { class: "opts", role: "radiogroup" });
     m.options.forEach((o, i) => { const inp = h("input", { type: "radio", name: "daily", value: String(i) }); opts.append(h("label", {}, inp, addrText(app, o))); });
