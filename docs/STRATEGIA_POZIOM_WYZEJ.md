@@ -150,7 +150,7 @@ Quishing w Polsce rośnie (kampanie ZBP, CERT, fałszywe QR na parkomatach). Zas
 - Zero głośnych i nocnych gestów na Rynku po 22:00. Zadania tylko na szlakach (lessowe skarpy i wąwozy są realnie niebezpieczne).
 
 ### Korekta dat historycznych (ważne dla tekstów)
-Rzeź dominikanów u św. Jakuba: 2 lutego 1260. Najazd 1287: Telebuga wszedł w ziemię sandomierską na początku grudnia, **Sandomierza nie zdobyto**, odwrót w Wigilię 1287. Październik 2027 to 767. rocznica 1260 (nie 753.), grudzień 2027 to okrągła **740. rocznica obrony 1287**. Święto Młodego Wina to trzeci weekend **listopada**, nie października.
+Rzeź dominikanów u św. Jakuba: 2 lutego 1260. Najazd 1287: Telebuga wszedł w ziemię sandomierską na początku grudnia, **Sandomierza nie zdobyto** (miasto było już na nowym wzgórzu po lokacji 1286), odwrót pod koniec grudnia 1287 i w styczniu 1288; „Wigilia 1287” to data ataku Nogaja na Kraków, nie Sandomierz. Październik 2027 to 767. rocznica 1260 (nie 753.), grudzień 2027 to okrągła **740. rocznica obrony 1287**. Święto Młodego Wina to trzeci weekend **listopada**, nie października.
 
 ---
 

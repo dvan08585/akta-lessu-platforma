@@ -29,12 +29,12 @@ Każda brama ma żywioł z książki. Każdy żywioł dostaje JEDEN gest ciała,
 | Brama | Żywioł | Gest gracza | Co robi telefon | Zdanie w grze (nie instrukcja) | Zapas |
 |-------|--------|-------------|-----------------|-------------------------------|-------|
 | 4 Świętojakubskie | **ogień / ziemia** | Przykłada kamerę do czegoś czerwonego (szalik, jabłko, własna dłoń pod światło) | Kamera mierzy dominujący kolor; czerwień = „krew na kamieniu” | „Kamień odpowiada na krew. Nie musi być twoja.” | wybór koloru palcem |
-| 3 Miejskie | **dźwięk** | Nuci ton (JEST) + słucha przez słuchawki | Płyta Chladniego (jest). NOWE: dudnienie różnicowe: lewe ucho 200 Hz, prawe 218 Hz → mózg „słyszy” 18 Hz, których głośnik nie odda | „Tego się nie nuci. To się nosi. Załóż słuchawki.” | wibracja 18 Hz |
+| 3 Miejskie | **dźwięk** | Nuci ton (JEST) + słucha przez słuchawki | Płyta Chladniego (jest). NOWE: dudnienie różnicowe: lewe ucho 200 Hz, prawe 218 Hz → w głowie powstaje drżenie 18 Hz, którego nie ma w żadnym z uszu i którego głośnik nie odda | „Tego się nie nuci. To się nosi. Załóż słuchawki.” | wibracja impulsowa w rytmie 18 Hz (silnik telefonu pracuje przy 150–250 Hz; to impulsy, nie ton) |
 | 2 Katedralne | **woda** | Dmucha w mikrofon, długo i równo | Mikrofon mierzy głośność szumu (nie ton): równy wydech = tafla wody się wygładza i odsłania dno krypty | „Woda w krypcie jest spokojna tylko wtedy, kiedy ty jesteś.” | przytrzymanie palca |
 | 5 Zamkowe | **zimno** | Trzyma telefon NIERUCHOMO przez 30 s | Akcelerometr: drżenie rąk = hipotermia. Każde drgnięcie cofa pasek. Im dłużej, tym trudniej (ręce naprawdę zaczynają drżeć) | „Przy 33 stopniach drżenie jest silne. Przy 31 ustaje. To zły znak.” | przycisk „trzymam” |
 | 6 Collegium | **ciemność** | Zakrywa kamerę dłonią albo gasi światło | Kamera mierzy jasność: dokument czyta się tylko w ciemności (tekst pojawia się, gdy lux spada) | „Mniej widzisz, więcej rozumiesz.” | przycisk „ciemno” |
 | 1 Żmigród | **ziemia** | Przechyla telefon, less sypie się z góry ekranu; musi trzymać poziomo, żeby nie zasypać cegły | Żyroskop: kąt = sypanie. Zbyt szybki ruch = zasypanie | „Nie tędy. Trzymaj równo.” | suwak |
-| 7 Świętopawelskie | **powietrze** | Dwie osoby, jeden telefon: oddychają w mikrofon NA ZMIANĘ. Jeśli dwa oddechy nałożą się, tlen spada | Mikrofon: detekcja dwóch naprzemiennych wydechów (szum, pauza, szum). Rytm = przejście korytarza | „Nie można oddychać samemu w miejscu, które zabiera powietrze.” | połówki klucza (jest) |
+| 7 Świętopawelskie | **powietrze** | Dwie osoby, jeden telefon: oddychają w mikrofon NA ZMIANĘ. Jeśli dwa oddechy nałożą się, rytm pęka (żadnej fizjologii: w korytarzu tlen od tego nie spada) | Mikrofon: detekcja dwóch naprzemiennych wydechów (szum, pauza, szum). Rytm = przejście korytarza | „Nie można oddychać samemu w miejscu, które zabiera powietrze.” | połówki klucza (jest) |
 
 Wszystko powyżej działa w Safari i Chrome bez aplikacji, przez HTTPS, za zgodą na mikrofon/kamerę/ruch. Koszt: 1–2 dni na gest. Największy efekt za najmniej pieniędzy w całym projekcie.
 
@@ -42,9 +42,9 @@ Wszystko powyżej działa w Safari i Chrome bez aplikacji, przez HTTPS, za zgod�
 
 ## III. DŹWIĘK: TO, CZEGO „NIE SŁYCHAĆ”
 
-1. **Dudnienie różnicowe 18 Hz** (patrz brama 3). Telefon nie odtworzy 18 Hz. Ale dwa tony w słuchawkach, różniące się o 18 Hz, wytwarzają w mózgu dudnienie 18 Hz. Gracz pierwszy raz w życiu „usłyszy” infradźwięk. To jest Aneta po trzeciej bramie. Jeden plik audio stereo, zero kodu.
+1. **Dudnienie różnicowe 18 Hz** (patrz brama 3). Telefon nie odtworzy 18 Hz. Ale dwa tony w słuchawkach, różniące się o 18 Hz, wytwarzają złudzenie dudnienia 18 Hz w pniu mózgu. Gracz usłyszy drżenie, którego nie ma w żadnym z uszu. To nie jest infradźwięk i nie „synchronizuje fal mózgowych” (Ingendoh 2023); tak tego nie opisywać poza grą. To jest Aneta po trzeciej bramie. Jeden plik audio stereo, zero kodu.
 2. **Obraz w spektrogramie.** W nagraniu dzwonu Piotra ukryty siedmiobok widoczny tylko w spektrogramie (Aphex Twin, ARG-owa klasyka). Strona ma własny spektrogram na canvasie: gracz „widzi dźwięk”. Synestezja jako interfejs, dosłownie.
-3. **Gwizd vs nucenie.** Mikrofon rozróżnia ton czysty (gwizd) od bogatego (głos). Jedna brama otwiera się tylko gwizdem, bo „kości rezonują na czysty ton”. Ludzie odkryją, że nie umieją gwizdać, i będą się uczyć. To jest treść do TikToka.
+3. **Gwizd vs nucenie.** Mikrofon rozróżnia ton czysty (gwizd) od bogatego (głos). Jedna brama otwiera się tylko gwizdem, bo tak każe reguła bramy (uzasadnienie fabularne; fizjologicznego nie ma). Ludzie odkryją, że nie umieją gwizdać, i będą się uczyć. To jest treść do TikToka.
 4. **Dwa głosy, kwinta.** Dwie osoby nucą jednocześnie; płyta układa wzór tylko, gdy odległość tonów to kwinta (196 i 294 Hz). Mechanika pary bez wymiany kodów.
 5. **Dwanaście uderzeń.** O 12:00 czasu lokalnego nagranie dzwonu ma dodatkową warstwę, której nie ma o innej porze. Kto wejdzie w południe, usłyszy więcej. (Zegar przeglądarki.)
 6. **Mowa.** Web Speech API (Chrome): gracz musi POWIEDZIEĆ jedno słowo do telefonu. „Słyszę.” Rozdział 21 jako gest.
@@ -79,7 +79,7 @@ Wszystko powyżej działa w Safari i Chrome bez aplikacji, przez HTTPS, za zgod�
 23. **Termochromiczny siedmiobok na okładce.** Farba, która jaśnieje od ciepła dłoni. Czytelnik trzyma książkę i zawieszka „grzeje” naprawdę. Koszt: druk specjalny, do wyceny; dostępny w Polsce. To jest JEDNA rzecz z tej listy, którą każdy recenzent pokaże do kamery.
 24. **Strona-prześwit** (pkt 8) i **strona-lustro** (pkt 13): zero kosztu.
 25. **Zakładka-znacznik AR** wkładana do książki, z kodem QR i siedmiobokiem.
-26. **Numeracja.** Siedem stron w książce ma numer wydrukowany siedmiobocznym krojem; razem dają kod do ósmej, nieistniejącej pozycji rejestru (Wzgórze Salve Regina, mit archeologiczny Florka).
+26. **Numeracja.** Siedem stron w książce ma numer wydrukowany siedmiobocznym krojem; razem dają kod do ósmej, nieistniejącej pozycji rejestru (Wzgórze Salve Regina, wokół którego toczy się spór o kopiec).
 
 ## VIII. ŚWIAT POZA STRONĄ (ARG)
 
@@ -132,7 +132,7 @@ Zasada SCRAP na koniec: każda z tych rzeczy ma działać bez tłumaczenia, w pi
 ## B.3 Badania i liczby, które zmieniają decyzje
 - **Uprawnienia:** ~10% ludzi odrzuca prośbę o mikrofon/kamerę; tylko 23% „zawsze" zezwala; zgoda rośnie, gdy cel jest zrozumiały w momencie prośby. **U nas:** prosić dopiero w scenie, z przycisku, po zdaniu fabularnym (już tak jest: „Włącz mikrofon", „Trzymam"). Nigdy na wejściu.
 - **iOS:** DeviceMotion wymaga zgody z gestu kliknięcia, tylko HTTPS (mamy). Mikrofon na iOS przełącza dźwięk na głośnik i ścisza: **nie łączyć** mikrofonu z binauralem w jednej scenie (u nas są osobno: dobrze). PWA na iOS czyści pamięć po 7 dniach bez użycia: **kod wznowienia jest ważniejszy, niż myśleliśmy**; pokazać go wyraźniej.
-- **Słuchawki:** realnie 30–50% graczy w danej chwili ich nie ma. „Ton dolny" potrzebuje wersji bez słuchawek: widzialna fala 18 Hz albo wibracja, ze świadomą degradacją („bez słuchawek zobaczysz, nie usłyszysz").
+- **Słuchawki:** realnie 30–50% graczy w danej chwili ich nie ma. „Ton dolny" potrzebuje wersji bez słuchawek: widzialna fala 18 Hz rysowana płynnie (nigdy migotanie ekranu: 15–25 Hz to pasmo napadów fotogennych, WCAG 2.3.1 dopuszcza najwyżej 3 błyski na sekundę) albo wibracja, ze świadomą degradacją („bez słuchawek zobaczysz, nie usłyszysz").
 - **Dostępność:** każdy sygnał dźwiękowy ma mieć odpowiednik wizualny, każdy gest tekstowy. Mamy suwak przy płycie i przycisk przy zimnie; brakuje przy tonie dolnym.
 - **Oczekiwania graczy łamigłówek:** „rozsądna szansa" bez podpowiedzi, zero skoków logicznych, **red herringi to najczęstsza skarga** (max jeden), jasny sygnał, że i kiedy popełniłem błąd, gra bez dźwięku, cofanie wyborów. **U nas:** fałszywa strona w sprawie 5 to celowy red herring i jedyny; zawieszka daje sygnał błędu bez liczb; wszystko działa bez dźwięku poza dwoma przerywnikami.
 

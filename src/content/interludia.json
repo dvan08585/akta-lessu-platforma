@@ -302,7 +302,7 @@
     "id": "zimno",
     "type": "still",
     "title": "Zimno",
-    "intro": "Piwnica pod zamkiem. O dwa stopnie zimniej niż obok. Przy trzydziestu trzech stopniach drżenie jest silne. Przy trzydziestu jeden ustaje, i to jest zły znak.",
+    "intro": "Piwnica pod zamkiem, ta z szybem. O dwa stopnie zimniej niż obok. Przy trzydziestu trzech stopniach drżenie jest silne. Przy trzydziestu jeden ustaje, i to jest zły znak.",
     "seconds": 30,
     "reveal": "Trzydzieści sekund. Ręce zaczęły drżeć wcześniej, niż {myślałaś|myślałeś}, bo ciało nie umie trzymać ciepła bez ruchu. Ten, kto nie może się ruszyć, trzęsie się, dopóki może. Potem przestaje.",
     "gate": 5,
