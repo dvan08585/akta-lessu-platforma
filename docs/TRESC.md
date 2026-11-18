@@ -4,7 +4,7 @@
 2. Pola:
    - `n` numer sprawy, `gate` numer bramy (1–7), `requires.chapter` rozdział potrzebny do otwarcia.
    - `docs[]`: `title`, `source` (skąd dokument), `style`: `chronicle` (kronika, kapitaliki) / `mono` (protokół, inwentarz) / `hand` (list) / `plain`, `paragraphs[]`.
-   - `questions[]`: `text`, `options[]` (4), `answer` (indeks), opcjonalnie `hint` (pojawia się po 3. próbie).
+   - `questions[]`: `text`, `options[]` (4), `answer` (indeks). Pole `hint` jest w JSON, ale gra go nie pokazuje (ustalenia biegłego nie mają podpowiedzi; po pięciu próbach pada jedno zdanie o metodzie). Nie wpisywać do `hint` niczego, co rozwiązuje sprawę, na wypadek gdyby ktoś je kiedyś włączył.
    - `solution[]`: 2–4 zdania. Jedno z nich ma być zdaniem, które czytelnik zapamięta.
    - `reward`: tekst z `rewards.json` pokazywany po rozwiązaniu.
 3. Zarejestruj plik w `src/app.ts` (tablica `cases`).

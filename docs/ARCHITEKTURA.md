@@ -71,3 +71,18 @@ Nagłówek (`h4`) i linia źródła (`.src`) są zawsze w szeryfie, w kapitalika
 ## Forma zwracania się do biegłego
 
 Gra pyta przy przyjęciu zlecenia: „Szanowna Pani” albo „Szanowny Panie” (`state.address`: `f`/`m`; bez wyboru obie formy jak w piśmie urzędowym). Imienia nie zbieramy. W treściach JSON (listy, dokumenty, rozwiązania) rodzaj zapisuje się znacznikiem `{Pani|Pan}` lub `{zrobiła|zrobił}`; renderer podstawia właściwą formę. Narracja w drugiej osobie w rodzaju męskim („Zostawiłeś”, „myślałeś”) ma być przepisana na formy neutralne albo na znacznik. To zadanie dla redakcji.
+
+
+## Nawigacja i powrót (listopad 2026)
+
+Każda podstrona ma pod nawigacją okruszek „← Mapa · Brama N” (`crumb()` w `views.ts`) i kończy się przyciskiem `back()`; okruszek jest skrótem, przycisk wyjściem. Strzałki w `back()`, `next()` i okruszku są rysowane (`arrow()` w `dom.ts`), bo na Androidzie znak „←” z zapasowej czcionki wyglądał jak kreska. Rejestr na mapie ma stałą kolejność mapy; zamknięte bramy pokazują kłódkę zamiast numeru i sam tytuł sprawy (żywioł odsłania otwarta sprawa).
+
+## Wersja i pamięć podręczna
+
+- `vite.config.ts` zapisuje jeden znacznik budowy do `__BUILD__` (w kodzie) i do `dist/version.json`. Aplikacja porównuje oba przy powrocie do karty, co 10 minut i 15 s po starcie (`checkVersion()` w `main.ts`); różnica to pasek „Akta zostały uzupełnione. Odśwież”. Znacznik jest też w stopce zakładki Akta („wersja …”), żeby na telefonie dało się sprawdzić, co jest załadowane.
+- `public/sw.js`: nawigacje z sieci (`no-cache`), zasoby z hashem w nazwie z pamięci podręcznej, a `version.json` i cały katalog `live/` (klucze spraw, rejestr dnia premiery) zawsze z sieci, z pamięci tylko bez sieci. Zmiana zasady = podbicie `CACHE`.
+- iPhone: Safari kasuje zapis strony po 7 dniach bez wizyty, chyba że strona jest na ekranie początkowym; gra wykrywa iOS poza trybem standalone (`isIOS()`, `isStandalone()` w `dom.ts`) i pokazuje w zeszycie ramkę z tą informacją; `navigator.storage.persist()` jest wołane przy starcie tam, gdzie istnieje.
+
+## Zgodność
+
+Cel budowy: `es2020`, `safari14`, `chrome90`. W CSS nie polegamy na `:has()` (pieczęć dokumentu to klasa `.stamped`, zaznaczona opcja to `.checked` nadawana w kodzie) ani na samym `dvh` (zawsze z zapasem `vh`). Test: `scratchpad/smoke.cjs` przechodzi 12 ekranów w Chromium i zbiera błędy konsoli; WebKit w tym środowisku nie jest dostępny, Safari sprawdza autor na iPhonie.
