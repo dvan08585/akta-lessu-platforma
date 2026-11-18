@@ -109,6 +109,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
    * a tekst przyjeżdża na środek ekranu z jednym przyciskiem „dalej". Brama przebyta prowadzi do swojej bramy.
    */
   function reveal(verdict: HTMLElement, note: string, extra: HTMLElement[] = []) {
+    sec.querySelector(".verdict.exit")?.remove(); // odsłona ma własny przycisk; bez tego były dwa
     sec.querySelectorAll<HTMLElement>("button, input, select, label, .opts, .verdict, .q, .row, .talk-qs, p.mono, .breath-phase, p.faint").forEach((el) => {
       if (el.closest(".topbar") || verdict.contains(el)) return; el.classList.add("hide-out");
     });
@@ -169,7 +170,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     if (tr.until > Date.now()) { renderLocked(); }
     function renderLocked() {
       const hrs = Math.max(1, Math.ceil((tr.until - Date.now()) / 3600000));
-      qs.replaceChildren(h("div", { class: "callout", role: "status" }, h("span", { class: "ico" }, icon("talk")), h("p", {}, `${it.person} nie ma dziś więcej czasu. Trzy razy wskazane na ślepo to nie rozmowa. Wróć za ${hrs} ${plural(hrs, "godzinę", "godziny", "godzin")} i przeczytaj rozmowę jeszcze raz.`)), h("div", { class: "verdict" }, back()));
+      qs.replaceChildren(h("div", { class: "callout", role: "status" }, h("span", { class: "ico" }, icon("talk")), h("p", {}, `${it.person} nie ma dziś więcej czasu. Trzy razy wskazane na ślepo to nie rozmowa. Wróć za ${hrs} ${plural(hrs, "godzinę", "godziny", "godzin")} i przeczytaj rozmowę jeszcze raz.`)));
     }
     function renderPick() {
       if (tr.until > Date.now()) { renderLocked(); return; }
