@@ -86,3 +86,7 @@ Każda podstrona ma pod nawigacją okruszek „← Mapa · Brama N” (`crumb()`
 ## Zgodność
 
 Cel budowy: `es2020`, `safari14`, `chrome90`. W CSS nie polegamy na `:has()` (pieczęć dokumentu to klasa `.stamped`, zaznaczona opcja to `.checked` nadawana w kodzie) ani na samym `dvh` (zawsze z zapasem `vh`). Test: `scratchpad/smoke.cjs` przechodzi 12 ekranów w Chromium i zbiera błędy konsoli; WebKit w tym środowisku nie jest dostępny, Safari sprawdza autor na iPhonie.
+
+## Kod biegłego (`engine/pair.ts`)
+
+Po zostawieniu siódmej pozycji pustej gra zapisuje `finaleAt` i wystawia kod biegłego: „b” + 4 hex z ziarna + 3 znaki base36 (dni od 1 I 2027) + 2 znaki sumy. Bez danych osobowych; data z dokładnością do dnia służy kohorcie „Pierwszy tydzień” z regulaminu. Pokazywany jako „Klucz piąty” w Aktach i w karcie udostępnienia; `finaleAt` jedzie w kodzie wznowienia (pole `t`). Weryfikacja poza grą: `scripts/verify-code.mjs` (także połówki klucza i odczyty).
