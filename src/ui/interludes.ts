@@ -53,7 +53,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   if (!found) { sec.append(h("p", {}, "Nie ma takiego przerywnika.")); return sec; }
   const it: Interlude = withAddress(app, found);
   sec.append(crumb(it.place === "rozmowa" ? "Rozmowa" : it.place === "apokryf" ? "Apokryf" : it.gate !== undefined ? `Brama ${it.gate}` : "Między sprawami"));
-  if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} ${plural(it.after ?? 0, "przebytej bramie", "przebytych bramach", "przebytych bramach")}.`)); return sec; }
+  if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} ${plural(it.after ?? 0, "przebytej bramie", "przebytych bramach", "przebytych bramach")}.`), h("div", { class: "verdict" }, back())); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   let alive = true; onLeave(() => { alive = false; });
   const acs: AudioContext[] = []; onLeave(() => { for (const a of acs) a.close().catch(() => { /* */ }); });

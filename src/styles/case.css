@@ -38,6 +38,7 @@ h3.ustal { margin: 2.4rem 0 0.9rem; padding-top: 1.6rem; border-top: 1px solid v
 .verdict.choice.grid > .btn { text-align: center; }
 
 .solution { margin: 2rem 0; padding: 2rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 1.2rem; line-height: 1.6; }
+.interlude .solution { border-bottom: 0; padding-bottom: 0.6rem; } /* pod odsłoną stoi już tylko przycisk powrotu; dolna kreska wyglądała jak jego część */
 .share { display: grid; gap: 0.75rem; }
 .share pre { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.9rem 1rem; font-family: var(--font-mono); font-size: 0.95rem; white-space: pre-wrap; margin: 0; }
 .notebook .entry { border-left: 2px solid var(--sand); padding: 0.2rem 0 0.2rem 0.9rem; margin-bottom: 1rem; }
@@ -72,7 +73,7 @@ select { font: inherit; color: var(--ink); background: var(--bg-2); border: 1px 
 .talk-log .you { color: var(--ink-dim); font-style: italic; margin-bottom: 0.3em; }
 .talk-log .them { margin-bottom: 1.2em; }
 .talk-qs { display: grid; gap: 0.4rem; margin-bottom: 1rem; }
-.talk-qs button { text-align: left; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 0.7rem 0 0.7rem 1.2rem; position: relative; }
+.talk-qs > button { text-align: left; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 0.7rem 0 0.7rem 1.2rem; position: relative; }
 .talk-qs button::before { content: "—"; position: absolute; left: 0; color: var(--sand); }
 .talk-qs button:disabled { opacity: 0.35; }
 .plate { width: 100%; max-width: 420px; height: auto; display: block; margin: 1rem auto; border-radius: 50%; border: 1px solid var(--line); }

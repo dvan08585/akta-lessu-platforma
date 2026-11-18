@@ -187,7 +187,7 @@ export function viewGate(app: App, n: number): HTMLElement {
         ? `Te akta przyjdą ${rel.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}, za ${Math.ceil((rel.getTime() - Date.now()) / 864e5)} ${plural(Math.ceil((rel.getTime() - Date.now()) / 864e5), "dzień", "dni", "dni")}. Wcześniej otwiera je tylko kod z rozdziału ${c.requires.chapter}.`
         : `Ta sprawa wymaga rozdziału ${c.requires.chapter}.`;
     sec.append(head(), h("h2", {}, c.title), h("p", { class: "muted" }, need),
-      app.now().getTime() >= new Date(app.cfg.premiereDate).getTime() ? h("div", { class: "verdict" }, next("Wpisz kod z książki", "#/akta")) : "");
+      h("div", { class: "verdict" }, app.now().getTime() >= new Date(app.cfg.premiereDate).getTime() ? next("Wpisz kod z książki", "#/akta") : null, back())); // każda podstrona kończy się tym samym przyciskiem; okruszek u góry jest skrótem, nie zamiennikiem
     return sec;
   }
   if (c.sealed) {
