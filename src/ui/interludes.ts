@@ -148,7 +148,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const log = h("div", { class: "talk-log" });
     const qs = h("div", { class: "talk-qs" });
     const verdict = h("div");
-    const tries = (app.state.talkTries ??= {}); const tr = (tries[it.id] ??= { n: 0, until: 0 });
+    const tries = (app.state.talkTries ??= {}); const tr = (tries[it.id] ??= { n: 0, until: 0 }); tr.x ??= [];
     const LOCK_H = 12;
     if (done) {
       // Rozpoznane: cała rozmowa do ponownego przeczytania, kłamstwo zaznaczone.
@@ -174,10 +174,11 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     }
     function renderPick() {
       if (tr.until > Date.now()) { renderLocked(); return; }
-      if (tr.until && tr.until <= Date.now()) { tr.n = 0; tr.until = 0; }
-      qs.replaceChildren(h("p", { class: "muted" }, `Które zdanie było kłamstwem? ${tr.n ? `Została ${plural(3 - tr.n, "jedna próba", "dwie próby", "próby")}.` : "Masz trzy próby."}`));
+      if (tr.until && tr.until <= Date.now()) { tr.n = 0; tr.until = 0; tr.x = []; }
+      qs.replaceChildren(h("p", { class: "muted" }, `Które zdanie było kłamstwem? ${tr.n ? (3 - tr.n === 1 ? "Została jedna próba." : "Zostały dwie próby.") : "Masz trzy próby."}`));
       it.questions!.forEach((q, i) => {
-        qs.append(h("button", { onclick: () => {
+        const ruled = tr.x!.includes(i); // już wskazane i odrzucone: zostaje wykreślone, nie da się kliknąć drugi raz
+        qs.append(h("button", { class: ruled ? "ruled" : "", disabled: ruled, "aria-disabled": ruled ? "true" : "false", onclick: () => {
           sendEvent(app.cfg.backendUrl, app.state, { type: "choice", id: it.id, option: i });
           if (i === it.lie) {
             tr.n = 0; tr.until = 0; save(app.state);
@@ -187,7 +188,15 @@ export function viewInterlude(app: App, id: string): HTMLElement {
           } else {
             tr.n += 1;
             if (tr.n >= 3) { tr.until = Date.now() + LOCK_H * 3600000; save(app.state); renderLocked(); }
-            else { save(app.state); renderPick(); qs.prepend(h("p", { class: "talk-wrong" }, it.wrong!)); }
+            else {
+              tr.x!.push(i); save(app.state); renderPick();
+              // Odpowiedź rozmówcy na błędne wskazanie: osobna karta nad opcjami, z tym, co wskazano i ile zostało; odrzucona opcja jest wykreślona niżej.
+              const card = h("div", { class: "talk-reply", role: "status" },
+                h("p", { class: "kicker" }, `${it.person} odpowiada`),
+                h("p", { class: "said" }, it.wrong!),
+                h("p", { class: "faint" }, `Wskazane: odpowiedź ${i + 1}. To nie było kłamstwo. ${3 - tr.n === 1 ? "Została jedna próba." : "Zostały dwie próby."}`));
+              qs.prepend(card); card.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
           }
         } }, `Odpowiedź ${i + 1}`, h("small", {}, excerpt(q.a))));
       });

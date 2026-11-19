@@ -239,3 +239,9 @@ button.slot.locked { border-color: transparent; background: transparent; color: 
 .callout .ico svg { width: 22px; height: 22px; }
 .callout p { margin: 0; }
 .talk-wrong { margin: 0 0 0.9rem; padding: 0.6rem 0.9rem; border-left: 2px solid var(--ink-faint); color: var(--ink-dim); font-style: italic; }
+.talk-reply { margin: 0.4rem 0 1.1rem; padding: 0.8rem 1rem; border: 1px solid var(--sand); border-radius: var(--radius); background: var(--bg-2); animation: dl-in 0.5s ease-out both; }
+.talk-reply .kicker { margin: 0 0 0.3rem; color: var(--sand); }
+.talk-reply .said { margin: 0 0 0.4rem; font-size: 1.05rem; }
+.talk-reply .faint { margin: 0; }
+.talk-qs > button.ruled { text-decoration: line-through; opacity: 0.45; }
+.talk-qs > button.ruled::before { content: "×"; }

@@ -91,7 +91,7 @@ export interface SaveState {
   /** Przerywniki między sprawami, które gracz już przeszedł. */
   interludesDone: string[];
   /** Rozmowy: liczba nietrafionych wskazań i blokada (ms) po trzech. */
-  talkTries?: Record<string, { n: number; until: number }>;
+  talkTries?: Record<string, { n: number; until: number; x?: number[] }>; // x: odpowiedzi już wskazane błędnie (zostają wykreślone)
   /** Mikro-akta: data -> czy trafione. */
   daily: Record<string, boolean>;
   /** Czy gracz zostawił e-mail (my go nie znamy, tylko fakt). */
