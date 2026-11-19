@@ -37,6 +37,8 @@ function route() {
   else if (hash.startsWith("#/wiadomosci")) view = viewInbox(app);
   else if (hash.startsWith("#/wejscie")) view = viewOnboarding(app);
   else if (!app.state.onboarded && !app.state.solvedCases.length && !app.state.testMode && (hash === "#/" || hash === "")) view = viewOnboarding(app);
+  else if (hash.startsWith("#/zlecenie")) view = viewIntro(app);
+  else if (app.state.solvedCases.length) view = viewMap(app); // po pierwszej sprawie strona główna to mapa; pismo komisarza zostaje pod #/zlecenie
   else view = viewIntro(app);
   view.id = "tresc"; view.setAttribute("tabindex", "-1"); root.replaceChildren(view);
   window.scrollTo({ top: 0 });

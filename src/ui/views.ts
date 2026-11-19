@@ -70,9 +70,9 @@ export function viewIntro(app: App): HTMLElement {
     h("h1", {}, "Akta Lessu"),
     h("p", { class: "quote" }, "Less nie był pyłem. Less był materią, która pamięta. ", h("em", {}, "Jak skóra okładki, jak wosk na pieczęci, jak zapach jabłek w piwnicy.")),
     solved ? null : letter,
-    h("p", { class: "muted" }, solved ? "Śledztwo trwa. Mapa pokazuje tylko to, co już wiesz." : "Jesteś biegłym. Dostajesz akta. Siedem wzgórz, siedem wniosków."),
+    h("p", { class: "muted" }, solved ? "Śledztwo trwa. Mapa pokazuje tylko to, co już wiesz." : app.state.onboarded ? "Zlecenie przyjęte. Pierwsze akta czekają w bramie czwartej." : "Jesteś biegłym. Dostajesz akta. Siedem wzgórz, siedem wniosków."),
     h("div", { class: "cta" },
-      solved ? next("Do mapy", "#/mapa") : next("Przyjmij zlecenie", "#/brama/4"),
+      solved ? next("Do mapy", "#/mapa") : app.state.onboarded ? next("Otwórz akta", "#/brama/4") : next("Przyjmij zlecenie", "#/brama/4"),
       h("button", { onclick: () => go("#/akta") }, "Mam kod")),
     h("p", { class: "faint colophon" }, "Dodatek do powieści „Siedem Bram Lessu”.", h("br"), "Nic tutaj nie zdradza zakończenia."));
 }
@@ -81,8 +81,8 @@ export function viewMap(app: App): HTMLElement {
   const sec = h("section", { class: "fade-in" }, topbar(app, "#/mapa"));
   sec.append(h("h2", { class: "sr-only" }, "Mapa"));
   // Nad mapą: rząd odczytów z ikonami (Wisła, pogoda) i jedno zdanie o milczących wzgórzach. Kierunki mówi sama mapa etykietami na krawędziach.
-  // „krypty zalewa przy niskiej wodzie" to wniosek sprawy 3: mapa mówi to dopiero, gdy gracz sam to ustalił
-  const wisla = dateline((cm) => { const diff = cm - monthlyMean(); const c3 = app.caseForGate(2); const knows = !!c3 && app.state.solvedCases.includes(c3.n); return diff < -40 ? (knows ? "nisko: krypty zalewa przy niskiej wodzie" : "nisko") : diff > 60 ? "wysoko" : null; });
+  // Nagłówek mapy mówi tylko o stanie Wisły. Wniosek sprawy 3 (co robi niska woda z kryptami) zostaje w aktach, nie w nagłówku (decyzja autora, 19 XI).
+  const wisla = dateline((cm) => { const diff = cm - monthlyMean(); return diff < -40 ? "nisko" : diff > 60 ? "wysoko" : null; });
   // O milczących wzgórzach mapa mówi dopiero, gdy gracz sam tego doświadczył w bramie (odkrycie, nie instrukcja).
   const stillSilent = app.silent.filter((g) => !app.state.readings[String(g)]);
   const legend = app.state.metSilent && stillSilent.length ? h("div", { class: "callout", role: "note" }, h("span", { class: "ico" }, icon("pair")), h("p", {}, `Zawieszka milczy na ${stillSilent.length === 1 ? "wzgórzu" : "wzgórzach"} ${stillSilent.join(" i ")}. Tam dopełnia sprawę cudzy odczyt.`)) : null;
@@ -654,6 +654,7 @@ export function viewAkta(app: App): HTMLElement {
   }
   { const nb = newsletterBox(app, "Nowe sprawy przychodzą co tydzień. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
 
+  sec.append(h("p", { class: "faint", style: "margin-top:1.2rem" }, h("a", { href: "#/zlecenie" }, "Pismo komisarza (zlecenie) do ponownego przeczytania")));
   sec.append(h("p", { class: "faint build" }, `wersja ${__BUILD__}`));
   sec.append(h("p", { class: "faint", style: "margin-top:2rem" }, h("a", { href: "#/ustawienia" }, "Ustawienia: światło, forma, narzędzia, zaczęcie od nowa →")));
   return sec;
