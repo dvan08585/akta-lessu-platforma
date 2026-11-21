@@ -108,6 +108,20 @@ export function viewInterlude(app: App, id: string): HTMLElement {
    * sterowanie (przyciski, suwaki, wybory) odpływa, ciepło przechodzi przez ekran jak przy zawieszce, iskry lessu,
    * a tekst przyjeżdża na środek ekranu z jednym przyciskiem „dalej". Brama przebyta prowadzi do swojej bramy.
    */
+  /** Słowo bramy pisane palcem: ślad na ekranie, nic nie zapisywane, pisma nikt nie ocenia. Liczy się długość kreski, nie kształt. */
+  function writeWord(verdict: HTMLElement, word: string, done: () => void) {
+    const canvas = h("canvas", { class: "write-pad", width: "600", height: "240" }) as HTMLCanvasElement;
+    const box = h("div", { class: "write-word fade-in" }, h("p", { class: "kicker" }, "Słowo tej bramy"), h("p", { class: "big-word" }, word), h("p", { class: "muted" }, "Napisz je palcem. Jak wyjdzie, tak wyjdzie; nikt tego nie sprawdza."), canvas,
+      h("div", { class: "verdict" }, h("button", { class: "ghost", onclick: () => { box.remove(); done(); } }, "Bez pisania")));
+    verdict.replaceChildren(box);
+    const ctx = canvas.getContext("2d")!; ctx.lineWidth = 7; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.strokeStyle = (getComputedStyle(document.documentElement).getPropertyValue("--sand") || "#c9a86a").trim();
+    let drawing = false, len = 0, lx = 0, ly = 0, finished = false;
+    const pos = (e: PointerEvent): [number, number] => { const r = canvas.getBoundingClientRect(); return [(e.clientX - r.left) * canvas.width / r.width, (e.clientY - r.top) * canvas.height / r.height]; };
+    canvas.addEventListener("pointerdown", (e) => { drawing = true; [lx, ly] = pos(e); try { canvas.setPointerCapture(e.pointerId); } catch { /* */ } });
+    canvas.addEventListener("pointermove", (e) => { if (!drawing) return; const [x, y] = pos(e); ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(x, y); ctx.stroke(); len += Math.hypot(x - lx, y - ly); lx = x; ly = y; });
+    const up = () => { drawing = false; if (finished || len < 400 + word.length * 50) return; finished = true; try { navigator.vibrate?.(40); } catch { /* */ } setTimeout(() => { box.classList.add("hide-out"); setTimeout(() => { box.remove(); done(); }, 500); }, 700); };
+    canvas.addEventListener("pointerup", up); canvas.addEventListener("pointercancel", up);
+  }
   function reveal(verdict: HTMLElement, note: string, extra: HTMLElement[] = []) {
     sec.querySelector(".verdict.exit")?.remove(); // odsłona ma własny przycisk; bez tego były dwa
     sec.querySelectorAll<HTMLElement>("button, input, select, label, .opts, .verdict, .q, .row, .talk-qs, p.mono, .breath-phase, p.faint").forEach((el) => {
@@ -125,7 +139,10 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     if (rite) { const r = it.rite!; sol.append(h("article", { class: "doc hand rite-closing" }, h("h4", {}, "Zeszyt geolożki"), h("div", { class: "src" }, `Obrzęd bramy ${it.gate}. Słowo: ${r.word}.${note.includes("na słowo") ? " Przyjęto na słowo." : ""}`), h("p", {}, r.closing))); }
     sol.append(h("p", {}, it.reveal!));
     const to = it.gate !== undefined ? `#/brama/${it.gate}` : "#/mapa";
-    setTimeout(() => { verdict.replaceChildren(sol, ...extra, h("div", { class: "verdict" }, next(it.gate !== undefined ? "Wróć do bramy" : "Ruszaj dalej", to))); sol.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }); }, hushMs ? hushMs + 400 : reduced ? 0 : 700);
+    const showSolution = () => { verdict.replaceChildren(sol, ...extra, h("div", { class: "verdict" }, next(it.gate !== undefined ? "Wróć do bramy" : "Ruszaj dalej", to))); sol.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }); };
+    // Obrzęd: po ciemności gracz pisze słowo bramy palcem (efekt wykonania: pamięta się to, co się zrobiło, nie to, co się przeczytało). Potem zapis geolożki.
+    if (rite) setTimeout(() => writeWord(verdict, it.rite!.word, showSolution), hushMs + 400);
+    else setTimeout(showSolution, reduced ? 0 : 700);
     finish(note);
   }
 

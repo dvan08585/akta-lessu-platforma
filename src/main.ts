@@ -1,6 +1,7 @@
 import { App } from "./app";
 import { startLess } from "./ui/less";
 import { viewIntro, viewMap, viewGate, viewNotebook, viewAkta, viewBody, viewInbox, viewOnboarding, viewSettings } from "./ui/views";
+import { viewProtokol } from "./ui/protokol";
 import { viewInterlude } from "./ui/interludes";
 import { installAnalytics } from "./engine/track";
 import { isNight } from "./engine/sun";
@@ -31,6 +32,7 @@ function route() {
   else if (mi) view = viewInterlude(app, mi[1]);
   else if (hash.startsWith("#/mapa")) view = viewMap(app);
   else if (hash.startsWith("#/zeszyt")) view = viewNotebook(app);
+  else if (hash.startsWith("#/protokol")) view = viewProtokol(app);
   else if (hash.startsWith("#/ustawienia")) view = viewSettings(app);
   else if (hash.startsWith("#/akta")) view = viewAkta(app);
   else if (hash.startsWith("#/o-ciele")) view = viewBody(app);

@@ -94,3 +94,27 @@ export function elementIcon(element: string): SVGSVGElement {
   path.setAttribute("d", EL[key] ?? EL.ziemia); path.setAttribute("fill", "none"); path.setAttribute("stroke", "currentColor"); path.setAttribute("stroke-width", "1.4"); path.setAttribute("stroke-linecap", "round"); path.setAttribute("stroke-linejoin", "round");
   svg.append(path); return svg;
 }
+
+/**
+ * Pieczęć biegłego: siedmiobok z siedmioma nacięciami (jedno na bramę; pełne, gdy brama przebyta), w środku pasy z ziarna gracza.
+ * Zrzut ekranu tej pieczęci jest paszportem: nic do druku, nic do konta.
+ */
+export function seal(passedGates: number[], unstable: number[], playerSeed: string, size = 160): SVGSVGElement {
+  const NS = "http://www.w3.org/2000/svg"; const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", "0 0 100 100"); svg.setAttribute("width", String(size)); svg.setAttribute("height", String(size)); svg.setAttribute("class", "seal"); svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", `Pieczęć biegłego: przebyte bramy ${passedGates.join(", ") || "żadna"}`);
+  const el = (t: string, a: Record<string, string>) => { const e = document.createElementNS(NS, t); for (const [k, v] of Object.entries(a)) e.setAttribute(k, v); svg.append(e); return e; };
+  const pt = (i: number, r: number) => { const a = -Math.PI / 2 + (i / 7) * Math.PI * 2; return [50 + r * Math.cos(a), 50 + r * Math.sin(a)]; };
+  const poly = (r: number) => Array.from({ length: 7 }, (_, i) => pt(i, r).map((v) => v.toFixed(2)).join(",")).join(" ");
+  el("polygon", { points: poly(46), fill: "none", stroke: "currentColor", "stroke-width": "1.6" });
+  el("polygon", { points: poly(38), fill: "none", stroke: "currentColor", "stroke-width": "0.8", opacity: "0.6" });
+  // pasy krzemienia z ziarna gracza: ta sama pieczęć na dwóch telefonach tego samego gracza
+  let x = flintSeed(playerSeed);
+  for (let k = 0; k < 9; k++) { x = (x * 1103515245 + 12345) & 0x7fffffff; const y = 22 + (x % 56); const w = 8 + ((x >> 8) % 20); el("line", { x1: String(50 - w), y1: String(y), x2: String(50 + w), y2: String(y + ((x >> 16) % 5) - 2), stroke: "currentColor", "stroke-width": String(0.6 + ((x >> 20) % 3) * 0.5), opacity: "0.55" }); }
+  // nacięcia: numer bramy = wierzchołek; przebyta pełna, niestabilna z kreską, nieprzebyta pusta
+  for (let g = 1; g <= 7; g++) { const [cx, cy] = pt(g - 1, 46); const done = passedGates.includes(g); const bad = unstable.includes(g);
+    el("circle", { cx: cx.toFixed(2), cy: cy.toFixed(2), r: "4.2", fill: done ? "currentColor" : "var(--bg, #0e0d0b)", stroke: "currentColor", "stroke-width": "1.2" });
+    if (bad) el("line", { x1: (cx - 3).toFixed(2), y1: (cy + 3).toFixed(2), x2: (cx + 3).toFixed(2), y2: (cy - 3).toFixed(2), stroke: "var(--bg, #0e0d0b)", "stroke-width": "1.4" });
+    const t = document.createElementNS(NS, "text"); const [tx, ty] = pt(g - 1, 56); t.setAttribute("x", tx.toFixed(2)); t.setAttribute("y", (ty + 2.5).toFixed(2)); t.setAttribute("text-anchor", "middle"); t.setAttribute("font-size", "6"); t.setAttribute("fill", "currentColor"); t.setAttribute("opacity", "0.8"); t.textContent = String(g); svg.append(t); }
+  return svg;
+}

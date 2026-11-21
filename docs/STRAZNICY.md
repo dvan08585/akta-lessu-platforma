@@ -20,6 +20,10 @@ Gość pokazuje paszport bram: stronę w książce albo wydruk z siedmioma polam
 
 Potem pieczęć w polu bramy [numer]. Pieczęć jest w szufladzie przy kasie, tusz [kolor: krew, czyli ciemna czerwień]. Obok pieczęci data, długopisem.
 
+Obok pieczęci leży zeszyt lokalu, „księga strażnika”. Gość może wpisać jedno zdanie i datę; Państwo nic nie muszą. Raz na kwartał autor przepisuje po jednym zdaniu z każdej księgi do rejestru gry. Zeszyt zostaje u Państwa i jest Państwa.
+
+Jeśli gość pokazuje pieczęć na ekranie telefonu (siedmiobok z nacięciami zamiast kartki), to jest to samo: jego paszport z gry. Stemplować można na kartce, którą dostanie w bibliotece, albo podpisać mu zdanie w księdze.
+
 To wszystko. Cała wizyta trwa pół minuty.
 
 ## Co wolno, czego nie
@@ -74,6 +78,9 @@ Dziesięć pieczęci, dziesięć dat. Jeśli to przeszkadza w pracy, prosimy, ż
 
 **„Pieczęć wyblakła / ktoś ją ukradł.”**
 Wpis długopisem jest ważny. Dzwonić po nową.
+
+**„Lokal był zamknięty, gość przyszedł po godzinach.”**
+Nic nie trzeba robić. Zdjęcie paszportu przy drzwiach liczy się w grze jak pieczęć; gra mówi o tym graczom wprost.
 
 **„Ktoś pyta, czy pod lokalem naprawdę są korytarze.”**
 Prawdziwa odpowiedź Państwa lokalu, jaka jest. Gra nie potrzebuje, żeby ktoś kłamał.

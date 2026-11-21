@@ -1,7 +1,7 @@
 import { h, go, toast, back, next, arrow, isIOS, isStandalone } from "./dom";
 import { renderMap, statusLabel } from "./map";
 import { interludesFor } from "./interludes";
-import { icon, flint, flintSeed } from "./icons";
+import { icon, flint, flintSeed, seal } from "./icons";
 import { elementIcon } from "./icons";
 import { fetchWisla, monthlyMean, isSnowSeason } from "../engine/wisla";
 import { pickDaily, dayKey } from "../engine/daily";
@@ -87,6 +87,13 @@ export function viewMap(app: App): HTMLElement {
   const stillSilent = app.silent.filter((g) => !app.state.readings[String(g)]);
   const legend = app.state.metSilent && stillSilent.length ? h("div", { class: "callout", role: "note" }, h("span", { class: "ico" }, icon("pair")), h("p", {}, `Zawieszka milczy na ${stillSilent.length === 1 ? "wzgórzu" : "wzgórzach"} ${stillSilent.join(" i ")}. Tam dopełnia sprawę cudzy odczyt.`)) : null;
   sec.append(wisla); if (legend) sec.append(legend);
+  // Dziennik miasta: raz w tygodniu jedno zdanie archiwisty o prawdziwym Sandomierzu trafia do zeszytu (Wisła, temperatura, wschód). Po siedmiu tygodniach gracz ma dziennik pogody miasta, w którym nie był.
+  const wk = isoWeek(new Date());
+  if (!(app.state.cityWeeks ??= []).includes(wk)) Promise.all([fetchWisla(), fetchPogoda()]).then(([w, p]) => {
+    if (!w.live && !p) return; app.state.cityWeeks!.push(wk);
+    const d = new Date(); const date = d.toLocaleDateString("pl-PL", { day: "numeric", month: "long" }); const sr = sunrise(d).toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+    app.addNote(`Sandomierz, ${date}: Wisła ${w.cm} cm${w.live ? "" : " (średnia)"}${p ? `, ${p.tempC.toFixed(0)}°C${p.snowing ? ", śnieg" : ""}` : ""}, wschód ${sr}. Zapisano, bo miasto było, zanim ktokolwiek je przeczytał.`, "miasto");
+  }).catch(() => { /* bez sieci: w przyszłym tygodniu */ });
   if (isSnowSeason()) sec.classList.add("snow");
   fetchPogoda().then((w) => { if (w?.snowing) { wisla.append(h("span", { class: "dl note" }, "na Pimpo Limpo są sanki")); sec.classList.add("sanki"); } });
   // Rejestr na żywo (dzień premiery): najpierw backend, potem plik public/live/rejestr.json jako zapas
@@ -270,7 +277,7 @@ function docEl(app: App, d: Doc): HTMLElement {
     el.append(h("p", { class: "faint" }, "Berbeć zobaczył znak o świcie. W dzień nikt nie uwierzy."));
     return el;
   }
-  for (const p of d.paragraphs) el.append(h("p", {}, addrText(app, p)));
+  for (const p of d.paragraphs) el.append(anchored(app, d, addrText(app, p)));
   if (d.audio) {
     const audio = h("audio", { controls: true, preload: "none", src: import.meta.env.BASE_URL + d.audio }) as HTMLAudioElement;
     // Synestezja jako interfejs: ton, którego nie słychać, czuć w dłoni.
@@ -296,6 +303,12 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   const sub = c.subtitle.split(" · ").filter((part) => !(g && (part.includes(g.name.replace("Wzgórze ", "")) || part.startsWith("żywioł")))).join(" · ");
   sec.append(h("div", { class: "case-head" }, h("div", {}, h("p", { class: "kicker" }, `Brama ${c.gate} · ${g?.name ?? ""}`), h("h2", {}, c.title), h("p", { class: "muted" }, [g ? `żywioł: ${g.element}` : "", sub].filter(Boolean).join(" · "))), g ? h("span", { class: "el-icon", "aria-hidden": "true" }, elementIcon(g.element)) : null));
   sec.append(h("p", { class: "faint epigraph" }, addrText(app, c.epigraph)));
+  // Luki przed dokumentami: gracz widzi, czego ma szukać, zanim zacznie czytać (pretesting). Bank i wypełnianie są niżej, po aktach.
+  if (!solvedAlready) for (const q of c.questions) if (q.kind === "fill" && q.bank) {
+    const parts = q.text.split("___");
+    sec.append(h("article", { class: "doc mono formularz" }, h("h4", {}, "Ustalenie biegłego: do wypełnienia"), h("div", { class: "src" }, "Formularz programu. Luki wypełnia biegły po lekturze akt (niżej)."),
+      h("p", {}, ...parts.flatMap((t, i) => (i < parts.length - 1 ? [t, h("span", { class: "blank" }, "\u00a0".repeat(9))] : [t])))));
+  }
 
   // Dokumenty: nawigacja zakładkami, jeden na ekran (telefon).
   const docs = visibleDocs(app, c);
@@ -426,6 +439,13 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
     grid.querySelectorAll<HTMLElement>(".bank, select, .opts").forEach((el) => (el.style.display = "none"));
     grid.querySelectorAll<HTMLButtonElement>("button.slot").forEach((b) => { b.disabled = true; b.classList.add("locked"); });
     btn.remove(); result.setAttribute("data-done", "");
+    // Wypełnione Ustalenie jako dokument z pieczęcią (informacja zwrotna: gracz widzi całe zdanie, które ustalił)
+    if (!sec.querySelector(".doc.ustalenie")) for (const q of c.questions) if (q.kind === "fill" && q.bank && q.answerWords) {
+      const parts = q.text.split("___");
+      const art = h("article", { class: "doc mono stamped ustalenie" }, h("h4", {}, "Ustalenie biegłego"), h("div", { class: "src" }, "Wypełnione. Przyjęte do rejestru programu."),
+        h("p", {}, ...parts.flatMap((t, i) => (i < parts.length - 1 ? [t, h("strong", {}, q.answerWords![i] ?? "")] : [t]))));
+      result.insertAdjacentElement("afterend", art);
+    }
   }
   if (solvedAlready) { pend.replaceWith(pendant(4, undefined, fs)); verdictText.textContent = "Pulsuje. Brama rozpoznana."; lockAnswers(); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
   return sec;
@@ -578,6 +598,9 @@ export function viewNotebook(app: App): HTMLElement {
   const pre = h("pre", { class: "mono", style: "white-space:pre-wrap;word-break:break-all;display:none" }, code);
   const inp2 = h("input", { type: "text", placeholder: "kod wznowienia", "aria-label": "Kod wznowienia", style: "text-transform:none;letter-spacing:0" }) as HTMLInputElement;
   const b2 = h("button", { class: "primary", onclick: () => { const st = importCode(inp2.value); if (!st) { toast("Nieprawidłowy kod."); return; } Object.assign(app.state, st); save(app.state); toast("Wznowiono."); go("#/mapa"); } }, "Wznów");
+  // Pieczęć biegłego: siedmiobok z nacięciami z tego samego ziarna, co kod wznowienia. Zrzut ekranu jest paszportem w bibliotece.
+  sec.append(h("div", { class: "gatebox sealbox" }, h("h3", {}, "Pieczęć biegłego"), h("div", { class: "seal-row" }, seal(app.solvedGates().filter((g) => gestureDoneFor(app, g)), app.state.unstableGates, app.state.seed),
+    h("p", { class: "muted" }, "Siedem nacięć, po jednym na bramę. Pełne są przebyte, przekreślone otwarte siłą. Pasy w środku są z twojego ziarna, więc ta pieczęć jest tylko twoja. Zrzut ekranu wystarczy za paszport w bibliotece. ", h("a", { href: "#/protokol" }, "Protokół biegłego: stan na dziś.")))));
   const b2box = h("div", { class: "gatebox resume" }, h("h3", {}, "Wznowienie"), h("p", { class: "muted" }, "Przeglądarka może zapomnieć tę stronę. Kod nie. Po każdej przebytej bramie skopiuj go i zapisz tam, gdzie trzymasz notatki."),
     isIOS() && !isStandalone() ? h("div", { class: "callout", role: "note" }, h("span", { class: "ico" }, icon("nav-zeszyt")), h("p", {}, "Na iPhonie Safari kasuje zapis strony po siedmiu dniach bez wizyty. To zasada Apple, nie gry. Zapis zostaje, jeśli dodasz stronę do ekranu początkowego (Udostępnij, potem „Do ekranu początkowego”). Inaczej trzymaj kod wznowienia poza grą.")) : null,
     h("div", { class: "verdict" }, h("button", { class: "primary", onclick: async () => { try { await navigator.clipboard.writeText(code); toast("Skopiowano kod wznowienia."); } catch { pre.style.display = ""; toast("Zaznacz i skopiuj ręcznie."); } } }, "Skopiuj kod")), pre,
@@ -650,7 +673,7 @@ export function viewAkta(app: App): HTMLElement {
     sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz piąty: kod biegłego"),
       h("p", { class: "muted" }, "Siedem bram rozstrzygniętych. Ten kod jest dowodem: bez imienia, z datą. Okazany w bibliotece w Sandomierzu albo wysłany organizatorowi daje wpis do Rejestru biegłych pod wybranym pseudonimem."),
       h("p", {}, codeEl),
-      h("div", { class: "verdict" }, h("button", { class: "primary", onclick: async () => { try { await navigator.clipboard.writeText(codeEl.textContent ?? ""); toast("Skopiowano kod biegłego."); } catch { toast("Zaznacz i skopiuj ręcznie."); } } }, "Skopiuj"))));
+      h("div", { class: "verdict" }, h("button", { class: "primary", onclick: async () => { try { await navigator.clipboard.writeText(codeEl.textContent ?? ""); toast("Skopiowano kod biegłego."); } catch { toast("Zaznacz i skopiuj ręcznie."); } } }, "Skopiuj"), h("a", { class: "btn ghost", href: "#/protokol" }, "Protokół biegłego"))));
   }
   { const nb = newsletterBox(app, "Nowe sprawy przychodzą co tydzień. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
 
@@ -792,4 +815,44 @@ export function viewSettings(app: App): HTMLElement {
     h("p", { class: "faint" }, h("a", { href: "#/o-ciele" }, "Co robi z tobą ta gra: oddech, nucenie, dudnienie, bezruch, źródła.")));
   sec.append(h("div", { class: "danger-zone" }, h("button", { class: "ghost danger", onclick: () => { if (confirm("Wyczyścić cały postęp na tym urządzeniu? Tego nie da się cofnąć.")) { reset(); location.reload(); } } }, "Zacznij od nowa"), h("p", { class: "faint" }, "Usuwa cały postęp z tego urządzenia. Zostaje tylko to, co zapiszesz wcześniej jako kod wznowienia w zeszycie.")));
   return sec;
+}
+
+
+/** Numer tygodnia ISO jako klucz dziennika miasta (jedno zdanie na tydzień). */
+function isoWeek(d: Date): string {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); const day = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - day);
+  const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1)); return `${t.getUTCFullYear()}-${String(Math.ceil(((t.getTime() - y0.getTime()) / 86400000 + 1) / 7)).padStart(2, "0")}`;
+}
+function gestureDoneFor(app: App, gate: number): boolean { const g = GESTURE_OF[gate]; return !g || app.state.interludesDone.includes(g) || app.state.testMode; }
+
+/**
+ * Słowa-kotwice: rzeczy, które wędrują między dokumentami (słoik, spinka, kożuch, gołąb, krzemień, koperta, „nie tędy").
+ * Dotknięcie pokazuje, gdzie jeszcze to słowo stoi w aktach, które gracz już ma. Nic nowego nie dopisuje; wiąże to, co jest.
+ */
+const ANCHORS = ["słoik", "słoiki", "spinka", "spinki", "spinek", "kożuch", "gołąb", "gołębia", "gołębnik", "krzemień", "krzemienia", "koperta", "koperty", "kopercie", "kopertach", "nie tędy", "kompot", "kompotu", "siedmiobok", "sudomir", "siedem punktów", "zawieszka", "zawieszki"];
+const ANCHOR_RE = new RegExp(`(${ANCHORS.map((a) => a.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`, "giu");
+function stem(w: string): string { return w.toLowerCase().replace(/[^\p{L} ]/gu, "").slice(0, 5); }
+function anchored(app: App, here: Doc, text: string): HTMLElement {
+  const p = h("p");
+  const parts = text.split(ANCHOR_RE);
+  parts.forEach((t, i) => {
+    if (i % 2 === 0) { if (t) p.append(t); return; }
+    const b = h("button", { class: "anchor", type: "button", onclick: () => {
+      const old = p.querySelector(".anchor-pop"); if (old) { old.remove(); return; }
+      const st = stem(t); const hits: HTMLElement[] = [];
+      for (const c of app.cases) {
+        if (c.sealed || app.gateStatus(c.gate) === "locked") continue;
+        const docs: { title: string; paragraphs: string[]; id?: string }[] = [...visibleDocs(app, c)];
+        if (app.state.solvedCases.includes(c.n)) docs.push({ title: c.solutionDoc?.title ?? "Rozwiązanie", paragraphs: c.solution });
+        for (const d of docs) { if (d === here || (d.id && d.id === here.id)) continue;
+          const par = d.paragraphs.find((x) => x.toLowerCase().includes(st)); if (!par) continue;
+          const at = par.toLowerCase().indexOf(st); const frag = par.slice(Math.max(0, at - 40), at + 60).replace(/^\S*\s/, "").replace(/\s\S*$/, "");
+          hits.push(h("a", { href: `#/brama/${c.gate}` }, h("b", {}, `Brama ${c.gate} · ${d.title}: `), `…${frag}…`)); if (hits.length >= 5) break; }
+        if (hits.length >= 5) break;
+      }
+      p.append(h("div", { class: "anchor-pop", role: "note" }, h("p", { class: "kicker" }, `„${t}" w innych aktach`), hits.length ? h("div", { class: "hits" }, ...hits) : h("p", { class: "faint" }, "Na razie tylko tu. Wróci w innych aktach.")));
+    } }, t);
+    p.append(b);
+  });
+  return p;
 }

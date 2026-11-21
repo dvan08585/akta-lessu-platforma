@@ -88,6 +88,8 @@ export interface SaveState {
   leftSeventhEmpty: boolean;
   /** Kiedy siódma pozycja została zostawiona pusta (ms); z tego liczy się kod biegłego i kohorta „Pierwszy tydzień”. */
   finaleAt?: number;
+  /** Tygodnie (ISO), w których zeszyt dostał już zdanie dziennika miasta. */
+  cityWeeks?: string[];
   /** Przerywniki między sprawami, które gracz już przeszedł. */
   interludesDone: string[];
   /** Rozmowy: liczba nietrafionych wskazań i blokada (ms) po trzech. */
