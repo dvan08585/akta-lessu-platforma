@@ -5,13 +5,15 @@ export interface Inbox { scheduled: Record<string, number>; read: string[]; repl
 
 export function ensureInbox(s: SaveState & { inbox?: Inbox }): Inbox { if (!s.inbox) s.inbox = { scheduled: {}, read: [], replies: {} }; return s.inbox; }
 
-/** Zdarzenia, które już zaszły: case:N, gesture:ID, interlude:ID, start. */
+/** Zdarzenia, które już zaszły: case:N, gesture:ID, interlude:ID, start, footer, finale, reply:ID:N. */
 export function events(s: SaveState): Set<string> {
   const e = new Set<string>(["start"]);
   s.solvedCases.forEach((n) => e.add(`case:${n}`));
   s.interludesDone.forEach((id) => e.add(`interlude:${id}`));
   if (s.sawFooter) e.add("footer");
   if (s.leftSeventhEmpty) e.add("finale");
+  // odpowiedzi na listy jako zdarzenia: list może mieć ciąg dalszy zależny od tego, co gracz odpisał
+  for (const [id, opt] of Object.entries(s.inbox?.replies ?? {})) e.add(`reply:${id}:${opt}`);
   return e;
 }
 /** Zaplanuj wiadomości, których zdarzenie zaszło, a nie są jeszcze zaplanowane. */

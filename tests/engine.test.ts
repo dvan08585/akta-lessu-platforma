@@ -93,6 +93,14 @@ describe("nowe typy spraw", () => {
 
 import { halfKey, verifyCheck, silentHills, readingToken, parseReading, looksLikeHalfKey, expertCode, parseExpertCode } from "../src/engine/pair";
 
+describe("listy po odpowiedzi", () => {
+  it("odpowiedź na list jest zdarzeniem dla kolejnego listu", () => {
+    const s = emptyState(); s.solvedCases = [1, 2]; s.inbox = { scheduled: {}, read: [], replies: { "w-x": 1 } };
+    const rules = [{ id: "w-x", after: "case:2", delayMin: 0, from: "A", text: "?" , reply: ["a", "b"] }, { id: "w-x-b", after: "reply:w-x:1", delayMin: 0, from: "A", text: "b!" }, { id: "w-x-a", after: "reply:w-x:0", delayMin: 0, from: "A", text: "a!" }];
+    schedule(s, rules); expect(s.inbox.scheduled["w-x-b"]).toBeDefined(); expect(s.inbox.scheduled["w-x-a"]).toBeUndefined();
+  });
+});
+
 describe("kod biegłego", () => {
   it("niesie datę z dokładnością do dnia i wykrywa literówkę", async () => {
     const at = Date.UTC(2027, 9, 25, 14, 30); const c = await expertCode("seed-z", at);

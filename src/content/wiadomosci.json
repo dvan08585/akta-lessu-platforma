@@ -19,6 +19,39 @@
     "text": "Dziękuję za pierwszy wniosek. Proszę o kolejne w miarę napływu materiałów. Jedno pytanie, nieformalnie: czy w tych kronikach pojawia się nazwisko Sudomir? Proszę nie odpowiadać mailem."
   },
   {
+    "id": "w-ziel-cyt",
+    "after": "case:2",
+    "delayMin": 240,
+    "from": "kom. Zieliński",
+    "text": "Przeczytałem w rejestrze programu {pani|pana} wniosek z pierwszej sprawy. Cytuję: „Trzystu z roku 1287 leży poniżej 6,1 m, zamkniętych od góry przez Halinę, przed pierwszą belką Berbecia.” Proszę potwierdzić, że tak to {pani|pan} {ustaliła|ustalił}. Jedno słowo.",
+    "reply": [
+      "Potwierdzam.",
+      "Nie. Tam było: od spodu.",
+      "Nie pamiętam."
+    ]
+  },
+  {
+    "id": "w-ziel-cyt-a",
+    "after": "reply:w-ziel-cyt:0",
+    "delayMin": 45,
+    "from": "kom. Zieliński",
+    "text": "Przyjąłem. Proszę czytać własne wnioski uważniej niż cudze. Ktoś je już czyta za {panią|pana}."
+  },
+  {
+    "id": "w-ziel-cyt-b",
+    "after": "reply:w-ziel-cyt:1",
+    "delayMin": 45,
+    "from": "kom. Zieliński",
+    "text": "Wiem. Do mnie przyszło inaczej. Proszę zapamiętać, którędy wnioski idą do rejestru, zanim do mnie dojdą."
+  },
+  {
+    "id": "w-ziel-cyt-c",
+    "after": "reply:w-ziel-cyt:2",
+    "delayMin": 45,
+    "from": "kom. Zieliński",
+    "text": "Niech {pani|pan} sprawdzi w zeszycie. Ja sprawdziłem. Jedno słowo się nie zgadza i nie zmieniłem go ja."
+  },
+  {
     "id": "w-jaromin-1",
     "after": "case:2",
     "delayMin": 60,
