@@ -41,6 +41,6 @@
   "testCodeNote": "Kod testowy (usunąć przed premierą): zdejmuje kolejność spraw, kalendarz i milczenie zawieszki. Nie daje połówek klucza.",
   "doneCodeHash": "5ef083990ee5ecbef017f42be526b29509fede32fdac55e5872417e5d7ce758f",
   "doneCodeNote": "Kod testowy (usunąć przed premierą): zaznacza wszystkie sprawy i gesty jako wykonane, stopkę jako zauważoną. Do oglądania finału, listów i rejestru.",
-  "backendUrl": "",
+  "backendUrl": "https://akta-lessu-wspolny.dvan08585.workers.dev",
   "backendNote": "Adres Workera z docs/BACKEND.md. Puste = bez wspólnego stanu."
 }
