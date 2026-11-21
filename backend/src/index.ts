@@ -8,8 +8,9 @@
  *   POST /hum     { who }                               nucenie teraz (TTL 90 s); GET /stats zwraca ilu naraz
  *   GET  /rejestr → { active, header, lines, updatedAt }
  *   PUT  /rejestr (Authorization: Bearer ADMIN_TOKEN) { active, header, lines }
+ *   GET  /pokoj/<kod>  (Upgrade: websocket)  pokój dwóch telefonów: każda wiadomość idzie do drugiego gniazda; najwyżej dwa gniazda; nic nie zapisywane
  */
-export interface Env { STATS: DurableObjectNamespace; ALLOWED_ORIGIN: string; ADMIN_TOKEN?: string }
+export interface Env { STATS: DurableObjectNamespace; ROOM: DurableObjectNamespace; ALLOWED_ORIGIN: string; ADMIN_TOKEN?: string }
 
 const json = (data: unknown, origin: string, status = 200) => new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json; charset=utf-8", "access-control-allow-origin": origin, "access-control-allow-headers": "content-type, authorization", "access-control-allow-methods": "GET, POST, PUT, OPTIONS", "cache-control": "no-store" } });
 
@@ -21,6 +22,11 @@ export default {
     if (url.pathname === "/rejestr" && req.method === "PUT") {
       const auth = req.headers.get("authorization") || "";
       if (!env.ADMIN_TOKEN || auth !== `Bearer ${env.ADMIN_TOKEN}`) return json({ error: "brak uprawnień" }, origin, 401);
+    }
+    const room = /^\/pokoj\/([a-z0-9]{4,8})$/i.exec(url.pathname);
+    if (room) {
+      if (req.headers.get("upgrade")?.toLowerCase() !== "websocket") return json({ error: "tu jest tylko WebSocket" }, origin, 426);
+      return env.ROOM.get(env.ROOM.idFromName(room[1].toLowerCase())).fetch(req);
     }
     const id = env.STATS.idFromName("global");
     const stub = env.STATS.get(id);
@@ -85,4 +91,31 @@ export class Stats {
     }
     return ok({ error: "nie ma takiej ścieżki" }, 404);
   }
+}
+
+
+/**
+ * Pokój dwóch telefonów. Dwa gniazda WebSocket (hibernowane: nie płaci się za czekanie), każda wiadomość (do 2 KB)
+ * trafia do drugiego gniazda bez zaglądania w treść. Przy wejściu i wyjściu obaj dostają {"t":"peers","n":liczba}.
+ * Trzecie gniazdo jest odrzucane. Nic nie jest zapisywane: pokój znika, gdy oba telefony się rozłączą.
+ */
+export class Room {
+  state: DurableObjectState;
+  constructor(state: DurableObjectState) { this.state = state; }
+  async fetch(req: Request): Promise<Response> {
+    if (this.state.getWebSockets().length >= 2) return new Response(JSON.stringify({ error: "pokój pełny" }), { status: 409 });
+    const pair = new WebSocketPair(); const [client, server] = [pair[0], pair[1]];
+    this.state.acceptWebSocket(server);
+    this.broadcast(null, JSON.stringify({ t: "peers", n: this.state.getWebSockets().length }));
+    return new Response(null, { status: 101, webSocket: client });
+  }
+  broadcast(from: WebSocket | null, msg: string): void {
+    for (const ws of this.state.getWebSockets()) { if (ws === from) continue; try { ws.send(msg); } catch { /* gniazdo już zamknięte */ } }
+  }
+  webSocketMessage(ws: WebSocket, msg: string | ArrayBuffer): void {
+    if (typeof msg !== "string" || msg.length > 2048) return;
+    this.broadcast(ws, msg);
+  }
+  webSocketClose(ws: WebSocket): void { try { ws.close(); } catch { /* */ } this.broadcast(ws, JSON.stringify({ t: "peers", n: Math.max(0, this.state.getWebSockets().length - 1) })); }
+  webSocketError(ws: WebSocket): void { this.webSocketClose(ws); }
 }

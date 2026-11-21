@@ -19,6 +19,9 @@ curl -X PUT "$URL/rejestr" -H "Authorization: Bearer $ADMIN_TOKEN" -H "content-t
 ```
 Co godzinę inne `lines`. Strona pobiera co minutę. Plik `public/live/rejestr.json` zostaje jako zapas, gdy backend nie odpowiada.
 
+## Pokój dwóch telefonów (pięć palców dwojga na dwóch ekranach)
+W obrzędzie bramy 7 gracz tworzy pokój (kod z pięciu znaków) albo wpisuje kod od drugiej osoby. Oba telefony łączą się WebSocketem z `/pokoj/<kod>`; Durable Object `Room` przekazuje wiadomości między dokładnie dwoma gniazdami i nic nie zapisuje. Wysyłane są tylko pozycje palców w ułamkach ekranu, 20 razy na sekundę. Cudze palce rysują się na niebiesko; pięć punktów z obu telefonów razem zalicza obrzęd. Bez `backendUrl` sekcja „Dwa telefony" nie pojawia się.
+
 ## Co strona wysyła
 `solved` i `gesture` z numerem bramy (raz na gracza), `seventh_empty` / `seventh_filled`, `reply` i `choice` z identyfikatorem i opcją, `hum` co 30 s podczas sceny nucenia. Nic więcej.
 

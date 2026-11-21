@@ -7,9 +7,18 @@ compatibility_date = "2025-10-01"
 name = "STATS"
 class_name = "Stats"
 
+# Pokój dwóch telefonów (pięć palców dwojga na dwóch ekranach): WebSocket, dwa gniazda, nic nie zapisywane.
+[[durable_objects.bindings]]
+name = "ROOM"
+class_name = "Room"
+
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["Stats"]
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["Room"]
 
 [vars]
 ALLOWED_ORIGIN = "https://dvan08585.github.io"

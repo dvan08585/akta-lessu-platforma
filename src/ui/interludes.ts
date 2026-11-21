@@ -603,7 +603,26 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const canvas = h("canvas", { class: "plate hept", width: "600", height: "600", "aria-label": "Heptagram z siedmioma punktami" }) as HTMLCanvasElement;
     const status = h("p", { class: "mono muted" }, "0 / 5 palców na siedmiu punktach");
     const verdict = h("div");
-    sec.append(canvas, status, verdict);
+    // Dwa telefony: drugi gracz u siebie, jego palce widać na tym ekranie (i odwrotnie). Kanał to pokój na serwerze gry; bez adresu serwera zostaje jeden telefon.
+    const remote = new Map<string, { x: number; y: number }>(); let peers = 0; let ws: WebSocket | null = null; let lastSend = 0;
+    const roomBox = h("div", { class: "gatebox roombox" });
+    if (app.cfg.backendUrl) {
+      const codeIn = h("input", { type: "text", placeholder: "kod pokoju", "aria-label": "Kod pokoju", maxlength: "6", autocapitalize: "none", style: "text-transform:none;letter-spacing:0.2em" }) as HTMLInputElement;
+      const info = h("p", { class: "muted" }, "Druga osoba może być u siebie: jej palce pojawią się na tym ekranie na niebiesko. Utwórz pokój albo wpisz kod, który dostałeś.");
+      const join = (code: string) => {
+        code = code.trim().toLowerCase(); if (!/^[a-z0-9]{4,6}$/.test(code)) { toast("Kod pokoju: cztery do sześciu znaków."); return; }
+        try { ws?.close(); } catch { /* */ }
+        ws = new WebSocket(app.cfg.backendUrl.replace(/^http/, "ws") + "/pokoj/" + code);
+        ws.addEventListener("open", () => { info.textContent = `Pokój ${code}. Czekam na drugi telefon.`; });
+        ws.addEventListener("message", (e) => { try { const m = JSON.parse(String(e.data)); if (m.t === "peers") { peers = m.n; info.textContent = peers >= 2 ? `Pokój ${code}: druga osoba połączona. Połóżcie palce.` : `Pokój ${code}. Czekam na drugi telefon.`; } else if (m.t === "touch" && Array.isArray(m.p)) { remote.clear(); m.p.slice(0, 5).forEach((q: number[], i: number) => remote.set("r" + i, { x: q[0] * 600, y: q[1] * 600 })); } } catch { /* */ } });
+        ws.addEventListener("close", () => { peers = 0; remote.clear(); info.textContent = "Pokój zamknięty."; });
+        ws.addEventListener("error", () => { info.textContent = "Nie udało się połączyć z pokojem. Spróbuj jeszcze raz albo zostańcie przy jednym telefonie."; });
+        onLeave(() => { try { ws?.close(); } catch { /* */ } });
+      };
+      roomBox.append(h("h3", {}, "Dwa telefony"), info,
+        h("div", { class: "row" }, h("button", { onclick: () => { const code = Math.random().toString(36).slice(2, 7); codeIn.value = code; join(code); } }, "Utwórz pokój"), codeIn, h("button", { class: "primary", onclick: () => join(codeIn.value) }, "Dołącz")));
+    }
+    sec.append(canvas, status, roomBox, verdict);
     const ctx = canvas.getContext("2d")!;
     const pts = Array.from({ length: 7 }, (_, i) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 7; return { x: 300 + Math.cos(a) * 220, y: 300 + Math.sin(a) * 220 }; });
     const touches = new Map<number, { x: number; y: number }>(); let held = 0, finished = done;
@@ -614,8 +633,14 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     function draw() {
       ctx.fillStyle = "#171511"; ctx.fillRect(0, 0, 600, 600);
       ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath(); ctx.strokeStyle = "#6b6355"; ctx.lineWidth = 2; ctx.stroke();
-      const covered = pts.map((p) => [...touches.values()].some((t) => Math.hypot(t.x - p.x, t.y - p.y) < 60));
-      pts.forEach((p, i) => { ctx.beginPath(); ctx.arc(p.x, p.y, 34, 0, Math.PI * 2); ctx.fillStyle = covered[i] ? "#c9a86a" : "#2a2620"; ctx.fill(); ctx.strokeStyle = "#e8e0cf"; ctx.lineWidth = 1.5; ctx.stroke(); });
+      const mine = pts.map((p) => [...touches.values()].some((t) => Math.hypot(t.x - p.x, t.y - p.y) < 60));
+      const theirs = pts.map((p) => [...remote.values()].some((t) => Math.hypot(t.x - p.x, t.y - p.y) < 60));
+      const covered = pts.map((_, i) => mine[i] || theirs[i]);
+      pts.forEach((p, i) => { ctx.beginPath(); ctx.arc(p.x, p.y, 34, 0, Math.PI * 2); ctx.fillStyle = mine[i] ? "#c9a86a" : theirs[i] ? "#5a7d95" : "#2a2620"; ctx.fill(); ctx.strokeStyle = "#e8e0cf"; ctx.lineWidth = 1.5; ctx.stroke(); });
+      // cudze palce jako niebieskie punkty, także poza celami: widać, że ktoś tam jest
+      for (const t of remote.values()) { ctx.beginPath(); ctx.arc(t.x, t.y, 12, 0, Math.PI * 2); ctx.fillStyle = "rgba(90,125,149,0.8)"; ctx.fill(); }
+      // własne palce do pokoju, 20 razy na sekundę, w ułamkach ekranu (bez pikseli, bez identyfikatorów)
+      if (ws && ws.readyState === 1 && performance.now() - lastSend > 50) { lastSend = performance.now(); try { ws.send(JSON.stringify({ t: "touch", p: [...touches.values()].slice(0, 5).map((t) => [+(t.x / 600).toFixed(3), +(t.y / 600).toFixed(3)]) })); } catch { /* */ } }
       const n = covered.filter(Boolean).length; status.textContent = `${n} / 5 palców na siedmiu punktach`;
       // Telefon widzi najwyżej pięć dotknięć naraz (iPhone). Pięć palców dwojga ludzi na pięciu z siedmiu punktów przez trzy sekundy.
       held = n >= 5 ? held + 1 / 60 : 0;
