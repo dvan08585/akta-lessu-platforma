@@ -90,6 +90,8 @@ export interface SaveState {
   finaleAt?: number;
   /** Tygodnie (ISO), w których zeszyt dostał już zdanie dziennika miasta. */
   cityWeeks?: string[];
+  /** Zgłoszono serwerowi przyjęcie zlecenia (raz). */
+  hello?: boolean;
   /** Przerywniki między sprawami, które gracz już przeszedł. */
   interludesDone: string[];
   /** Rozmowy: liczba nietrafionych wskazań i blokada (ms) po trzech. */

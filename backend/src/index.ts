@@ -3,7 +3,7 @@
  * Zero danych osobowych: identyfikator gracza to skrót ziarna (nieodwracalny), nie zapisujemy IP ani adresów.
  *
  * API (JSON, CORS na ALLOWED_ORIGIN):
- *   POST /event   { who, type, gate?, id?, option? }   type: solved | gesture | seventh_empty | choice | reply
+ *   POST /event   { who, type, gate?, id?, option? }   type: start | solved | gesture | seventh_empty | choice | reply
  *   GET  /stats   → { players, gates:{n:{solved,gesture}}, seventh:{empty,total}, choices:{id:{option:count}}, hum:{now,total} }
  *   POST /hum     { who }                               nucenie teraz (TTL 90 s); GET /stats zwraca ilu naraz
  *   GET  /rejestr → { active, header, lines, updatedAt }
@@ -62,7 +62,8 @@ export class Stats {
       const key = `${b.who}:${b.type}:${b.gate ?? ""}:${b.id ?? ""}`;
       if (seen[key]) return ok({ ok: true, dup: true });
       seen[key] = 1;
-      if ((b.type === "solved" || b.type === "gesture") && b.gate && b.gate >= 1 && b.gate <= 7) { const g = (counts.gates[String(b.gate)] ??= { solved: 0, gesture: 0 }); g[b.type] += 1; }
+      if (b.type === "start") { /* tylko obecność gracza, policzona wyżej */ }
+      else if ((b.type === "solved" || b.type === "gesture") && b.gate && b.gate >= 1 && b.gate <= 7) { const g = (counts.gates[String(b.gate)] ??= { solved: 0, gesture: 0 }); g[b.type] += 1; }
       else if (b.type === "seventh_empty") { counts.seventh.empty += 1; counts.seventh.total += 1; }
       else if (b.type === "seventh_filled") { counts.seventh.total += 1; }
       else if ((b.type === "choice" || b.type === "reply") && b.id && b.option !== undefined) { const c = (counts.choices[b.id.slice(0, 40)] ??= {}); const o = String(b.option).slice(0, 20); c[o] = (c[o] ?? 0) + 1; }

@@ -2,6 +2,8 @@ import { App } from "./app";
 import { startLess } from "./ui/less";
 import { viewIntro, viewMap, viewGate, viewNotebook, viewAkta, viewBody, viewInbox, viewOnboarding, viewSettings } from "./ui/views";
 import { viewProtokol } from "./ui/protokol";
+import { sendEvent } from "./engine/wspolny";
+import { save } from "./engine/state";
 import { viewInterlude } from "./ui/interludes";
 import { installAnalytics } from "./engine/track";
 import { isNight } from "./engine/sun";
@@ -23,6 +25,8 @@ setInterval(applyTheme, 60000);
 function route() {
   applyTheme();
   navigator.storage?.persist?.().catch(() => { /* przeglądarka bez trwałego zapisu */ });
+  // Liczba biegłych w programie: kto przyjął zlecenie, ten się liczy (raz na urządzenie, bez danych)
+  if (app.state.onboarded && !app.state.hello && app.cfg.backendUrl) sendEvent(app.cfg.backendUrl, app.state, { type: "start" }).then(() => { app.state.hello = true; save(app.state); });
   const hash = location.hash || "#/";
   const m = /^#\/brama\/(\d+)/.exec(hash);
   const mi = /^#\/miedzy\/([a-z0-9-]+)/.exec(hash);

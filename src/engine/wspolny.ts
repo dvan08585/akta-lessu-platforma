@@ -15,7 +15,7 @@ export async function sendEvent(url: string, s: SaveState, ev: { type: string; g
 }
 export async function fetchStats(url: string): Promise<Stats | null> {
   if (!url) return null;
-  try { const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 5000); const r = await fetch(url.replace(/\/$/, "") + "/stats", { signal: ctl.signal }); clearTimeout(t); return (await r.json()) as Stats; } catch { return null; }
+  try { const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 5000); const r = await fetch(url.replace(/\/$/, "") + "/stats", { signal: ctl.signal, cache: "no-store" }); clearTimeout(t); return (await r.json()) as Stats; } catch { return null; }
 }
 export async function sendHum(url: string, s: SaveState): Promise<number | null> {
   if (!url) return null;
