@@ -35,7 +35,7 @@ export function renderMap(ctx: MapCtx): HTMLElement {
   svg.append(s("text", { x: "788", y: "20", "text-anchor": "end", style: "font-size:10px;fill:var(--ink-faint);letter-spacing:0.14em" }, "SKARPA · WSCHÓD"));
   // Nazwy wzgórz i wysokości
   map.gates.forEach((g, i) => {
-    const dy = i % 2 ? -40 : -16;
+    const dy = -30; // jednakowo dla wszystkich: nazwa 30 px nad szczytem, wysokość 14 px nad nim; nic nie dotyka szczytu
     const short = g.name.replace("Wzgórze ", "");
     // skrajne etykiety kotwiczone do środka rysunku, żeby nie wychodziły poza krawędź telefonu
     // nazwa i wysokość zawsze wyśrodkowane w jednej osi; przy krawędziach oś przesuwa się do środka tylko tyle, by napis się zmieścił (ok. 8,5 px na znak przy 17 px)
