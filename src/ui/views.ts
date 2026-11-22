@@ -259,7 +259,7 @@ export function readingBox(app: App, hill?: number): HTMLElement {
     const own = await readingToken(app.state.seed, r.hill);
     if (own === r.token) { toast("To twoja własna zawieszka. Ona tu milczy."); return; }
     if (!app.silent.includes(r.hill)) { toast(`Na wzgórzu ${r.hill} twoja zawieszka reaguje sama. Odczyt niepotrzebny.`); return; }
-    app.state.readings[String(r.hill)] = r.token; save(app.state);
+    app.state.readings[String(r.hill)] = r.token; save(app.state); sendEvent(app.cfg.backendUrl, app.state, { type: "reading_back", gate: r.hill }); // lejek: odczyt odwzajemniony
     app.addNote(`Odczyt cudzej zawieszki na wzgórzu ${r.hill}: ${r.token}.`, "mapa 5/7");
     toast(`Wzgórze ${r.hill} odpowiada. Cudzym ciepłem.`); go(`#/brama/${r.hill}`);
   });
@@ -308,7 +308,8 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
   if (!solvedAlready) for (const q of c.questions) if (q.kind === "fill" && q.bank) {
     const parts = q.text.split("___");
     sec.append(h("article", { class: "doc mono formularz" }, h("h4", {}, "Ustalenie biegłego: do wypełnienia"), h("div", { class: "src" }, "Formularz programu. Luki wypełnia biegły po lekturze akt (niżej)."),
-      h("p", {}, ...parts.flatMap((t, i) => (i < parts.length - 1 ? [t, h("span", { class: "blank" }, "\u00a0".repeat(9))] : [t])))));
+      h("p", {}, ...parts.flatMap((t, i) => (i < parts.length - 1 ? [t, h("span", { class: "blank" }, "\u00a0".repeat(9))] : [t]))),
+      q.gapNotes ? h("p", { class: "faint" }, Object.entries(q.gapNotes).map(([k, v]) => `luka ${k}: ${v}`).join(" · ")) : null));
   }
 
   // Dokumenty: nawigacja zakładkami, jeden na ekran (telefon).
@@ -603,7 +604,7 @@ export function viewNotebook(app: App): HTMLElement {
   const b2 = h("button", { class: "primary", onclick: () => { const st = importCode(inp2.value); if (!st) { toast("Nieprawidłowy kod."); return; } Object.assign(app.state, st); save(app.state); toast("Wznowiono."); go("#/mapa"); } }, "Wznów");
   // Pieczęć biegłego: siedmiobok z nacięciami z tego samego ziarna, co kod wznowienia. Zrzut ekranu jest paszportem w bibliotece.
   sec.append(h("div", { class: "gatebox sealbox" }, h("h3", {}, "Pieczęć biegłego"), h("div", { class: "seal-row" }, seal(app.solvedGates().filter((g) => gestureDoneFor(app, g)), app.state.unstableGates, app.state.seed),
-    h("p", { class: "muted" }, "Siedem nacięć, po jednym na bramę. Pełne są przebyte, przekreślone otwarte siłą. Pasy w środku są z twojego ziarna, więc ta pieczęć jest tylko twoja. Zrzut ekranu wystarczy za paszport w bibliotece. ", h("a", { href: "#/protokol" }, "Protokół biegłego: stan na dziś.")))));
+    h("p", { class: "muted" }, "Siedem nacięć, po jednym na bramę. Pełne są przebyte, przekreślone otwarte siłą. Pasy w środku są z twojego ziarna, więc ta pieczęć jest tylko twoja. Zrzut ekranu wystarczy za paszport w bibliotece. ", h("a", { href: "#/paszport" }, "Paszport bram do druku."), " ", h("a", { href: "#/protokol" }, "Protokół biegłego: stan na dziś.")))));
   const b2box = h("div", { class: "gatebox resume" }, h("h3", {}, "Wznowienie"), h("p", { class: "muted" }, "Przeglądarka może zapomnieć tę stronę. Kod nie. Po każdej przebytej bramie skopiuj go i zapisz tam, gdzie trzymasz notatki."),
     isIOS() && !isStandalone() ? h("div", { class: "callout", role: "note" }, h("span", { class: "ico" }, icon("nav-zeszyt")), h("p", {}, "Na iPhonie Safari kasuje zapis strony po siedmiu dniach bez wizyty. To zasada Apple, nie gry. Zapis zostaje, jeśli dodasz stronę do ekranu początkowego (Udostępnij, potem „Do ekranu początkowego”). Inaczej trzymaj kod wznowienia poza grą.")) : null,
     h("div", { class: "verdict" }, h("button", { class: "primary", onclick: async () => { try { await navigator.clipboard.writeText(code); toast("Skopiowano kod wznowienia."); } catch { pre.style.display = ""; toast("Zaznacz i skopiuj ręcznie."); } } }, "Skopiuj kod")), pre,
@@ -680,7 +681,7 @@ export function viewAkta(app: App): HTMLElement {
   }
   { const nb = newsletterBox(app, "Nowe sprawy przychodzą co tydzień. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
 
-  sec.append(h("p", { class: "faint", style: "margin-top:1.2rem" }, h("a", { href: "#/zlecenie" }, "Pismo komisarza (zlecenie) do ponownego przeczytania")));
+  sec.append(h("p", { class: "faint", style: "margin-top:1.2rem" }, h("a", { href: "#/zlecenie" }, "Pismo komisarza (zlecenie) do ponownego przeczytania"), " · ", h("a", { href: "#/paszport" }, "Paszport bram do druku"), " · ", h("a", { href: import.meta.env.BASE_URL + "regulamin/", target: "_blank" }, "Regulamin konkursu (wersja robocza)")));
   sec.append(h("p", { class: "faint build" }, `wersja ${__BUILD__}`));
   sec.append(h("p", { class: "faint", style: "margin-top:2rem" }, h("a", { href: "#/ustawienia" }, "Ustawienia: światło, forma, narzędzia, zaczęcie od nowa →")));
   return sec;

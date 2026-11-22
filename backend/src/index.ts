@@ -3,7 +3,7 @@
  * Zero danych osobowych: identyfikator gracza to skrót ziarna (nieodwracalny), nie zapisujemy IP ani adresów.
  *
  * API (JSON, CORS na ALLOWED_ORIGIN):
- *   POST /event   { who, type, gate?, id?, option? }   type: start | solved | gesture | seventh_empty | choice | reply
+ *   POST /event   { who, type, gate?, id?, option?, seconds?, pledged?, hour? }   type: start | pwa | solved | gesture | rite | reading_back | seventh_empty | choice | reply
  *   GET  /stats   → { players, gates:{n:{solved,gesture}}, seventh:{empty,total}, choices:{id:{option:count}}, hum:{now,total} }
  *   POST /hum     { who }                               nucenie teraz (TTL 90 s); GET /stats zwraca ilu naraz
  *   GET  /rejestr → { active, header, lines, updatedAt }
@@ -36,8 +36,8 @@ export default {
   },
 };
 
-type Counts = { players: Record<string, number>; gates: Record<string, { solved: number; gesture: number }>; seventh: { empty: number; total: number }; choices: Record<string, Record<string, number>>; humTotal: number };
-const empty = (): Counts => ({ players: {}, gates: {}, seventh: { empty: 0, total: 0 }, choices: {}, humTotal: 0 });
+type Counts = { players: Record<string, number>; gates: Record<string, { solved: number; gesture: number }>; seventh: { empty: number; total: number }; choices: Record<string, Record<string, number>>; humTotal: number; rites?: Record<string, { n: number; pledged: number; seconds: number; hours: number[] }>; pwa?: number; readingsBack?: number };
+const empty = (): Counts => ({ players: {}, gates: {}, seventh: { empty: 0, total: 0 }, choices: {}, humTotal: 0, rites: {}, pwa: 0, readingsBack: 0 });
 
 export class Stats {
   state: DurableObjectState;
@@ -53,16 +53,23 @@ export class Stats {
 
     if (url.pathname === "/stats" && req.method === "GET") {
       const humNow = Object.values(hum).filter((t) => now - t < 90000).length;
-      return ok({ players: Object.keys(counts.players).length, gates: counts.gates, seventh: counts.seventh, choices: counts.choices, hum: { now: humNow, total: counts.humTotal } });
+      return ok({ players: Object.keys(counts.players).length, gates: counts.gates, seventh: counts.seventh, choices: counts.choices, hum: { now: humNow, total: counts.humTotal }, rites: counts.rites ?? {}, pwa: counts.pwa ?? 0, readingsBack: counts.readingsBack ?? 0 });
     }
     if (url.pathname === "/event" && req.method === "POST") {
-      const b = (await req.json().catch(() => null)) as { who?: string; type?: string; gate?: number; id?: string; option?: string } | null;
+      const b = (await req.json().catch(() => null)) as { who?: string; type?: string; gate?: number; id?: string; option?: string; seconds?: number; pledged?: number; hour?: number } | null;
       if (!b || typeof b.who !== "string" || !/^[0-9a-f]{8,16}$/.test(b.who) || typeof b.type !== "string") return ok({ error: "zły wpis" }, 400);
       counts.players[b.who] = now;
       const key = `${b.who}:${b.type}:${b.gate ?? ""}:${b.id ?? ""}`;
       if (seen[key]) return ok({ ok: true, dup: true });
       seen[key] = 1;
       if (b.type === "start") { /* tylko obecność gracza, policzona wyżej */ }
+      else if (b.type === "pwa") { counts.pwa = (counts.pwa ?? 0) + 1; }
+      else if (b.type === "reading_back") { counts.readingsBack = (counts.readingsBack ?? 0) + 1; }
+      else if (b.type === "rite" && b.gate && b.gate >= 1 && b.gate <= 7) {
+        // lejek obrzędów: liczba, ile „na słowo", suma sekund, rozkład godzin; bez identyfikatorów (seen zapobiega podwójnemu liczeniu tej samej bramy)
+        const rr = ((counts.rites ??= {})[String(b.gate)] ??= { n: 0, pledged: 0, seconds: 0, hours: Array(24).fill(0) });
+        rr.n += 1; if (b.pledged) rr.pledged += 1; rr.seconds += Math.max(0, Math.min(3600, Number(b.seconds) || 0)); const hr = Number(b.hour); if (hr >= 0 && hr < 24) rr.hours[hr] += 1;
+      }
       else if ((b.type === "solved" || b.type === "gesture") && b.gate && b.gate >= 1 && b.gate <= 7) { const g = (counts.gates[String(b.gate)] ??= { solved: 0, gesture: 0 }); g[b.type] += 1; }
       else if (b.type === "seventh_empty") { counts.seventh.empty += 1; counts.seventh.total += 1; }
       else if (b.type === "seventh_filled") { counts.seventh.total += 1; }

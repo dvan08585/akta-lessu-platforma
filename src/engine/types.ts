@@ -39,6 +39,8 @@ export interface Question {
   /** fill: zdanie z lukami „___", bank słów (z fałszywymi), poprawne słowa po kolei. */
   bank?: string[];
   answerWords?: string[];
+  /** fill: skąd pochodzi słowo luki, gdy nie z tych akt: np. { "3": "z książki", "5": "ze sprawy 1" }. Pokazywane w formularzu, nie w rozwiązaniu. */
+  gapNotes?: Record<string, string>;
 }
 export type CaseType = "deduction" | "decision" | "pair";
 export interface CaseData {
@@ -92,6 +94,8 @@ export interface SaveState {
   cityWeeks?: string[];
   /** Zgłoszono serwerowi przyjęcie zlecenia (raz). */
   hello?: boolean;
+  /** Zgłoszono instalację jako aplikację (raz). */
+  pwaSent?: boolean;
   /** Przerywniki między sprawami, które gracz już przeszedł. */
   interludesDone: string[];
   /** Rozmowy: liczba nietrafionych wskazań i blokada (ms) po trzech. */

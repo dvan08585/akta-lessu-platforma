@@ -7,9 +7,9 @@ export async function playerId(s: SaveState): Promise<string> {
   who = Array.from(new Uint8Array(buf)).slice(0, 6).map((b) => b.toString(16).padStart(2, "0")).join("");
   return who;
 }
-export interface Stats { players: number; gates: Record<string, { solved: number; gesture: number }>; seventh: { empty: number; total: number }; choices: Record<string, Record<string, number>>; hum: { now: number; total: number } }
+export interface Stats { players: number; gates: Record<string, { solved: number; gesture: number }>; seventh: { empty: number; total: number }; choices: Record<string, Record<string, number>>; hum: { now: number; total: number }; rites?: Record<string, { n: number; pledged: number; seconds: number; hours: number[] }>; pwa?: number; readingsBack?: number }
 
-export async function sendEvent(url: string, s: SaveState, ev: { type: string; gate?: number; id?: string; option?: string | number }): Promise<void> {
+export async function sendEvent(url: string, s: SaveState, ev: { type: string; gate?: number; id?: string; option?: string | number; seconds?: number; pledged?: number; hour?: number }): Promise<void> {
   if (!url) return;
   try { await fetch(url.replace(/\/$/, "") + "/event", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ who: await playerId(s), ...ev }), keepalive: true }); } catch { /* offline: trudno */ }
 }

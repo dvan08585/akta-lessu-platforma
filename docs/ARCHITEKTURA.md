@@ -90,3 +90,14 @@ Cel budowy: `es2020`, `safari14`, `chrome90`. W CSS nie polegamy na `:has()` (pi
 ## Kod biegłego (`engine/pair.ts`)
 
 Po zostawieniu siódmej pozycji pustej gra zapisuje `finaleAt` i wystawia kod biegłego: „b” + 4 hex z ziarna + 3 znaki base36 (dni od 1 I 2027) + 2 znaki sumy. Bez danych osobowych; data z dokładnością do dnia służy kohorcie „Pierwszy tydzień” z regulaminu. Pokazywany jako „Klucz piąty” w Aktach i w karcie udostępnienia; `finaleAt` jedzie w kodzie wznowienia (pole `t`). Weryfikacja poza grą: `scripts/verify-code.mjs` (także połówki klucza i odczyty).
+
+## Po panelach (22 XI 2026)
+
+- **Jeden gest wejścia** dla siedmiu obrzędów (`enterGate()` w `interludes.ts`): po „Wchodzę” telefon ekranem w dół na trzy sekundy (czujnik orientacji) albo przytrzymany przycisk; jedna wibracja; formuła otwarcia (`rite.opening`) przez 1,4 s; potem ciało obrzędu i „na słowo” po trzykrotności czasu. Zero komunikatów porażki w obrzędach.
+- **Kotwice luk sprawdzone** (sprawy 1–4): każde słowo ustalenia wynika z dokumentów dostępnych w domu; dokumenty o świcie, w południe i na miejscu tylko dopełniają. Skrypt do ponownego sprawdzenia: wyszukiwanie słów odpowiedzi w dokumentach bez `requiresDawn/Noon/Place`.
+- **Kalendarz spraw** liczony z `premiereDate` i `releaseOffsets` (dni) oraz `releaseHours`; wpis z pełną datą w `releases` nadpisuje offset. Przesunięcie premiery to zmiana jednej daty.
+- **Lejek do serwera**: `start` (przyjęcie zlecenia), `pwa` (instalacja jako aplikacja), `rite` (brama, sekundy, „na słowo”, godzina), `reading_back` (odczyt odwzajemniony), obok `solved`, `gesture`, `choice`, `reply`, `seventh_*`. `/stats` zwraca `rites`, `pwa`, `readingsBack`. Nic z treści, nic o osobie.
+- **Paszport do druku** (`#/paszport`, `paszport.ts`): siedem pól z datą przebycia i miejscem na pieczęć, pieczęć biegłego, kod biegłego, zasada zdjęcia zamiast pieczęci; `@media print`.
+- **Regulamin w grze**: `node scripts/build-regulamin.mjs` zamienia `docs/REGULAMIN_KONKURSU.md` na `public/regulamin/index.html` (link w Aktach). Uruchamiać po każdej zmianie regulaminu.
+- **Notatki o lukach** (`gapNotes` w pytaniu `fill`): „luka 3: z książki”, „luka 5: ze sprawy 1”, pokazywane w formularzu przed aktami. Treść od autora.
+- **Dzień premiery**: `docs/DZIEN_PREMIERY.md` i `scripts/rejestr-dnia.mjs` (harmonogram godzinowy do Workera i do pliku zapasowego).

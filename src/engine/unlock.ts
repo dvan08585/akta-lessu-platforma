@@ -20,10 +20,15 @@ export async function codeMatches(input: string, hash: string): Promise<boolean>
   return h === hash;
 }
 
-export interface TimeConfig { premiereDate: string; timeline: { chapterOffsets: Record<string, number> }; releases?: Record<string, string> }
+export interface TimeConfig { premiereDate: string; timeline: { chapterOffsets: Record<string, number> }; releases?: Record<string, string>; releaseOffsets?: Record<string, number>; releaseHours?: Record<string, number> }
 
 /** Data publikacji sprawy z kalendarza (klucz czasu). */
-export function releaseDate(cfg: TimeConfig, key: string): Date | null { const v = cfg.releases?.[key]; return v ? new Date(v) : null; }
+/** Data publikacji sprawy: bezwzględna z `releases`, a gdy jej nie ma, `releaseOffsets` (dni po premierze, godzina z `releaseHours`, domyślnie 18:00 lokalnie). Przesunięcie premiery to wtedy jeden parametr. */
+export function releaseDate(cfg: TimeConfig, key: string): Date | null {
+  const v = cfg.releases?.[key]; if (v && /^\d{4}-/.test(v)) return new Date(v);
+  const off = cfg.releaseOffsets?.[key]; if (off === undefined) return null;
+  const d = new Date(cfg.premiereDate); d.setDate(d.getDate() + off); d.setHours(cfg.releaseHours?.[key] ?? 18, 0, 0, 0); return d;
+}
 export function isReleased(cfg: TimeConfig, key: string, now = new Date()): boolean { const d = releaseDate(cfg, key); return d !== null && now.getTime() >= d.getTime(); }
 
 /** Odblokowanie czasowe: rozdział n otwiera się o dacie premiery + offset (dni). Brak wpisu = nie otwiera się czasem. */

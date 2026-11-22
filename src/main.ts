@@ -2,6 +2,7 @@ import { App } from "./app";
 import { startLess } from "./ui/less";
 import { viewIntro, viewMap, viewGate, viewNotebook, viewAkta, viewBody, viewInbox, viewOnboarding, viewSettings } from "./ui/views";
 import { viewProtokol } from "./ui/protokol";
+import { viewPaszport } from "./ui/paszport";
 import { sendEvent } from "./engine/wspolny";
 import { save } from "./engine/state";
 import { viewInterlude } from "./ui/interludes";
@@ -27,6 +28,8 @@ function route() {
   navigator.storage?.persist?.().catch(() => { /* przeglądarka bez trwałego zapisu */ });
   // Liczba biegłych w programie: kto przyjął zlecenie, ten się liczy (raz na urządzenie, bez danych)
   if (app.state.onboarded && !app.state.hello && app.cfg.backendUrl) sendEvent(app.cfg.backendUrl, app.state, { type: "start" }).then(() => { app.state.hello = true; save(app.state); });
+  // Lejek: instalacja jako aplikacja (decyduje o Web Push po Playteście 2); raz na urządzenie
+  if (app.cfg.backendUrl && !app.state.pwaSent && (matchMedia("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true)) sendEvent(app.cfg.backendUrl, app.state, { type: "pwa" }).then(() => { app.state.pwaSent = true; save(app.state); });
   const hash = location.hash || "#/";
   const m = /^#\/brama\/(\d+)/.exec(hash);
   const mi = /^#\/miedzy\/([a-z0-9-]+)/.exec(hash);
@@ -37,6 +40,7 @@ function route() {
   else if (hash.startsWith("#/mapa")) view = viewMap(app);
   else if (hash.startsWith("#/zeszyt")) view = viewNotebook(app);
   else if (hash.startsWith("#/protokol")) view = viewProtokol(app);
+  else if (hash.startsWith("#/paszport")) view = viewPaszport(app);
   else if (hash.startsWith("#/ustawienia")) view = viewSettings(app);
   else if (hash.startsWith("#/akta")) view = viewAkta(app);
   else if (hash.startsWith("#/o-ciele")) view = viewBody(app);

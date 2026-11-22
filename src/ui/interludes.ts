@@ -58,6 +58,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   if (!interludeAvailable(app, it)) { sec.append(h("h2", {}, it.title), h("p", { class: "muted" }, it.gate !== undefined ? `Najpierw rozpoznaj bramę ${it.gate} dokumentami.` : `Po ${it.after} ${plural(it.after ?? 0, "przebytej bramie", "przebytych bramach", "przebytych bramach")}.`), h("div", { class: "verdict" }, back())); return sec; }
   const done = app.state.interludesDone.includes(it.id);
   let alive = true; onLeave(() => { alive = false; });
+  let riteStart = 0; // kiedy gracz wszedł w obrzęd (lejek: czas obrzędu); musi być zadeklarowane przed wczesnymi powrotami niżej
   const acs: AudioContext[] = []; onLeave(() => { for (const a of acs) a.close().catch(() => { /* */ }); });
   sec.append(h("p", { class: "kicker" }, it.place === "apokryf" ? "Apokryf" : it.place === "rozmowa" ? "Rozmowa" : it.gate !== undefined ? `Obrzęd bramy ${it.gate}` : "Między sprawami"), h("h2", {}, it.title));
   if (it.rite && !done) { renderThreshold(); return sec; }
@@ -80,8 +81,30 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         h("li", {}, "Nie ma kary za nieudaną próbę. Jest tylko inny zapis."),
         h("li", {}, "Trzy drogi liczą się tak samo: czujnik, drugi klucz, na słowo."),
         h("li", {}, "Nic nie jest nagrywane ani wysyłane. Liczby liczą się w telefonie i znikają.")),
-      h("div", { class: "verdict" }, h("button", { class: "primary", onclick: () => { try { navigator.vibrate?.(40); } catch { /* */ } box.remove(); renderBody(); armPledge(); } }, "Wchodzę"), back("Jeszcze nie")));
+      h("div", { class: "verdict" }, h("button", { class: "primary", onclick: () => { box.remove(); enterGate(); } }, "Wchodzę"), back("Jeszcze nie")));
     sec.append(box);
+  }
+  /**
+   * Jeden gest wejścia dla siedmiu obrzędów: telefon ekranem w dół na trzy sekundy, jedna wibracja, formuła otwarcia.
+   * Ten sam początek siedem razy (rytuał obniża reakcję na błąd, Hobson 2017). Bez czujnika: przytrzymany przycisk.
+   */
+  function enterGate() {
+    const r = it.rite!; riteStart = Date.now();
+    let down = 0, held = 0, sensor = false, finished = false; let iv = 0;
+    const hold = h("button", { class: "ghost" }, "Bez odwracania: przytrzymaj");
+    const box = h("div", { class: "facedown enter" }, h("p", {}, "Połóż telefon ekranem w dół."), h("p", { class: "faint" }, "Trzy sekundy. Tak zaczyna się każda brama."), h("div", { class: "verdict" }, hold));
+    sec.append(box);
+    const onOrient = (e: DeviceOrientationEvent) => { sensor = true; down = e.beta !== null && Math.abs(e.beta) > 150 ? down + 1 : 0; };
+    listen("deviceorientation", onOrient as EventListener);
+    hold.addEventListener("pointerdown", () => { held = 1; }); const rel = () => { held = 0; }; hold.addEventListener("pointerup", rel); hold.addEventListener("pointercancel", rel); hold.addEventListener("pointerleave", rel);
+    const open = () => {
+      if (finished) return; finished = true; clearInterval(iv); removeEventListener("deviceorientation", onOrient as EventListener);
+      try { navigator.vibrate?.(60); } catch { /* */ }
+      box.replaceChildren(h("p", { class: "quote opening" }, r.opening));
+      setTimeout(() => { if (!alive) return; box.remove(); renderBody(); armPledge(); }, 1400);
+    };
+    iv = window.setInterval(() => { if (held) held += 1; if ((sensor && down >= 6) || held >= 7) open(); }, 500);
+    onLeave(() => clearInterval(iv));
   }
   /** Sufit porażki: po trzykrotności czasu obrzędu bez domknięcia brama „drga" i można ją przyjąć na słowo. Koszt zmienia się z sensorycznego na honorowy. */
   function armPledge() {
@@ -131,6 +154,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     // Obrzęd: trzy sekundy ciemności i ciepła, jedna wibracja, potem jedno zdanie ręką geolożki. Bez iskier, bez komunikatów.
     const rite = !!it.rite;
+    if (rite && riteStart) sendEvent(app.cfg.backendUrl, app.state, { type: "rite", gate: it.gate, seconds: Math.min(3600, Math.round((Date.now() - riteStart) / 1000)), pledged: note.includes("na słowo") ? 1 : 0, hour: new Date().getHours() }); // lejek: czas obrzędu, „na słowo", pora dnia; bez treści
     const hushMs = rite && !reduced ? 3000 : 0;
     if (rite && !reduced) { const hush = h("div", { class: "hush" }); document.body.append(hush); setTimeout(() => hush.classList.add("out"), hushMs); setTimeout(() => hush.remove(), hushMs + 900); }
     else if (!reduced) { const glow = h("div", { class: "glow soft" }); glow.style.setProperty("--cx", "50%"); glow.style.setProperty("--cy", "55%"); document.body.append(glow); setTimeout(() => glow.classList.add("out"), 900); setTimeout(() => glow.remove(), 1900); }
