@@ -133,6 +133,8 @@ input[type="text"]:focus { outline: 1px solid var(--sand); border-color: var(--s
 .doc .row-line { margin: 0.15rem 0 0.15rem 1rem; }
 .roombox .row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin-top: 0.6rem; }
 .roombox input { max-width: 9rem; }
+.address-ask .verdict { margin-top: 0.5rem; }
+.address-ask > div { flex: 1; }
 .faint.build { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; margin-top: 1.5rem; }
 .danger-zone { margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
 .danger-zone .faint { margin-top: 0.5rem; }

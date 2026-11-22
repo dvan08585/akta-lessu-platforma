@@ -27,6 +27,14 @@ export function addr(app: App, f: string, m: string, both = `${f}/${m}`): string
 /** Znacznik rodzaju w treściach JSON: `{forma żeńska|forma męska}` → wybrana forma (bez wyboru: obie, jak w piśmie urzędowym). */
 export function fmtWhen(d: Date): string { return `${d.toLocaleDateString("pl-PL", { day: "numeric", month: "long" })}, ${d.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}`; }
 /** Wiersz powrotu pod nawigacją: „← Mapa · Brama 4”. Pierwsze wyjście jest na górze, nie po przewinięciu całej sprawy. */
+/** Forma zwracania się nieustalona (wejście kodem albo stary zapis): jedna ramka z dwoma przyciskami, znika po wyborze. Bez niej listy drukują obie formy. */
+export function addressPrompt(app: App): HTMLElement | null {
+  if (app.state.address) return null;
+  const pick = (f: "f" | "m") => { app.state.address = f; save(app.state); go(location.hash || "#/mapa"); };
+  return h("div", { class: "callout address-ask", role: "note" }, h("span", { class: "ico" }, icon("talk")),
+    h("div", {}, h("p", {}, "Komenda musi wiedzieć, jak pisać. Nic poza tym nie zapisujemy."),
+      h("div", { class: "verdict choice seg", role: "group", "aria-label": "Forma" }, h("button", { onclick: () => pick("f") }, "Szanowna Pani"), h("button", { onclick: () => pick("m") }, "Szanowny Panie"))));
+}
 export function crumb(label: string, to = "#/mapa", toLabel = "Mapa"): HTMLElement { return h("p", { class: "crumb" }, h("a", { href: to }, arrow("l"), " " + toLabel), label ? h("span", {}, " · " + label) : null); }
 export function addrText(app: App, t: string): string { return t.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, f, m) => addr(app, f, m)); }
 
@@ -86,7 +94,7 @@ export function viewMap(app: App): HTMLElement {
   // O milczących wzgórzach mapa mówi dopiero, gdy gracz sam tego doświadczył w bramie (odkrycie, nie instrukcja).
   const stillSilent = app.silent.filter((g) => !app.state.readings[String(g)]);
   const legend = app.state.metSilent && stillSilent.length ? h("div", { class: "callout", role: "note" }, h("span", { class: "ico" }, icon("pair")), h("p", {}, `Zawieszka milczy na ${stillSilent.length === 1 ? "wzgórzu" : "wzgórzach"} ${stillSilent.join(" i ")}. Tam dopełnia sprawę cudzy odczyt.`)) : null;
-  sec.append(wisla); if (legend) sec.append(legend);
+  sec.append(wisla); const ask = addressPrompt(app); if (ask) sec.append(ask); if (legend) sec.append(legend);
   // Dziennik miasta: raz w tygodniu jedno zdanie archiwisty o prawdziwym Sandomierzu trafia do zeszytu (Wisła, temperatura, wschód). Po siedmiu tygodniach gracz ma dziennik pogody miasta, w którym nie był.
   const wk = isoWeek(new Date());
   if (!(app.state.cityWeeks ??= []).includes(wk)) Promise.all([fetchWisla(), fetchPogoda()]).then(([w, p]) => {
@@ -716,6 +724,7 @@ export function viewInbox(app: App): HTMLElement {
   const fresh = new Set(arrived.filter((m) => !inbox.read.includes(m.id)).map((m) => m.id));
   for (const m of arrived) if (!m.reply && fresh.has(m.id)) inbox.read.push(m.id); // list bez pytania jest przeczytany z chwilą otwarcia; nawigacja liczy po tym
   const sec = h("section", { class: "fade-in inbox" }, topbar(app, "#/wiadomosci"), h("h2", { class: "sr-only" }, "Listy"));
+  { const ask = addressPrompt(app); if (ask) sec.append(ask); }
   const waiting = pending(app.state, app.messages);
   if (!arrived.length && !waiting.length) sec.append(h("p", { class: "faint" }, "Nikt jeszcze nie napisał. Ludzie w Sandomierzu piszą po tym, co zrobisz, nie przed."));
   for (const m of arrived) {
