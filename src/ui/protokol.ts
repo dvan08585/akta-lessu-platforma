@@ -2,6 +2,7 @@ import { h, back } from "./dom";
 import { topbar, crumb, fmtWhen, addr } from "./views";
 import { expertCode } from "../engine/pair";
 import { GESTURE_OF } from "../engine/cases";
+import { fetchStats } from "../engine/wspolny";
 import type { App } from "../app";
 
 /**
@@ -38,6 +39,7 @@ export function viewProtokol(app: App): HTMLElement {
   if (notes.length >= 3) { const hours = notes.map((e) => new Date(e.at).getHours()); const bins = [0, 0, 0, 0]; for (const hh of hours) bins[hh < 6 ? 0 : hh < 12 ? 1 : hh < 18 ? 2 : 3]++; const names = ["w nocy", "rano", "po południu", "wieczorem"]; const top = bins.indexOf(Math.max(...bins)); art.append(line("Pora pracy", `najczęściej ${names[top]} (${notes.length} ${notes.length < 5 ? "zapiski" : "zapisków"} w zeszycie).`)); }
   if (s.leftSeventhEmpty) { const c = h("code", {}, "…"); expertCode(s.seed, s.finaleAt ?? Date.now()).then((v) => (c.textContent = v)); art.append(line("Siódma pozycja", `zostawiona pusta${s.finaleAt ? " " + fmtWhen(new Date(s.finaleAt)) : ""}.`), h("p", {}, h("b", {}, "Kod biegłego: "), c)); }
   else art.append(line("Siódma pozycja", "nierozstrzygnięta."));
+  if (app.cfg.backendUrl) { const pl = h("p", {}, h("b", {}, "Biegłych w programie: "), "…"); art.append(pl); fetchStats(app.cfg.backendUrl).then((st) => { pl.lastChild!.textContent = st ? String(st.players) : "bez połączenia"; }); }
   art.append(h("p", { class: "faint" }, "Protokół sporządza urządzenie. Program nie przechowuje jego kopii."));
   sec.append(art, h("div", { class: "verdict" }, back("Wróć do zeszytu", "#/zeszyt")));
   return sec;

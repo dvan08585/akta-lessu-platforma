@@ -103,14 +103,7 @@ export function viewMap(app: App): HTMLElement {
     wisla.after(box); return true;
   };
   fetchRejestr(app.cfg.backendUrl).then((j) => { if (!showLive(j)) fetch(import.meta.env.BASE_URL + "live/rejestr.json", { cache: "no-store" }).then((r) => r.json()).then(showLive).catch(() => { /* cisza */ }); });
-  // Społeczność: nikt nie ma pełnej mapy sam, ale razem mają
-  fetchStats(app.cfg.backendUrl).then((st) => {
-    if (!st) return;
-    const rows = [1, 2, 3, 4, 5, 6, 7].map((n) => { const g = st.gates[String(n)] ?? { solved: 0, gesture: 0 }; return h("p", { class: "mono" }, `${n}  ${"●".repeat(Math.min(10, Math.round((g.gesture / Math.max(1, st.players)) * 10)))}${"○".repeat(10 - Math.min(10, Math.round((g.gesture / Math.max(1, st.players)) * 10)))}  ${g.gesture} przebyło`); });
-    const seventh = st.seventh.total && (app.passed() >= 6 || app.state.leftSeventhEmpty) ? ` Siódmą pozycję zostawiło pustą ${Math.round((st.seventh.empty / st.seventh.total) * 100)}% z ${st.seventh.total}.` : "";
-    const box = h("div", { class: "gatebox community" }, h("h3", {}, "Społeczność"), h("p", { class: "muted" }, `${st.players} biegłych.${app.state.metSilent ? " Nikt nie ma pełnej mapy sam." : ""}${seventh}`), ...rows);
-    wisla.after(box);
-  });
+  // Statystyki społeczności nie stoją na mapie (decyzja autora, 22 XI): jedna linia jest w protokole biegłego.
   sec.append(renderMap({
     map: app.map, chapters: app.chapters, state: app.state,
     isUnlocked: (n) => app.isUnlocked(n), gateStatus: (n) => app.gateStatus(n),
@@ -444,8 +437,10 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       const parts = q.text.split("___");
       const art = h("article", { class: "doc mono stamped ustalenie" }, h("h4", {}, "Ustalenie biegłego"), h("div", { class: "src" }, "Wypełnione. Przyjęte do rejestru programu."),
         h("p", {}, ...parts.flatMap((t, i) => (i < parts.length - 1 ? [t, h("strong", {}, q.answerWords![i] ?? "")] : [t]))));
-      result.insertAdjacentElement("afterend", art);
+      result.insertAdjacentElement("beforebegin", art);
     }
+    // po rozpoznaniu formularz z lukami znika: wypełnione ustalenie jest dokumentem wyżej, a puste lub cudze słowa w lukach myliły
+    grid.style.display = "none"; sec.querySelector("h3.ustal")?.remove();
   }
   if (solvedAlready) { pend.replaceWith(pendant(4, undefined, fs)); verdictText.textContent = "Pulsuje. Brama rozpoznana."; lockAnswers(); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
   return sec;
