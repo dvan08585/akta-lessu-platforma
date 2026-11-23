@@ -30,3 +30,18 @@ Cel: zobaczyć, gdzie ludzie się zatrzymują, gdzie pytają „co mam zrobić�
 
 ## Po dziesięciu osobach
 Policz: ilu doszło do końca sprawy 1 (cel ≥ 7), ilu dało mikrofon/kamerę (cel ≥ 6), mediana czasu do rozwiązania (cel ≤ 12 min), trzy miejsca z największą liczbą zatrzymań. Te trzy miejsca naprawiamy pierwsze. Dopiero potem analityka potwierdzi w liczbach.
+
+
+## Punkty kontrolne dopisane po panelach (listopad 2026)
+8. Gest wejścia: położył telefon ekranem w dół czy użył „przytrzymaj”? Czy zrozumiał, że to początek każdej bramy?
+9. Słowo bramy palcem: napisał czy pominął („Bez pisania”)? Powiedział słowo na głos?
+10. Formularz z lukami przed aktami: przeczytał czy przewinął? Czy wrócił do niego w trakcie czytania dokumentów?
+11. Karta odpowiedzi po błędnym wskazaniu w rozmowie: zrozumiał, co wskazał i ile prób zostało?
+12. List komisarza z cytatem (po sprawie 2): wybrał „Potwierdzam”, „Nie, tam było…”, czy „Nie pamiętam”? Zauważył zmienione słowo bez podpowiedzi?
+13. Kotwice słów: dotknął podkreślonego słowa? Zrozumiał, co pokazuje ramka?
+14. Komnata 3D i laboratorium skanu (jeśli dotarł): działało na jego telefonie? Ile sekund do pierwszego ruchu?
+15. Pokój dwóch telefonów (jeśli testujemy w parze): połączyli się za pierwszym razem? Widział niebieskie palce?
+
+## Miary po sesji (panel naukowy)
+- Transport narracyjny: sześć pytań TS-SF (Appel 2015) po części czytanej z grą i bez gry; różnica mówi, czy odcinek gry zbija zanurzenie w książce.
+- Rodzaj wyzwania: CORGIS (Denisova 2020) po obrzędzie i po lukach; chcemy wyzwania emocjonalnego i poznawczego, nie sprawnościowego.

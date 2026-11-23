@@ -97,11 +97,11 @@ export function viewMap(app: App): HTMLElement {
   sec.append(wisla); const ask = addressPrompt(app); if (ask) sec.append(ask); if (legend) sec.append(legend);
   // Dziennik miasta: raz w tygodniu jedno zdanie archiwisty o prawdziwym Sandomierzu trafia do zeszytu (Wisła, temperatura, wschód). Po siedmiu tygodniach gracz ma dziennik pogody miasta, w którym nie był.
   const wk = isoWeek(new Date());
-  if (!(app.state.cityWeeks ??= []).includes(wk)) Promise.all([fetchWisla(), fetchPogoda()]).then(([w, p]) => {
-    if (!w.live && !p) return; app.state.cityWeeks!.push(wk);
+  if (!(app.state.cityWeeks ??= []).includes(wk)) { app.state.cityWeeks.push(wk); save(app.state); Promise.all([fetchWisla(), fetchPogoda()]).then(([w, p]) => {
+    if (!w.live && !p) { app.state.cityWeeks = app.state.cityWeeks!.filter((x) => x !== wk); save(app.state); return; }
     const d = new Date(); const date = d.toLocaleDateString("pl-PL", { day: "numeric", month: "long" }); const sr = sunrise(d).toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
     app.addNote(`Sandomierz, ${date}: Wisła ${w.cm} cm${w.live ? "" : " (średnia)"}${p ? `, ${p.tempC.toFixed(0)}°C${p.snowing ? ", śnieg" : ""}` : ""}, wschód ${sr}. Zapisano, bo miasto było, zanim ktokolwiek je przeczytał.`, "miasto");
-  }).catch(() => { /* bez sieci: w przyszłym tygodniu */ });
+  }).catch(() => { app.state.cityWeeks = app.state.cityWeeks!.filter((x) => x !== wk); save(app.state); }); }
   if (isSnowSeason()) sec.classList.add("snow");
   fetchPogoda().then((w) => { if (w?.snowing) { wisla.append(h("span", { class: "dl note" }, "na Pimpo Limpo są sanki")); sec.classList.add("sanki"); } });
   // Rejestr na żywo (dzień premiery): najpierw backend, potem plik public/live/rejestr.json jako zapas
@@ -178,6 +178,7 @@ export function viewGate(app: App, n: number): HTMLElement {
   if (!g) { sec.append(h("p", {}, "Nie ma takiej bramy.")); return sec; }
   const c = app.caseForGate(n);
   const st = app.gateStatus(n);
+  app.archiveFallback(); // pierwszy odczyt z archiwum od razu, nie dopiero po przeładowaniu
   sec.append(crumb(`Brama ${n}`));
   const head = () => h("p", { class: "kicker" }, `Brama ${n} · ${g.name}`); // żywioł odsłania dopiero otwarta sprawa
   const silentHere = !!c && app.isSilentFor(n);
@@ -205,7 +206,7 @@ export function viewGate(app: App, n: number): HTMLElement {
   }
   if (silentHere && !app.state.metSilent) { app.state.metSilent = true; save(app.state); }
   if (silentHere) sec.append(h("div", { class: "gatebox silent-box" }, h("p", { class: "kicker" }, "Zawieszka milczy"),
-    h("p", { class: "muted" }, "Na tym wzgórzu twoja zawieszka nie reaguje. Dokumenty czytasz i wniosek ustalasz bez niej. Odczyt z karty innego biegłego dopełnia sprawę: dodaje linię, której nie ma w aktach. Jeśli nikt nie przyjdzie w trzy doby, odczyt przyjdzie z archiwum."),
+    h("p", { class: "muted" }, "Na tym wzgórzu twoja zawieszka nie reaguje. Dokumenty czytasz i wniosek ustalasz bez niej. Odczyt z karty innego biegłego dopełnia sprawę: dodaje linię, której nie ma w aktach. Pierwszy odczyt przychodzi z archiwum programu od razu; następny, jeśli nikt nie przyjdzie w trzy doby."),
     readingBox(app, n)));
   return viewCase(app, c, sec);
 }
@@ -449,7 +450,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       result.insertAdjacentElement("beforebegin", art);
     }
     // po rozpoznaniu formularz z lukami znika: wypełnione ustalenie jest dokumentem wyżej, a puste lub cudze słowa w lukach myliły
-    grid.style.display = "none"; sec.querySelector("h3.ustal")?.remove();
+    grid.style.display = "none"; sec.querySelector("h3.ustal")?.remove(); sec.querySelectorAll(".doc.formularz").forEach((e) => e.remove());
   }
   if (solvedAlready) { pend.replaceWith(pendant(4, undefined, fs)); verdictText.textContent = "Pulsuje. Brama rozpoznana."; lockAnswers(); renderSolution((app.state.attempts[c.id] ?? []).length || 1); }
   return sec;
@@ -672,6 +673,7 @@ export function viewAkta(app: App): HTMLElement {
 
   // Klucz piąty: kod biegłego po rozstrzygnięciu siódmej pozycji (dowód z datą do Rejestru biegłych w bibliotece)
   if (app.state.leftSeventhEmpty) {
+    if (!app.state.finaleAt) { app.state.finaleAt = Date.now(); save(app.state); } // stary zapis sprzed pola: data ustalona raz, nie co dobę
     const codeEl = h("code", { class: "expert-code" }, "…");
     expertCode(app.state.seed, app.state.finaleAt ?? Date.now()).then((c) => { codeEl.textContent = c; });
     sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Klucz piąty: kod biegłego"),
@@ -836,7 +838,8 @@ function gestureDoneFor(app: App, gate: number): boolean { const g = GESTURE_OF[
  */
 const ANCHORS = ["słoik", "słoiki", "spinka", "spinki", "spinek", "kożuch", "gołąb", "gołębia", "gołębnik", "krzemień", "krzemienia", "koperta", "koperty", "kopercie", "kopertach", "nie tędy", "kompot", "kompotu", "siedmiobok", "sudomir", "siedem punktów", "zawieszka", "zawieszki"];
 const ANCHOR_RE = new RegExp(`(${ANCHORS.map((a) => a.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`, "giu");
-function stem(w: string): string { return w.toLowerCase().replace(/[^\p{L} ]/gu, "").slice(0, 5); }
+function stem(w: string): string { const t = w.toLowerCase().replace(/[^\p{L} ]/gu, ""); return t.length >= 7 ? t.slice(0, 6) : t; } // dłuższe słowa po rdzeniu (odmiana), krótkie w całości
+const readableNow = (d: Doc): boolean => !(d.requiresDawn && !isDawn()) && !(d.requiresNoon && new Date().getHours() !== 12); // dokumenty o świcie i w południe tylko wtedy, gdy są czytelne
 function anchored(app: App, here: Doc, text: string): HTMLElement {
   const p = h("p");
   const parts = text.split(ANCHOR_RE);
@@ -847,11 +850,11 @@ function anchored(app: App, here: Doc, text: string): HTMLElement {
       const st = stem(t); const hits: HTMLElement[] = [];
       for (const c of app.cases) {
         if (c.sealed || app.gateStatus(c.gate) === "locked") continue;
-        const docs: { title: string; paragraphs: string[]; id?: string }[] = [...visibleDocs(app, c)];
+        const docs: { title: string; paragraphs: string[]; id?: string }[] = visibleDocs(app, c).filter((d) => app.state.testMode || readableNow(d));
         if (app.state.solvedCases.includes(c.n)) docs.push({ title: c.solutionDoc?.title ?? "Rozwiązanie", paragraphs: c.solution });
         for (const d of docs) { if (d === here || (d.id && d.id === here.id)) continue;
-          const par = d.paragraphs.find((x) => x.toLowerCase().includes(st)); if (!par) continue;
-          const at = par.toLowerCase().indexOf(st); const frag = par.slice(Math.max(0, at - 40), at + 60).replace(/^\S*\s/, "").replace(/\s\S*$/, "");
+          const re = new RegExp(`(^|[^\\p{L}])${st.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "iu"); const par = d.paragraphs.find((x) => re.test(x)); if (!par) continue;
+          const at = Math.max(0, par.search(re)); const frag = par.slice(Math.max(0, at - 40), at + 60).replace(/^\S*\s/, "").replace(/\s\S*$/, "");
           hits.push(h("a", { href: `#/brama/${c.gate}` }, h("b", {}, `Brama ${c.gate} · ${d.title}: `), `…${frag}…`)); if (hits.length >= 5) break; }
         if (hits.length >= 5) break;
       }

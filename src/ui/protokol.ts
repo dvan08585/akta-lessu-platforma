@@ -1,5 +1,5 @@
 import { h, back } from "./dom";
-import { topbar, crumb, fmtWhen, addr } from "./views";
+import { topbar, crumb, fmtWhen, addr, plural } from "./views";
 import { expertCode } from "../engine/pair";
 import { GESTURE_OF } from "../engine/cases";
 import { fetchStats } from "../engine/wspolny";
@@ -15,7 +15,7 @@ export function viewProtokol(app: App): HTMLElement {
   const line = (k: string, v: string) => h("p", {}, h("b", {}, k + ": "), v);
   const notes = s.notebook;
   const whenOf = (pred: (e: { text: string; meta: string }) => boolean) => { const e = notes.find(pred); return e ? fmtWhen(new Date(e.at)) : null; };
-  const art = h("article", { class: "doc mono stamped" }, h("h4", {}, "Program „Sandomierz Pod Spodem”"), h("div", { class: "src" }, `Wyciąg z rejestru zdarzeń urządzenia biegłego. Sporządzono ${fmtWhen(now)}. Dane nie opuściły urządzenia.`));
+  const art = h("article", { class: "doc mono stamped" }, h("h4", {}, "Program „Sandomierz Pod Spodem”"), h("div", { class: "src" }, `Wyciąg z rejestru zdarzeń urządzenia biegłego. Sporządzono ${fmtWhen(now)}. Do serwera programu poszły tylko liczby, bez osoby.`));
   art.append(line("Biegły", addr(app, "forma żeńska", "forma męska", "forma nieokreślona") + ", bez nazwiska (zgodnie z zasadą programu)"));
   // sprawy i bramy
   const rows: string[] = [];
@@ -24,7 +24,7 @@ export function viewProtokol(app: App): HTMLElement {
     const tries = (s.attempts[c.id] ?? []).length; const g = GESTURE_OF[c.gate]; const passed = !g || s.interludesDone.includes(g) || s.testMode;
     const pledged = notes.some((e) => e.meta === `brama ${c.gate} przebyta` && e.text.includes("na słowo"));
     const when = whenOf((e) => e.text.startsWith(`Brama ${c.gate} rozpoznana`));
-    rows.push(`Sprawa ${c.n} (brama ${c.gate}): rozpoznana${when ? " " + when : ""}${tries ? `, ${tries === 1 ? "za pierwszym razem" : `${tries} ${tries < 5 ? "próby" : "prób"}`}` : ""}; brama ${passed ? (pledged ? "przebyta na słowo" : "przebyta ciałem") : "jeszcze nieprzebyta"}`);
+    rows.push(`Sprawa ${c.n} (brama ${c.gate}): rozpoznana${when ? " " + when : ""}${tries ? `, ${tries === 1 ? "za pierwszym razem" : `${tries} ${plural(tries, "próba", "próby", "prób")}`}` : ""}; brama ${passed ? (pledged ? "przebyta na słowo" : "przebyta ciałem") : "jeszcze nieprzebyta"}`);
   }
   art.append(h("p", {}, h("b", {}, "Bramy: ")), ...rows.map((r) => h("p", { class: "row-line" }, r)));
   if (s.unstableGates.length) art.append(line("Bramy otwarte siłą", s.unstableGates.map((g) => `brama ${g}`).join(", ") + ". Zostają w karcie jako niestabilne."));
@@ -36,7 +36,8 @@ export function viewProtokol(app: App): HTMLElement {
   const daily = Object.values(s.daily); const dailyOk = daily.filter(Boolean).length;
   if (daily.length) art.append(line("Mikro-akta", `${daily.length} ${daily.length === 1 ? "dzień" : "dni"}, ${dailyOk} trafnie.`));
   // pora pracy
-  if (notes.length >= 3) { const hours = notes.map((e) => new Date(e.at).getHours()); const bins = [0, 0, 0, 0]; for (const hh of hours) bins[hh < 6 ? 0 : hh < 12 ? 1 : hh < 18 ? 2 : 3]++; const names = ["w nocy", "rano", "po południu", "wieczorem"]; const top = bins.indexOf(Math.max(...bins)); art.append(line("Pora pracy", `najczęściej ${names[top]} (${notes.length} ${notes.length < 5 ? "zapiski" : "zapisków"} w zeszycie).`)); }
+  if (notes.length >= 3) { const hours = notes.map((e) => new Date(e.at).getHours()); const bins = [0, 0, 0, 0]; for (const hh of hours) bins[hh < 6 ? 0 : hh < 12 ? 1 : hh < 18 ? 2 : 3]++; const names = ["w nocy", "rano", "po południu", "wieczorem"]; const top = bins.indexOf(Math.max(...bins)); art.append(line("Pora pracy", `najczęściej ${names[top]} (${notes.length} ${plural(notes.length, "zapisek", "zapiski", "zapisków")} w zeszycie).`)); }
+  if (s.leftSeventhEmpty && !s.finaleAt) { s.finaleAt = Date.now(); }
   if (s.leftSeventhEmpty) { const c = h("code", {}, "…"); expertCode(s.seed, s.finaleAt ?? Date.now()).then((v) => (c.textContent = v)); art.append(line("Siódma pozycja", `zostawiona pusta${s.finaleAt ? " " + fmtWhen(new Date(s.finaleAt)) : ""}.`), h("p", {}, h("b", {}, "Kod biegłego: "), c)); }
   else art.append(line("Siódma pozycja", "nierozstrzygnięta."));
   if (app.cfg.backendUrl) { const pl = h("p", {}, h("b", {}, "Biegłych w programie: "), "…"); art.append(pl); fetchStats(app.cfg.backendUrl).then((st) => { pl.lastChild!.textContent = st ? String(st.players) : "bez połączenia"; }); }

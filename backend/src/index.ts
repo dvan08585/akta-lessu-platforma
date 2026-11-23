@@ -46,7 +46,6 @@ export class Stats {
   async fetch(req: Request): Promise<Response> {
     const url = new URL(req.url);
     const counts = (await this.state.storage.get<Counts>("counts")) ?? empty();
-    const seen = (await this.state.storage.get<Record<string, number>>("seen")) ?? {}; // who+type+gate -> 1, żeby jeden gracz liczył się raz
     const hum = (await this.state.storage.get<Record<string, number>>("hum")) ?? {};
     const now = Date.now();
     const ok = (d: unknown, status = 200) => new Response(JSON.stringify(d), { status });
@@ -59,9 +58,10 @@ export class Stats {
       const b = (await req.json().catch(() => null)) as { who?: string; type?: string; gate?: number; id?: string; option?: string; seconds?: number; pledged?: number; hour?: number } | null;
       if (!b || typeof b.who !== "string" || !/^[0-9a-f]{8,16}$/.test(b.who) || typeof b.type !== "string") return ok({ error: "zły wpis" }, 400);
       counts.players[b.who] = now;
-      const key = `${b.who}:${b.type}:${b.gate ?? ""}:${b.id ?? ""}`;
-      if (seen[key]) return ok({ ok: true, dup: true });
-      seen[key] = 1;
+      // jeden gracz liczy się raz na zdarzenie: osobny klucz w magazynie, nie jedna mapa przepisywana przy każdym zdarzeniu
+      const key = `seen:${b.who}:${b.type}:${b.gate ?? ""}:${b.id ?? ""}`;
+      if (await this.state.storage.get(key)) return ok({ ok: true, dup: true });
+      await this.state.storage.put(key, 1);
       if (b.type === "start") { /* tylko obecność gracza, policzona wyżej */ }
       else if (b.type === "pwa") { counts.pwa = (counts.pwa ?? 0) + 1; }
       else if (b.type === "reading_back") { counts.readingsBack = (counts.readingsBack ?? 0) + 1; }
@@ -75,7 +75,7 @@ export class Stats {
       else if (b.type === "seventh_filled") { counts.seventh.total += 1; }
       else if ((b.type === "choice" || b.type === "reply") && b.id && b.option !== undefined) { const c = (counts.choices[b.id.slice(0, 40)] ??= {}); const o = String(b.option).slice(0, 20); c[o] = (c[o] ?? 0) + 1; }
       else return ok({ error: "nieznany typ" }, 400);
-      await this.state.storage.put("counts", counts); await this.state.storage.put("seen", seen);
+      await this.state.storage.put("counts", counts);
       return ok({ ok: true });
     }
     if (url.pathname === "/hum" && req.method === "POST") {
@@ -91,9 +91,9 @@ export class Stats {
       return ok((await this.state.storage.get("rejestr")) ?? { active: false, header: "", lines: [], updatedAt: "" });
     }
     if (url.pathname === "/rejestr" && req.method === "PUT") {
-      const b = (await req.json().catch(() => null)) as { active?: boolean; header?: string; lines?: string[] } | null;
+      const b = (await req.json().catch(() => null)) as { active?: boolean; header?: string; lines?: string[]; notices?: { date?: string; text?: string }[] } | null;
       if (!b || !Array.isArray(b.lines)) return ok({ error: "zły wpis" }, 400);
-      const rec = { active: !!b.active, header: String(b.header ?? "").slice(0, 200), lines: b.lines.slice(0, 12).map((l) => String(l).slice(0, 200)), updatedAt: new Date().toISOString() };
+      const rec = { active: !!b.active, header: String(b.header ?? "").slice(0, 200), lines: b.lines.slice(0, 24).map((l) => String(l).slice(0, 200)), notices: Array.isArray(b.notices) ? b.notices.slice(0, 24).map((n) => ({ date: String(n?.date ?? "").slice(0, 60), text: String(n?.text ?? "").slice(0, 300) })) : [], updatedAt: new Date().toISOString() };
       await this.state.storage.put("rejestr", rec);
       return ok(rec);
     }

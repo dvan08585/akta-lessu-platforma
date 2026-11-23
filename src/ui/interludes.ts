@@ -80,7 +80,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
         h("li", {}, `Ciało: ${r.body}.`),
         h("li", {}, "Nie ma kary za nieudaną próbę. Jest tylko inny zapis."),
         h("li", {}, "Trzy drogi liczą się tak samo: czujnik, drugi klucz, na słowo."),
-        h("li", {}, "Nic nie jest nagrywane ani wysyłane. Liczby liczą się w telefonie i znikają.")),
+        h("li", {}, "Nic nie jest nagrywane. Do serwera programu idzie tylko liczba sekund i godzina, bez treści i bez osoby.")),
       h("div", { class: "verdict" }, h("button", { class: "primary", onclick: () => { box.remove(); enterGate(); } }, "Wchodzę"), back("Jeszcze nie")));
     sec.append(box);
   }
@@ -90,20 +90,24 @@ export function viewInterlude(app: App, id: string): HTMLElement {
    */
   function enterGate() {
     const r = it.rite!; riteStart = Date.now();
-    let down = 0, held = 0, sensor = false, finished = false; let iv = 0;
+    let downSince = 0, heldSince = 0, faceDown = false, finished = false; let iv = 0;
     const hold = h("button", { class: "ghost" }, "Bez odwracania: przytrzymaj");
     const box = h("div", { class: "facedown enter" }, h("p", {}, "Połóż telefon ekranem w dół."), h("p", { class: "faint" }, "Trzy sekundy. Tak zaczyna się każda brama."), h("div", { class: "verdict" }, hold));
     sec.append(box);
-    const onOrient = (e: DeviceOrientationEvent) => { sensor = true; down = e.beta !== null && Math.abs(e.beta) > 150 ? down + 1 : 0; };
-    listen("deviceorientation", onOrient as EventListener);
-    hold.addEventListener("pointerdown", () => { held = 1; }); const rel = () => { held = 0; }; hold.addEventListener("pointerup", rel); hold.addEventListener("pointercancel", rel); hold.addEventListener("pointerleave", rel);
+    // czas liczony zegarem, nie liczbą zdarzeń czujnika (częstotliwość zdarzeń zależy od telefonu)
+    const onOrient = (e: DeviceOrientationEvent) => { faceDown = e.beta !== null && Math.abs(e.beta) > 150; if (!faceDown) downSince = 0; else if (!downSince) downSince = Date.now(); };
+    const DO = DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> };
+    const arm = () => listen("deviceorientation", onOrient as EventListener);
+    if (DO.requestPermission) { DO.requestPermission().then((r) => { if (r === "granted") arm(); }).catch(() => { /* bez czujnika zostaje przycisk */ }); } else arm();
+    hold.addEventListener("pointerdown", () => { heldSince = Date.now(); }); const rel = () => { heldSince = 0; }; hold.addEventListener("pointerup", rel); hold.addEventListener("pointercancel", rel); hold.addEventListener("pointerleave", rel);
     const open = () => {
       if (finished) return; finished = true; clearInterval(iv); removeEventListener("deviceorientation", onOrient as EventListener);
       try { navigator.vibrate?.(60); } catch { /* */ }
-      box.replaceChildren(h("p", { class: "quote opening" }, r.opening));
-      setTimeout(() => { if (!alive) return; box.remove(); renderBody(); armPledge(); }, 1400);
+      // formuła otwarcia dopiero, gdy ekran znów jest ku twarzy (albo po 4 s, gdyby czujnik zamilkł)
+      const show = () => { box.replaceChildren(h("p", { class: "quote opening" }, r.opening)); setTimeout(() => { if (!alive) return; box.remove(); renderBody(); armPledge(); }, 1600); };
+      const t0 = Date.now(); const wait = window.setInterval(() => { if (!alive) { clearInterval(wait); return; } if (!faceDown || Date.now() - t0 > 4000) { clearInterval(wait); show(); } }, 150);
     };
-    iv = window.setInterval(() => { if (held) held += 1; if ((sensor && down >= 6) || held >= 7) open(); }, 500);
+    iv = window.setInterval(() => { const now = Date.now(); if ((downSince && now - downSince >= 3000) || (heldSince && now - heldSince >= 3000)) open(); }, 100);
     onLeave(() => clearInterval(iv));
   }
   /** Sufit porażki: po trzykrotności czasu obrzędu bez domknięcia brama „drga" i można ją przyjąć na słowo. Koszt zmienia się z sensorycznego na honorowy. */
@@ -632,7 +636,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const roomBox = h("div", { class: "gatebox roombox" });
     if (app.cfg.backendUrl) {
       const codeIn = h("input", { type: "text", placeholder: "kod pokoju", "aria-label": "Kod pokoju", maxlength: "6", autocapitalize: "none", style: "text-transform:none;letter-spacing:0.2em" }) as HTMLInputElement;
-      const info = h("p", { class: "muted" }, "Druga osoba może być u siebie: jej palce pojawią się na tym ekranie na niebiesko. Utwórz pokój albo wpisz kod, który dostałeś.");
+      const info = h("p", { class: "muted" }, "Druga osoba może być u siebie: jej palce pojawią się na tym ekranie na niebiesko. Utwórz pokój albo wpisz otrzymany kod.");
       const join = (code: string) => {
         code = code.trim().toLowerCase(); if (!/^[a-z0-9]{4,6}$/.test(code)) { toast("Kod pokoju: cztery do sześciu znaków."); return; }
         try { ws?.close(); } catch { /* */ }
@@ -649,7 +653,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     sec.append(canvas, status, roomBox, verdict);
     const ctx = canvas.getContext("2d")!;
     const pts = Array.from({ length: 7 }, (_, i) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 7; return { x: 300 + Math.cos(a) * 220, y: 300 + Math.sin(a) * 220 }; });
-    const touches = new Map<number, { x: number; y: number }>(); let held = 0, finished = done;
+    const touches = new Map<number, { x: number; y: number }>(); let held = 0, finished = done; let lastFrame = performance.now();
     const toCanvas = (e: PointerEvent) => { const r = canvas.getBoundingClientRect(); return { x: ((e.clientX - r.left) / r.width) * 600, y: ((e.clientY - r.top) / r.height) * 600 }; };
     canvas.addEventListener("pointerdown", (e) => { touches.set(e.pointerId, toCanvas(e)); });
     canvas.addEventListener("pointermove", (e) => { if (touches.has(e.pointerId)) touches.set(e.pointerId, toCanvas(e)); });
@@ -667,7 +671,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       if (ws && ws.readyState === 1 && performance.now() - lastSend > 50) { lastSend = performance.now(); try { ws.send(JSON.stringify({ t: "touch", p: [...touches.values()].slice(0, 5).map((t) => [+(t.x / 600).toFixed(3), +(t.y / 600).toFixed(3)]) })); } catch { /* */ } }
       const n = covered.filter(Boolean).length; status.textContent = `${n} / 5 palców na siedmiu punktach`;
       // Telefon widzi najwyżej pięć dotknięć naraz (iPhone). Pięć palców dwojga ludzi na pięciu z siedmiu punktów przez trzy sekundy.
-      held = n >= 5 ? held + 1 / 60 : 0;
+      const nowF = performance.now(); const dt = Math.min(0.1, (nowF - lastFrame) / 1000); lastFrame = nowF; held = n >= 5 ? held + dt : 0; // sekundy zegarem, nie klatkami
       if (held >= 3 && !finished) { finished = true; reveal(verdict, `${it.title}: siedem palców.`); try { navigator.vibrate?.(300); } catch { /* */ } }
       if (alive) requestAnimationFrame(draw);
     }
@@ -757,9 +761,16 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const update = () => { const n = app.state.steps ?? 0; fill.style.width = `${Math.min(100, (n / total) * 100)}%`; status.textContent = `${n} / ${total} kroków${n > total - 200 && n < total ? " · powietrze rzednie" : ""}`; document.body.style.filter = n > total - 200 && n < total ? `brightness(${1 - ((n - (total - 200)) / 200) * 0.6})` : ""; if (n >= total && !finished) { finished = true; document.body.style.filter = ""; reveal(verdict, `${it.title}: na miejscu.`); } };
     const onMotion = (e: DeviceMotionEvent) => { const a = e.accelerationIncludingGravity; if (!a) return; const mag = Math.sqrt((a.x ?? 0) ** 2 + (a.y ?? 0) ** 2 + (a.z ?? 0) ** 2); const now = Date.now(); if (last && mag - last > 1.6 && now - lastStep > 320) { lastStep = now; app.state.steps = (app.state.steps ?? 0) + 1; if (app.state.steps % 10 === 0) save(app.state); update(); } last = mag; };
     start.addEventListener("click", async () => {
-      try { const DM = DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> }; if (DM.requestPermission) { const r = await DM.requestPermission(); if (r !== "granted") throw new Error("denied"); } listen("devicemotion", onMotion as EventListener); start.disabled = true; start.textContent = "Liczę kroki"; }
-      catch { toast("Bez czujnika ruchu kroków nie policzę. Wróć na telefonie."); }
+      try { const DM = DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> }; if (DM.requestPermission) { const r = await DM.requestPermission(); if (r !== "granted") throw new Error("denied"); } listen("devicemotion", onMotion as EventListener); start.disabled = true; start.textContent = "Liczę kroki"; const t0 = app.state.steps ?? 0; setTimeout(() => { if (alive && (app.state.steps ?? 0) === t0 && !finished) byHand(); }, 12000); } // czujnik milczy 12 s: drugi klucz bez pytania
+      catch { byHand(); }
     });
+    // Drugi klucz tej samej rangi (kontrakt: „bez żyroskopu: trzymany przycisk"): przycisk trzymany liczy kroki w tempie marszu, 111 kroków na minutę. Bez komunikatu porażki.
+    function byHand() {
+      start.textContent = "Trzymaj i idź"; start.disabled = false; let t: number | undefined;
+      const go_ = () => { if (t) return; t = window.setInterval(() => { app.state.steps = (app.state.steps ?? 0) + 1; update(); if ((app.state.steps ?? 0) >= total) { clearInterval(t); t = undefined; } }, 540); };
+      const stop = () => { if (t) { clearInterval(t); t = undefined; save(app.state); } };
+      start.addEventListener("pointerdown", go_); ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => start.addEventListener(ev, stop)); onLeave(stop);
+    }
     addEventListener("hashchange", () => { document.body.style.filter = ""; save(app.state); }, { once: true });
     update();
     if (done) verdict.append(h("div", { class: "solution" }, h("p", {}, it.reveal!)), h("div", { class: "verdict" }, back()));

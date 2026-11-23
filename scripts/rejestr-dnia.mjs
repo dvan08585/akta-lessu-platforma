@@ -14,11 +14,12 @@ const url = (cfg.backendUrl || "").replace(/\/$/, "");
 const token = process.env.ADMIN_TOKEN || "";
 // najbliższa godzina w harmonogramie, nie późniejsza niż bieżąca
 const hours = Object.keys(sched.hours || {}).map(Number).sort((a, b) => a - b);
-const pick = hours.filter((h) => h <= hourArg).pop() ?? hours[0];
-const body = { active: !off, header: sched.header || "Rejestr statusów — Fundacja Sandomierska Memoria — aktualizacja na żywo", lines: off ? [] : (sched.hours?.[String(pick)] ?? []), notices: (sched.notices?.[String(pick)] ?? []) };
+const pick = hours.filter((h) => h <= hourArg).pop();
+const early = pick === undefined; // przed pierwszą godziną harmonogramu rejestr jest nieaktywny, nie „z południa"
+const body = { active: !off && !early, header: sched.header || "Rejestr statusów — Fundacja Sandomierska Memoria — aktualizacja na żywo", lines: off || early ? [] : (sched.hours?.[String(pick)] ?? []), notices: early ? [] : (sched.notices?.[String(pick)] ?? []) };
 const local = { ...body, updatedAt: new Date().toISOString(), note: "Zapas dla Workera; podmieniany skryptem rejestr-dnia.mjs. Plik idzie zawsze z sieci (service worker nie trzyma go w pamięci)." };
 writeFileSync("public/live/rejestr.json", JSON.stringify(local, null, 2) + "\n");
-console.log(`Zapas: public/live/rejestr.json (godzina ${pick}, ${body.lines.length} wierszy${off ? ", wyłączony" : ""}).`);
+console.log(`Zapas: public/live/rejestr.json (${early ? "przed pierwszą godziną harmonogramu" : "godzina " + pick}, ${body.lines.length} wierszy${off ? ", wyłączony" : ""}).`);
 if (!url || !token) { console.log("Bez backendUrl albo ADMIN_TOKEN: tylko plik zapasowy. Commit + push, żeby strona go zobaczyła."); process.exit(0); }
 const r = await fetch(url + "/rejestr", { method: "PUT", headers: { "content-type": "application/json", authorization: `Bearer ${token}` }, body: JSON.stringify(body) });
 console.log(r.ok ? `Worker: zapisano (${r.status}).` : `Worker: błąd ${r.status}; strona użyje pliku zapasowego po commit + push.`);
