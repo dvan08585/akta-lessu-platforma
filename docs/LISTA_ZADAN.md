@@ -83,7 +83,7 @@ Kontrakt frustracji przed każdą bramą, przyjęcie „na słowo” po trzykrot
 49. Odcisk dzwonu (pięć składowych widma, trzy dni) po nagraniu z C46; przejście skanu na Spark i format SPZ po pierwszym prawdziwym skanie.
 50. Odpowiedź impulsowa Podziemi nałożona na wstępy spraw i kody (po D67).
 51. Nocny dopisek (jedno zdanie widoczne tylko w trybie nocnym) i dokument, który blaknie, z warunkiem: blaknąć może tylko to, co nie jest dowodem.
-52. Regulamin Nocy na szablonie IPN i Instytutu Pileckiego plus pismo do UM (2 h); komunikat kryzysowy na wypadek wycieku treści („to szkice sprzed roku”).
+52. ZROBIONE 24 XI (`docs/NOC_REGULAMIN_I_PISMO.md`; komunikat kryzysowy w `docs/DZIEN_PREMIERY.md`). Regulamin Nocy plus pismo do UM; komunikat kryzysowy na wypadek wycieku treści.
 
 ### B3. Może (m), po wszystkim innym
 53. „Brama w twoim mieście” dla gracza zdalnego; census postrzeżeń po bramie 5 i list do siebie po bramie 1; potwierdzanie trójkami w sprawach 3–7 (tylko w wersji komfortowej); NMT 1 m z GUGiK w Mieście; nowe identyfikatory QR z dokumentami „na miejscu” po decyzji o lokalach.
