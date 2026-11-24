@@ -4,6 +4,8 @@ import { evaluate } from "../src/engine/cases";
 import { shareCard } from "../src/engine/share";
 import { emptyState, exportCode, importCode, touchStreak } from "../src/engine/state";
 import type { CaseData } from "../src/engine/types";
+import case01 from "../src/content/cases/01-staromiejskie.json";
+import letters from "../src/content/wiadomosci.json";
 
 const cfg = { premiereDate: "2027-10-15T00:00:00+02:00", timeline: { chapterOffsets: { "0": -60, "1": -53 } } };
 
@@ -246,5 +248,21 @@ describe("słońce nad Sandomierzem", () => {
     expect(isNight(new Date("2026-11-16T00:30:00+01:00"))).toBe(true);
     expect(isNight(new Date("2026-11-16T12:00:00+01:00"))).toBe(false);
     expect(isNight(new Date("2026-06-21T20:30:00+02:00"))).toBe(false); // czerwiec: zachód po 20:40
+  });
+});
+
+
+describe("list komisarza z cytatem", () => {
+  it("cytuje wypełnione ustalenie sprawy 1 z dokładnie jednym słowem z banku zamienionym", () => {
+    const c = case01 as unknown as CaseData;
+    const q = c.questions.find((x) => x.kind === "fill" && x.bank && x.answerWords)!;
+    const parts = q.text.split("___");
+    const filled = parts.map((t, i) => t + (i < parts.length - 1 ? q.answerWords![i] : "")).join("");
+    const first = filled.split(". ")[0] + ".";
+    const letter = (letters as { id: string; text: string }[]).find((l) => l.id === "w-ziel-cyt")!;
+    const quote = /„([^”]+)”/.exec(letter.text)![1];
+    const swaps = q.answerWords!.flatMap((w) => q.bank!.filter((b) => b !== w).map((b) => [w, b] as const)).filter(([w, b]) => first.replace(w, b) === quote);
+    expect(swaps.length).toBe(1);
+    expect(swaps[0][0]).toBe("od spodu"); expect(swaps[0][1]).toBe("od góry");
   });
 });

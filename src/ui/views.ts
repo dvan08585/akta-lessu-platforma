@@ -587,7 +587,7 @@ export function viewCase(app: App, c: CaseData, sec: HTMLElement): HTMLElement {
       tail.append(h("div", { class: "verdict" }, next("Przejdź bramę ciałem", `#/miedzy/${gestureId}`, "body"), back("Później")));
     }
     solutionBox.replaceChildren(sol, tail);
-    if (!solvedAlready) app.addNote(`Brama ${c.gate} rozpoznana: ${c.title}.`, `próby: ${tries}`);
+    if (!solvedAlready) { app.addNote(`Brama ${c.gate} rozpoznana: ${c.title}.`, `próby: ${tries}`); for (const t of filledFindings(c)) app.addNote(t, `ustalenie, sprawa ${c.n}`); } // ustalenie trafia do zeszytu: list komisarza odsyła do niego
     sol.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
@@ -683,7 +683,7 @@ export function viewAkta(app: App): HTMLElement {
   }
   { const nb = newsletterBox(app, "Nowe sprawy przychodzą co tydzień. Adres = akta pierwszego dnia."); if (nb) sec.append(nb); }
 
-  sec.append(h("p", { class: "faint", style: "margin-top:1.2rem" }, h("a", { href: "#/zlecenie" }, "Pismo komisarza (zlecenie) do ponownego przeczytania"), " · ", h("a", { href: "#/paszport" }, "Paszport bram do druku"), " · ", h("a", { href: import.meta.env.BASE_URL + "regulamin/", target: "_blank" }, "Regulamin konkursu (wersja robocza)")));
+  sec.append(h("p", { class: "faint", style: "margin-top:1.2rem" }, h("a", { href: "#/zlecenie" }, "Pismo komisarza (zlecenie) do ponownego przeczytania"), " · ", h("a", { href: "#/paszport" }, "Paszport bram do druku"), app.state.testMode ? h("span", {}, " · ", h("a", { href: import.meta.env.BASE_URL + "regulamin/", target: "_blank" }, "Regulamin konkursu (wersja robocza, przed prawnikiem)")) : null)); // publicznie dopiero po opinii prawnika
   sec.append(h("p", { class: "faint build" }, `wersja ${__BUILD__}`));
   sec.append(h("p", { class: "faint", style: "margin-top:2rem" }, h("a", { href: "#/ustawienia" }, "Ustawienia: światło, forma, narzędzia, zaczęcie od nowa →")));
   return sec;
@@ -814,6 +814,7 @@ export function viewSettings(app: App): HTMLElement {
   sec.append(h("div", { class: "gatebox" }, h("h3", {}, "Forma"), h("p", { class: "muted" }, "Jak gra ma się do Ciebie zwracać. Nic poza tym nie zapisujemy."),
     h("div", { class: "verdict choice seg", role: "group", "aria-label": "Forma" }, h("button", { class: app.state.address === "f" ? "primary" : "", onclick: () => { app.state.address = "f"; save(app.state); go("#/akta"); } }, "Szanowna Pani"), h("button", { class: app.state.address === "m" ? "primary" : "", onclick: () => { app.state.address = "m"; save(app.state); go("#/akta"); } }, "Szanowny Panie"))));
   // Narzędzia
+  if (app.state.testMode) sec.append(h("p", { class: "faint" }, h("a", { href: "#/liczby" }, "Liczby programu (tryb biegłego): gracze, bramy, obrzędy, progi.")));
   sec.append(h("h3", {}, "Narzędzia"),
     h("div", { class: "gatebox" }, h("p", { class: "muted" }, "Miasto w trzech wymiarach z otwartych danych: siedem wzgórz z rzeźbą terenu, kamienice jako bryły, bramy pod wzgórzami. Z GPS i kompasem zawieszka grzeje w stronę bramy."),
       h("div", { class: "verdict choice grid" }, h("a", { class: "btn", href: import.meta.env.BASE_URL + "miasto/?b=" + __BUILD__ }, "Miasto"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "sceny/?plik=rynek.splat" }, "Scena z Rynku"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "komnata/?b=" + __BUILD__ }, "Komnata (próba)"), h("a", { class: "btn ghost", href: import.meta.env.BASE_URL + "skan/?b=" + __BUILD__ }, "Skan (próba)"))),
@@ -825,6 +826,10 @@ export function viewSettings(app: App): HTMLElement {
 }
 
 
+/** Wypełnione ustalenia sprawy (luki zastąpione poprawnymi słowami); to samo, co dokument „Ustalenie biegłego". */
+export function filledFindings(c: CaseData): string[] {
+  return c.questions.filter((q) => q.kind === "fill" && q.bank && q.answerWords).map((q) => { const parts = q.text.split("___"); return parts.map((t, i) => t + (i < parts.length - 1 ? (q.answerWords![i] ?? "") : "")).join(""); });
+}
 /** Numer tygodnia ISO jako klucz dziennika miasta (jedno zdanie na tydzień). */
 function isoWeek(d: Date): string {
   const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); const day = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - day);

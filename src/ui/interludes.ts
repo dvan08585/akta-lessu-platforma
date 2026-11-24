@@ -138,7 +138,10 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   /** Słowo bramy pisane palcem: ślad na ekranie, nic nie zapisywane, pisma nikt nie ocenia. Liczy się długość kreski, nie kształt. */
   function writeWord(verdict: HTMLElement, word: string, done: () => void) {
     const canvas = h("canvas", { class: "write-pad", width: "600", height: "240" }) as HTMLCanvasElement;
-    const box = h("div", { class: "write-word fade-in" }, h("p", { class: "kicker" }, "Słowo tej bramy"), h("p", { class: "big-word" }, word), h("p", { class: "muted" }, "Napisz je palcem. Jak wyjdzie, tak wyjdzie; nikt tego nie sprawdza."), canvas,
+    // Słowo z pamięci: było na progu bramy; podczas pisania jest zakryte (efekt wykonania bierze się z wytworzenia, nie z przepisania). Cichy „pokaż" dla tych, którzy nie pamiętają.
+    const wordEl = h("p", { class: "big-word hidden-word" }, "•".repeat(Math.max(4, word.length)));
+    const peek = h("button", { class: "ghost small", onclick: () => { wordEl.textContent = word; wordEl.classList.remove("hidden-word"); peek.remove(); } }, "pokaż");
+    const box = h("div", { class: "write-word fade-in" }, h("p", { class: "kicker" }, "Słowo tej bramy, z pamięci"), h("div", { class: "word-row" }, wordEl, peek), h("p", { class: "muted" }, "Napisz je palcem. Jak wyjdzie, tak wyjdzie; nikt tego nie sprawdza."), canvas,
       h("div", { class: "verdict" }, h("button", { class: "ghost", onclick: () => { box.remove(); done(); } }, "Bez pisania")));
     verdict.replaceChildren(box);
     const ctx = canvas.getContext("2d")!; ctx.lineWidth = 7; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.strokeStyle = (getComputedStyle(document.documentElement).getPropertyValue("--sand") || "#c9a86a").trim();
