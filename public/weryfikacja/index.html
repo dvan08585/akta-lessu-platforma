@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weryfikacja kodu</title>
+<meta name="robots" content="noindex">
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; padding: 1.4rem 1rem 3rem; max-width: 36rem; margin-inline: auto; font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; line-height: 1.55; color: #1c1a16; background: #efebe1; }
+  h1 { font-size: 1.3rem; font-weight: 400; margin: 0 0 0.3rem; }
+  .muted { color: #4d4639; font-size: 0.95rem; }
+  input { font: inherit; font-family: Menlo, Consolas, monospace; font-size: 1.2rem; letter-spacing: 0.12em; padding: 0.6rem 0.8rem; width: 100%; box-sizing: border-box; border: 1px solid #a39a86; border-radius: 6px; background: #fff; }
+  button { font: inherit; padding: 0.7rem 1.2rem; border: 1px solid #1c1a16; background: #1c1a16; color: #efebe1; border-radius: 6px; margin-top: 0.6rem; cursor: pointer; }
+  .out { margin-top: 1rem; padding: 0.9rem 1rem; border-left: 3px solid #765520; background: #e7e0d2; min-height: 2.5rem; }
+  .out.bad { border-left-color: #7a1f1f; }
+  .faint { color: #6e6655; font-size: 0.85rem; margin-top: 1.6rem; }
+  a { color: #765520; }
+</style>
+</head>
+<body>
+<h1>Weryfikacja kodu biegłego</h1>
+<p class="muted">Dla biblioteki i jury. Działa bez sieci, nic nie wysyła: kod sprawdza się w tej przeglądarce. Przyjmuje kod biegłego (zaczyna się od „b”), połówkę klucza („k”) i odczyt zawieszki (cyfra wzgórza na początku).</p>
+<input id="kod" placeholder="np. b1a2f0k7c3" autocapitalize="none" autocomplete="off" spellcheck="false">
+<button id="go">Sprawdź</button>
+<div class="out" id="out">Wpisz kod i naciśnij „Sprawdź”.</div>
+<p class="faint">Kod biegłego niesie datę rozstrzygnięcia siódmej pozycji z dokładnością do dnia (czas urządzenia gracza). Kohorta „Pierwszy tydzień” to data w pierwszych siedmiu dniach od premiery. Żaden kod nie zawiera danych osobowych. <a href="../">Do gry</a>.</p>
+<script>
+(function () {
+  const EPOCH = Date.UTC(2027, 0, 1);
+  async function sha(s) { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)); return Array.from(new Uint8Array(b)).map((x) => x.toString(16).padStart(2, "0")).join(""); }
+  async function check(raw) {
+    const t = raw.trim().toLowerCase(); if (!t) return ["Wpisz kod.", false];
+    const body = t.slice(0, -2), chk = t.slice(-2);
+    if ((await sha("akta-lessu:chk:" + body)).slice(0, 2) !== chk) return ["NIEPRAWIDŁOWY: suma kontrolna się nie zgadza (literówka albo kod zmyślony).", false];
+    if (/^b[0-9a-f]{4}[0-9a-z]{3}$/.test(body)) { const day = parseInt(body.slice(5, 8), 36); const d = new Date(EPOCH + day * 86400000); return [`KOD BIEGŁEGO: ważny. Siedem bram rozstrzygniętych dnia ${d.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" })}.`, true]; }
+    if (/^k[0-9a-f]{4}$/.test(body)) return ["POŁOWA KLUCZA: ważna (po sześciu bramach). Sama nie dowodzi ukończenia.", true];
+    if (/^[1-7][0-9a-f]{4}$/.test(body)) return [`ODCZYT ZAWIESZKI: ważny, wzgórze ${body[0]}. To odczyt dla innego biegłego, nie dowód ukończenia.`, true];
+    return ["Suma zgadza się, ale format jest nieznany.", false];
+  }
+  const out = document.getElementById("out"), inp = document.getElementById("kod");
+  const run = async () => { const [msg, ok] = await check(inp.value); out.textContent = msg; out.className = "out" + (ok ? "" : " bad"); };
+  document.getElementById("go").addEventListener("click", run); inp.addEventListener("keydown", (e) => { if (e.key === "Enter") run(); });
+})();
+</script>
+</body>
+</html>

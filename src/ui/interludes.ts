@@ -1,4 +1,4 @@
-import { h, go, toast, back, next, onLeave, grabMedia, listen } from "./dom";
+import { h, go, toast, back, next, onLeave, grabMedia, listen, keepAwake } from "./dom";
 import { topbar, addrText, crumb } from "./views";
 import type { App } from "../app";
 import { save } from "../engine/state";
@@ -178,6 +178,8 @@ export function viewInterlude(app: App, id: string): HTMLElement {
   }
 
   function newAC(): AudioContext { const a = new AudioContext(); acs.push(a); return a; }
+  // iOS zawiesza AudioContext po powrocie z tła; pierwsze dotknięcie po powrocie go wznawia
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") { const once = () => { for (const a of acs) if (a.state === "suspended") a.resume().catch(() => { /* */ }); }; document.addEventListener("pointerdown", once, { once: true }); } });
 
   function finish(note: string) {
     if (!app.state.interludesDone.includes(it.id)) { app.state.interludesDone.push(it.id); app.addNote(note, it.gate !== undefined ? `brama ${it.gate} przebyta` : "między sprawami"); save(app.state); if (it.gate !== undefined) { sendEvent(app.cfg.backendUrl, app.state, { type: "gesture", gate: it.gate }); } }
@@ -296,6 +298,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Zimno: trzymać telefon nieruchomo. Akcelerometr mierzy drżenie rąk; każde drgnięcie cofa pasek. */
   function renderStill() {
+    keepAwake();
     sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const total = it.seconds ?? 30;
     const bar = h("div", { class: "still-bar" }, h("i"));
@@ -338,6 +341,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Woda: oddech w tempie 5/5 (ok. 6 oddechów na minutę). Tafla gładzi się, gdy wydech jest równy. Mikrofon opcjonalny; zapas: palec na ekranie przy wydechu. */
   function renderBreath() {
+    keepAwake();
     sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const cycles = it.cycles ?? 10, tIn = (it.inhale ?? 5) * 1000, tOut = (it.exhale ?? 5) * 1000;
     const canvas = h("canvas", { class: "plate water", width: "600", height: "600", "aria-label": "Tafla wody w krypcie" }) as HTMLCanvasElement;
@@ -548,6 +552,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Kompas-zawieszka: GPS + magnetometr. Grzeje, gdy telefon celuje w najbliższą bramę. Tylko na miejscu. */
   function renderCompass() {
+    keepAwake();
     sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const pend = h("div", { class: "pendant big", "data-heat": "0" }, flint(96, flintSeed(app.state.seed)));
     const status = h("p", { class: "mono muted" }, "GPS: czeka, aż wyjmiesz zawieszkę");
@@ -555,13 +560,14 @@ export function viewInterlude(app: App, id: string): HTMLElement {
     const verdict = h("div");
     sec.append(pend, status, h("div", { class: "verdict" }, start), verdict);
     let heading: number | null = null, pos: { lat: number; lon: number } | null = null, hot = 0, finished = done;
+    let shaky = false; // iOS: kompas niepewny (webkitCompassAccuracy): podpowiedź „zrób ósemkę"
     const toRad = (d: number) => (d * Math.PI) / 180;
     const bearing = (a: { lat: number; lon: number }, b: { lat: number; lon: number }) => { const y = Math.sin(toRad(b.lon - a.lon)) * Math.cos(toRad(b.lat)); const x = Math.cos(toRad(a.lat)) * Math.sin(toRad(b.lat)) - Math.sin(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.cos(toRad(b.lon - a.lon)); return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360; };
     const dist = (a: { lat: number; lon: number }, b: { lat: number; lon: number }) => { const R = 6371000; const dLat = toRad(b.lat - a.lat), dLon = toRad(b.lon - a.lon); const s1 = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLon / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(s1)); };
     // iOS: webkitCompassHeading. Android: zdarzenie „absolute" daje alpha względem północy; zwykłe deviceorientation jest względne (od chwili startu), ale lepsze niż cisza.
     let relative = false;
     const onOrient = (e: DeviceOrientationEvent & { webkitCompassHeading?: number }) => {
-      if (typeof e.webkitCompassHeading === "number") { heading = e.webkitCompassHeading; relative = false; return; }
+      if (typeof e.webkitCompassHeading === "number") { heading = e.webkitCompassHeading; relative = false; const acc = (e as DeviceOrientationEvent & { webkitCompassAccuracy?: number }).webkitCompassAccuracy; if (typeof acc === "number" && (acc < 0 || acc > 30)) { shaky = true; } else shaky = false; return; }
       if (e.alpha === null) return;
       const abs = e.type === "deviceorientationabsolute" || e.absolute;
       if (abs || heading === null) { heading = (360 - e.alpha + (screen.orientation?.angle ?? 0)) % 360; relative = !abs; }
@@ -571,7 +577,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
       ticks++;
       if (!pos || heading === null) {
         const gps = pos ? "GPS: jest" : ticks > 60 ? "GPS: brak sygnału. Wyjdź spod dachu, włącz lokalizację dla przeglądarki." : "GPS: szukam…";
-        const cmp = heading !== null ? "kompas: jest" : ticks > 20 ? "kompas: cisza. Zakreśl telefonem w powietrzu ósemkę (tak kalibruje się kompas w telefonie) i wyjdź spod dachu." : "kompas: czekam na obrót";
+        const cmp = heading !== null ? (shaky ? "kompas: niepewny. Zakreśl telefonem ósemkę w powietrzu." : "kompas: jest") : ticks > 20 ? "kompas: cisza. Zakreśl telefonem w powietrzu ósemkę (tak kalibruje się kompas w telefonie) i wyjdź spod dachu." : "kompas: czekam na obrót";
         status.textContent = `${gps} · ${cmp}`;
       }
       if (pos && heading !== null) {
@@ -630,6 +636,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Siedem palców: multi-touch, siedem punktów heptagramu dotkniętych jednocześnie przez 3 s. */
   function renderTouch7() {
+    keepAwake();
     sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const canvas = h("canvas", { class: "plate hept", width: "600", height: "600", "aria-label": "Heptagram z siedmioma punktami" }) as HTMLCanvasElement;
     const status = h("p", { class: "mono muted" }, "0 / 5 palców na siedmiu punktach");
@@ -753,6 +760,7 @@ export function viewInterlude(app: App, id: string): HTMLElement {
 
   /** Kroki: licznik z akcelerometru (szczyty przyspieszenia), zapisywany między dniami. Ostatnie 200 kroków ciemniej. */
   function renderSteps() {
+    keepAwake();
     sec.append(h("p", { class: "quote" }, it.intro!)); if (it.cue) sec.append(h("p", { class: "cue" }, it.cue));
     const total = it.steps ?? 1200;
     const bar = h("div", { class: "still-bar" }, h("i")); const fill = bar.firstElementChild as HTMLElement;

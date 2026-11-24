@@ -1,4 +1,4 @@
-# Lista zadań „Akta Lessu” (wersja 2, 22 XI 2026, po recenzji czerwonego zespołu)
+# Lista zadań „Akta Lessu” (wersja 2, 22 XI 2026, po recenzji czerwonego zespołu; stan oznaczeń 24 XI)
 
 Źródła: MASTERPLAN, STRATEGIA_POZIOM_WYZEJ, synteza drugiego panelu i siedem raportów, DO_DECYZJI_AUTORA (25–37), audyty UX i logiki fabuły, TRESC_PRYWATNA, REGULAMIN_KONKURSU, STRAZNICY, BACKEND, GRAFIKA, PLAYTEST, QR, dziennik zmian w git i stan kodu. Recenzja szkicu z uwagami: `docs/LISTA_ZADAN_RECENZJA.md` (55 braków, 18 błędów, 12 zależności); ta wersja je wchłania.
 
@@ -59,23 +59,23 @@ Stan na dziś: gra przechodzi od wejścia do finału na Androidzie; treść sied
 Kontrakt frustracji przed każdą bramą, przyjęcie „na słowo” po trzykrotności czasu, ciemność i zapis geolożki, jedno ustalenie z lukami i konkurencyjną hipotezą w sprawach 1–4, formularz przed aktami i wypełnione ustalenie po, słowo bramy palcem, kotwice słów, protokół, pieczęć, dziennik miasta, listy z ciągiem dalszym, pokój dwóch telefonów (kod), statystyka siódmej pozycji po sześciu bramach.
 
 ### B1. Musi (M)
-30. Luty z masterplanu, część brakująca: jeden gest wejścia dla siedmiu obrzędów (telefon ekranem w dół, trzy sekundy, jedna wibracja, formuła otwarcia), zero komunikatów porażki, drugi klucz tej samej rangi dla każdego obrzędu według partytury. (ja 12–16 h, Ty 6 h testów)
-31. Marzec z masterplanu, część brakująca: kotwica każdej luki w dokumencie dostępnym w domu, sprawdzona sprawa po sprawie (w sprawie 1 „biały gołąb z gołębnika” jest w Dokumencie IV, „grodu” do sprawdzenia; w sprawie 2 `requiresNoon`, w 3 `requiresPlace`); konkurencyjna hipoteza, która upada na dokumentach, w każdej ze spraw 1–4. (ja 8 h, Ty 4 h czytania)
-32. Zdarzenia lejka do Workera przed Playtestem 2: instalacja jako aplikacja, czas i liczba prób obrzędu, pora dnia, czy czytano część przed sprawą, czy odczyt odwzajemniony. Bez tego kill-switch na Web Push nie ma danych. (ja 4 h, Ty: `wrangler deploy`)
-33. Kalendarz spraw względny do jednej daty premiery (dziś daty bezwzględne), żeby przesunięcie premiery było jednym parametrem.
-34. Paszport do druku z gry (siedem pól, daty, pieczęć biegłego): regulamin § 3.2 już to obiecuje.
-35. Regulamin w grze (zakładka Akta), jak obiecuje § 9.1; księga Rejestru z dwiema kolumnami (dedukcja, obecność) w § 4.
-36. Luki wsteczne i jedna luka na sprawę wyłącznie z książki: to jest kod, nie tylko słowa (ja 6 h; słowa z Tobą w C).
+30. ZROBIONE 23 XI (jeden gest wejścia, zero komunikatów porażki, drugi klucz ziemi). Luty z masterplanu, część brakująca: jeden gest wejścia dla siedmiu obrzędów (telefon ekranem w dół, trzy sekundy, jedna wibracja, formuła otwarcia), zero komunikatów porażki, drugi klucz tej samej rangi dla każdego obrzędu według partytury. (ja 12–16 h, Ty 6 h testów)
+31. ZROBIONE 22 XI (kotwice sprawdzone w dokumentach dostępnych w domu; konkurencyjna hipoteza była). Marzec z masterplanu, część brakująca: kotwica każdej luki w dokumencie dostępnym w domu, sprawdzona sprawa po sprawie (w sprawie 1 „biały gołąb z gołębnika” jest w Dokumencie IV, „grodu” do sprawdzenia; w sprawie 2 `requiresNoon`, w 3 `requiresPlace`); konkurencyjna hipoteza, która upada na dokumentach, w każdej ze spraw 1–4. (ja 8 h, Ty 4 h czytania)
+32. ZROBIONE 22–23 XI (wymaga `wrangler deploy`). Zdarzenia lejka do Workera przed Playtestem 2: instalacja jako aplikacja, czas i liczba prób obrzędu, pora dnia, czy czytano część przed sprawą, czy odczyt odwzajemniony. Bez tego kill-switch na Web Push nie ma danych. (ja 4 h, Ty: `wrangler deploy`)
+33. ZROBIONE 22 XI. Kalendarz spraw względny do jednej daty premiery (dziś daty bezwzględne), żeby przesunięcie premiery było jednym parametrem.
+34. ZROBIONE 22 XI (`#/paszport`). Paszport do druku z gry (siedem pól, daty, pieczęć biegłego): regulamin § 3.2 już to obiecuje.
+35. ZROBIONE 22 XI (link w Aktach tylko w trybie biegłego do czasu prawnika). Regulamin w grze (zakładka Akta), jak obiecuje § 9.1; księga Rejestru z dwiema kolumnami (dedukcja, obecność) w § 4.
+36. CZĘŚCIOWO (notatki o lukach `gapNotes` w formularzu; słowa od autora). Luki wsteczne i jedna luka na sprawę wyłącznie z książki: to jest kod, nie tylko słowa (ja 6 h; słowa z Tobą w C).
 37. Kody dwuwyrazowe z solą i Worker podpisujący połówki (maj 2027, po A16).
 38. Próba generalna we wrześniu: osobne wdrożenie z przestawionym zegarem, test południa z pięcioma telefonami, test wznowienia na nowym telefonie, finał we dwoje na iPhonie; dopiero PO niej usunięcie kodów BIEGŁY i KONIEC, opróżnienie `klucze.json`, prawdziwe kody. (ja 8 h, Ty 12 h i telefony)
-39. Procedura awaryjna na dzień premiery (backend pada: zapas `rejestr.json` jest, instrukcja i skrypt na godziny nie) i próg nucących ustawiany ręcznie.
-40. README jako checklista po przerwie (dziś nieaktualne: scenariusz, Worker, komnata, skan, kody testowe) i dokumentacja „jak to utrzymać przez dekadę” na dzień przekazania wydawcy.
+39. ZROBIONE 22 XI (`docs/DZIEN_PREMIERY.md`, `scripts/rejestr-dnia.mjs`). Procedura awaryjna na dzień premiery (backend pada: zapas `rejestr.json` jest, instrukcja i skrypt na godziny nie) i próg nucących ustawiany ręcznie.
+40. ZROBIONE 22 XI. README jako checklista po przerwie (dziś nieaktualne: scenariusz, Worker, komnata, skan, kody testowe) i dokumentacja „jak to utrzymać przez dekadę” na dzień przekazania wydawcy.
 
 ### B2. Powinno (P)
 41. Bramy całoroczne i sezonowe jawnie w grze; komunikat „strażnik tej bramy odszedł, brama pamięta” z pieczęcią zastępczą (po D66).
-42. Strona HTML do weryfikacji kodu biegłego dla biblioteki, offline.
-43. Wake Lock w oddechu, bezruchu, kompasie i krokach; kompas z komunikatem „zrób ósemkę” przy słabej dokładności; AudioContext na iOS odtwarzany z gestu po powrocie z tła.
-44. PLAYTEST.md: miary transportu (TS-SF) i rodzaju wyzwania (CORGIS), punkty kontrolne dla komnaty i pokoju dwóch telefonów.
+42. ZROBIONE 24 XI (`public/weryfikacja/`). Strona HTML do weryfikacji kodu biegłego dla biblioteki, offline.
+43. ZROBIONE 24 XI (Wake Lock, kompas z podpowiedzią przy słabej dokładności, AudioContext wznawiany po powrocie z tła). Wake Lock w oddechu, bezruchu, kompasie i krokach; kompas z komunikatem „zrób ósemkę” przy słabej dokładności; AudioContext na iOS odtwarzany z gestu po powrocie z tła.
+44. ZROBIONE 23 XI. PLAYTEST.md: miary transportu (TS-SF) i rodzaju wyzwania (CORGIS), punkty kontrolne dla komnaty i pokoju dwóch telefonów.
 45. Ponowny, niezależny audyt UI/UX na stanie końcowym, dopiero po A1 i B30–B31 (inaczej audytuje tekst, który się zmieni).
 46. Napisy biegłych ze słownika akt na bramach i jednobitowe podziękowanie dla dawcy: nowy punkt końcowy w Workerze i magazyn per brama (ja 2 dni, nie jedna tura).
 47. Archiwum Fundacji przeszukiwane słowem (silnik; dokumenty w C49).

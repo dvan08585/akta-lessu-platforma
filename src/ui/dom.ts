@@ -40,6 +40,15 @@ export function isStandalone(): boolean { return matchMedia("(display-mode: stan
 /** Cykl życia widoku: każdy renderer rejestruje sprzątanie (strumienie, czujniki, pętle), router woła je przed podmianą ekranu. */
 const leaveFns: (() => void)[] = [];
 export function onLeave(fn: () => void): void { leaveFns.push(fn); }
+/** Ekran nie gaśnie w trakcie obrzędu (Wake Lock, gdzie jest); zwalniany przy wyjściu z ekranu i odnawiany po powrocie do karty. */
+export function keepAwake(): void {
+  type WL = { release: () => Promise<void> }; let lock: WL | null = null; let active = true;
+  const nav = navigator as Navigator & { wakeLock?: { request: (t: "screen") => Promise<WL> } };
+  const ask = async () => { if (!active || !nav.wakeLock || document.visibilityState !== "visible") return; try { lock = await nav.wakeLock.request("screen"); } catch { /* bateria albo brak zgody: nic */ } };
+  const onVis = () => { if (document.visibilityState === "visible") ask(); };
+  document.addEventListener("visibilitychange", onVis); ask();
+  onLeave(() => { active = false; document.removeEventListener("visibilitychange", onVis); lock?.release().catch(() => { /* */ }); lock = null; });
+}
 export function leaveView(): void { const fns = leaveFns.splice(0); for (const fn of fns) { try { fn(); } catch { /* sprzątanie nie może zepsuć nawigacji */ } } }
 /** Strumień z kamery/mikrofonu, który gaśnie przy wyjściu z widoku (dioda kamery nie świeci po opuszczeniu ekranu). */
 export async function grabMedia(c: MediaStreamConstraints): Promise<MediaStream> { const s = await navigator.mediaDevices.getUserMedia(c); onLeave(() => s.getTracks().forEach((t) => t.stop())); return s; }
